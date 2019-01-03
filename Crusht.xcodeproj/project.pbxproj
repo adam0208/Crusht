@@ -7,13 +7,90 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2D21C0C18D001F6BC5 /* MessageController.swift */; };
+		28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */; };
+		280B1ECF21CAC30300A89C5E /* new_message_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B1ECE21CAC30200A89C5E /* new_message_icon.png */; };
+		280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */; };
+		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
+		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
+		28148F3721D6C1540016BD22 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 28148F3621D6C1530016BD22 /* play.png */; };
 		283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C621B8925C00B3E4FD /* AppDelegate.swift */; };
-		283816C921B8925C00B3E4FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C821B8925C00B3E4FD /* ViewController.swift */; };
+		283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */; };
 		283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 283816CA21B8925C00B3E4FD /* Main.storyboard */; };
 		283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 283816CD21B8925F00B3E4FD /* Assets.xcassets */; };
 		283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */; };
 		283816DC21B8925F00B3E4FD /* CrushtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816DB21B8925F00B3E4FD /* CrushtTests.swift */; };
 		283816E721B8925F00B3E4FD /* CrushtUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816E621B8925F00B3E4FD /* CrushtUITests.swift */; };
+		283816F921B892C600B3E4FD /* ProfPageTopStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816F821B892C600B3E4FD /* ProfPageTopStackView.swift */; };
+		283816FB21B89F8C00B3E4FD /* ProfPageBottomStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816FA21B89F8C00B3E4FD /* ProfPageBottomStackView.swift */; };
+		283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816FC21B89FDD00B3E4FD /* ProfPageMiddleView.swift */; };
+		283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816FE21B8A02900B3E4FD /* CardViewModel.swift */; };
+		2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170021B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift */; };
+		2838170321B8A0A700B3E4FD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170221B8A0A700B3E4FD /* CardView.swift */; };
+		2838170721B8A11000B3E4FD /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170621B8A11000B3E4FD /* Advertiser.swift */; };
+		2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */; };
+		2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */; };
+		2838170F21B8A26400B3E4FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170E21B8A26400B3E4FD /* User.swift */; };
+		2838171E21B8C90100B3E4FD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* Extension.swift */; };
+		285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285A34A521BC7B920086CC95 /* SettingsCells.swift */; };
+		286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */; };
+		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
+		28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */; };
+		28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5A21B8D1D100A654A0 /* IMG_0184.png */; };
+		28857C9E21B8D1D500A654A0 /* lady5c.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5C21B8D1D100A654A0 /* lady5c.jpg */; };
+		28857CA221B8D1D500A654A0 /* jane3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6021B8D1D100A654A0 /* jane3.jpg */; };
+		28857CA321B8D1D500A654A0 /* kelly2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6121B8D1D100A654A0 /* kelly2.jpg */; };
+		28857CA421B8D1D500A654A0 /* dismiss_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6221B8D1D200A654A0 /* dismiss_circle@2x.png */; };
+		28857CA521B8D1D500A654A0 /* like_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6321B8D1D200A654A0 /* like_circle@2x.png */; };
+		28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6421B8D1D200A654A0 /* NoProfileImage.png */; };
+		28857CB621B8D1D500A654A0 /* refresh_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C8B21B8D1D300A654A0 /* refresh_circle@2x.png */; };
+		28857CB721B8D1D500A654A0 /* jane1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C8C21B8D1D300A654A0 /* jane1.jpg */; };
+		28857CBA21B8D1D500A654A0 /* kelly3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C8F21B8D1D400A654A0 /* kelly3.jpg */; };
+		28857CBB21B8D1D500A654A0 /* boost_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9021B8D1D400A654A0 /* boost_circle@2x.png */; };
+		28857CBC21B8D1D500A654A0 /* super_like_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9121B8D1D400A654A0 /* super_like_circle@2x.png */; };
+		28857CBF21B8D1D500A654A0 /* FaveBttn2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9421B8D1D500A654A0 /* FaveBttn2.png */; };
+		28857CC021B8D1D500A654A0 /* jane2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9521B8D1D500A654A0 /* jane2.jpg */; };
+		28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */; };
+		28857CC321B8D1D600A654A0 /* CrushTLogoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */; };
+		28857CC521B98C6B00A654A0 /* ProfPageMidButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CC421B98C6B00A654A0 /* ProfPageMidButtonView.swift */; };
+		28857CC821B98F9300A654A0 /* top_left_profile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857CC621B98F9200A654A0 /* top_left_profile@2x.png */; };
+		28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857CC721B98F9200A654A0 /* top_right_messages@2x.png */; };
+		28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCA21B9A91500A654A0 /* LoginViewController.swift */; };
+		28857CCD21B9A93500A654A0 /* EnterInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCC21B9A93500A654A0 /* EnterInfoViewController.swift */; };
+		28857CCF21B9A9AF00A654A0 /* PhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCE21B9A9AF00A654A0 /* PhoneViewController.swift */; };
+		28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CD021B9A9C200A654A0 /* VerifyViewController.swift */; };
+		28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDB21B9B82700A654A0 /* CustomTextField.swift */; };
+		28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */; };
+		28857CE021B9B95900A654A0 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDF21B9B95900A654A0 /* Bindable.swift */; };
+		28908D8221C0A41600391A39 /* CrushtLogoPinkBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */; };
+		28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8321C0A6B300391A39 /* SettingsBetter.png */; };
+		28908D8621C0A99A00391A39 /* MessagesIconCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */; };
+		28908D8821C0AB2C00391A39 /* ExpandableNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8721C0AB2C00391A39 /* ExpandableNames.swift */; };
+		28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8921C0AB6400391A39 /* ContactsCell.swift */; };
+		28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */; };
+		28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */; };
+		289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 289224BB21B9C1B20047E29B /* GoogleService-Info.plist */; };
+		28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */; };
+		28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */; };
+		28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */; };
+		28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */; };
+		28BE624B21BDB76A00EAFFE2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624921BDB76A00EAFFE2 /* LoginViewModel.swift */; };
+		28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624A21BDB76A00EAFFE2 /* LoginController.swift */; };
+		28BE624E21BDDBDE00EAFFE2 /* infoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624D21BDDBDE00EAFFE2 /* infoButton.png */; };
+		28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */; };
+		28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */; };
+		28CFC6AF21C56BAB00387129 /* heart2crusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CFC6AE21C56BAB00387129 /* heart2crusht.png */; };
+		28CFC6B121C56D3500387129 /* heartIcon3Crusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */; };
+		28CFC6B321C5B30600387129 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B221C5B30600387129 /* NewMessageController.swift */; };
+		28CFC6B521C5B3ED00387129 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Messages.swift */; };
+		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
+		28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */; };
+		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
+		28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9621C41A7800B7051F /* SendMessageButton.swift */; };
+		28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */; };
+		93EA35963A0441CD6DC3A04D /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */; };
+		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
+		EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +111,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28067D2D21C0C18D001F6BC5 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
+		28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		280B1ECE21CAC30200A89C5E /* new_message_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = new_message_icon.png; path = ../../new_message_icon.png; sourceTree = "<group>"; };
+		280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SeniorFiveIcon.png; sourceTree = "<group>"; };
+		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		28148F3621D6C1530016BD22 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		283816C321B8925C00B3E4FD /* Crusht.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crusht.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		283816C621B8925C00B3E4FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		283816C821B8925C00B3E4FD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMatchViewController.swift; sourceTree = "<group>"; };
 		283816CB21B8925C00B3E4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		283816CD21B8925F00B3E4FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		283816D021B8925F00B3E4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +131,82 @@
 		283816E221B8925F00B3E4FD /* CrushtUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CrushtUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		283816E621B8925F00B3E4FD /* CrushtUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrushtUITests.swift; sourceTree = "<group>"; };
 		283816E821B8925F00B3E4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		283816F821B892C600B3E4FD /* ProfPageTopStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfPageTopStackView.swift; sourceTree = "<group>"; };
+		283816FA21B89F8C00B3E4FD /* ProfPageBottomStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfPageBottomStackView.swift; sourceTree = "<group>"; };
+		283816FC21B89FDD00B3E4FD /* ProfPageMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfPageMiddleView.swift; sourceTree = "<group>"; };
+		283816FE21B8A02900B3E4FD /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
+		2838170021B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMatchBottomButtonsStackView.swift; sourceTree = "<group>"; };
+		2838170221B8A0A700B3E4FD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		2838170621B8A11000B3E4FD /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
+		2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMatchTopStackView.swift; sourceTree = "<group>"; };
+		2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
+		2838170E21B8A26400B3E4FD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2838171D21B8C90100B3E4FD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		285A34A521BC7B920086CC95 /* SettingsCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCells.swift; sourceTree = "<group>"; };
+		286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
+		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide_out_menu_poster.png; sourceTree = "<group>"; };
+		28857C5A21B8D1D100A654A0 /* IMG_0184.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0184.png; sourceTree = "<group>"; };
+		28857C5C21B8D1D100A654A0 /* lady5c.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = lady5c.jpg; path = ../../CrushtUI/lady5c.jpg; sourceTree = "<group>"; };
+		28857C6021B8D1D100A654A0 /* jane3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = jane3.jpg; path = ../../CrushtUI/jane3.jpg; sourceTree = "<group>"; };
+		28857C6121B8D1D100A654A0 /* kelly2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = kelly2.jpg; path = ../../CrushtUI/kelly2.jpg; sourceTree = "<group>"; };
+		28857C6221B8D1D200A654A0 /* dismiss_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dismiss_circle@2x.png"; path = "../../CrushtUI/dismiss_circle@2x.png"; sourceTree = "<group>"; };
+		28857C6321B8D1D200A654A0 /* like_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "like_circle@2x.png"; path = "../../CrushtUI/like_circle@2x.png"; sourceTree = "<group>"; };
+		28857C6421B8D1D200A654A0 /* NoProfileImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoProfileImage.png; sourceTree = "<group>"; };
+		28857C8B21B8D1D300A654A0 /* refresh_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "refresh_circle@2x.png"; path = "../../CrushtUI/refresh_circle@2x.png"; sourceTree = "<group>"; };
+		28857C8C21B8D1D300A654A0 /* jane1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = jane1.jpg; path = ../../CrushtUI/jane1.jpg; sourceTree = "<group>"; };
+		28857C8F21B8D1D400A654A0 /* kelly3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = kelly3.jpg; path = ../../CrushtUI/kelly3.jpg; sourceTree = "<group>"; };
+		28857C9021B8D1D400A654A0 /* boost_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "boost_circle@2x.png"; path = "../../CrushtUI/boost_circle@2x.png"; sourceTree = "<group>"; };
+		28857C9121B8D1D400A654A0 /* super_like_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "super_like_circle@2x.png"; path = "../../CrushtUI/super_like_circle@2x.png"; sourceTree = "<group>"; };
+		28857C9421B8D1D500A654A0 /* FaveBttn2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FaveBttn2.png; sourceTree = "<group>"; };
+		28857C9521B8D1D500A654A0 /* jane2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = jane2.jpg; path = ../../CrushtUI/jane2.jpg; sourceTree = "<group>"; };
+		28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChrushtHomeIcon4.png; sourceTree = "<group>"; };
+		28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CrushTLogoIcon.png; sourceTree = "<group>"; };
+		28857CC421B98C6B00A654A0 /* ProfPageMidButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfPageMidButtonView.swift; sourceTree = "<group>"; };
+		28857CC621B98F9200A654A0 /* top_left_profile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_left_profile@2x.png"; sourceTree = "<group>"; };
+		28857CC721B98F9200A654A0 /* top_right_messages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_right_messages@2x.png"; sourceTree = "<group>"; };
+		28857CCA21B9A91500A654A0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		28857CCC21B9A93500A654A0 /* EnterInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterInfoViewController.swift; sourceTree = "<group>"; };
+		28857CCE21B9A9AF00A654A0 /* PhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewController.swift; sourceTree = "<group>"; };
+		28857CD021B9A9C200A654A0 /* VerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyViewController.swift; sourceTree = "<group>"; };
+		28857CDB21B9B82700A654A0 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		28857CDF21B9B95900A654A0 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CrushtLogoPinkBackground.png; sourceTree = "<group>"; };
+		28908D8321C0A6B300391A39 /* SettingsBetter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsBetter.png; sourceTree = "<group>"; };
+		28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessagesIconCrusht.png; sourceTree = "<group>"; };
+		28908D8721C0AB2C00391A39 /* ExpandableNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableNames.swift; sourceTree = "<group>"; };
+		28908D8921C0AB6400391A39 /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
+		28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindCrushesTableViewController.swift; sourceTree = "<group>"; };
+		28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewController.swift; sourceTree = "<group>"; };
+		289224BB21B9C1B20047E29B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
+		28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsWheelCrusht.png; sourceTree = "<group>"; };
+		28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeIconWithBackground.png; sourceTree = "<group>"; };
+		28BE624921BDB76A00EAFFE2 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		28BE624A21BDB76A00EAFFE2 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		28BE624D21BDDBDE00EAFFE2 /* infoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoButton.png; sourceTree = "<group>"; };
+		28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
+		28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTableViewCell.swift; sourceTree = "<group>"; };
+		28CFC6AE21C56BAB00387129 /* heart2crusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart2crusht.png; sourceTree = "<group>"; };
+		28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heartIcon3Crusht.png; sourceTree = "<group>"; };
+		28CFC6B221C5B30600387129 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
+		28CFC6B421C5B3ED00387129 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
+		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
+		28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload_image_icon.png; sourceTree = "<group>"; };
+		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
+		28F46D9621C41A7800B7051F /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
+		28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "itsamatch@2x copy.png"; sourceTree = "<group>"; };
+		36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
+		814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1A0ED2C5A62100BB45399E9 /* Pods-Crusht.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.release.xcconfig"; path = "Pods/Target Support Files/Pods-Crusht/Pods-Crusht.release.xcconfig"; sourceTree = "<group>"; };
+		A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5E694249E63AA717CB3E9B1 /* Pods-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
+		BE89E100C843D14F4320B7CD /* Pods-CrushtTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.release.xcconfig"; sourceTree = "<group>"; };
+		F1BF50EB51F6D239872AFDF1 /* Pods-Crusht.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Crusht/Pods-Crusht.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +222,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +230,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93EA35963A0441CD6DC3A04D /* Pods_CrushtUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +244,8 @@
 				283816DA21B8925F00B3E4FD /* CrushtTests */,
 				283816E521B8925F00B3E4FD /* CrushtUITests */,
 				283816C421B8925C00B3E4FD /* Products */,
+				68FD194D3467F67A969E93D2 /* Pods */,
+				99FB963EE69DD78ACD5EE5B4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,12 +262,49 @@
 		283816C521B8925C00B3E4FD /* Crusht */ = {
 			isa = PBXGroup;
 			children = (
+				2838170D21B8A24B00B3E4FD /* Models */,
+				283816F721B8929100B3E4FD /* Controllers */,
+				283816F621B8927D00B3E4FD /* Extensions */,
+				283816F521B8927700B3E4FD /* ModelViews */,
+				283816F421B8926F00B3E4FD /* Views */,
 				283816C621B8925C00B3E4FD /* AppDelegate.swift */,
-				283816C821B8925C00B3E4FD /* ViewController.swift */,
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
-				283816CD21B8925F00B3E4FD /* Assets.xcassets */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
+				283816CD21B8925F00B3E4FD /* Assets.xcassets */,
+				28148F3621D6C1530016BD22 /* play.png */,
+				28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */,
+				28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */,
+				28CFC6AE21C56BAB00387129 /* heart2crusht.png */,
+				28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */,
+				28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */,
+				28908D8321C0A6B300391A39 /* SettingsBetter.png */,
+				28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */,
+				28BE624D21BDDBDE00EAFFE2 /* infoButton.png */,
+				28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */,
+				28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */,
+				28857C9021B8D1D400A654A0 /* boost_circle@2x.png */,
+				280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */,
+				28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */,
+				28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */,
+				28857C6221B8D1D200A654A0 /* dismiss_circle@2x.png */,
+				28857C9421B8D1D500A654A0 /* FaveBttn2.png */,
+				28857C5A21B8D1D100A654A0 /* IMG_0184.png */,
+				280B1ECE21CAC30200A89C5E /* new_message_icon.png */,
+				28857C8C21B8D1D300A654A0 /* jane1.jpg */,
+				28857C9521B8D1D500A654A0 /* jane2.jpg */,
+				28857C6021B8D1D100A654A0 /* jane3.jpg */,
+				28857C6121B8D1D100A654A0 /* kelly2.jpg */,
+				28857CC621B98F9200A654A0 /* top_left_profile@2x.png */,
+				28857CC721B98F9200A654A0 /* top_right_messages@2x.png */,
+				28857C8F21B8D1D400A654A0 /* kelly3.jpg */,
+				28857C5C21B8D1D100A654A0 /* lady5c.jpg */,
+				28857C6321B8D1D200A654A0 /* like_circle@2x.png */,
+				28857C6421B8D1D200A654A0 /* NoProfileImage.png */,
+				28857C8B21B8D1D300A654A0 /* refresh_circle@2x.png */,
+				28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */,
+				28857C9121B8D1D400A654A0 /* super_like_circle@2x.png */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
+				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
 			);
 			path = Crusht;
 			sourceTree = "<group>";
@@ -125,6 +327,122 @@
 			path = CrushtUITests;
 			sourceTree = "<group>";
 		};
+		283816F421B8926F00B3E4FD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				283816F821B892C600B3E4FD /* ProfPageTopStackView.swift */,
+				283816FA21B89F8C00B3E4FD /* ProfPageBottomStackView.swift */,
+				283816FC21B89FDD00B3E4FD /* ProfPageMiddleView.swift */,
+				28857CC421B98C6B00A654A0 /* ProfPageMidButtonView.swift */,
+				2838170021B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift */,
+				2838170221B8A0A700B3E4FD /* CardView.swift */,
+				2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */,
+				28857CDB21B9B82700A654A0 /* CustomTextField.swift */,
+				285A34A521BC7B920086CC95 /* SettingsCells.swift */,
+				28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */,
+				28908D8921C0AB6400391A39 /* ContactsCell.swift */,
+				28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */,
+				287795E521C339CF003A060A /* MatchView.swift */,
+				28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */,
+				28F46D9621C41A7800B7051F /* SendMessageButton.swift */,
+				28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */,
+				280B1ED221CB3FD700A89C5E /* UserCell.swift */,
+				280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		283816F521B8927700B3E4FD /* ModelViews */ = {
+			isa = PBXGroup;
+			children = (
+				283816FE21B8A02900B3E4FD /* CardViewModel.swift */,
+				28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */,
+			);
+			path = ModelViews;
+			sourceTree = "<group>";
+		};
+		283816F621B8927D00B3E4FD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2838171D21B8C90100B3E4FD /* Extension.swift */,
+				28908D8721C0AB2C00391A39 /* ExpandableNames.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		283816F721B8929100B3E4FD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				28BE624F21BE08F300EAFFE2 /* User Details */,
+				28BE624821BDB76A00EAFFE2 /* Login */,
+				283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */,
+				2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */,
+				28857CCA21B9A91500A654A0 /* LoginViewController.swift */,
+				28857CCC21B9A93500A654A0 /* EnterInfoViewController.swift */,
+				28857CCE21B9A9AF00A654A0 /* PhoneViewController.swift */,
+				28857CD021B9A9C200A654A0 /* VerifyViewController.swift */,
+				28857CDF21B9B95900A654A0 /* Bindable.swift */,
+				28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */,
+				28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */,
+				28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */,
+				28067D2D21C0C18D001F6BC5 /* MessageController.swift */,
+				28CFC6B221C5B30600387129 /* NewMessageController.swift */,
+				28CFC6B621C5B46A00387129 /* ChatLogController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2838170D21B8A24B00B3E4FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2838170E21B8A26400B3E4FD /* User.swift */,
+				2838170621B8A11000B3E4FD /* Advertiser.swift */,
+				28CFC6B421C5B3ED00387129 /* Messages.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		28BE624821BDB76A00EAFFE2 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				28BE624921BDB76A00EAFFE2 /* LoginViewModel.swift */,
+				28BE624A21BDB76A00EAFFE2 /* LoginController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		28BE624F21BE08F300EAFFE2 /* User Details */ = {
+			isa = PBXGroup;
+			children = (
+				28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */,
+				286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */,
+			);
+			path = "User Details";
+			sourceTree = "<group>";
+		};
+		68FD194D3467F67A969E93D2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F1BF50EB51F6D239872AFDF1 /* Pods-Crusht.debug.xcconfig */,
+				A1A0ED2C5A62100BB45399E9 /* Pods-Crusht.release.xcconfig */,
+				5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */,
+				BE89E100C843D14F4320B7CD /* Pods-CrushtTests.release.xcconfig */,
+				36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */,
+				B5E694249E63AA717CB3E9B1 /* Pods-CrushtUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		99FB963EE69DD78ACD5EE5B4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */,
+				A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */,
+				4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +450,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816EB21B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "Crusht" */;
 			buildPhases = (
+				90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */,
 				283816BF21B8925C00B3E4FD /* Sources */,
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
+				135C14FC3E7469E297AF6393 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -149,6 +469,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816EE21B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "CrushtTests" */;
 			buildPhases = (
+				205815491933167ADC528E57 /* [CP] Check Pods Manifest.lock */,
 				283816D321B8925F00B3E4FD /* Sources */,
 				283816D421B8925F00B3E4FD /* Frameworks */,
 				283816D521B8925F00B3E4FD /* Resources */,
@@ -167,6 +488,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816F121B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "CrushtUITests" */;
 			buildPhases = (
+				B60DE9019BF16FBFC1FDB340 /* [CP] Check Pods Manifest.lock */,
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
@@ -229,8 +551,41 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28857CBF21B8D1D500A654A0 /* FaveBttn2.png in Resources */,
+				28857CBC21B8D1D500A654A0 /* super_like_circle@2x.png in Resources */,
+				28857CC321B8D1D600A654A0 /* CrushTLogoIcon.png in Resources */,
+				28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */,
+				280B1ECF21CAC30300A89C5E /* new_message_icon.png in Resources */,
+				28857C9E21B8D1D500A654A0 /* lady5c.jpg in Resources */,
+				28857CA521B8D1D500A654A0 /* like_circle@2x.png in Resources */,
+				28857CA221B8D1D500A654A0 /* jane3.jpg in Resources */,
+				28857CC021B8D1D500A654A0 /* jane2.jpg in Resources */,
+				28857CC821B98F9300A654A0 /* top_left_profile@2x.png in Resources */,
+				28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */,
+				28857CB621B8D1D500A654A0 /* refresh_circle@2x.png in Resources */,
+				28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */,
+				28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */,
+				28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */,
+				28BE624E21BDDBDE00EAFFE2 /* infoButton.png in Resources */,
+				28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */,
+				28CFC6B121C56D3500387129 /* heartIcon3Crusht.png in Resources */,
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
+				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
+				28908D8621C0A99A00391A39 /* MessagesIconCrusht.png in Resources */,
+				28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */,
+				28857CB721B8D1D500A654A0 /* jane1.jpg in Resources */,
+				28908D8221C0A41600391A39 /* CrushtLogoPinkBackground.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
+				28857CBB21B8D1D500A654A0 /* boost_circle@2x.png in Resources */,
+				28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */,
+				280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */,
+				28857CA421B8D1D500A654A0 /* dismiss_circle@2x.png in Resources */,
+				28148F3721D6C1540016BD22 /* play.png in Resources */,
+				28857CA321B8D1D500A654A0 /* kelly2.jpg in Resources */,
+				28CFC6AF21C56BAB00387129 /* heart2crusht.png in Resources */,
+				28857CBA21B8D1D500A654A0 /* kelly3.jpg in Resources */,
+				28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */,
+				28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -251,13 +606,179 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		135C14FC3E7469E297AF6393 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		205815491933167ADC528E57 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CrushtTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Crusht-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B60DE9019BF16FBFC1FDB340 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CrushtUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		283816BF21B8925C00B3E4FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				283816C921B8925C00B3E4FD /* ViewController.swift in Sources */,
+				2838170F21B8A26400B3E4FD /* User.swift in Sources */,
+				28857CCD21B9A93500A654A0 /* EnterInfoViewController.swift in Sources */,
+				2838170721B8A11000B3E4FD /* Advertiser.swift in Sources */,
+				28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */,
+				283816F921B892C600B3E4FD /* ProfPageTopStackView.swift in Sources */,
+				285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */,
+				28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */,
+				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
+				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
+				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
+				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
+				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
+				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
+				287795E621C339CF003A060A /* MatchView.swift in Sources */,
+				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
+				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
+				28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */,
+				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
+				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,
+				28CFC6B521C5B3ED00387129 /* Messages.swift in Sources */,
+				28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */,
+				280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */,
+				28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */,
+				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
+				28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */,
+				28857CCF21B9A9AF00A654A0 /* PhoneViewController.swift in Sources */,
+				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
+				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
+				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
+				283816FB21B89F8C00B3E4FD /* ProfPageBottomStackView.swift in Sources */,
+				2838171E21B8C90100B3E4FD /* Extension.swift in Sources */,
+				28BE624B21BDB76A00EAFFE2 /* LoginViewModel.swift in Sources */,
+				28908D8821C0AB2C00391A39 /* ExpandableNames.swift in Sources */,
+				2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */,
+				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,
+				28857CE021B9B95900A654A0 /* Bindable.swift in Sources */,
+				28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */,
+				2838170321B8A0A700B3E4FD /* CardView.swift in Sources */,
 				283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */,
+				28857CC521B98C6B00A654A0 /* ProfPageMidButtonView.swift in Sources */,
+				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
+				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,
+				28CFC6B321C5B30600387129 /* NewMessageController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +951,7 @@
 		};
 		283816EC21B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F1BF50EB51F6D239872AFDF1 /* Pods-Crusht.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -448,6 +970,7 @@
 		};
 		283816ED21B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1A0ED2C5A62100BB45399E9 /* Pods-Crusht.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -466,6 +989,7 @@
 		};
 		283816EF21B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -487,6 +1011,7 @@
 		};
 		283816F021B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE89E100C843D14F4320B7CD /* Pods-CrushtTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -508,6 +1033,7 @@
 		};
 		283816F221B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -528,6 +1054,7 @@
 		};
 		283816F321B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B5E694249E63AA717CB3E9B1 /* Pods-CrushtUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
