@@ -32,6 +32,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 class MessageController: UITableViewController {
+    
+    
+    //ADD COLLECTION CALLED USER MESSAGE OR SOMETING TO DOCUMENT SO ONLY GET ONE MESSAGE
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,7 +139,9 @@ class MessageController: UITableViewController {
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
 
-            Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
+        //Figure out the problem here you genious
+        
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
                 if let err = err {
                     print("FAILLLLLLLLL", err)
                 }

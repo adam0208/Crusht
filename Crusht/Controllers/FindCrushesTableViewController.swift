@@ -39,7 +39,6 @@ class FindCrushesTableViewController: UITableViewController {
     var twoDimensionalArray = [ExpandableNames]()
     
     
-    
     //    var twoDimensionalArray = [
     //        ExpandableNames(isExpanded: true, names: ["Amy", "Bill", "Zack", "Steve", "Jack", "Jill", "Mary"].map{ FavoritableContact(name: $0, hasFavorited: false) }),
     //        ExpandableNames(isExpanded: true, names: ["Carl", "Chris", "Christina", "Cameron"].map{ FavoritableContact(name: $0, hasFavorited: false) }),
@@ -228,7 +227,7 @@ class FindCrushesTableViewController: UITableViewController {
         SchoolBttn.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         SchoolBttn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         
-        SchoolBttn.addTarget(self, action: #selector(handleSchoolExpandClose), for: .touchUpInside)
+        SchoolBttn.addTarget(self, action: #selector(goToSchool), for: .touchUpInside)
         
         SchoolBttn.tag = section
         
@@ -241,6 +240,12 @@ class FindCrushesTableViewController: UITableViewController {
     }
     
     fileprivate var expanded = false
+    
+    @objc func goToSchool() {
+        let schoolController = SchoolCrushController()
+        let navControlla = UINavigationController(rootViewController: schoolController)
+        present(navControlla, animated: true)
+    }
     
     @objc func handleSchoolExpandClose(button: UIButton) {
         

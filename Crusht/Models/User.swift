@@ -6,6 +6,7 @@
 //  Copyright © 2018 William Kelly. All rights reserved.
 //
 import UIKit
+import Firebase
 
 struct User: ProducesCardViewModel {
 // defining our properties for our model layer
@@ -18,9 +19,13 @@ struct User: ProducesCardViewModel {
     var uid: String?
     var bio: String?
     
+    
     var minSeekingAge: Int?
     var maxSeekingAge: Int?
 
+    
+    var toId: String?
+    var fromId: String?
     
     init(dictionary: [String: Any]) {
         //initialize our user stuff
@@ -36,6 +41,8 @@ struct User: ProducesCardViewModel {
         self.bio = dictionary["Bio"] as? String ?? ""
         self.minSeekingAge = dictionary["minSeekingAge"] as? Int
         self.maxSeekingAge = dictionary["maxSeekingAge"] as? Int
+        self.toId = dictionary["toCrush"] as? String ?? ""
+        self.fromId = dictionary["fromCrush"] as? String ?? ""
         
     
     }
@@ -61,4 +68,9 @@ func toCardViewModel() -> CardViewModel {
     return CardViewModel(uid: self.uid ?? "", imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     
     }
+    
+    func crushPartnerId() -> String? {
+        return fromId == Auth.auth().currentUser?.uid ? toId : fromId
+    }
+    
 }

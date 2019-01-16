@@ -19,16 +19,14 @@ class LoginViewController: UIViewController {
     
     var delegate: LoginControllerDelegate?
 
-   
     
     let Text: UILabel = {
         let label = UILabel()
-        //label.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 20, height: 200)
+     
         label.text = "Wanna know if a crush is mutual?"
         label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
         label.textColor = .black
-        //label.numberOfLines = 0
         return label
     }()
   
@@ -40,7 +38,6 @@ class LoginViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        //button.setTitleColor(.gray, for: .disabled)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
         
@@ -53,20 +50,12 @@ class LoginViewController: UIViewController {
     
     
     let FBLoginBttn: UIButton = {
-//        let fbBttngradient = CAGradientLayer()
-//        let lightBlue = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-//        let darkBlue = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-//        fbBttngradient.colors = [lightBlue.cgColor, darkBlue.cgColor]
-//        fbBttngradient.locations = [0,1]
         
         let button = UIButton(type: .system)
         button.setTitle("Log in with Facebook", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = .blue
-        //button.layer.addSublayer(fbBttngradient)
-        //fbBttngradient.frame = button.bounds
-        //button.setTitleColor(.gray, for: .disabled)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
         button.layer.cornerRadius = 22
@@ -125,10 +114,6 @@ class LoginViewController: UIViewController {
         }
     }
     
-//    fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()) {
-//
-//    }
-
     fileprivate func fetchFacebookUser() {
     let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
     req.start({ (connection, result) in
@@ -145,6 +130,7 @@ class LoginViewController: UIViewController {
             let pictureUrlFB = responseDictionary["picture"] as? [String:Any]
             let photoData = pictureUrlFB!["data"] as? [String:Any]
             let photoUrl = photoData!["url"] as? String
+            let filename = UUID().uuidString
             print(firstNameFB ?? "", lastNameFB ?? "", socialIdFB ?? "", genderFB ?? "", photoUrl ?? "")
             let uid = Auth.auth().currentUser?.uid ?? ""
             let name = "\(firstNameFB ?? "") \(lastNameFB ?? "")"
@@ -171,45 +157,6 @@ class LoginViewController: UIViewController {
         }
     })
 }
-    
-//    fileprivate func fuchFacebookUser() {
-//
-//        let graphRequestConnection = FBSDKGraphRequestConnection()
-//        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, email, name, picture.type(large)"], accessToken: FBSDKAccessToken.current, httpMethod: .GET, apiVersion: .defaultVersion)
-//        graphRequestConnection.add(graphRequest, completion: { (httpResponse, result) in
-//            switch result {
-//            case .success(response: let response):
-//
-//                guard let responseDict = response.dictionaryValue else { print("Error"); return }
-//
-//                let json = JSON(responseDict)
-//                self.name = json["name"].string
-//                self.email = json["email"].string
-//                guard let profilePicture = json["picture"]["data"]["url"].string else {print("error getting prof pic"); return }
-//                guard let url = URL(string: profilePicture) else { print("Failed to fetch user"); return }
-//
-//                URLSession.shared.dataTask(with: url) { (data, response, err) in
-//                    if err != nil {
-//                        guard let err = err else {print("Failed Fetching User"); return }
-//                        print("Failed Fetching User");
-//                        return
-//                    }
-//                    guard let data = data else { print("failed to fetch user"); return }
-//                    self.profileImage = UIImage(data: data)
-//                    self.saveUserIntoFirebaseDatabase()
-//
-//                    }.resume()
-//
-//                break
-//            case .failed(let err):
-//                print("There was an error");
-//                break
-//            }
-//        })
-//        graphRequestConnection.start()
-//
-//    }
-
     
         fileprivate func showHUDWithError(error: Error) {
             registeringHUD.dismiss()
@@ -246,7 +193,6 @@ class LoginViewController: UIViewController {
         navigationController?.isNavigationBarHidden = true
         
         
-        
         let logoImage = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/2, height: UIScreen.main.bounds.size.height/3))
         logoImage.image = #imageLiteral(resourceName: "CrushTLogoIcon")
         logoImage.contentMode = .scaleAspectFit
@@ -263,20 +209,7 @@ class LoginViewController: UIViewController {
        
     }
     
-    
-//    fileprivate func setupLayout() {
-//
-//        let overallStackView = UIStackView(arrangedSubviews: [topStackView, middleStackView, bottomStackView])
-//        overallStackView.axis = .vertical
-//
-//        view.addSubview(overallStackView)
-//
-//        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
-//        overallStackView.isLayoutMarginsRelativeArrangement = true
-//        overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
-//
-//    }
-//
+
     let gradientLayer = CAGradientLayer()
     
     override func viewWillLayoutSubviews() {
@@ -294,18 +227,6 @@ class LoginViewController: UIViewController {
         gradientLayer.locations = [0, 1]
         view.layer.addSublayer(gradientLayer)
         gradientLayer.frame = view.bounds
-    }
-    
-    let fbBttngradient = CAGradientLayer()
-    
-    fileprivate func FBbuttongradiant() {
-        let lightBlue = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        let darkBlue = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-        fbBttngradient.colors = [lightBlue.cgColor, darkBlue.cgColor]
-        fbBttngradient.locations = [0,1]
-        FBLoginBttn.layer.addSublayer(fbBttngradient)
-        fbBttngradient.frame = FBLoginBttn.bounds
-    
     }
     
 }

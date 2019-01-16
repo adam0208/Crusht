@@ -91,7 +91,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         super.viewDidLoad()
         //setupGradientLayer()
         setUpNavItems()
-        tableView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
+        tableView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
         //setupGradientLayer()
@@ -300,7 +300,6 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     fileprivate func setUpNavItems() {
         navigationItem.title = "Settings "
         
-        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         
         navigationItem.rightBarButtonItems = [

@@ -7,8 +7,42 @@
 //
 
 import UIKit
+import Firebase
 
 class MatchView: UIView {
+    
+    var currentUser: User!
+    
+    // you're almost always guaranteed to have this variable set up
+    var cardUID: String! {
+        didSet {
+            // either fetch current user inside here or pass in our current user if we have it
+            
+            // fetch the cardUID information
+            let query = Firestore.firestore().collection("users")
+            query.document(cardUID).getDocument { (snapshot, err) in
+                if let err = err {
+                    print("Failed to fetch card user:", err)
+                    return
+                }
+                
+                guard let dictionary = snapshot?.data() else { return }
+                let user = User(dictionary: dictionary)
+                guard let url = URL(string: user.imageUrl1 ?? "") else { return }
+                self.cardUserImageView.sd_setImage(with: url)
+                
+                guard let currentUserImageUrl = URL(string: self.currentUser.imageUrl1 ?? "") else { return }
+                
+                self.currentUserImageView.sd_setImage(with: currentUserImageUrl, completed: { (_, _, _, _) in
+                    self.setupAnimations()
+                })
+                
+                // setup the description label text correctly somewhere inside of here
+                self.descriptionLabel.text = "You and \(user.name ?? "") have liked\neach other."
+            }
+            
+        }
+    }
     
     
     fileprivate let itsAMatchImageView: UIImageView = {
@@ -43,6 +77,7 @@ class MatchView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.alpha = 0
         return imageView
     }()
     
@@ -59,6 +94,7 @@ class MatchView: UIView {
         button.setTitle("Keep Swiping", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        button.addTarget(self, action: #selector(handleTapDismiss), for: .touchUpInside)
         return button
     }()
     
@@ -68,15 +104,70 @@ class MatchView: UIView {
         setupBlurView()
         
         setupLayout()
+        
     }
     
+    fileprivate func setupAnimations() {
+        views.forEach({$0.alpha = 1})
+        
+        // starting positions
+        let angle = 30 * CGFloat.pi / 180
+        
+        currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(CGAffineTransform(translationX: 200, y: 0))
+        
+        cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
+        
+        sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
+        keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
+        
+        // keyframe animations for segmented animation
+        
+        UIView.animateKeyframes(withDuration: 1.3, delay: 0, options: .calculationModeCubic, animations: {
+            
+            // animation 1 - translation back to original position
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.45, animations: {
+                self.currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle)
+                self.cardUserImageView.transform = CGAffineTransform(rotationAngle: angle)
+            })
+            
+            // animation 2 - rotation
+            UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4, animations: {
+                self.currentUserImageView.transform = .identity
+                self.cardUserImageView.transform = .identity
+            })
+            
+            
+        }) { (_) in
+            
+        }
+        
+        UIView.animate(withDuration: 0.75, delay: 0.6 * 1.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
+            self.sendMessageButton.transform = .identity
+            self.keepSwipingButton.transform = .identity
+        })
+    }
+    
+    lazy var views = [
+        itsAMatchImageView,
+        descriptionLabel,
+        currentUserImageView,
+        cardUserImageView,
+        sendMessageButton,
+        self.keepSwipingButton,
+        ]
+    
     fileprivate func setupLayout() {
-        addSubview(itsAMatchImageView)
-        addSubview(descriptionLabel)
-        addSubview(currentUserImageView)
-        addSubview(cardUserImageView)
-        addSubview(sendMessageButton)
-        addSubview(keepSwipingButton)
+//        addSubview(itsAMatchImageView)
+//        addSubview(descriptionLabel)
+//        addSubview(currentUserImageView)
+//        addSubview(cardUserImageView)
+//        addSubview(sendMessageButton)
+//        addSubview(keepSwipingButton)
+        
+        views.forEach { (v) in
+            addSubview(v)
+            v.alpha = 0
+        }
         
         let imageWidth: CGFloat = 140
         

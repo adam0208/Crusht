@@ -48,95 +48,82 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
      var messages = [Message]()
     
     func observeMoreMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        
-        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
+        //guard let uid = Auth.auth().currentUser?.uid else {return}
+        let toId = user!.uid!
+        let fromId = Auth.auth().currentUser!.uid
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
             if let err = err {
-                print("FAILLLLLLLLL", err)
+                print("Error making individual convo", err)
+                return
             }
-            
-            //need to use where call and set it to from id
             snapshot?.documents.forEach({ (documentSnapshot) in
-                let userDictionary = documentSnapshot.data()
-                let message = Message(dictionary: userDictionary)
-                if message.chatPartnerId() == self.user?.uid {
-                    self.messages.append(message)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        return message1.timestamp?.int32Value < message2.timestamp?.int32Value
-                    })
-                    
-                    DispatchQueue.main.async(execute: {
-                        self.collectionView?.reloadData()
-                    })
-                    
-                }
                 
+            Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
+                    snapshot?.documents.forEach({ (documentSnapshot) in
+                        if let err = err {
+                            print("FAILLLLLLLLL", err)
+                        }
+                        let userDictionary = documentSnapshot.data()
+                        let message = Message(dictionary: userDictionary)
+                        if message.chatPartnerId() == self.user?.uid {
+                            self.messages.append(message)
+                            self.messages.sort(by: { (message1, message2) -> Bool in
+                                return message1.timestamp?.int32Value < message2.timestamp?.int32Value
+                            })
+                            
+                            DispatchQueue.main.async(execute: {
+                                self.collectionView?.reloadData()
+                                
+                                //scroll to the last index
+                                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                            })
+                        }
+                    })
+                    
+                })
             })
-            
         })
     }
     
     func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        
-        Firestore.firestore().collection("messages").whereField("toId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
+        //guard let uid = Auth.auth().currentUser?.uid else {return}
+        let toId = user!.uid!
+        let fromId = Auth.auth().currentUser!.uid
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
             if let err = err {
-                print("FAILLLLLLLLL", err)
+                print("Error making individual convo", err)
+                return
             }
-            
-            //need to use where call and set it to from id
             snapshot?.documents.forEach({ (documentSnapshot) in
+        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    if let err = err {
+                        print("FAILLLLLLLLL", err)
+                        }
                 let userDictionary = documentSnapshot.data()
                 let message = Message(dictionary: userDictionary)
                 if message.chatPartnerId() == self.user?.uid {
-                    self.messages.append(message)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        return message1.timestamp?.int32Value < message2.timestamp?.int32Value
+                self.messages.append(message)
+                self.messages.sort(by: { (message1, message2) -> Bool in
+                return message1.timestamp?.int32Value < message2.timestamp?.int32Value
                     })
-                    
+                                
                     DispatchQueue.main.async(execute: {
                         self.collectionView?.reloadData()
-                       
-                        //scroll to the last index
+                                    
+                                    //scroll to the last index
                         let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                         self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                        })
+                    })
+                    }
+                })
                     
-                }
-                
+                })
             })
-            
         })
     }
-    
-
-                
-
-        
-            
-//                //Database.database().reference().child("messages").child(messageId)
-//            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//
-//                messagesRef.g
-//
-//                guard let dictionary = snapshot.value as? [String: AnyObject] else {
-//                    return
-//                }
-//
-//                let message = Message(dictionary: dictionary)
-//
-//                if message.chatPartnerId() == self.user?.id {
-//                    self.messages.append(message)
-//                    DispatchQueue.main.async(execute: {
-//                        self.collectionView?.reloadData()
-//                    })
-//                }
-//
-//            }, withCancel: nil)
-//
-//        }, withCancel: nil)
-
-    
+ 
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter message..."
@@ -157,9 +144,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
         collectionView?.keyboardDismissMode = .interactive
-        //observeMessages()
-        //observeMoreMessages()
-        //setupInputComponents()
+     
          setupKeyboardObservers()
     }
     
@@ -678,20 +663,43 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     properties.forEach({values[$0] = $1})
 
-        Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-            if let err = err {
-                print("error sending message", err)
-                return
-            }
             self.inputTextField.text = nil
-
-        self.observeMessages()
-            
-            //need to call func that loads into collection view
-            //like ovserbe last message or something
+            //SOLUTION TO CURRENT ISSUE
+            //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+            Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                if let err = err {
+                    print("Error making individual convo", err)
+                    return
+                }
+                snapshot?.documents.forEach({ (documentSnapshot) in
+           
+                     let document = documentSnapshot
+                    if document.exists {
+                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                    }
+                    else {
+                        Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                            if let err = err {
+                                print("error sending message", err)
+                                return
+                            }
+                        }
+                    }
+                })
+                    })
+    //this is kind of a shit solution to the load messages as they are sent
+    //doesn't work because
+//self.viewDidLoad()
+    
+    //works but it double loads the data
+            DispatchQueue.main.async(execute: {
+                    self.collectionView?.reloadData()
+                    self.observeMessages()
+                    self.observeMoreMessages()
+                })
+    
+    
         }
-        
-    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         handleSend()

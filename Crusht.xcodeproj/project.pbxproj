@@ -14,6 +14,8 @@
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
 		28148F3721D6C1540016BD22 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 28148F3621D6C1530016BD22 /* play.png */; };
+		28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */; };
+		28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */; };
 		283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C621B8925C00B3E4FD /* AppDelegate.swift */; };
 		283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */; };
 		283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 283816CA21B8925C00B3E4FD /* Main.storyboard */; };
@@ -71,6 +73,7 @@
 		28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */; };
 		289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 289224BB21B9C1B20047E29B /* GoogleService-Info.plist */; };
 		28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */; };
+		28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */; };
 		28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */; };
 		28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */; };
 		28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */; };
@@ -85,6 +88,8 @@
 		28CFC6B521C5B3ED00387129 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Messages.swift */; };
 		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
 		28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */; };
+		28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */; };
+		28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */; };
 		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
 		28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9621C41A7800B7051F /* SendMessageButton.swift */; };
 		28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */; };
@@ -118,6 +123,8 @@
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		28148F3621D6C1530016BD22 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewCell.swift; sourceTree = "<group>"; };
+		28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSeniorFivePostTableViewController.swift; sourceTree = "<group>"; };
 		283816C321B8925C00B3E4FD /* Crusht.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crusht.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		283816C621B8925C00B3E4FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMatchViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +188,7 @@
 		28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewController.swift; sourceTree = "<group>"; };
 		289224BB21B9C1B20047E29B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
 		28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
 		28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsWheelCrusht.png; sourceTree = "<group>"; };
 		28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeIconWithBackground.png; sourceTree = "<group>"; };
@@ -195,6 +203,8 @@
 		28CFC6B421C5B3ED00387129 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload_image_icon.png; sourceTree = "<group>"; };
+		28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFivePostsTableViewCell.swift; sourceTree = "<group>"; };
+		28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveModel.swift; sourceTree = "<group>"; };
 		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		28F46D9621C41A7800B7051F /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "itsamatch@2x copy.png"; sourceTree = "<group>"; };
@@ -348,6 +358,8 @@
 				28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */,
 				280B1ED221CB3FD700A89C5E /* UserCell.swift */,
 				280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */,
+				28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */,
+				28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -388,6 +400,8 @@
 				28067D2D21C0C18D001F6BC5 /* MessageController.swift */,
 				28CFC6B221C5B30600387129 /* NewMessageController.swift */,
 				28CFC6B621C5B46A00387129 /* ChatLogController.swift */,
+				28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */,
+				28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -398,6 +412,7 @@
 				2838170E21B8A26400B3E4FD /* User.swift */,
 				2838170621B8A11000B3E4FD /* Advertiser.swift */,
 				28CFC6B421C5B3ED00387129 /* Messages.swift */,
+				28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -743,12 +758,16 @@
 				283816F921B892C600B3E4FD /* ProfPageTopStackView.swift in Sources */,
 				285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */,
 				28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */,
+				28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */,
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
+				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
+				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
 				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
 				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
+				28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */,
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
@@ -763,6 +782,7 @@
 				28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */,
 				28857CCF21B9A9AF00A654A0 /* PhoneViewController.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
+				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
 				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
 				283816FB21B89F8C00B3E4FD /* ProfPageBottomStackView.swift in Sources */,
