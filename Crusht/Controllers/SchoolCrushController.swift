@@ -137,8 +137,6 @@ class SchoolCrushController: UITableViewController {
     func hasTappedCrush(cell: UITableViewCell) {
     
 
-        // we're going to figure out which name we're clicking on
-
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
 
         

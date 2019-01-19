@@ -26,7 +26,7 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
         didSet {
             //setupNameAndProfileImage()
             
-            label.text = "\(crush?.crush1 ?? "YOU SUCK")\n\(crush?.crush2 ?? "YOU SUCK")\n\(crush?.crush3 ?? "YOU SUCK")\n\(crush?.crush4 ?? "YOU SUCK")\n\(crush?.crush5 ?? "YOU SUCK")\n\(crush?.comments ?? "YOU SUCK")"
+            label.text = "\(crush?.crush1 ?? "YOU SUCK")\n\(crush?.crush2 ?? "YOU SUCK")\n\(crush?.crush3 ?? "YOU SUCK")\n\(crush?.crush4 ?? "YOU SUCK")\n\(crush?.crush5 ?? "YOU SUCK")\n\n\(crush?.comments ?? "YOU SUCK")"
             
             if let seconds = crush?.timestamp?.doubleValue {
                 let timestampDate = Date(timeIntervalSince1970: seconds)
@@ -46,7 +46,7 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
         //label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = UIColor.darkGray
         //label.translatesAutoresizingMaskIntoConstraints = false
-         label.font = UIFont.systemFont(ofSize: 30, weight: .medium)
+         label.font = UIFont.systemFont(ofSize: 24, weight: .medium)
         return label
     }()
     
@@ -54,7 +54,7 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
         let tf = SeniorFivePostLable()
         tf.text = "Enter Name"
         tf.numberOfLines = 0
-        tf.font = UIFont.systemFont(ofSize: 30, weight: .medium)
+        tf.font = UIFont.systemFont(ofSize: 24, weight: .medium)
         return tf
     } ()
     

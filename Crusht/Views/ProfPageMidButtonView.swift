@@ -14,7 +14,7 @@ class ProfPageMidButtonView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Find Crushes", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 0, alpha: 1)
         button.setTitleColor(.black, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200) .isActive = true

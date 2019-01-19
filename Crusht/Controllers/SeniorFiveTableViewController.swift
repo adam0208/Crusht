@@ -72,9 +72,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
    
-       
         let headerLabel = HeaderLabel()
-        
         
         return headerLabel
     }
@@ -92,30 +90,11 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
     }
     
     
-    //let cellId = "cellId1"
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        let cell = SeniorFivePostsTableViewCell(style: .default, reuseIdentifier: nil)
         let crushes = crushesArray[indexPath.section]
         cell.crush = crushes
         
-        
-//        switch indexPath.section {
-//        case 1:
-//            cell.label.text = posts
-//
-//        case 2:
-//            cell.label.text = "Hello"
-//
-//        case 3:
-//             cell.label.text = "Hello"
-//
-//        case 4:
-//             cell.label.text = "Hello"
-//
-//        default:
-//             cell.label.text = "Hello"
-//        }
         
         return cell
     }
@@ -139,12 +118,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let crushes = Crushes(dictionary: userDictionary)
-//                self.crush1 = crushes.crush1 ?? "NOT LOADED"
-//                self.crush2 = crushes.crush2 ?? "NOT Loaded"
-//                self.crush3 = crushes.crush3 ?? "NOT Loaded"
-//                self.crush4 = crushes.crush4 ?? "NOT Loaded"
-//                self.crush5 = crushes.crush5 ?? "NOT Loaded"
-//                self.comments = crushes.comments ?? "NOT Loaded"
+
                 self.crushesArray.append(crushes)
                 //self.crushDictionary = crushesArray
                 self.crushesArray.sort(by: { (message1, message2) -> Bool in
@@ -165,6 +139,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
     
         fileprivate func setupNavigationItems() {
             navigationItem.title = "\(user?.school ?? " Senior Fives")" + "'s Senior Fives"
+            
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Write Your 5", style: .plain, target: self, action: #selector(handleWritePost))
