@@ -22,6 +22,34 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
 
     //used "tf" cause copy and paste
     
+    var crush: Crushes? {
+        didSet {
+            //setupNameAndProfileImage()
+            
+            label.text = "\(crush?.crush1 ?? "YOU SUCK")\n\(crush?.crush2 ?? "YOU SUCK")\n\(crush?.crush3 ?? "YOU SUCK")\n\(crush?.crush4 ?? "YOU SUCK")\n\(crush?.crush5 ?? "YOU SUCK")\n\(crush?.comments ?? "YOU SUCK")"
+            
+            if let seconds = crush?.timestamp?.doubleValue {
+                let timestampDate = Date(timeIntervalSince1970: seconds)
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "hh:mm:ss a"
+                timeLabel.text = dateFormatter.string(from: timestampDate)
+            }
+            
+            
+        }
+    }
+    
+    let timeLabel: UILabel = {
+        let label = UILabel()
+        //        label.text = "HH:MM:SS"
+        //label.font = UIFont.systemFont(ofSize: 13)
+        label.textColor = UIColor.darkGray
+        //label.translatesAutoresizingMaskIntoConstraints = false
+         label.font = UIFont.systemFont(ofSize: 30, weight: .medium)
+        return label
+    }()
+    
     let label: UILabel = {
         let tf = SeniorFivePostLable()
         tf.text = "Enter Name"
@@ -35,8 +63,13 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(label)
-        label.fillSuperview()
+        let stack = UIStackView(arrangedSubviews: [timeLabel, label])
+        addSubview(stack)
+       stack.axis = .vertical
+        
+       stack.fillSuperview()
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

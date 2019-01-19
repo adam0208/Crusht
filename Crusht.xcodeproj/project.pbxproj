@@ -64,6 +64,7 @@
 		28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDB21B9B82700A654A0 /* CustomTextField.swift */; };
 		28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */; };
 		28857CE021B9B95900A654A0 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDF21B9B95900A654A0 /* Bindable.swift */; };
+		288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288C87CC21F28C25000B5058 /* SchoolCrushes.swift */; };
 		28908D8221C0A41600391A39 /* CrushtLogoPinkBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */; };
 		28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8321C0A6B300391A39 /* SettingsBetter.png */; };
 		28908D8621C0A99A00391A39 /* MessagesIconCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */; };
@@ -179,6 +180,7 @@
 		28857CDB21B9B82700A654A0 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		28857CDF21B9B95900A654A0 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		288C87CC21F28C25000B5058 /* SchoolCrushes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushes.swift; sourceTree = "<group>"; };
 		28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CrushtLogoPinkBackground.png; sourceTree = "<group>"; };
 		28908D8321C0A6B300391A39 /* SettingsBetter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsBetter.png; sourceTree = "<group>"; };
 		28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessagesIconCrusht.png; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				2838170621B8A11000B3E4FD /* Advertiser.swift */,
 				28CFC6B421C5B3ED00387129 /* Messages.swift */,
 				28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */,
+				288C87CC21F28C25000B5058 /* SchoolCrushes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -771,6 +774,7 @@
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
+				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
 				28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */,
 				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
 				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,

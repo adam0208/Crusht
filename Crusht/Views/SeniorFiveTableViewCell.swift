@@ -23,6 +23,7 @@ class SeniorFiveTextField: UITextField {
 }
 
 class SeniorFiveTableViewCell: UITableViewCell {
+    
 
     let textField: UITextField = {
         let tf = SeniorFiveTextField()
@@ -36,6 +37,7 @@ class SeniorFiveTableViewCell: UITableViewCell {
         
         addSubview(textField)
         textField.fillSuperview()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -94,9 +94,10 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupGradientLayer()
+        //setupGradientLayer()
         fetchCurrentUser()
-        
+        profBttnView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        profPicView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         topStackView.homeButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         //view.backgroundColor = .white
         profBttnView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
@@ -106,6 +107,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         profPicView.selectPhotoButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
+        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         setupLayout()
        
     }
@@ -153,21 +155,21 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         overallStackView.layoutMargins = .init(top: -20, left: 0, bottom: 0, right: 0)
     }
     
-    let gradientLayer = CAGradientLayer()
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        gradientLayer.frame = view.bounds
-    }
-    
-    fileprivate func setupGradientLayer() {
-        let topColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
-        // make sure to user cgColor
-        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
-        gradientLayer.locations = [0, 1]
-        view.layer.addSublayer(gradientLayer)
-        gradientLayer.frame = view.bounds
-    }
+//    let gradientLayer = CAGradientLayer()
+//
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        gradientLayer.frame = view.bounds
+//    }
+//
+//    fileprivate func setupGradientLayer() {
+//        let topColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+//        let bottomColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
+//        // make sure to user cgColor
+//        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+//        gradientLayer.locations = [0, 1]
+//        view.layer.addSublayer(gradientLayer)
+//        gradientLayer.frame = view.bounds
+//    }
     
 }

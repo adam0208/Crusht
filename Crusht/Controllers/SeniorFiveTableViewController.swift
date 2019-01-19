@@ -10,6 +10,29 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
+}
+
+
 class SeniorFiveTableViewController: UITableViewController, UINavigationControllerDelegate {
     
     //let cellId = "cellId123123"
@@ -53,39 +76,28 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         let headerLabel = HeaderLabel()
         
         
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        headerLabel.text = "Date of Post"
-        
         return headerLabel
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 10
+        return crushesArray.count
     }
         
         override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 45
+            return 20
         }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return section == 0 ? 0 : 1
         return 1
     }
     
-    //Need to Change this but whatever for now
     
-    var crush1 = String()
-    var crush2 = String()
-    var crush3 = String()
-    var crush4 = String()
-    var crush5 = String()
-    var comments = String()
-    var timestamp = NSNumber()
+    //let cellId = "cellId1"
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = SeniorFivePostsTableViewCell(style: .default, reuseIdentifier: nil)
-
-        cell.label.text = "\(crush1)\n\(crush2)\n\(crush3)\n\(crush4)\n\(crush5)\n\n\(comments)"
+       let cell = SeniorFivePostsTableViewCell(style: .default, reuseIdentifier: nil)
+        let crushes = crushesArray[indexPath.section]
+        cell.crush = crushes
         
         
 //        switch indexPath.section {
@@ -110,6 +122,10 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
     
     var crushes: Crushes?
     
+    var crushesArray = [Crushes]()
+    
+    var crushDictionary = [String: Crushes]()
+    
     fileprivate func getPosts() {
         let hud = JGProgressHUD(style: .dark)
         Firestore.firestore().collection("senior-fives").getDocuments { (snapshot, err) in
@@ -123,14 +139,24 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let crushes = Crushes(dictionary: userDictionary)
-                self.crush1 = crushes.crush1 ?? "NOT LOADED"
-                self.crush2 = crushes.crush2 ?? "NOT Loaded"
-                self.crush3 = crushes.crush3 ?? "NOT Loaded"
-                self.crush4 = crushes.crush4 ?? "NOT Loaded"
-                self.crush5 = crushes.crush5 ?? "NOT Loaded"
-                self.comments = crushes.comments ?? "NOT Loaded"
+//                self.crush1 = crushes.crush1 ?? "NOT LOADED"
+//                self.crush2 = crushes.crush2 ?? "NOT Loaded"
+//                self.crush3 = crushes.crush3 ?? "NOT Loaded"
+//                self.crush4 = crushes.crush4 ?? "NOT Loaded"
+//                self.crush5 = crushes.crush5 ?? "NOT Loaded"
+//                self.comments = crushes.comments ?? "NOT Loaded"
+                self.crushesArray.append(crushes)
+                //self.crushDictionary = crushesArray
+                self.crushesArray.sort(by: { (message1, message2) -> Bool in
+                    return message1.timestamp?.int32Value > message2.timestamp?.int32Value
+                    //refactor to cut cost
+                })
+                
+                DispatchQueue.main.async(execute: {
+                  
               
                 self.tableView.reloadData()
+                })
                 
                 }
             )}

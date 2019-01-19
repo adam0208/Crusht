@@ -10,28 +10,59 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+//two dimensinoal array not necessary
+
+//struct schoolshit {
+//    var uids: String
+//    var names: String
+//}
+
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
+}
+
 class SchoolCrushController: UITableViewController {
     
     
 //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
-    
-    let cellId = "cellId123123"
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let cellId = "cellId"
 
         fetchCurrentUser()
         
-        tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+        //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
+        tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
     }
     
     fileprivate var user: User?
     let hud = JGProgressHUD(style: .dark)
     
-    var schoolArray = [String]()
+    var schoolArray = [User]()
+
     var users = [User]()
     
     fileprivate func fetchCurrentUser() {
@@ -50,9 +81,8 @@ class SchoolCrushController: UITableViewController {
         }
     }
     
-    var matchUID = [String]()
+    
     var schoolUserDictionary = [String: User]()
-
     
     fileprivate func fetchSchool() {
         
@@ -77,56 +107,64 @@ class SchoolCrushController: UITableViewController {
             
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
-                let user = User(dictionary: userDictionary)
-                self.matchUID.append(user.uid!)
-                print(self.matchUID)
-                //need to figure out how to grab uid
-                //two dimensional array maybe!
-                self.schoolArray.append(user.name!)
-                print(self.schoolArray)
-                let crushStuff = User(dictionary: userDictionary)
-                if let crushPartnerId = crushStuff.crushPartnerId() {
-                    self.schoolUserDictionary[crushPartnerId] = user
-                    self.users = Array(self.schoolUserDictionary.values)
-                }
-                self.tableView.reloadData()
+                let crush = User(dictionary: userDictionary)
                 
+                self.schoolArray.append(crush)
+                
+                
+                print(self.schoolArray)
+//                let crushStuff = User(dictionary: userDictionary)
+//                if let crushPartnerId = crushStuff.crushPartnerId() {
+//                    self.schoolUserDictionary[crushPartnerId] = user
+//                    self.users = Array(self.schoolUserDictionary.values)
+//                }
+                
+             self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
+                    return crush1.name > crush2.name
+                })
+                
+                })
+                DispatchQueue.main.async(execute: {
+                    self.tableView.reloadData()
+                    
+                })
                 }
-            )}
+        
     }
     
     var hasCrushed = Bool()
     
     func hasTappedCrush(cell: UITableViewCell) {
-        //        print("Inside of ViewController now...")
-        
-        // we're going to figure out which name we're clicking on
-        
-        guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
-        
-        let name = schoolArray[indexPathTapped.row]
-            print(name)
-        
-        handleLike()
-        
-//        let contact = twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row]
-//        print(contact)
-        
-        
     
-        //        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+
+        // we're going to figure out which name we're clicking on
+
+        guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
+
         
+        let crush = schoolArray[indexPathTapped.row]
+        
+        matchUID = crush.uid ?? ""
+        
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
         
         
         cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+
+        handleLike()
+        
     }
+    
+    var matchUID = String()
     
     func saveSwipeToFireStore(didLike: Int) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
         
-         let cardUID = matchUID[4]
+        //let crush = schoolArray[IndexPath.row]
+        
+         let cardUID = matchUID
         
         let documentData = [cardUID: didLike]
         
@@ -213,8 +251,12 @@ class SchoolCrushController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        return 1
+//    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50.0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -222,15 +264,18 @@ class SchoolCrushController: UITableViewController {
     }
     
     fileprivate var hasFavorited = false
+    let cellId = "cellId"
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
         
         cellL.link = self
         
-        let name = schoolArray[indexPath.row]
-        
-        cellL.nameText.text = name
+         let crush = schoolArray[indexPath.row]
+        cellL.textLabel?.text = crush.name
+        if let profileImageUrl = crush.imageUrl1 {
+            cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+        }
         
         cellL.starButton.tintColor = hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         

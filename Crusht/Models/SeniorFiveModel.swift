@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Crushes {
+class Crushes: NSObject {
     var crush1: String?
     var crush2: String?
     var crush3: String?

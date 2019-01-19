@@ -145,7 +145,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         collectionView?.keyboardDismissMode = .interactive
      
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleback))
+        
          setupKeyboardObservers()
+    }
+    
+    @objc func handleback() {
+        let messageController = MessageController()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
     }
     
     @objc fileprivate func handleStubTapped() {
@@ -652,54 +660,82 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         sendMessageWithProperties(properties)
     }
     
- fileprivate func sendMessageWithProperties(_ properties: [String: AnyObject])
+    fileprivate func sendMessageWithProperties(_ properties: [String: AnyObject])
         //let ref = Firestore.firestore().collection("messages")
- {
+    {
         //is it there best thing to include the name inside of the message node
         let toId = user!.uid!
         let fromId = Auth.auth().currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
-      var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "timestamp": timestamp as AnyObject]
-    
-    properties.forEach({values[$0] = $1})
-
-            self.inputTextField.text = nil
-            //SOLUTION TO CURRENT ISSUE
-            //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
-            Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                if let err = err {
-                    print("Error making individual convo", err)
-                    return
-                }
-                snapshot?.documents.forEach({ (documentSnapshot) in
-           
-                     let document = documentSnapshot
-                    if document.exists {
-                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        self.inputTextField.text = nil
+        
+        //let ref = Firestore.firestore().collection("messages")
+        
+        
+        print("about to send new message")
+        //SOLUTION TO CURRENT ISSUE
+        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            print("HAHHAHAAHAHAAAHAAHAH")
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            
+            if (snapshot?.isEmpty)! {
+                print("SENDING NEW MESSAGE")
+                Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                    if let err = err {
+                        print("error sending message", err)
+                        return
                     }
-                    else {
-                        Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-                            if let err = err {
-                                print("error sending message", err)
-                                return
-                            }
+                    
+                    Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                        print("TITITITITITITITIITITIT")
+                        if let err = err {
+                            print("Error making individual convo", err)
+                            return
                         }
-                    }
-                })
+                        
+                        snapshot?.documents.forEach({ (documentSnapshot) in
+                            
+                            let document = documentSnapshot
+                            if document.exists {
+                                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                                
+                                self.observeMoreMessages()
+                                self.observeMessages()
+                            }
+                            else{
+                                print("DOC DOESN't exist yet")
+                            }
+                        })
                     })
-    //this is kind of a shit solution to the load messages as they are sent
-    //doesn't work because
-//self.viewDidLoad()
-    
-    //works but it double loads the data
-            DispatchQueue.main.async(execute: {
-                    self.collectionView?.reloadData()
-                    self.observeMessages()
-                    self.observeMoreMessages()
+                }
+            }
+                
+            else {
+                
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let document = documentSnapshot
+                    if document.exists {
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                    }
+                    
                 })
-    
-    
-        }
+            }
+        })
+        messages.removeAll()
+        observeMoreMessages()
+        observeMessages()
+        
+        
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         handleSend()

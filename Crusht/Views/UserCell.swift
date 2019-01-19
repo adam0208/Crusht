@@ -55,10 +55,6 @@ class UserCell: UITableViewCell {
             }
         }
     
-                
-//            }, withCancel: nil)
-//        }
-//    }
     
     override func layoutSubviews() {
         super.layoutSubviews()

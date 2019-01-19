@@ -115,48 +115,83 @@ class LoginViewController: UIViewController {
     }
     
     fileprivate func fetchFacebookUser() {
-    let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
-    req.start({ (connection, result) in
-    switch result {
-    case .failed(let error):
-    print(error)
-    case .success(let graphResponse):
-        if let responseDictionary = graphResponse.dictionaryValue {
-        print(responseDictionary)
-            let firstNameFB = responseDictionary["first_name"] as? String
-            let lastNameFB = responseDictionary["last_name"] as? String
-            let socialIdFB = responseDictionary["id"] as? String
-            let genderFB = responseDictionary["gender"] as? String
-            let pictureUrlFB = responseDictionary["picture"] as? [String:Any]
-            let photoData = pictureUrlFB!["data"] as? [String:Any]
-            let photoUrl = photoData!["url"] as? String
-            let filename = UUID().uuidString
-            print(firstNameFB ?? "", lastNameFB ?? "", socialIdFB ?? "", genderFB ?? "", photoUrl ?? "")
-            let uid = Auth.auth().currentUser?.uid ?? ""
-            let name = "\(firstNameFB ?? "") \(lastNameFB ?? "")"
-            let docData: [String: Any] =
-                ["Full Name": name,
-                 "uid": uid,
-                 "School": "N/A",
-                 "Age": 1,
-                 "Bio": "",
-                 "minSeekingAge": 18,
-                 "maxSeekingAge": 50,
-                 "ImageUrl1": pictureUrlFB as Any]
-            //let userAge = ["Age": age]
-            Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
-                //self.bindableIsRegistering.value = false
-                if let err = err {
-                    print("hahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",err)
-                    return
+        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+        req.start({ (connection, result) in
+            switch result {
+            case .failed(let error):
+                print(error)
+            case .success(let graphResponse):
+                if let responseDictionary = graphResponse.dictionaryValue {
+                    print(responseDictionary)
+                    let firstNameFB = responseDictionary["first_name"] as? String
+                    let lastNameFB = responseDictionary["last_name"] as? String
+                    let socialIdFB = responseDictionary["id"] as? String
+                    let genderFB = responseDictionary["gender"] as? String
+                    let pictureUrlFB = responseDictionary["picture"] as? [String:Any]
+                    let photoData = pictureUrlFB!["data"] as? [String:Any]
+                    let photoUrl = photoData!["url"] as? String
+                    
+                    print(firstNameFB ?? "", lastNameFB ?? "", socialIdFB ?? "", genderFB ?? "", photoUrl ?? "")
+                    
+                    self.fullName = "\(firstNameFB ?? "") \(lastNameFB ?? "")"
+                    self.photoUrl = photoUrl
+                    
+                    //                    let docData: [String: Any] =
+                    //                        ["Full Name": name,
+                    //                         "uid": uid,
+                    //                         "School": "N/A",
+                    //                         "Age": 1,
+                    //                         "Bio": "",
+                    //                         "minSeekingAge": 18,
+                    //                         "maxSeekingAge": 50,
+                    //                         "ImageUrl1": photoUrl as Any]
+                    //let userAge = ["Age": age]
+                    //                    Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
+                    //                        //self.bindableIsRegistering.value = false
+                    //                        if let err = err {
+                    //                            print("hahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",err)
+                    //                            return
+                    //                        }
+                    //                        let profileController = ProfilePageViewController()
+                    //                        self.present(profileController, animated: true)
                 }
-               let profileViewController = ProfilePageViewController()
-                self.present(profileViewController, animated: true)
             }
+            self.saveInfoToFirestore()
+            
+        })
+    }
+    
+    
+    //Need to save image to storage somehow
+    
+    var fullName: String?
+    var school: String?
+    var age: Int?
+    var photoUrl: String?
+    
+    fileprivate func saveInfoToFirestore(){
+        let uid = Auth.auth().currentUser?.uid ?? ""
+        let docData: [String: Any] =
+            ["Full Name": fullName ?? "",
+             "uid": uid,
+             "School": school ?? "",
+             "Age": age ?? 18,
+             "Bio": "",
+             "minSeekingAge": 18,
+             "maxSeekingAge": 50,
+             "ImageUrl1": photoUrl!]
+        //let userAge = ["Age": age]
+        Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
+            
+            if let err = err {
+                print("there was an err",err)
+                return
             }
+            let profileController = ProfilePageViewController()
+            
+            self.present(profileController, animated: true)
         }
-    })
-}
+    }
     
         fileprivate func showHUDWithError(error: Error) {
             registeringHUD.dismiss()

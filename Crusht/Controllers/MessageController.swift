@@ -136,7 +136,7 @@ class MessageController: UITableViewController {
     
     
     func observeMessages() {
-        
+        self.fetchUserAndSetupNavBarTitle()
         guard let uid = Auth.auth().currentUser?.uid else {return}
 
         //Figure out the problem here you genious
@@ -151,7 +151,8 @@ class MessageController: UITableViewController {
                     let userDictionary = documentSnapshot.data()
                     let message = Message(dictionary: userDictionary)
                     self.messages.append(message)
-                    self.fetchUserAndSetupNavBarTitle()
+                    //print(self.messages)
+                    //self.fetchUserAndSetupNavBarTitle()
                     self.messages.sort(by: { (message1, message2) -> Bool in
                         return message1.timestamp?.int32Value > message2.timestamp?.int32Value
                     })
