@@ -76,7 +76,9 @@ class SchoolCrushController: UITableViewController {
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             
-            //self.fetchSwipes()
+            print(self.user?.phoneNumber ?? "Fuck you")
+            
+            self.fetchSwipes()
             self.fetchSchool()
         }
     }

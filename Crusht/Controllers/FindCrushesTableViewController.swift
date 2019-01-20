@@ -15,12 +15,30 @@ class FindCrushesTableViewController: UITableViewController {
 
     let cellId = "cellId123123"
     
-    //https://www.letsbuildthatapp.com/course_video?id=1852
-    //https://www.letsbuildthatapp.com/course_video?id=1502
+    var users = [User]()
+    
+    fileprivate var user: User?
+    
+    fileprivate func fetchCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            print(self.user?.phoneNumber ?? "Fuck you")
+            self.fetchSwipes()
+            
+        }
+    }
+    
+
     // you should use Custom Delegation properly instead
     func someMethodIWantToCall(cell: UITableViewCell) {
-        //        print("Inside of ViewController now...")
-        
+
         // we're going to figure out which name we're clicking on
         
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
@@ -31,20 +49,17 @@ class FindCrushesTableViewController: UITableViewController {
         let hasFavorited = contact.hasFavorited
         twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         
-        //        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+        phoneID = contact.contact.phoneNumbers.first?.value.stringValue ?? ""
         
         cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+        
+        handleLike()
     }
+    
+    var phoneID: String?
     
     var twoDimensionalArray = [ExpandableNames]()
     
-    
-    //    var twoDimensionalArray = [
-    //        ExpandableNames(isExpanded: true, names: ["Amy", "Bill", "Zack", "Steve", "Jack", "Jill", "Mary"].map{ FavoritableContact(name: $0, hasFavorited: false) }),
-    //        ExpandableNames(isExpanded: true, names: ["Carl", "Chris", "Christina", "Cameron"].map{ FavoritableContact(name: $0, hasFavorited: false) }),
-    //        ExpandableNames(isExpanded: true, names: ["David", "Dan"].map{ FavoritableContact(name: $0, hasFavorited: false) }),
-    //        ExpandableNames(isExpanded: true, names: [FavoritableContact(name: "Patrick", hasFavorited: false)]),
-    //    ]
     
     fileprivate func fetchContacts() {
         print("Attempting to fetch contacts today..")
@@ -93,6 +108,103 @@ class FindCrushesTableViewController: UITableViewController {
     
     var showIndexPaths = false
     
+    func saveSwipeToFireStore(didLike: Int) {
+ 
+        let phoneNumber = user?.phoneNumber ?? ""
+        
+        //let crush = schoolArray[IndexPath.row]
+        
+        let cardUID = phoneID ?? ""
+        
+        let documentData = [cardUID: didLike]
+        
+        Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
+            if let err = err {
+                print("Failed to fetch swipe doc", err)
+                return
+            }
+            if snapshot?.exists == true {
+                Firestore.firestore().collection("phone-swipes").document(phoneNumber).updateData(documentData) { (err) in
+                    if let err = err {
+                        print("failed to save swipe", err)
+                        return
+                    }
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
+                    print("Success")
+                }
+            } else {
+                Firestore.firestore().collection("phone-swipes").document(phoneNumber).setData(documentData) { (err) in
+                    if let err = err {
+                        print("Error", err)
+                        return
+                    }
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
+                    print("Success saved swipe SETDATA")
+                }
+            }
+        }
+    }
+    
+    fileprivate func checkIfMatchExists(cardUID: String) {
+        
+        print("Match detection")
+        print(cardUID)
+        
+        Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
+            if let err = err {
+                print("Failed to fetch doc for card user", err)
+                return
+            }
+            guard let data = snapshot?.data() else {return}
+            print(data)
+            
+            //guard let uid = Auth.auth().currentUser?.uid else {return}
+            let phoneNumber = self.user?.phoneNumber ?? ""
+            let hasMatched = data[phoneNumber] as? Int == 1
+            if hasMatched {
+                print("we have a match!")
+                //self.presentMatchView(cardUID: cardUID)
+            }
+        }
+    }
+    
+    func presentMatchView(cardUID: String) {
+        let matchView = MatchView()
+        matchView.cardUID = cardUID
+        matchView.currentUser = self.user
+        self.navigationController?.view.addSubview(matchView)
+        matchView.bringSubviewToFront(view)
+        matchView.fillSuperview()
+    }
+    
+    var swipes = [String: Int]()
+    
+    fileprivate func fetchSwipes() {
+       let phoneNumber = user?.phoneNumber ?? ""
+        
+        Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch swipe info", err)
+                return
+            }
+            print("phone-Swipes", snapshot?.data() ?? "")
+            guard let data = snapshot?.data() as? [String: Int] else {return}
+            self.swipes = data
+            // self.fetchUsersFromFirestore()
+            //self.fetchUsersOnLoad()
+        }
+    }
+    
+    func handleLike() {
+        
+        saveSwipeToFireStore(didLike: 1)
+        
+    }
+    
     @objc func handleShowIndexPath() {
         
         print("Attemping reload animation of indexPaths...")
@@ -124,11 +236,10 @@ class FindCrushesTableViewController: UITableViewController {
         super.viewDidLoad()
         fetchCurrentUser()
         fetchContacts()
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))
-        
-        navigationItem.title = "Find Crushes"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Contacts"
+    
         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
         //UINavigationItem.setLeftBarButton(back)
@@ -137,62 +248,7 @@ class FindCrushesTableViewController: UITableViewController {
         
     }
     
-    fileprivate var user: User?
-    
-    fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            
-            guard let dictionary = snapshot?.data() else {return}
-            self.user = User(dictionary: dictionary)
-            
-            //self.fetchSwipes()
-            self.fetchSchool()
-        }
-    }
-    
     let hud = JGProgressHUD(style: .dark)
-    
-    var schoolArray = [String]()
-    
-    fileprivate func fetchSchool() {
-        
-        print("Fetching School Stuff ahahahahahah")
-        
-       // guard let uid = Auth.auth().currentUser?.uid else {return}
-        //let school = Firestore.firestore().collection("users").document(uid).
-        
-        let school = user?.school ?? "I suck a lot"
-        
-        print(school)
-        
-        //Firestore.firestore().collection("users").document(uid).
-        
-        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school)
-        
-        query.getDocuments { (snapshot, err) in
-            if let err = err {
-                print("failed to fetch user", err)
-                self.hud.textLabel.text = "Failed To Fetch user"
-                self.hud.show(in: self.view)
-                self.hud.dismiss(afterDelay: 2)
-                return
-            }
-            
-            snapshot?.documents.forEach({ (documentSnapshot) in
-                let userDictionary = documentSnapshot.data()
-                let user = User(dictionary: userDictionary)
-                
-                self.schoolArray.append(user.name!)
-                print(self.schoolArray)
-                
-            }
-        )}
-    }
 
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
@@ -247,30 +303,30 @@ class FindCrushesTableViewController: UITableViewController {
         present(navControlla, animated: true)
     }
     
-    @objc func handleSchoolExpandClose(button: UIButton) {
-        
-        let section = button.tag
-        
-        let names = schoolArray.count
-        
-        // we'll try to close the section first by deleting the rows
-        var indexPaths = [IndexPath]()
-        for row in schoolArray[section].description.indices{
-            print(0, row)
-            let indexPath = IndexPath(row: names, section: section)
-            indexPaths.append(indexPath)
-        }
-        
-        button.setTitle(expanded ? "School" : "School", for: .normal)
-        
-        if expanded {
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        } else {
-            tableView.beginUpdates()
-            tableView.insertRows(at: indexPaths, with: .fade)
-            tableView.endUpdates()
-        }
-    }
+//    @objc func handleSchoolExpandClose(button: UIButton) {
+//
+//        let section = button.tag
+//
+//        let names = schoolArray.count
+//
+//        // we'll try to close the section first by deleting the rows
+//        var indexPaths = [IndexPath]()
+//        for row in schoolArray[section].description.indices{
+//            print(0, row)
+//            let indexPath = IndexPath(row: names, section: section)
+//            indexPaths.append(indexPath)
+//        }
+//
+//        button.setTitle(expanded ? "School" : "School", for: .normal)
+//
+//        if expanded {
+//            tableView.deleteRows(at: indexPaths, with: .fade)
+//        } else {
+//            tableView.beginUpdates()
+//            tableView.insertRows(at: indexPaths, with: .fade)
+//            tableView.endUpdates()
+//        }
+//    }
     
     @objc func handleFBExpandClose(button: UIButton) {
         print("expanding")

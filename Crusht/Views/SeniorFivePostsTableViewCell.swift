@@ -58,14 +58,22 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
         return tf
     } ()
     
+    let likeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Like", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+        //button.addTarget(self, action: #selector(<#T##@objc method#>), for: .touchUpInside)
+        return button
+    }()
 
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        addSubview(likeButton)
         let stack = UIStackView(arrangedSubviews: [timeLabel, label])
         addSubview(stack)
        stack.axis = .vertical
+        likeButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         
        stack.fillSuperview()
         
