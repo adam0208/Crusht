@@ -59,7 +59,6 @@
 		28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857CC721B98F9200A654A0 /* top_right_messages@2x.png */; };
 		28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCA21B9A91500A654A0 /* LoginViewController.swift */; };
 		28857CCD21B9A93500A654A0 /* EnterInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCC21B9A93500A654A0 /* EnterInfoViewController.swift */; };
-		28857CCF21B9A9AF00A654A0 /* PhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCE21B9A9AF00A654A0 /* PhoneViewController.swift */; };
 		28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CD021B9A9C200A654A0 /* VerifyViewController.swift */; };
 		28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDB21B9B82700A654A0 /* CustomTextField.swift */; };
 		28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */; };
@@ -89,6 +88,8 @@
 		28CFC6B521C5B3ED00387129 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Messages.swift */; };
 		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
 		28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */; };
+		28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */; };
+		28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */; };
 		28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */; };
 		28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */; };
 		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
@@ -175,7 +176,6 @@
 		28857CC721B98F9200A654A0 /* top_right_messages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_right_messages@2x.png"; sourceTree = "<group>"; };
 		28857CCA21B9A91500A654A0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		28857CCC21B9A93500A654A0 /* EnterInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterInfoViewController.swift; sourceTree = "<group>"; };
-		28857CCE21B9A9AF00A654A0 /* PhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewController.swift; sourceTree = "<group>"; };
 		28857CD021B9A9C200A654A0 /* VerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyViewController.swift; sourceTree = "<group>"; };
 		28857CDB21B9B82700A654A0 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
@@ -205,6 +205,9 @@
 		28CFC6B421C5B3ED00387129 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload_image_icon.png; sourceTree = "<group>"; };
+		28F1121921F522A900A1CD73 /* Crusht.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crusht.entitlements; sourceTree = "<group>"; };
+		28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
+		28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterMorePhoneInfoViewController.swift; sourceTree = "<group>"; };
 		28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFivePostsTableViewCell.swift; sourceTree = "<group>"; };
 		28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveModel.swift; sourceTree = "<group>"; };
 		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
@@ -274,6 +277,7 @@
 		283816C521B8925C00B3E4FD /* Crusht */ = {
 			isa = PBXGroup;
 			children = (
+				28F1121921F522A900A1CD73 /* Crusht.entitlements */,
 				2838170D21B8A24B00B3E4FD /* Models */,
 				283816F721B8929100B3E4FD /* Controllers */,
 				283816F621B8927D00B3E4FD /* Extensions */,
@@ -393,7 +397,6 @@
 				2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */,
 				28857CCA21B9A91500A654A0 /* LoginViewController.swift */,
 				28857CCC21B9A93500A654A0 /* EnterInfoViewController.swift */,
-				28857CCE21B9A9AF00A654A0 /* PhoneViewController.swift */,
 				28857CD021B9A9C200A654A0 /* VerifyViewController.swift */,
 				28857CDF21B9B95900A654A0 /* Bindable.swift */,
 				28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */,
@@ -404,6 +407,8 @@
 				28CFC6B621C5B46A00387129 /* ChatLogController.swift */,
 				28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */,
 				28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */,
+				28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */,
+				28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -533,6 +538,11 @@
 				TargetAttributes = {
 					283816C221B8925C00B3E4FD = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					283816D621B8925F00B3E4FD = {
 						CreatedOnToolsVersion = 10.1;
@@ -766,10 +776,12 @@
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
 				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
+				28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
 				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
 				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
+				28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */,
 				28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */,
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
@@ -784,7 +796,6 @@
 				28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */,
 				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
 				28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */,
-				28857CCF21B9A9AF00A654A0 /* PhoneViewController.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
@@ -978,6 +989,7 @@
 			baseConfigurationReference = F1BF50EB51F6D239872AFDF1 /* Pods-Crusht.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Crusht/Crusht.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				INFOPLIST_FILE = Crusht/Info.plist;
@@ -997,6 +1009,7 @@
 			baseConfigurationReference = A1A0ED2C5A62100BB45399E9 /* Pods-Crusht.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Crusht/Crusht.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				INFOPLIST_FILE = Crusht/Info.plist;

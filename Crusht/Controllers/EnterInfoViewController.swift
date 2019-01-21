@@ -241,6 +241,8 @@ class EnterInfoViewController: UIViewController {
         verticalStackView
         ])
     
+    
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if self.traitCollection.verticalSizeClass == .compact {
             overallStackView.axis = .horizontal

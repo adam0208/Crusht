@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FacebookCore
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,17 +24,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         
-        
         let db = Firestore.firestore()
         let settings = db.settings
         settings.areTimestampsInSnapshotsEnabled = true
         db.settings = settings
         
+        if #available(iOS 12, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {(granted, error) in})
+            application.registerForRemoteNotifications()
+        }
+        else {
+            let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert,], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(notificationSettings)
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+        
+        application.registerForRemoteNotifications()
+        
         window = UIWindow()
         window?.makeKeyAndVisible()
         //window?.rootViewController = ProfilePageViewController()
         
-        window?.rootViewController = ProfilePageViewController()
+        window?.rootViewController = PhoneNumberViewController()
         
         return true
     }

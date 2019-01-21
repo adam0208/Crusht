@@ -1,16 +1,16 @@
 //
-//  VerifyViewController.swift
+//  PhoneNumberViewController.swift
 //  Crusht
 //
-//  Created by William Kelly on 12/6/18.
-//  Copyright © 2018 William Kelly. All rights reserved.
+//  Created by William Kelly on 1/20/19.
+//  Copyright © 2019 William Kelly. All rights reserved.
 //
 
 import UIKit
 import Firebase
 import UserNotifications
 
-class VerifyNumberText: UITextField {
+class PhoneNumberText: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.insetBy(dx: 24, dy: 0)
     }
@@ -24,27 +24,24 @@ class VerifyNumberText: UITextField {
     }
 }
 
+class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
 
-class VerifyViewController: UIViewController {
-    
-    var phoneNumber: String!
-    
-    let verificationCodeText: UITextField = {
-        let tf = VerifyNumberText()
+    let phoneNumberTextField: UITextField = {
+        let tf = PhoneNumberText()
         tf.keyboardType = UIKeyboardType.phonePad
-        tf.placeholder = "XXXXXX"
+        tf.placeholder = "+19177449835"
         tf.backgroundColor = .white
         tf.layer.cornerRadius = 22
-        tf.font = UIFont.systemFont(ofSize: 35)
+        tf.font = UIFont.systemFont(ofSize: 30)
         tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        
+       
         return tf
     }()
     
-    let verifyButton: UIButton = {
+    let sendButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Verify", for: .normal)
+        button.setTitle("Get Verification Code", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 0, alpha: 1)
@@ -53,17 +50,15 @@ class VerifyViewController: UIViewController {
         
         button.layer.cornerRadius = 22
         
-        button.addTarget(self, action: #selector(handleVerify), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleEnterPhone), for: .touchUpInside)
         return button
     }()
-
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupGradientLayer()
         
-        let stack = UIStackView(arrangedSubviews: [verificationCodeText, verifyButton])
+        let stack = UIStackView(arrangedSubviews: [phoneNumberTextField, sendButton])
         view.addSubview(stack)
         
         stack.axis = .vertical
@@ -73,39 +68,39 @@ class VerifyViewController: UIViewController {
         
         stack.spacing = 20
         
+        //view.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        // Do any additional setup after loading the view.
     }
     
-
-    
-    @objc fileprivate func handleVerify() {
-        let defaults = UserDefaults.standard
-        let credential: PhoneAuthCredential = PhoneAuthProvider.provider().credential(withVerificationID: defaults.string(forKey: "authVerificationID")!, verificationCode: verificationCodeText.text!)
-        Auth.auth().signInAndRetrieveData(with: credential) { (user, error) in
-            if error != nil {
-                print("error: \(String(describing: error?.localizedDescription))")
-            } else {
-                guard let uid = Auth.auth().currentUser?.uid else {return}
-                print("signed in")
-                let docData: [String: Any] =
-                    ["Full Name": "",
-                     "uid": uid,
-                    "PhoneNumber": self.phoneNumber ?? "",
-                    "School": "",
-                    "Age": "",
-                     "Bio": "",
-                     "minSeekingAge": 18,
-                     "maxSeekingAge": 50,
-                     "ImageUrl1": ""
-                     ]
-                   
-                Firestore.firestore().collection("users").addDocument(data: docData)
-                
-                let enterPhoneInfo = EnterMorePhoneInfoViewController()
-                self.present(enterPhoneInfo, animated: true)
-                
+    //@IBAction func enterPhone(_ sender: Any)
+    @objc fileprivate func handleEnterPhone() {
+        
+        let alert = UIAlertController(title: "Phone Number", message: "Is this your phone number? \n \(phoneNumberTextField.text!)", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Yes", style: .default){(UIAlertAction) in
+            PhoneAuthProvider.provider().verifyPhoneNumber(self.phoneNumberTextField.text!, uiDelegate: nil) { (verificationID, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    //show alert
+                    return
+                }  else{
+                    let defaults = UserDefaults.standard
+                    defaults.set(verificationID, forKey: "authVerificationID")
+                    
+                    self.goToVerify()
+                }
             }
         }
-        
+        let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        alert.addAction(action)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+        return
+    }
+    
+    fileprivate func goToVerify() {
+        let verifyController = VerifyViewController()
+        verifyController.phoneNumber = phoneNumberTextField.text
+        present(verifyController, animated: true)
     }
     
     let gradientLayer = CAGradientLayer()
@@ -128,6 +123,3 @@ class VerifyViewController: UIViewController {
     }
     
 }
-
-
-

@@ -164,11 +164,32 @@ class FindCrushesTableViewController: UITableViewController {
             
             //guard let uid = Auth.auth().currentUser?.uid else {return}
             let phoneNumber = self.user?.phoneNumber ?? ""
+            
             let hasMatched = data[phoneNumber] as? Int == 1
             if hasMatched {
                 print("we have a match!")
-                //self.presentMatchView(cardUID: cardUID)
+                self.getCardUID(phoneNumber: cardUID)
             }
+        }
+    }
+    
+   
+    fileprivate func getCardUID(phoneNumber: String) {
+        let phone = phoneNumber
+        Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
+            
+            if let err = err {
+                print("Major fuck up", err)
+            }
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let user = User(dictionary: userDictionary)
+                
+                let cardUID = user.uid!
+                
+                self.presentMatchView(cardUID: cardUID)
+                
+            })
         }
     }
     
@@ -393,17 +414,17 @@ class FindCrushesTableViewController: UITableViewController {
         return twoDimensionalArray[section].names.count
     }
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        let view:UIView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: self.view.bounds.size.width, height: 10))
-        view.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
-        
-        return view
-    }
+//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//
+//        let view:UIView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: self.view.bounds.size.width, height: 10))
+//        view.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
+//
+//        return view
+//    }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 10.0
-    }
+//    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 10.0
+//    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ContactCell
