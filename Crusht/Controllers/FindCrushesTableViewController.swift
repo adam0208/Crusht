@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import Contacts
 import JGProgressHUD
+import Alamofire
 
 class FindCrushesTableViewController: UITableViewController {
 
@@ -30,7 +31,7 @@ class FindCrushesTableViewController: UITableViewController {
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             print(self.user?.phoneNumber ?? "Fuck you")
-            self.fetchSwipes()
+            //self.fetchSwipes()
             
         }
     }
@@ -55,6 +56,28 @@ class FindCrushesTableViewController: UITableViewController {
         
         handleLike()
     }
+    
+    //func sendMessageToNewUser() {
+    
+//        var swiftRequest = SwiftRequest();
+//        
+//        var data = [
+//            "To" : "+15555555555",
+//            "From" : "+15555556666",
+//            "Body" : "Hello World"
+//        ];
+//        
+//        swiftRequest.post("https://api.twilio.com/2010-04-01/Accounts/[YOUR_ACCOUNT_SID]/Messages",
+//                          auth: ["username" : "[YOUR_ACCOUNT_SID]", "password" : "YOUR_AUTH_TOKEN"]
+//            data: data,
+//            callback: {err, response, body in
+//                if err == nil {
+//                    println("Success: \(response)")
+//                } else {
+//                    println("Error: \(err)")
+//                }
+//        });
+//}
     
     var phoneID: String?
     
@@ -113,8 +136,18 @@ class FindCrushesTableViewController: UITableViewController {
         let phoneNumber = user?.phoneNumber ?? ""
         
         //let crush = schoolArray[IndexPath.row]
+        let phoneString = phoneID ?? ""
         
-        let cardUID = phoneID ?? ""
+        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        
+        print(phoneNoDash)
+
+        //LOT OF TRIMMING AND STRIPPING
+        
+        let cardUID = phoneNoDash
         
         let documentData = [cardUID: didLike]
         
@@ -255,6 +288,7 @@ class FindCrushesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         fetchCurrentUser()
         fetchContacts()
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))

@@ -17,7 +17,7 @@ extension ProfilePageViewController: UIImagePickerControllerDelegate, UINavigati
         profPicView.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         dismiss(animated: true)
     }
-  
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true)
     }
@@ -25,7 +25,7 @@ extension ProfilePageViewController: UIImagePickerControllerDelegate, UINavigati
 }
 
 class ProfilePageViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
-
+    
     func didFinishLoggingIn() {
         fetchCurrentUser()
     }
@@ -33,7 +33,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     let bottomStackView = ProfPageBottomStackView()
     let topStackView = ProfPageTopStackView()
     let profPicView = ProfPageMiddleView()
-    let profBttnView = ProfPageMidButtonView()
+    //let profBttnView = ProfPageMidButtonView()
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
         let locationViewController = LocationMatchViewController()
@@ -41,15 +41,14 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     }
     
     @objc fileprivate func handleFindCrushesTapped() {
-        let crushController = FindCrushesTableViewController()
-        let navController = UINavigationController(rootViewController: crushController)
-        present(navController, animated: true)
+        let transController = TransitionCrushesController()
+        present(transController, animated: true)
     }
     
     @objc func handleSelectPhoto () {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
-       present(imagePickerController, animated: true)
+        present(imagePickerController, animated: true)
     }
     
     @objc func handleSettings() {
@@ -64,7 +63,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         let seniorController = SeniorFiveTableViewController()
         let navController = UINavigationController(rootViewController: seniorController)
         present(navController, animated: true)
-
+        
     }
     
     @objc func handleMessages() {
@@ -96,20 +95,22 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         super.viewDidLoad()
         //setupGradientLayer()
         fetchCurrentUser()
-        profBttnView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        
+        profPicView.layer.cornerRadius = 100
+
         profPicView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         topStackView.homeButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         //view.backgroundColor = .white
-        profBttnView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
-        profBttnView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
-//        topStackView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
-//        bottomStackView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        profPicView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
+        profPicView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
+        //        topStackView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
+        //        bottomStackView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         profPicView.selectPhotoButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         setupLayout()
-       
+        
     }
     
     fileprivate func fetchCurrentUser() {
@@ -145,8 +146,8 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     fileprivate func setupLayout () {
         
-        let overallStackView = UIStackView(arrangedSubviews: [tippyTop, topStackView, profPicView, profBttnView, bottomStackView])
-         view.addSubview(overallStackView)
+        let overallStackView = UIStackView(arrangedSubviews: [tippyTop, topStackView, profPicView, bottomStackView])
+        view.addSubview(overallStackView)
         
         overallStackView.axis = .vertical
         
@@ -155,21 +156,21 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         overallStackView.layoutMargins = .init(top: -20, left: 0, bottom: 0, right: 0)
     }
     
-//    let gradientLayer = CAGradientLayer()
-//
-//    override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-//        gradientLayer.frame = view.bounds
-//    }
-//
-//    fileprivate func setupGradientLayer() {
-//        let topColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
-//        let bottomColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
-//        // make sure to user cgColor
-//        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
-//        gradientLayer.locations = [0, 1]
-//        view.layer.addSublayer(gradientLayer)
-//        gradientLayer.frame = view.bounds
-//    }
+    //    let gradientLayer = CAGradientLayer()
+    //
+    //    override func viewWillLayoutSubviews() {
+    //        super.viewWillLayoutSubviews()
+    //        gradientLayer.frame = view.bounds
+    //    }
+    //
+    //    fileprivate func setupGradientLayer() {
+    //        let topColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+    //        let bottomColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
+    //        // make sure to user cgColor
+    //        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+    //        gradientLayer.locations = [0, 1]
+    //        view.layer.addSublayer(gradientLayer)
+    //        gradientLayer.frame = view.bounds
+    //    }
     
 }

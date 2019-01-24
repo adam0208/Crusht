@@ -68,8 +68,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         
         stack.spacing = 20
         
-        //view.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        // Do any additional setup after loading the view.
+
     }
     
     //@IBAction func enterPhone(_ sender: Any)
@@ -100,6 +99,8 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
     fileprivate func goToVerify() {
         let verifyController = VerifyViewController()
         verifyController.phoneNumber = phoneNumberTextField.text
+        let registerViewModel = RegistrationViewModel()
+        registerViewModel.phone = phoneNumberTextField.text
         present(verifyController, animated: true)
     }
     

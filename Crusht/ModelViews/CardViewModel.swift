@@ -17,6 +17,10 @@ class CardViewModel {
     let imageUrls: [String]
     let attributedString: NSAttributedString
     let textAlignment: NSTextAlignment
+//    let name: String
+//    let phoneNumber: String
+//    let school: String
+     
     
     init(uid: String, imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
         self.uid = uid

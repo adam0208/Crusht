@@ -20,6 +20,8 @@ struct User: ProducesCardViewModel {
     var bio: String?
     var phoneNumber: String?
     
+    var crushScore: Int?
+    
     
     var minSeekingAge: Int?
     var maxSeekingAge: Int?
@@ -45,6 +47,7 @@ struct User: ProducesCardViewModel {
         self.toId = dictionary["toCrush"] as? String ?? ""
         self.fromId = dictionary["fromCrush"] as? String ?? ""
         self.phoneNumber = dictionary["PhoneNumber"] as? String ?? ""
+        self.crushScore = dictionary["CrushScore"] as? Int
         
     
     }

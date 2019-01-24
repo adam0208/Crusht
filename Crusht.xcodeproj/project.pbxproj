@@ -87,6 +87,7 @@
 		28CFC6B321C5B30600387129 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B221C5B30600387129 /* NewMessageController.swift */; };
 		28CFC6B521C5B3ED00387129 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Messages.swift */; };
 		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
+		28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */; };
 		28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */; };
 		28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */; };
 		28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */; };
@@ -204,6 +205,7 @@
 		28CFC6B221C5B30600387129 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		28CFC6B421C5B3ED00387129 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
+		28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionCrushesController.swift; sourceTree = "<group>"; };
 		28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload_image_icon.png; sourceTree = "<group>"; };
 		28F1121921F522A900A1CD73 /* Crusht.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crusht.entitlements; sourceTree = "<group>"; };
 		28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 				28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */,
 				28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */,
 				28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */,
+				28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				135C14FC3E7469E297AF6393 /* [CP] Embed Pods Frameworks */,
+				659BD9C46E47344FD8398EEC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -644,6 +648,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
@@ -667,6 +672,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
@@ -711,6 +717,56 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		659BD9C46E47344FD8398EEC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh",
+				"${PODS_ROOT}/TwilioSDK/Resources/disconnect.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_0.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_1.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_2.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_3.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_4.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_5.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_6.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_7.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_8.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_9.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_hash.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_star.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/incoming.wav",
+				"${PODS_ROOT}/TwilioSDK/Resources/outgoing.wav",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/disconnect.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_0.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_1.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_2.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_3.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_4.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_5.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_6.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_7.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_8.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_9.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_hash.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_star.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/incoming.wav",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/outgoing.wav",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */ = {
@@ -787,6 +843,7 @@
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
+				28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */,
 				28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */,
 				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
 				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,

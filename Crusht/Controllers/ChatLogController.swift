@@ -148,6 +148,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleback))
         
          setupKeyboardObservers()
+        
+        view.bringSubviewToFront(inputContainerView)
+        
     }
     
     @objc func handleback() {
@@ -229,7 +232,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         buttonStackView.bottomAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
 //        buttonStackView.isLayoutMarginsRelativeArrangement = true
 //        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
-        
+        containerView.bringSubviewToFront(buttonStackView)
         return containerView
         
     }()

@@ -41,3 +41,12 @@ class Message: NSObject {
     }
     
 }
+
+class CrushScore: NSObject {
+    var crushScore: Int?
+    init(dictionary: [String: Any]) {
+        self.crushScore = dictionary["CrushScore"] as? Int
+    }
+    
+}
+

@@ -75,7 +75,7 @@ class VerifyViewController: UIViewController {
         
     }
     
-
+    
     
     @objc fileprivate func handleVerify() {
         let defaults = UserDefaults.standard
@@ -97,10 +97,11 @@ class VerifyViewController: UIViewController {
                      "maxSeekingAge": 50,
                      "ImageUrl1": ""
                      ]
-                   
-                Firestore.firestore().collection("users").addDocument(data: docData)
+               
+                Firestore.firestore().collection("users").document(uid).setData(docData)
                 
                 let enterPhoneInfo = EnterMorePhoneInfoViewController()
+              
                 self.present(enterPhoneInfo, animated: true)
                 
             }
@@ -113,7 +114,6 @@ class VerifyViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         gradientLayer.frame = view.bounds
-        
     }
     
     fileprivate func setupGradientLayer() {

@@ -12,7 +12,55 @@ import SDWebImage
 import JGProgressHUD
 
 class LocationMatchViewController: UIViewController, CardViewDelegate {
- 
+    
+    fileprivate var crushScore: CrushScore?
+    
+    fileprivate func addCrushScore() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        
+        guard let cardUID = topCardView?.cardViewModel.uid  else {
+            return
+        }
+        
+        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            if snapshot?.exists == true {
+                guard let dictionary = snapshot?.data() else {return}
+                self.crushScore = CrushScore(dictionary: dictionary)
+                let docData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 1]
+                Firestore.firestore().collection("score").document(uid).setData(docData)
+            }
+            else {
+                let docData: [String: Any] = ["CrushScore": 1]
+                Firestore.firestore().collection("score").document(uid).setData(docData)
+            }
+        }
+        
+        Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            if snapshot?.exists == true {
+                guard let dictionary = snapshot?.data() else {return}
+                self.crushScore = CrushScore(dictionary: dictionary)
+                let cardDocData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 2]
+                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
+            }
+            else {
+                let cardDocData: [String: Any] = ["CrushScore": 1]
+                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
+            }
+        }
+        
+    }
+    
     let bottomStackView = LocationMatchBottomButtonsStackView()
     let topStackView = LocationMatchTopStackView()
     let cardDeckView = UIView()
@@ -33,11 +81,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
         //fetchUsersFromFirestore()
         //fetchUsersOnLoad()
         fetchUsersOnLoad()
-
+        
         
     }
     
- 
+    
     
     fileprivate var user: User?
     
@@ -71,7 +119,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
             print("Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
-           // self.fetchUsersFromFirestore()
+            // self.fetchUsersFromFirestore()
             self.fetchUsersOnLoad()
         }
     }
@@ -83,7 +131,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
     
     fileprivate func setupFirestoreUserCards() {
         
-            cardViewModels.forEach { (cardVM) in
+        cardViewModels.forEach { (cardVM) in
             let cardView = CardView(frame: .zero)
             
             cardView.cardViewModel = cardVM
@@ -96,7 +144,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
     var lastFetchedUser: User?
     let hud = JGProgressHUD(style: .dark)
     
-     func fetchUsersFromFirestore() {
+    func fetchUsersFromFirestore() {
         hud.textLabel.text = "Fetching Users, hold tight :)"
         hud.show(in: view)
         hud.dismiss(afterDelay: 1)
@@ -123,7 +171,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
-               // if user.uid != Auth.auth().currentUser?.uid {
+                // if user.uid != Auth.auth().currentUser?.uid {
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                 let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                 if isNotCurrentUser && hasNotSwipedBefore  {
@@ -136,7 +184,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
                         self.topCardView = cardView
                     }
                 }
-               
+                
             })
             
         }
@@ -147,6 +195,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
     @objc func handleLike() {
         
         saveSwipeToFireStore(didLike: 1)
+        
+        addCrushScore()
         
         performSwipeAnimation(translation: 700, angle: 15)
         
@@ -192,7 +242,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
                 }
             }
         }
-     
+        
     }
     
     fileprivate func checkIfMatchExists(cardUID: String) {
@@ -214,7 +264,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
                 self.presentMatchView(cardUID: cardUID)
             }
         }
-    
+        
     }
     
     fileprivate func presentMatchView(cardUID: String) {
@@ -269,13 +319,13 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
         
         cardDeckView.addSubview(cardView)
         cardDeckView.sendSubviewToBack(cardView)
-
+        
         cardView.fillSuperview()
         return cardView
     }
     
     func didTapMoreInfo(cardViewModel: CardViewModel) {
-       let userDetailsController = UserDetailsController()
+        let userDetailsController = UserDetailsController()
         //userDetailsController.view.backgroundColor = .purple
         userDetailsController.cardViewModel = cardViewModel
         present(userDetailsController, animated: true)
@@ -310,6 +360,5 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
         overallStackView.bringSubviewToFront(cardDeckView)
     }
     
-
+    
 }
-

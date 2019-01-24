@@ -63,9 +63,23 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    let phoneLoginBttn: UIButton = {
+        
+        let button = UIButton(type: .system)
+        button.setTitle("Log in with Phone", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 100)
+        button.layer.cornerRadius = 22
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+        return button
+    }()
+    
     @objc func handleLogin () {
-        let enterInfoViewController = EnterInfoViewController()
-        present(enterInfoViewController, animated: true)
+        let phoneNumberViewController = PhoneNumberViewController()
+        navigationController?.pushViewController(phoneNumberViewController, animated: true)
 }
     let registrationViewModel = RegistrationViewModel()
     let registeringHUD = JGProgressHUD(style: .dark)
@@ -232,7 +246,7 @@ class LoginViewController: UIViewController {
         logoImage.image = #imageLiteral(resourceName: "CrushTLogoIcon")
         logoImage.contentMode = .scaleAspectFit
         
-        let overallStackView = UIStackView(arrangedSubviews: [logoImage, UIView(), Text, UIView(), FBLoginBttn, UIView(), LoginBttn])
+        let overallStackView = UIStackView(arrangedSubviews: [logoImage, UIView(), Text, UIView(), FBLoginBttn, UIView(), phoneLoginBttn])
         overallStackView.axis = .vertical
         view.addSubview(overallStackView)
         
@@ -255,8 +269,8 @@ class LoginViewController: UIViewController {
     
     fileprivate func setupGradientLayer() {
         
-        let topColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
+        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
         // make sure to user cgColor
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]

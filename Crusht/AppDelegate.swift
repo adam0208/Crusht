@@ -43,9 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow()
         window?.makeKeyAndVisible()
-        //window?.rootViewController = ProfilePageViewController()
+        window?.rootViewController = ProfilePageViewController()
         
-        window?.rootViewController = PhoneNumberViewController()
+        //window?.rootViewController = LoginViewController()
         
         return true
     }

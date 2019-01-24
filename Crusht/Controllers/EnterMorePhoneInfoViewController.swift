@@ -10,7 +10,41 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+extension EnterMorePhoneInfoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+        registrationViewModel.checkFormValidity()
+        registrationViewModel.bindableImage.value = image
+        dismiss(animated: true, completion: nil)
+    }
+}
+
 class EnterMorePhoneInfoViewController: UIViewController {
+    
+    var delegate: LoginControllerDelegate?
+    
+    let selectPhotoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Select Photo", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .heavy)
+        button.backgroundColor = .white
+        button.setTitleColor(.black, for: .normal)
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
+        button.imageView?.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    @objc func handleSelectPhoto() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true)
+    }
+    
+    lazy var selectPhotoButtonWidthAnchor = selectPhotoButton.widthAnchor.constraint(equalToConstant: 275)
+    lazy var selectPhotoButtonHeightAnchor = selectPhotoButton.heightAnchor.constraint(equalToConstant: 275)
     
     let fullNameTextField: CustomTextField = {
         let tf = CustomTextField(padding: 10, height: 45)
@@ -42,6 +76,28 @@ class EnterMorePhoneInfoViewController: UIViewController {
         return tf
     }()
     
+    let bioTextField: CustomTextField = {
+        let tf = CustomTextField(padding: 10, height: 45)
+        tf.placeholder = "Bio"
+        tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
+        return tf
+    }()
+    
+    @objc fileprivate func handleTextChange(textField: UITextField) {
+        if textField == fullNameTextField {
+            registrationViewModel.fullName = textField.text
+        } else if textField == emailTextField {
+            registrationViewModel.email = textField.text
+        } else  if textField == bioTextField {
+            registrationViewModel.bio = textField.text
+        } else if textField == schoolTextField {
+            registrationViewModel.school = textField.text
+        }
+        else {
+            registrationViewModel.age = Int(textField.text ?? "")
+        }
+    }
+    
     let registerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Log in", for: .normal)
@@ -59,13 +115,81 @@ class EnterMorePhoneInfoViewController: UIViewController {
     
     let registeringHUD = JGProgressHUD(style: .dark)
     let profilePageViewController = ProfilePageViewController()
+    
+    
+    var user: User?
+    
+    fileprivate func fetchCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            print(self.user?.phoneNumber ?? "Fuck you")
+            self.registrationViewModel.phone = self.user?.phoneNumber ?? "123"
+            //self.fetchSwipes()
+            
+        }
+    }
+    
+    @objc fileprivate func handleRegister() {
+        self.handleTapDismiss()
+        print("Register our User in Firebase Auth")
+        let profilePageViewController = ProfilePageViewController()
+     
+        registrationViewModel.performRegistration { [weak self] (err) in
+            if let err = err {
+                self?.showHUDWithError(error: err)
+                return
+            }
+            self?.present(profilePageViewController, animated: true)
+        }
+        
+    }
+    
+      let registrationViewModel = RegistrationViewModel()
+    
+    fileprivate func setupRegistrationViewModelObserver() {
+        registrationViewModel.bindableIsFormValid.bind { [unowned self] (isFormValid) in
+            guard let isFormValid = isFormValid else { return }
+            self.registerButton.isEnabled = isFormValid
+            self.registerButton.backgroundColor = isFormValid ? #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1) : .lightGray
+            self.registerButton.setTitleColor(isFormValid ? .white : .gray, for: .normal)
+        }
+        registrationViewModel.bindableImage.bind { [unowned self] (img) in self.selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        registrationViewModel.bindableIsRegistering.bind { [unowned self] (isRegistering) in
+            if isRegistering == true {
+                self.registeringHUD.textLabel.text = "Registering"
+                self.registeringHUD.show(in: self.view)
+            } else {
+                self.registeringHUD.dismiss()
+            }
+        }
+    }
+        
+        fileprivate func showHUDWithError(error: Error) {
+            registeringHUD.dismiss()
+            let hud = JGProgressHUD(style: .dark)
+            hud.textLabel.text = "Failed registration"
+            hud.detailTextLabel.text = error.localizedDescription
+            hud.show(in: self.view)
+            hud.dismiss(afterDelay: 3)
+        }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        fetchCurrentUser()
+        setupGradientLayer()
         setupLayout()
         setupNotificationObservers()
         setupTapGesture()
+        setupRegistrationViewModelObserver()
         
     }
     
@@ -75,7 +199,7 @@ class EnterMorePhoneInfoViewController: UIViewController {
             schoolTextField,
             ageTextField,
             emailTextField,
-            //passwordTextField,
+            bioTextField,
             registerButton
             ])
         sv.axis = .vertical
@@ -87,6 +211,31 @@ class EnterMorePhoneInfoViewController: UIViewController {
         selectPhotoButton,
         verticalStackView
         ])
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if self.traitCollection.verticalSizeClass == .compact {
+            overallStackView.axis = .horizontal
+            verticalStackView.distribution = .fillEqually
+            selectPhotoButtonHeightAnchor.isActive = false
+            selectPhotoButtonWidthAnchor.isActive = true
+        } else {
+            overallStackView.axis = .vertical
+            verticalStackView.distribution = .fill
+            selectPhotoButtonWidthAnchor.isActive = false
+            selectPhotoButtonHeightAnchor.isActive = true
+        }
+    }
+    
+    fileprivate func setupLayout() {
+        view.addSubview(overallStackView)
+        
+        overallStackView.axis = .vertical
+        overallStackView.spacing = 16
+        overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 50, bottom: 20, right: 50))
+        overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        
+    }
     
     fileprivate func setupTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))

@@ -51,8 +51,6 @@ class SchoolCrushController: UITableViewController {
 
         fetchCurrentUser()
         
-        //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
@@ -83,7 +81,6 @@ class SchoolCrushController: UITableViewController {
         }
     }
     
-    
     var schoolUserDictionary = [String: User]()
     
     fileprivate func fetchSchool() {
@@ -113,7 +110,6 @@ class SchoolCrushController: UITableViewController {
                 
                 self.schoolArray.append(crush)
                 
-                
                 print(self.schoolArray)
 //                let crushStuff = User(dictionary: userDictionary)
 //                if let crushPartnerId = crushStuff.crushPartnerId() {
@@ -124,57 +120,54 @@ class SchoolCrushController: UITableViewController {
              self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
                     return crush1.name > crush2.name
                 })
-                
-                })
+            })
                 DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
-                    
                 })
-                }
-        
+            }
     }
     
     var hasCrushed = Bool()
     
     func hasTappedCrush(cell: UITableViewCell) {
     
-
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
-
         
         let crush = schoolArray[indexPathTapped.row]
         
-        matchUID = crush.uid ?? ""
+        let phoneString = crush.phoneNumber ?? ""
+        
+        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        
+        matchUID = phoneNoDash
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
-        
         
         cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
 
         handleLike()
-        
     }
     
     var matchUID = String()
     
     func saveSwipeToFireStore(didLike: Int) {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
         
-        //let crush = schoolArray[IndexPath.row]
+        let phoneID = user?.phoneNumber ?? ""
         
-         let cardUID = matchUID
+        let cardUID = matchUID
         
         let documentData = [cardUID: didLike]
         
-        Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
+        Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
             if let err = err {
                 print("Failed to fetch swipe doc", err)
                 return
             }
             if snapshot?.exists == true {
-                Firestore.firestore().collection("swipes").document(uid).updateData(documentData) { (err) in
+                Firestore.firestore().collection("phone-swipes").document(phoneID).updateData(documentData) { (err) in
                     if let err = err {
                         print("failed to save swipe", err)
                         return
@@ -185,7 +178,7 @@ class SchoolCrushController: UITableViewController {
                     print("Success")
                 }
             } else {
-                Firestore.firestore().collection("swipes").document(uid).setData(documentData) { (err) in
+                Firestore.firestore().collection("phone-swipes").document(phoneID).setData(documentData) { (err) in
                     if let err = err {
                         print("Error", err)
                         return
@@ -204,7 +197,7 @@ class SchoolCrushController: UITableViewController {
         print("Match detection")
         print(cardUID)
         
-        Firestore.firestore().collection("swipes").document(cardUID).getDocument { (snapshot, err) in
+        Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
             if let err = err {
                 print("Failed to fetch doc for card user", err)
                 return
@@ -216,18 +209,36 @@ class SchoolCrushController: UITableViewController {
             let hasMatched = data[uid] as? Int == 1
             if hasMatched {
                 print("we have a match!")
-                self.presentMatchView(cardUID: cardUID)
+                self.getCardUID(phoneNumber: cardUID)
             }
+        }
+    }
+    
+    fileprivate func getCardUID(phoneNumber: String) {
+        let phone = phoneNumber
+        Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
+            
+            if let err = err {
+                print("Major fuck up", err)
+            }
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let user = User(dictionary: userDictionary)
+                
+                let cardUID = user.uid!
+                
+                self.presentMatchView(cardUID: cardUID)
+                
+            })
         }
     }
     
     var swipes = [String: Int]()
     
     fileprivate func fetchSwipes() {
-        guard let uid = Auth.auth().currentUser?.uid  else {
-            return
-        }
-        Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
+        let phoneID = user?.phoneNumber ?? ""
+        
+        Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
             if let err = err {
                 print("failed to fetch swipe info", err)
                 return
@@ -235,8 +246,8 @@ class SchoolCrushController: UITableViewController {
             print("Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
-            // self.fetchUsersFromFirestore()
-            //self.fetchUsersOnLoad()
+          
+            
         }
     }
     

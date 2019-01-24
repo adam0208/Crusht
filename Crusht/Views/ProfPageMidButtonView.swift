@@ -9,7 +9,7 @@
 import UIKit
 
 class ProfPageMidButtonView: UIView {
-
+    
     let findCrushesBttn: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Find Crushes", for: .normal)
@@ -21,7 +21,7 @@ class ProfPageMidButtonView: UIView {
         button.layer.cornerRadius = 16
         return button
     }()
-
+    
     let matchByLocationBttm: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Match by Location", for: .normal)
@@ -32,11 +32,11 @@ class ProfPageMidButtonView: UIView {
         button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
         button.layer.cornerRadius = 16
         
-  
+        
         return button
     }()
     
- 
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,5 +58,5 @@ class ProfPageMidButtonView: UIView {
     }
     
     
-
+    
 }
