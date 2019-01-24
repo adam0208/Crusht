@@ -32,7 +32,6 @@ class ProfPageMiddleView: UIView {
     let greetingLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
-        label.text = "Hey Good Lookin' 😊"
         label.textAlignment = .center
         return label
     }()

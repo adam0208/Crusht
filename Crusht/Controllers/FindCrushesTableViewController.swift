@@ -13,6 +13,8 @@ import JGProgressHUD
 import Alamofire
 
 class FindCrushesTableViewController: UITableViewController {
+    
+    
 
     let cellId = "cellId123123"
     
@@ -205,7 +207,8 @@ class FindCrushesTableViewController: UITableViewController {
             }
         }
     }
-    
+   
+    //var crushScoreIDFromPhoneNumber = String()
    
     fileprivate func getCardUID(phoneNumber: String) {
         let phone = phoneNumber
@@ -219,12 +222,15 @@ class FindCrushesTableViewController: UITableViewController {
                 let user = User(dictionary: userDictionary)
                 
                 let cardUID = user.uid!
-                
+                //self.crushScoreID = cardUID
                 self.presentMatchView(cardUID: cardUID)
                 
             })
         }
+       
     }
+    
+    var crushScoreID = String()
     
     func presentMatchView(cardUID: String) {
         let matchView = MatchView()
@@ -256,6 +262,54 @@ class FindCrushesTableViewController: UITableViewController {
     func handleLike() {
         
         saveSwipeToFireStore(didLike: 1)
+        addCrushScore()
+        
+    }
+    
+    fileprivate var crushScore: CrushScore?
+    
+    fileprivate func addCrushScore() {
+        
+        print("starting journey master cheif")
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        //let cardUID = crushScoreID
+        
+        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            if snapshot?.exists == true {
+                guard let dictionary = snapshot?.data() else {return}
+                self.crushScore = CrushScore(dictionary: dictionary)
+                let docData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 1]
+                Firestore.firestore().collection("score").document(uid).setData(docData)
+            }
+            else {
+                let docData: [String: Any] = ["CrushScore": 1]
+                Firestore.firestore().collection("score").document(uid).setData(docData)
+            }
+        }
+        
+//        Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
+//            if let err = err {
+//                print(err)
+//                return
+//            }
+//            if snapshot?.exists == true {
+//                guard let dictionary = snapshot?.data() else {return}
+//                self.crushScore = CrushScore(dictionary: dictionary)
+//                let cardDocData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 2]
+//                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
+//            }
+//            else {
+//                let cardDocData: [String: Any] = ["CrushScore": 1]
+//                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
+//            }
+//        }
         
     }
     

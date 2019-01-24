@@ -91,10 +91,38 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         }
     }
     
+    fileprivate var crushScore: CrushScore?
+    
+    fileprivate func setLabelText() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            if snapshot?.exists == true {
+                guard let dictionary = snapshot?.data() else {return}
+                self.crushScore = CrushScore(dictionary: dictionary)
+                if (self.crushScore?.crushScore ?? 0) > 10 {
+                self.profPicView.greetingLabel.text = "You're on 🔥"
+                }
+            }
+            else {
+                self.profPicView.greetingLabel.text = "Hey Good Lookin' 😊"
+            }
+        }
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //setupGradientLayer()
         fetchCurrentUser()
+        setLabelText()
         
         profPicView.layer.cornerRadius = 100
 

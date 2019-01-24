@@ -44,13 +44,61 @@ class SchoolCrushController: UITableViewController {
     
 //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
 
+    
+    fileprivate var crushScore: CrushScore?
+    
+    fileprivate func addCrushScore() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        
+        let cardUID = crushScoreID
+        
+        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            if snapshot?.exists == true {
+                guard let dictionary = snapshot?.data() else {return}
+                self.crushScore = CrushScore(dictionary: dictionary)
+                let docData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 1]
+                Firestore.firestore().collection("score").document(uid).setData(docData)
+            }
+            else {
+                let docData: [String: Any] = ["CrushScore": 1]
+                Firestore.firestore().collection("score").document(uid).setData(docData)
+            }
+        }
+        
+        Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            if snapshot?.exists == true {
+                guard let dictionary = snapshot?.data() else {return}
+                self.crushScore = CrushScore(dictionary: dictionary)
+                let cardDocData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 2]
+                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
+            }
+            else {
+                let cardDocData: [String: Any] = ["CrushScore": 1]
+                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
+            }
+        }
+        
+    }
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let cellId = "cellId"
-
+        
         fetchCurrentUser()
         
+        //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
@@ -60,7 +108,7 @@ class SchoolCrushController: UITableViewController {
     let hud = JGProgressHUD(style: .dark)
     
     var schoolArray = [User]()
-
+    
     var users = [User]()
     
     fileprivate func fetchCurrentUser() {
@@ -80,6 +128,7 @@ class SchoolCrushController: UITableViewController {
             self.fetchSchool()
         }
     }
+    
     
     var schoolUserDictionary = [String: User]()
     
@@ -110,30 +159,38 @@ class SchoolCrushController: UITableViewController {
                 
                 self.schoolArray.append(crush)
                 
-                print(self.schoolArray)
-//                let crushStuff = User(dictionary: userDictionary)
-//                if let crushPartnerId = crushStuff.crushPartnerId() {
-//                    self.schoolUserDictionary[crushPartnerId] = user
-//                    self.users = Array(self.schoolUserDictionary.values)
-//                }
                 
-             self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
+                print(self.schoolArray)
+                //                let crushStuff = User(dictionary: userDictionary)
+                //                if let crushPartnerId = crushStuff.crushPartnerId() {
+                //                    self.schoolUserDictionary[crushPartnerId] = user
+                //                    self.users = Array(self.schoolUserDictionary.values)
+                //                }
+                
+                self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
                     return crush1.name > crush2.name
                 })
+                
             })
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
-                })
-            }
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
+        }
+        
     }
     
     var hasCrushed = Bool()
     
     func hasTappedCrush(cell: UITableViewCell) {
-    
+        
+        
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
+        
         let crush = schoolArray[indexPathTapped.row]
+        
+        crushScoreID = crush.uid ?? ""
         
         let phoneString = crush.phoneNumber ?? ""
         
@@ -146,12 +203,17 @@ class SchoolCrushController: UITableViewController {
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
         
+        
         cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
-
+        
         handleLike()
+        
     }
     
+    var crushScoreID = String()
+    
     var matchUID = String()
+    
     
     func saveSwipeToFireStore(didLike: Int) {
         
@@ -246,7 +308,7 @@ class SchoolCrushController: UITableViewController {
             print("Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
-          
+            
             
         }
     }
@@ -259,17 +321,16 @@ class SchoolCrushController: UITableViewController {
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
     }
-
+    
     // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
+    //    override func numberOfSections(in tableView: UITableView) -> Int {
+    //        return 1
+    //    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50.0
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return schoolArray.count
     }
@@ -282,7 +343,7 @@ class SchoolCrushController: UITableViewController {
         
         cellL.link = self
         
-         let crush = schoolArray[indexPath.row]
+        let crush = schoolArray[indexPath.row]
         cellL.textLabel?.text = crush.name
         if let profileImageUrl = crush.imageUrl1 {
             cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
@@ -293,17 +354,17 @@ class SchoolCrushController: UITableViewController {
         return cellL
     }
     
-      func handleLike() {
+    func handleLike() {
         
         
         saveSwipeToFireStore(didLike: 1)
+        addCrushScore()
         
         //cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
-
     }
     
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
     }
-
+    
 }
