@@ -107,9 +107,23 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             if snapshot?.exists == true {
                 guard let dictionary = snapshot?.data() else {return}
                 self.crushScore = CrushScore(dictionary: dictionary)
-                if (self.crushScore?.crushScore ?? 0) > 10 {
+                print(self.crushScore?.crushScore ?? 0)
+                if (self.crushScore?.crushScore ?? 0) > 10 && (self.crushScore?.crushScore ?? 0) <= 50 {
                 self.profPicView.greetingLabel.text = "You're on 🔥"
                 }
+                else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
+                    self.profPicView.greetingLabel.text = "You Must be Cute 😍"
+                }
+                else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
+                    self.profPicView.greetingLabel.text = "Don't Get Too Cocky Now 😎"
+                }
+                else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
+                    self.profPicView.greetingLabel.text = "Wish I Were Like You 😤"
+                }
+                else if (self.crushScore?.crushScore ?? 0) > 400 {
+                    self.profPicView.greetingLabel.text = "Add Dating as a Skill on Your Resume"
+                }
+
             }
             else {
                 self.profPicView.greetingLabel.text = "Hey Good Lookin' 😊"
@@ -183,22 +197,5 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         overallStackView.isLayoutMarginsRelativeArrangement = true
         overallStackView.layoutMargins = .init(top: -20, left: 0, bottom: 0, right: 0)
     }
-    
-    //    let gradientLayer = CAGradientLayer()
-    //
-    //    override func viewWillLayoutSubviews() {
-    //        super.viewWillLayoutSubviews()
-    //        gradientLayer.frame = view.bounds
-    //    }
-    //
-    //    fileprivate func setupGradientLayer() {
-    //        let topColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
-    //        let bottomColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
-    //        // make sure to user cgColor
-    //        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
-    //        gradientLayer.locations = [0, 1]
-    //        view.layer.addSublayer(gradientLayer)
-    //        gradientLayer.frame = view.bounds
-    //    }
     
 }

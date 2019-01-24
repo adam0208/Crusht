@@ -33,6 +33,7 @@ class ProfPageMiddleView: UIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
     
@@ -75,7 +76,7 @@ class ProfPageMiddleView: UIView {
         let stackView = UIStackView(arrangedSubviews: [selectPhotoButton, greetingLabel, buttonStackView])
         addSubview(stackView)
         stackView.axis = .vertical
-        stackView.spacing = 30
+        stackView.spacing = 25
         stackView.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 0, left: 40, bottom: 0, right: 40))
         stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
