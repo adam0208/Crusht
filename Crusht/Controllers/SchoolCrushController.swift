@@ -187,6 +187,7 @@ class SchoolCrushController: UITableViewController {
         
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
+        print("YOU Have selected something")
         
         let crush = schoolArray[indexPathTapped.row]
         

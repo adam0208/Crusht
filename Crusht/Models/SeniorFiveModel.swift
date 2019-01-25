@@ -19,6 +19,7 @@ class Crushes: NSObject {
     var school: String?
     var name: String?
     var timestamp: NSNumber?
+    var likes: Int?
     
 
 init(dictionary: [String: Any]) {
@@ -33,6 +34,7 @@ init(dictionary: [String: Any]) {
     self.name = dictionary["Name of Poster"] as? String ?? ""
     self.school = dictionary["School"] as? String ?? ""
     self.timestamp = dictionary["timestamp"] as? NSNumber
+    self.likes = dictionary["Likes"] as? Int
 
     
     }

@@ -44,6 +44,8 @@ class FindCrushesTableViewController: UITableViewController {
 
         // we're going to figure out which name we're clicking on
         
+        print("you are liking something")
+        
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
         let contact = twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row]

@@ -22,9 +22,7 @@ class SchoolTableViewCell: UITableViewCell {
 
     var link: SchoolCrushController?
     
-    
     fileprivate var user: User?
-    
     
     let starButton: UIButton = {
     let button = UIButton(type: .system)

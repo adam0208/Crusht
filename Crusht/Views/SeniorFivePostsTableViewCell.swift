@@ -14,7 +14,7 @@ class SeniorFivePostLable: UILabel {
         return .init(width: 0, height: 300)
     }
     override func drawText(in rect: CGRect) {
-        super.drawText(in: rect.insetBy(dx: 16, dy: 0))
+        super.drawText(in: rect.insetBy(dx: 10, dy: 0))
     }
 }
 
@@ -27,6 +27,8 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
             //setupNameAndProfileImage()
             
             label.text = "\(crush?.crush1 ?? "YOU SUCK")\n\(crush?.crush2 ?? "YOU SUCK")\n\(crush?.crush3 ?? "YOU SUCK")\n\(crush?.crush4 ?? "YOU SUCK")\n\(crush?.crush5 ?? "YOU SUCK")\n\n\(crush?.comments ?? "YOU SUCK")"
+            
+            likeLabel.text = "   \(crush?.likes ?? 69)"
             
             if let seconds = crush?.timestamp?.doubleValue {
                 let timestampDate = Date(timeIntervalSince1970: seconds)
@@ -54,30 +56,50 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
         let tf = SeniorFivePostLable()
         tf.text = "Enter Name"
         tf.numberOfLines = 0
-        tf.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        tf.font = UIFont.systemFont(ofSize: 24, weight: .light)
         return tf
-    } ()
+    }()
     
     let likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Like", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
-        //button.addTarget(self, action: #selector(<#T##@objc method#>), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLikePost), for: .touchUpInside)
         return button
     }()
-
     
+    let likeLabel: UILabel = {
+        let tf = UILabel()
+        tf.text = "Enter Name"
+        //tf.numberOfLines = 0
+        tf.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        tf.textColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        return tf
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(likeButton)
-        let stack = UIStackView(arrangedSubviews: [timeLabel, label])
+        
+        likeButton.addTarget(self, action: #selector(handleLikePost), for: .touchUpInside)
+
+        let horizontalStack = UIStackView(arrangedSubviews: [likeButton, likeLabel])
+        horizontalStack.axis = .horizontal
+        horizontalStack.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        let stack = UIStackView(arrangedSubviews: [timeLabel, label, horizontalStack])
         addSubview(stack)
        stack.axis = .vertical
-        likeButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        
+
        stack.fillSuperview()
         
-        
+    }
+    
+    //link is delegate
+    
+    var link: SeniorFiveTableViewController?
+    
+    @objc func handleLikePost() {
+        link?.handleLike(cell: self)
+        print("Buttontapped")
     }
     
     required init?(coder aDecoder: NSCoder) {

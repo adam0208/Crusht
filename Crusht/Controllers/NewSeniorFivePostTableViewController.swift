@@ -164,22 +164,34 @@ class NewSeniorFivePostTableViewController: UITableViewController {
             "Crush4": crush4,
             "Crush5": crush5,
             "Comments": comments,
+            "Likes": 0,
             "timestamp": timestamp as AnyObject
             ]
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Posting"
         hud.show(in: view)
         
-        Firestore.firestore().collection("senior-fives").addDocument(data: docData) { (err) in
+        Firestore.firestore().collection("senior-fives").document(user?.school ?? "").collection("posts").addDocument(data: docData){ (err) in
             hud.dismiss()
             if let err = err {
                 print("Failed to save post", err)
                 return
             }
             self.dismiss(animated: true, completion: {
-                print("Dismissal Complete")                
+                print("Dismissal Complete")
             })
         }
+        
+//        Firestore.firestore().collection("senior-fives").addDocument(data: docData) { (err) in
+//            hud.dismiss()
+//            if let err = err {
+//                print("Failed to save post", err)
+//                return
+//            }
+//            self.dismiss(animated: true, completion: {
+//                print("Dismissal Complete")
+//            })
+//        }
         
     }
         
