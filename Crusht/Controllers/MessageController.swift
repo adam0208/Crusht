@@ -49,7 +49,7 @@ class MessageController: UITableViewController {
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 
         
-        //observeUserMessages()
+        observeUserMessages()
         observeMessages()
     }
     
@@ -107,32 +107,7 @@ class MessageController: UITableViewController {
             self.tableView.reloadData()
         })
     }
-//                Database.database().reference().child("messages").child(messageId)
-            
-//            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
-//
-//                if let dictionary = snapshot.value as? [String: AnyObject] {
-//                    let message = Message(dictionary: dictionary)
-//
-//                    if let toId = message.toId {
-//                        self.messagesDictionary[toId] = message
-//
-//                        self.messages = Array(self.messagesDictionary.values)
-//                        self.messages.sort(by: { (message1, message2) -> Bool in
-//
-//                            return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-//                        })
-//                    }
-//
-//                    //this will crash because of background thread, so lets call this on dispatch_async main thread
-//                    DispatchQueue.main.async(execute: {
-//                        self.tableView.reloadData()
-//                    })
-//                }
-//
-//            }, withCancel: nil)
-//
-//        }, withCancel: nil)
+
     
     
     func observeMessages() {
@@ -151,6 +126,7 @@ class MessageController: UITableViewController {
                     let userDictionary = documentSnapshot.data()
                     let message = Message(dictionary: userDictionary)
                     self.messages.append(message)
+                    
                     //print(self.messages)
                     //self.fetchUserAndSetupNavBarTitle()
                     self.messages.sort(by: { (message1, message2) -> Bool in

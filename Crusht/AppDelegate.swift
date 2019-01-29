@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FacebookCore
 import UserNotifications
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

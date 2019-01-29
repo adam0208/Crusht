@@ -106,8 +106,8 @@ class TransitionCrushesController: UIViewController {
     }
     
     @objc fileprivate func handleFacebook() {
-        let contactsController = FindCrushesTableViewController()
-        let navigationController = UINavigationController(rootViewController: contactsController)
+        let fbcontroller = FacebookCrushController()
+        let navigationController = UINavigationController(rootViewController: fbcontroller)
         present(navigationController, animated: true)
     }
     

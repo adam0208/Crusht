@@ -10,8 +10,11 @@ import UIKit
 import Firebase
 import SDWebImage
 import JGProgressHUD
+import CoreLocation
+import GeoFire
+import UserNotifications
 
-class LocationMatchViewController: UIViewController, CardViewDelegate {
+class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocationManagerDelegate {
     
     fileprivate var crushScore: CrushScore?
     
@@ -67,8 +70,25 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
     
     var cardViewModels = [CardViewModel]()
     
+    let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+            
+            print(locationManager.location?.coordinate.latitude as Any)
+            print(locationManager.location?.coordinate.latitude as Any)
+            print("We have your location!")
+        }
         
         topStackView.homeButton.addTarget(self, action: #selector(handleHomeBttnTapped), for: .touchUpInside)
         bottomStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
@@ -85,7 +105,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
         
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        userLat = locValue.latitude
+        userLong = locValue.longitude
+    }
     
+    var userLat = Double()
+    var userLong = Double()
     
     fileprivate var user: User?
     
@@ -99,6 +127,17 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
+            
+            let geoFirestoreRef = Firestore.firestore().collection("users")
+            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+            
+            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                if (error != nil) {
+                    print("An error occured", error!)
+                } else {
+                    print("Saved location successfully!")
+                }
+            }
             
             self.fetchSwipes()
             //self.fetchUsersFromFirestore()
@@ -152,7 +191,20 @@ class LocationMatchViewController: UIViewController, CardViewDelegate {
         let minAge = user?.minSeekingAge ?? 18
         let maxAge = user?.maxSeekingAge ?? 50
         
-        print(maxAge)
+        let geoFirestoreRef = Firestore.firestore().collection("users")
+        let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+        
+        let userCenter = CLLocation(latitude: userLat, longitude: userLong)
+        
+        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 10)
+        
+        print(radiusQuery, "Hello there radius query")
+       
+//        radiusQuery.observe(.documentEntered, with: { (key, location) in
+//            print("The document with documentID '\(self.user?.uid ?? "fuck")' entered the search area and is at location '\(userCenter)'")
+//        })
+        
+        
         
         let query = Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge)
         //order(by: "uid").start(after: [lastFetchedUser?.uid ?? ""]).limit(to: 2)

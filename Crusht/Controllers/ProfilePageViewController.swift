@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 import SDWebImage
+import GeoFire
+import CoreLocation
+import UserNotifications
 
 extension ProfilePageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -24,7 +27,7 @@ extension ProfilePageViewController: UIImagePickerControllerDelegate, UINavigati
     
 }
 
-class ProfilePageViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
+class ProfilePageViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CLLocationManagerDelegate {
     
     func didFinishLoggingIn() {
         fetchCurrentUser()
@@ -132,8 +135,26 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
     }
     
+    let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+         
+            print(locationManager.location?.coordinate.latitude as Any)
+            print(locationManager.location?.coordinate.latitude as Any)
+            print("We have your location!")
+        }
+        
         //setupGradientLayer()
         fetchCurrentUser()
         setLabelText()
@@ -142,11 +163,11 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
 
         profPicView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         topStackView.homeButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-        //view.backgroundColor = .white
+
         profPicView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
         profPicView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
-        //        topStackView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
-        //        bottomStackView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+
+        
         profPicView.selectPhotoButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
@@ -154,6 +175,16 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         setupLayout()
         
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        userLat = locValue.latitude
+        userLong = locValue.longitude
+    }
+    
+    var userLat = Double()
+    var userLong = Double()
     
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -165,6 +196,18 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             //print(snapshot?.data())
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
+            
+            
+            let geoFirestoreRef = Firestore.firestore().collection("users")
+            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+
+            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                if (error != nil) {
+                    print("An error occured", error!)
+                } else {
+                    print("Saved location successfully!")
+                }
+            }
             self.loadUserPhotos()
         }
     }
@@ -188,14 +231,18 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     fileprivate func setupLayout () {
         
-        let overallStackView = UIStackView(arrangedSubviews: [tippyTop, topStackView, profPicView, bottomStackView])
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, profPicView, bottomStackView])
         view.addSubview(overallStackView)
         
         overallStackView.axis = .vertical
         
+        overallStackView.spacing = 12
+        
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         overallStackView.isLayoutMarginsRelativeArrangement = true
-        overallStackView.layoutMargins = .init(top: -20, left: 0, bottom: 0, right: 0)
+        overallStackView.layoutMargins = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
+    
+
     
 }

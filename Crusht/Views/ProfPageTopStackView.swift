@@ -11,7 +11,7 @@ import UIKit
 class ProfPageTopStackView: UIStackView {
 
     let homeButton = UIButton(type: .system)
-    let iconLogo = UIImageView(image: #imageLiteral(resourceName: "CrushtLogoPinkBackground"))
+    let iconLogo = UIImageView(image: #imageLiteral(resourceName: "CrushTLogoIcon"))
     let messageButton = UIButton(type: .system)
     let restView = UIView()
     let moreView = UIView()
@@ -22,13 +22,10 @@ class ProfPageTopStackView: UIStackView {
         heightAnchor.constraint(equalToConstant: 50).isActive = true
         distribution = .fillEqually
         spacing = 0
-        backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
-        restView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        moreView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        evenMoreView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+
         //iconLogo.contentMode = .scaleAspectFill
-        messageButton.setImage(#imageLiteral(resourceName: "MessagesIconCrusht").withRenderingMode(.alwaysOriginal), for: .normal)
-        homeButton.setImage(#imageLiteral(resourceName: "SettingsBetter").withRenderingMode(.alwaysOriginal), for: .normal)
+        messageButton.setImage(#imageLiteral(resourceName: "top_right_messages").withRenderingMode(.alwaysOriginal), for: .normal)
+        homeButton.setImage(#imageLiteral(resourceName: "top_left_profile").withRenderingMode(.alwaysOriginal), for: .normal)
         
         [homeButton, moreView, iconLogo, evenMoreView, messageButton].forEach { (v) in
             addArrangedSubview(v)

@@ -14,14 +14,27 @@ class ProfPageBottomStackView: UIStackView {
     let evenMoreView = UIView()
     let moreView = UIView()
     
-    let seniorFive = UIButton(type: .system)
+    let seniorFive:  UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Top 5's", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        button.setTitleColor(.black, for: .normal)
+        //button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
+        button.layer.cornerRadius = 16
+        return button
+        
+    }()
+        
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         distribution = .fillEqually
 
-        seniorFive.setImage(#imageLiteral(resourceName: "SeniorFiveIcon.png").withRenderingMode(.alwaysOriginal), for: .normal)
+        //seniorFive.setImage(#imageLiteral(resourceName: "SeniorFiveIcon.png").withRenderingMode(.alwaysOriginal), for: .normal)
         
         
         heightAnchor.constraint(equalToConstant: 60).isActive = true

@@ -710,7 +710,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                             if document.exists {
                                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
                                 
-                                self.observeMoreMessages()
                                 self.observeMessages()
                             }
                             else{
@@ -728,11 +727,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     let document = documentSnapshot
                     if document.exists {
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        
                     }
                     
                 })
             }
         })
+        print(messages.last ?? "Hello there lawson", "Hi how are ya")
         messages.removeAll()
         observeMoreMessages()
         observeMessages()

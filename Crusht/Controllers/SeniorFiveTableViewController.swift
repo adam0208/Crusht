@@ -64,7 +64,6 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
             //setupNavigationItems()
             tableView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
             
-            
         }
    
     class HeaderLabel: UILabel {
@@ -77,6 +76,11 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
    
         let headerLabel = HeaderLabel()
         
+        if section == 0 {
+            headerLabel.text = "\(user?.school ?? "Your School")'s Crushes"
+            headerLabel.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        }
+        
         return headerLabel
     }
     
@@ -85,7 +89,13 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
     }
         
         override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 20
+            
+            if section == 0 {
+            return 40
+            }
+            else {
+                return 10
+            }
         }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -158,7 +168,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         //self.crushDictionary = crushesArray
         self.crushesArray.sort(by: { (message1, message2) -> Bool in
             return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-            //refactor to cut cost
+
         })
         
         DispatchQueue.main.async(execute: {
@@ -217,9 +227,8 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
     
     
         fileprivate func setupNavigationItems() {
-            navigationItem.title = "\(user?.school ?? " Senior Fives")" + "'s Senior Fives"
+            navigationItem.title = "Crush List"
             
-            navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Write Your 5", style: .plain, target: self, action: #selector(handleWritePost))
         }

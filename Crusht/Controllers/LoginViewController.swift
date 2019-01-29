@@ -149,25 +149,8 @@ class LoginViewController: UIViewController {
                     
                     self.fullName = "\(firstNameFB ?? "") \(lastNameFB ?? "")"
                     self.photoUrl = photoUrl
-                    
-                    //                    let docData: [String: Any] =
-                    //                        ["Full Name": name,
-                    //                         "uid": uid,
-                    //                         "School": "N/A",
-                    //                         "Age": 1,
-                    //                         "Bio": "",
-                    //                         "minSeekingAge": 18,
-                    //                         "maxSeekingAge": 50,
-                    //                         "ImageUrl1": photoUrl as Any]
-                    //let userAge = ["Age": age]
-                    //                    Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
-                    //                        //self.bindableIsRegistering.value = false
-                    //                        if let err = err {
-                    //                            print("hahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",err)
-                    //                            return
-                    //                        }
-                    //                        let profileController = ProfilePageViewController()
-                    //                        self.present(profileController, animated: true)
+                    self.socialID = socialIdFB
+
                 }
             }
             self.saveInfoToFirestore()
@@ -182,6 +165,7 @@ class LoginViewController: UIViewController {
     var school: String?
     var age: Int?
     var photoUrl: String?
+    var socialID: String?
     
     fileprivate func saveInfoToFirestore(){
         let uid = Auth.auth().currentUser?.uid ?? ""
@@ -193,6 +177,7 @@ class LoginViewController: UIViewController {
              "Bio": "",
              "minSeekingAge": 18,
              "maxSeekingAge": 50,
+             "fbid": socialID ?? "",
              "ImageUrl1": photoUrl!]
         //let userAge = ["Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in

@@ -36,6 +36,7 @@
 		2838171E21B8C90100B3E4FD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* Extension.swift */; };
 		285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285A34A521BC7B920086CC95 /* SettingsCells.swift */; };
 		286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */; };
+		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
 		28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */; };
 		28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5A21B8D1D100A654A0 /* IMG_0184.png */; };
@@ -74,6 +75,8 @@
 		289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 289224BB21B9C1B20047E29B /* GoogleService-Info.plist */; };
 		28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */; };
 		28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */; };
+		28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */; };
+		28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */; };
 		28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */; };
 		28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */; };
 		28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */; };
@@ -154,6 +157,7 @@
 		2838171D21B8C90100B3E4FD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		285A34A521BC7B920086CC95 /* SettingsCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCells.swift; sourceTree = "<group>"; };
 		286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
+		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide_out_menu_poster.png; sourceTree = "<group>"; };
 		28857C5A21B8D1D100A654A0 /* IMG_0184.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0184.png; sourceTree = "<group>"; };
@@ -192,6 +196,8 @@
 		289224BB21B9C1B20047E29B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
+		28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushController.swift; sourceTree = "<group>"; };
+		28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTextFieldDropDown.swift; sourceTree = "<group>"; };
 		28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
 		28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsWheelCrusht.png; sourceTree = "<group>"; };
 		28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeIconWithBackground.png; sourceTree = "<group>"; };
@@ -368,6 +374,7 @@
 				280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */,
 				28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */,
 				28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */,
+				28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -386,6 +393,7 @@
 			children = (
 				2838171D21B8C90100B3E4FD /* Extension.swift */,
 				28908D8721C0AB2C00391A39 /* ExpandableNames.swift */,
+				28744A2021FF8BC800B438A8 /* GeoFire.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -412,6 +420,7 @@
 				28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */,
 				28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */,
 				28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */,
+				28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -823,6 +832,7 @@
 				2838170F21B8A26400B3E4FD /* User.swift in Sources */,
 				28857CCD21B9A93500A654A0 /* EnterInfoViewController.swift in Sources */,
 				2838170721B8A11000B3E4FD /* Advertiser.swift in Sources */,
+				28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */,
 				28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */,
 				283816F921B892C600B3E4FD /* ProfPageTopStackView.swift in Sources */,
 				285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */,
@@ -838,9 +848,11 @@
 				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
 				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
 				28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */,
+				28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */,
 				28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */,
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
+				28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */,
 				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
 				28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */,

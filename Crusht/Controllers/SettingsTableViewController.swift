@@ -161,7 +161,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         return header
     }()
     
-    class HeaderLabel: UILabel {
+    class SettingsHeaderLabel: UILabel {
         override func drawText(in rect: CGRect) {
             super.drawText(in: rect.insetBy(dx: 16, dy: 0))
         }
@@ -171,7 +171,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         if section == 0 {
             return header
         }
-        let headerLabel = HeaderLabel()
+        let headerLabel = SettingsHeaderLabel()
         headerLabel.font = UIFont.boldSystemFont(ofSize: 18)
         switch section {
         case 1:

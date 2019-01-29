@@ -30,6 +30,12 @@ struct User: ProducesCardViewModel {
     var toId: String?
     var fromId: String?
     
+    var fbid: String?
+    
+    var lat: String?
+    var long: String
+    
+    
     init(dictionary: [String: Any]) {
         //initialize our user stuff
        
@@ -48,7 +54,9 @@ struct User: ProducesCardViewModel {
         self.fromId = dictionary["fromCrush"] as? String ?? ""
         self.phoneNumber = dictionary["PhoneNumber"] as? String ?? ""
         self.crushScore = dictionary["CrushScore"] as? Int
-        
+        self.fbid = dictionary["fbid"] as? String ?? ""
+        self.lat = dictionary["lat"] as? String ?? ""
+        self.long = dictionary["long"] as? String ?? ""
     
     }
 

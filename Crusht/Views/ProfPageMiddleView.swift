@@ -10,6 +10,23 @@ import UIKit
 
 class ProfPageMiddleView: UIView {
     
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        let gradientLayer = CAGradientLayer()
+        let leftColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        let rightColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        gradientLayer.colors = [leftColor.cgColor, rightColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        
+        self.layer.insertSublayer(gradientLayer, at: 0)
+        
+        layer.cornerRadius = 100
+        clipsToBounds = true
+        
+        gradientLayer.frame = rect
+    }
+    
     //let noPicImage = UIImage(named: "top_left_profile@2xpng") as UIImage!
     
     let selectPhotoButton: UIButton = {
@@ -81,6 +98,21 @@ class ProfPageMiddleView: UIView {
         stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
     }
+    
+    let gradientLayer = CAGradientLayer()
+    
+ 
+    
+    fileprivate func setupGradientLayer() {
+        
+        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        // make sure to user cgColor
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        
+    }
+
     
     
     
