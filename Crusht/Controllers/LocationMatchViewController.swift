@@ -197,19 +197,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let userCenter = CLLocation(latitude: userLat, longitude: userLong)
         
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 10)
-        
-        print(radiusQuery, "Hello there radius query")
-       
+                
 //        radiusQuery.observe(.documentEntered, with: { (key, location) in
 //            print("The document with documentID '\(self.user?.uid ?? "fuck")' entered the search area and is at location '\(userCenter)'")
 //        })
         
-        
-        
-        let query = Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge)
+//        let query = Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge)
         //order(by: "uid").start(after: [lastFetchedUser?.uid ?? ""]).limit(to: 2)
         topCardView = nil
-        query.getDocuments { (snapshot, err) in
+    radiusQuery.geoFirestore.getCollectionReference().firestore.collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
             if let err = err {
                 print("failed to fetch user", err)
                 self.hud.textLabel.text = "Failed To Fetch user"
@@ -312,8 +308,22 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             guard let uid = Auth.auth().currentUser?.uid else {return}
             let hasMatched = data[uid] as? Int == 1
             if hasMatched {
+                
                 print("we have a match!")
+                Firestore.firestore().collection("users").document(cardUID).getDocument(completion: { (snapshot, err) in
+                    if let err = err {
+                        print("Error getting match", err)
+                        return
+                    }
+                guard let userDictionary = snapshot?.data() else {return}
+                let user = User(dictionary: userDictionary)
+                
+                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                ]
+                //this is for message controller
+                Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
                 self.presentMatchView(cardUID: cardUID)
+                })
             }
         }
         
@@ -323,6 +333,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
+        matchView.sendMessageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
         view.addSubview(matchView)
         matchView.fillSuperview()
     }
@@ -330,7 +341,14 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     @objc func handleDislike() {
         saveSwipeToFireStore(didLike: 0)
         performSwipeAnimation(translation: -700, angle: -15)
-        
+    }
+    
+    @objc fileprivate func handleMessageButtonTapped() {
+        let profileController = ProfilePageViewController()
+        present(profileController, animated: true)
+        let messageController = MessageController()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
     }
     
     fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {

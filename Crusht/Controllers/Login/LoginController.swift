@@ -74,7 +74,7 @@ class LoginController: UIViewController {
     }()
     
     @objc fileprivate func handleGoToRegister() {
-        let RegisterController = EnterInfoViewController()
+        let RegisterController = EnterMorePhoneInfoViewController()
         //loginController.view.backgroundColor = .yellow
         navigationController?.pushViewController(RegisterController, animated: true)
         

@@ -24,13 +24,58 @@ class NewMessageController: UITableViewController {
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
+        fetchSwipes()
+        fetchPhoneSwipes()
+        
         fetchUser()
+    }
+    
+    var swipes = [String: Int]()
+    
+    fileprivate func fetchSwipes() {
+        guard let uid = Auth.auth().currentUser?.uid  else {
+            return
+        }
+        Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch swipe info", err)
+                return
+            }
+            print("Swipes", snapshot?.data() ?? "")
+            guard let data = snapshot?.data() as? [String: Int] else {return}
+            self.swipes = data
+        }
+    }
+    
+    var phoneSwipes = [String: Int]()
+    
+    func fetchPhoneSwipes() {
+        guard let uid = Auth.auth().currentUser?.uid  else {
+            return
+        }
+        Firestore.firestore().collection("phone-swipes").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch swipe info", err)
+                return
+            }
+            print("Swipes", snapshot?.data() ?? "")
+            guard let data = snapshot?.data() as? [String: Int] else {return}
+            self.phoneSwipes = data
+            
+        }
     }
     
     func fetchUser() {
 //        Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
         
-        Firestore.firestore().collection("users").getDocuments(completion: { (snapshot, err) in
+        //handle only matched users
+        
+        //maybe add a matches document in the database
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        Firestore.firestore().collection("users").document(uid).collection("matches").getDocuments { (snapshot, err) in
+            
             if let err = err {
                 print("FAILLLLLLLLL", err)
             }
@@ -38,8 +83,7 @@ class NewMessageController: UITableViewController {
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
-                     self.users.append(user)
-                
+                self.users.append(user)
                 
                 //this will crash because of background thread, so lets use dispatch_async to fix
                 DispatchQueue.main.async(execute: {
@@ -49,7 +93,7 @@ class NewMessageController: UITableViewController {
                 //                user.name = dictionary["name"]
             })
             
-        })
+        }
     }
     
     @objc func handleCancel() {

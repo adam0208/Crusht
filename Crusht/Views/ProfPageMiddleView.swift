@@ -21,7 +21,7 @@ class ProfPageMiddleView: UIView {
         
         self.layer.insertSublayer(gradientLayer, at: 0)
         
-        layer.cornerRadius = 100
+        layer.cornerRadius = 70
         clipsToBounds = true
         
         gradientLayer.frame = rect
@@ -37,11 +37,11 @@ class ProfPageMiddleView: UIView {
         //button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 230).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 250).isActive = true
         button.widthAnchor.constraint(equalToConstant: 80).isActive = true
         button.imageView?.contentMode = .scaleAspectFill
         
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = 70
         button.clipsToBounds = true
         return button
     }()
@@ -58,8 +58,8 @@ class ProfPageMiddleView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Find Crushes", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 0, alpha: 1)
-        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.setTitleColor(.white, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
         button.layer.cornerRadius = 16
@@ -70,8 +70,8 @@ class ProfPageMiddleView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Match by Location", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.setTitleColor(.white, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
         button.layer.cornerRadius = 16

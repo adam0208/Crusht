@@ -31,6 +31,8 @@ var school: String? { didSet { checkFormValidity() } }
     var bio: String? { didSet {checkFormValidity() }}
     
     var phone: String!
+    
+    var fbid: String?
    
 
     func performRegistration(completion: @escaping (Error?) -> ()) {
@@ -87,7 +89,8 @@ var school: String? { didSet { checkFormValidity() } }
             })
         })
     }
-
+    
+    let token = Messaging.messaging().fcmToken
 
     fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()) {
         let uid = Auth.auth().currentUser?.uid ?? ""
@@ -100,6 +103,8 @@ var school: String? { didSet { checkFormValidity() } }
             "minSeekingAge": 18,
                 "maxSeekingAge": 50,
                 "PhoneNumber": phone,
+                "deviceID": token ?? "",
+                "fbid": fbid ?? "",
             "ImageUrl1": imageUrl]
         //let userAge = ["Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in

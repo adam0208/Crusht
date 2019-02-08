@@ -12,6 +12,7 @@ import SDWebImage
 import GeoFire
 import CoreLocation
 import UserNotifications
+import JGProgressHUD
 
 extension ProfilePageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -85,6 +86,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("HomeController did appear")
+
         // you want to kick the user out when they log out
         if Auth.auth().currentUser == nil {
             let loginController = LoginViewController()
@@ -136,6 +138,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     }
     
     let locationManager = CLLocationManager()
+    let hud = JGProgressHUD(style: .dark)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,9 +158,11 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             print("We have your location!")
         }
         
-        //setupGradientLayer()
+
+      
         fetchCurrentUser()
         setLabelText()
+   
         
         profPicView.layer.cornerRadius = 100
 
@@ -173,6 +178,10 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         setupLayout()
+        hud.textLabel.text = "Getting your info you silly goose"
+        hud.show(in: view)
+       
+        hud.dismiss(afterDelay: 1)
         
     }
     
@@ -187,6 +196,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     var userLong = Double()
     
     fileprivate func fetchCurrentUser() {
+
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
@@ -226,6 +236,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
             self.profPicView.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
+       
         //self.user?.imageUrl1
     }
     
@@ -236,7 +247,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
         overallStackView.axis = .vertical
         
-        overallStackView.spacing = 12
+        //overallStackView.spacing = 12
         
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         overallStackView.isLayoutMarginsRelativeArrangement = true

@@ -34,7 +34,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class FacebookCrushController: UITableViewController {
+class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -199,8 +199,35 @@ class FacebookCrushController: UITableViewController {
         
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
-        //navigationItem.title = "School"
+        
+        navigationItem.title = "Facebook Friends"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+        view.addSubview(searchController.searchBar)
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search School"
+        navigationItem.searchController = self.searchController
+        definesPresentationContext = true
+        
+        
+        // Setup the Scope Bar
+        //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        users = schoolArray.filter({( user : User) -> Bool in
+            return user.name!.lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
     }
     
     fileprivate var user: User?
@@ -209,8 +236,6 @@ class FacebookCrushController: UITableViewController {
     var schoolArray = [User]()
     
     var users = [User]()
-    
-
     
     
     var schoolUserDictionary = [String: User]()
@@ -287,8 +312,7 @@ class FacebookCrushController: UITableViewController {
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
         
-        
-        cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+        cell.accessoryView?.tintColor = .red
         
         handleLike()
         
@@ -351,8 +375,9 @@ class FacebookCrushController: UITableViewController {
             guard let data = snapshot?.data() else {return}
             print(data)
             
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            let hasMatched = data[uid] as? Int == 1
+            let phoneNumber = self.user?.phoneNumber ?? ""
+            
+            let hasMatched = data[phoneNumber] as? Int == 1
             if hasMatched {
                 print("we have a match!")
                 self.getCardUID(phoneNumber: cardUID)
@@ -361,6 +386,7 @@ class FacebookCrushController: UITableViewController {
     }
     
     fileprivate func getCardUID(phoneNumber: String) {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
         let phone = phoneNumber
         Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
             
@@ -372,6 +398,15 @@ class FacebookCrushController: UITableViewController {
                 let user = User(dictionary: userDictionary)
                 
                 let cardUID = user.uid!
+                
+                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                ]
+                let otherDocData: [String: Any] = ["uid": uid, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                ]
+                //this is for message controller
+                Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                
+                Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
                 
                 self.presentMatchView(cardUID: cardUID)
                 
@@ -393,17 +428,36 @@ class FacebookCrushController: UITableViewController {
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
             
+            if self.swipes == [phoneID: 1] {
+                self.handleTint()
+            }
+            
             
         }
     }
+    
+    fileprivate func handleTint() {
+        
+        
+    }
+    
     
     func presentMatchView(cardUID: String) {
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
+        matchView.sendMessageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
         self.navigationController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
+    }
+    
+    @objc fileprivate func handleMessageButtonTapped() {
+        let profileController = ProfilePageViewController()
+        present(profileController, animated: true)
+        let messageController = MessageController()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
     }
     
     // MARK: - Table view data source
@@ -412,10 +466,13 @@ class FacebookCrushController: UITableViewController {
     //    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50.0
+        return 60.0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            return users.count
+        }
         return schoolArray.count
     }
     
@@ -424,13 +481,20 @@ class FacebookCrushController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
-                
-        let crush = schoolArray[indexPath.row]
-        cellL.textLabel?.text = crush.name
-        if let profileImageUrl = crush.imageUrl1 {
-            cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
-        }
         
+        if isFiltering() {
+            let crush = users[indexPath.row]
+            cellL.textLabel?.text = crush.name
+            if let profileImageUrl = crush.imageUrl1 {
+                cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            }
+        } else {
+            let crush = schoolArray[indexPath.row]
+            cellL.textLabel?.text = crush.name
+            if let profileImageUrl = crush.imageUrl1 {
+                cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            }
+        }
         cellL.starButton.tintColor = hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         
         return cellL
@@ -449,4 +513,19 @@ class FacebookCrushController: UITableViewController {
         dismiss(animated: true)
     }
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
 }
+
+extension FacebookCrushController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
+

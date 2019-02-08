@@ -136,6 +136,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 100, right: 0)
         //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
@@ -147,10 +148,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
      
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleback))
         
-         setupKeyboardObservers()
+        setupKeyboardObservers()
         
-        view.bringSubviewToFront(inputContainerView)
-        
+        collectionView.bringSubviewToFront(inputContainerView)
+    
     }
     
     @objc func handleback() {
@@ -222,17 +223,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
         buttonStackView.axis = .horizontal
         containerView.addSubview(buttonStackView)
-
+        
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         buttonStackView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
         //buttonStackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         buttonStackView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         buttonStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         buttonStackView.bottomAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-//        buttonStackView.isLayoutMarginsRelativeArrangement = true
-//        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
+        //        buttonStackView.isLayoutMarginsRelativeArrangement = true
+        //        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
         containerView.bringSubviewToFront(buttonStackView)
+
         return containerView
         
     }()
@@ -365,51 +367,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             dismiss(animated: true, completion: nil)
         }
-//    fileprivate func sendMessageWithImageUrl(_ imageUrl: String) {
-//        //take out to name
-//        let toId = user!.uid!
-//        let fromId = Auth.auth().currentUser!.uid
-//        let toName = user!.name!
-//        let timestamp = Int(Date().timeIntervalSince1970)
-//        let values = ["imageUrl": imageUrl, "toId": toId, "toName": toName, "fromId": fromId, "timestamp": timestamp] as [String : Any]
-//        Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-//            if let err = err {
-//                print("error sending message", err)
-//                return
-//            }
-        
-        
-//        let ref = Database.database().reference().child("messages")
-//        let childRef = ref.childByAutoId()
-//        let toId = user!.id!
-//        let fromId = Auth.auth().currentUser!.uid
-//        let timestamp = Int(Date().timeIntervalSince1970)
-//
-//        let values = ["imageUrl": imageUrl, "toId": toId, "fromId": fromId, "timestamp": timestamp] as [String : Any]
-//
-//        childRef.updateChildValues(values) { (error, ref) in
-//            if error != nil {
-//                print(error!)
-//                return
-//            }
-//
-//            self.inputTextField.text = nil
-//
-//            guard let messageId = childRef.key else { return }
-//
-//            let userMessagesRef = Database.database().reference().child("user-messages").child(fromId).child(toId).child(messageId)
-//            userMessagesRef.setValue(1)
-//
-//            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId).child(fromId).child(messageId)
-//            recipientUserMessagesRef.setValue(1)
-//        }
-//    }
-    
-  
+
+
     
     override var inputAccessoryView: UIView? {
         get {
             return inputContainerView
+            
         }
     }
     
@@ -579,79 +543,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var containerViewBottomAnchor: NSLayoutConstraint?
 
     
-    func setupInputComponents() {
-        let containerView = UIView()
-        containerView.backgroundColor = UIColor.white
-
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(containerView)
-        
-        //ios9 constraint anchors
-        //x,y,w,h
-        containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        containerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        let uploadImageView = UIImageView()
-        uploadImageView.isUserInteractionEnabled = true
-        uploadImageView.image = UIImage(named: "upload_image_icon")
-        uploadImageView.translatesAutoresizingMaskIntoConstraints = false
-        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
-        containerView.addSubview(uploadImageView)
-        //x,y,w,h
-        uploadImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        uploadImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        uploadImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        uploadImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        
-        let sendButton = UIButton(type: .system)
-        sendButton.setTitle("Send", for: UIControl.State())
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        containerView.addSubview(sendButton)
-        //x,y,w,h
-        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-        
-        containerView.addSubview(inputTextField)
-        //x,y,w,h
-        inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
-        inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-        inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-        
-        let separatorLineView = UIView()
-        separatorLineView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        separatorLineView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(separatorLineView)
-        //x,y,w,h
-        separatorLineView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
-        separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-
-        let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
-        buttonStackView.axis = .horizontal
-        view.addSubview(buttonStackView)
-        
-        buttonStackView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        buttonStackView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        //buttonStackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        buttonStackView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
-        buttonStackView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        buttonStackView.bottomAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        buttonStackView.isLayoutMarginsRelativeArrangement = true
-        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
-        
-        
-    }
-    
     
     @objc func handleSend() {
         let properties = ["text": inputTextField.text!]
@@ -668,11 +559,19 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     {
         //is it there best thing to include the name inside of the message node
         let toId = user!.uid!
+        let toDevice = user?.deviceID!
         let fromId = Auth.auth().currentUser!.uid
+        
         let timestamp = Int(Date().timeIntervalSince1970)
         var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "timestamp": timestamp as AnyObject]
         
         properties.forEach({values[$0] = $1})
+        
+        //flip to id and from id to fix message controller query glitch
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({otherValues[$0] = $1})
+        
         
         self.inputTextField.text = nil
         
@@ -709,8 +608,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                             let document = documentSnapshot
                             if document.exists {
                                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                               
+                                //need to update the message collum for other user
+                                //just flip toID and Fromid
                                 
+                                self.messages.removeAll()
+                                self.observeMoreMessages()
                                 self.observeMessages()
+                        
+                                
                             }
                             else{
                                 print("DOC DOESN't exist yet")
@@ -728,18 +634,49 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     if document.exists {
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
                         
+                       //message row update fix
+                        
+                        //sort a not to update from id stuff
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
+                        
+                        //flip it
+                        
+                        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                            print("TITITITITITITITIITITIT")
+                            if let err = err {
+                                print("Error making individual convo", err)
+                                return
+                            }
+                            
+                            snapshot?.documents.forEach({ (documentSnapshot) in
+                                
+                                let document = documentSnapshot
+                                if document.exists {
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
+                                    
+                                    
+                                }
+                            })
+                        })
+                        
                     }
                     
                 })
             }
         })
-        print(messages.last ?? "Hello there lawson", "Hi how are ya")
+        
+        //cloud messaging stuff
+
+        
         messages.removeAll()
         observeMoreMessages()
         observeMessages()
         
         
     }
+    
+    //below func flips from id and to id so loads better
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         handleSend()
@@ -831,3 +768,4 @@ fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [Stri
 fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
     return input.rawValue
 }
+

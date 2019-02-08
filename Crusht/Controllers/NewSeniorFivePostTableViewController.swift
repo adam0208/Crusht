@@ -7,9 +7,6 @@
 //
 
 
-//NEED to make senior fives for each school!!!!!
-
-
 import UIKit
 import Firebase
 import JGProgressHUD
@@ -29,8 +26,39 @@ class NewSeniorFivePostTableViewController: UITableViewController {
             self.user = User(dictionary: dictionary)
             //print(self.user.name)
             
+            self.fetchSchool()
+            
             self.tableView.reloadData()
             
+        }
+    }
+    
+    var schoolArray = [User]()
+    
+    fileprivate func fetchSchool() {
+        
+        let school = user?.school ?? "Your School"
+        
+        navigationItem.title = school
+        
+        print(school)
+        
+        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school)
+        
+        query.getDocuments { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch user", err)
+              
+                return
+            }
+            
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let crush = User(dictionary: userDictionary)
+                
+                self.schoolArray.append(crush)
+                
+            })
         }
     }
         
@@ -144,7 +172,7 @@ class NewSeniorFivePostTableViewController: UITableViewController {
     }
         
         fileprivate func setupNavigationItems() {
-            navigationItem.title = "Senior Five"
+            navigationItem.title = "Your Five"
             
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(handleSave))
@@ -181,17 +209,6 @@ class NewSeniorFivePostTableViewController: UITableViewController {
                 print("Dismissal Complete")
             })
         }
-        
-//        Firestore.firestore().collection("senior-fives").addDocument(data: docData) { (err) in
-//            hud.dismiss()
-//            if let err = err {
-//                print("Failed to save post", err)
-//                return
-//            }
-//            self.dismiss(animated: true, completion: {
-//                print("Dismissal Complete")
-//            })
-//        }
         
     }
         

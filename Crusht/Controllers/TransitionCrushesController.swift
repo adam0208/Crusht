@@ -40,7 +40,7 @@ class TransitionCrushesController: UIViewController {
         button.setTitle("From Your School", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
         

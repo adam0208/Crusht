@@ -52,6 +52,9 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
             self.setupNavigationItems()
             
             self.tableView.reloadData()
+//            let indexPath = IndexPath(item: self.crushesArray.count - 1, section: self.crushesArray.count - 1)
+//            self.tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
+            
         }
     }
     
@@ -65,7 +68,8 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
             tableView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
             
         }
-   
+    
+
     class HeaderLabel: UILabel {
         override func drawText(in rect: CGRect) {
             super.drawText(in: rect.insetBy(dx: 16, dy: 0))
@@ -241,6 +245,17 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         let seniorFivePostController = NewSeniorFivePostTableViewController()
         let navcontroller = UINavigationController(rootViewController: seniorFivePostController)
         present(navcontroller, animated: true)
+    }
+    
+//this is buggy as hell
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if scrollView == tableView {
+            if tableView.contentOffset.y < -70 {
+                fetchCurrentUser()
+              
+            }
+        }
     }
         
 }

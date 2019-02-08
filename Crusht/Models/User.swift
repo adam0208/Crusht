@@ -34,6 +34,7 @@ struct User: ProducesCardViewModel {
     
     var lat: String?
     var long: String
+    var deviceID: String?
     
     
     init(dictionary: [String: Any]) {
@@ -57,6 +58,7 @@ struct User: ProducesCardViewModel {
         self.fbid = dictionary["fbid"] as? String ?? ""
         self.lat = dictionary["lat"] as? String ?? ""
         self.long = dictionary["long"] as? String ?? ""
+        self.deviceID = dictionary["deviceID"] as? String ?? ""
     
     }
 

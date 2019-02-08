@@ -81,11 +81,12 @@ class MatchView: UIView {
         return imageView
     }()
     
-    fileprivate let sendMessageButton: UIButton = {
+     let sendMessageButton: UIButton = {
         let button = SendMessageButton(type: .system)
         button.setTitle("SEND MESSAGE", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+      
         return button
     }()
     
@@ -97,6 +98,8 @@ class MatchView: UIView {
         button.addTarget(self, action: #selector(handleTapDismiss), for: .touchUpInside)
         return button
     }()
+    
+ 
     
     override init(frame: CGRect) {
         super.init(frame: frame)

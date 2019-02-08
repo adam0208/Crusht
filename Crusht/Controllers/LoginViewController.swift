@@ -13,13 +13,17 @@ import FacebookLogin
 import FBSDKLoginKit
 import FacebookCore
 import FBSDKCoreKit
+import SDWebImage
 
 
 class LoginViewController: UIViewController {
     
+    var bindableIsRegistering = Bindable<Bool>()
+    var bindableImage = Bindable<UIImage>()
+    var bindableIsFormValid = Bindable<Bool>()
+    
     var delegate: LoginControllerDelegate?
 
-    
     let Text: UILabel = {
         let label = UILabel()
      
@@ -158,6 +162,33 @@ class LoginViewController: UIViewController {
         })
     }
     
+    fileprivate func saveImageToFirebase() {
+        
+        let filename = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+        let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+        ref.putData(imageData, metadata: nil, completion: {(_, err) in
+            if let err = err {
+                print(err)
+                return 
+            }
+            print("finished Uploading image")
+            ref.downloadURL(completion: { (url, err) in
+                if let err = err {
+                    print(err)
+                    return
+                }
+                self.bindableIsRegistering.value = false
+                print("Download url of our image is:", url?.absoluteString ?? "")
+                
+                let imageUrl = url?.absoluteString ?? ""
+                self.saveInfoToFirestore()
+            })
+        })
+    }
+    
+    //maybe add the completion shit
+    
     
     //Need to save image to storage somehow
     
@@ -167,7 +198,7 @@ class LoginViewController: UIViewController {
     var photoUrl: String?
     var socialID: String?
     
-    fileprivate func saveInfoToFirestore(){
+    fileprivate func saveInfoToFirestore() {
         let uid = Auth.auth().currentUser?.uid ?? ""
         let docData: [String: Any] =
             ["Full Name": fullName ?? "",
@@ -186,9 +217,12 @@ class LoginViewController: UIViewController {
                 print("there was an err",err)
                 return
             }
-            let profileController = ProfilePageViewController()
-            
-            self.present(profileController, animated: true)
+//            let FBphoneController = FacebookPhoneController()
+//
+//            self.present(FBphoneController, animated: true)
+            let FBPhoneController = FacebookPhoneController()
+            FBPhoneController.fbid = self.socialID ?? ""
+            self.present(FBPhoneController, animated: true)
         }
     }
     

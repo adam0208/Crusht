@@ -19,7 +19,7 @@ class ProfPageTopStackView: UIStackView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        heightAnchor.constraint(equalToConstant: 50).isActive = true
+        heightAnchor.constraint(equalToConstant: 60).isActive = true
         distribution = .fillEqually
         spacing = 0
 

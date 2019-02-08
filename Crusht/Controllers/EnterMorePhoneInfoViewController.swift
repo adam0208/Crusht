@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import JGProgressHUD
+import SDWebImage
 
 extension EnterMorePhoneInfoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -129,11 +130,22 @@ class EnterMorePhoneInfoViewController: UIViewController {
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-            print(self.user?.phoneNumber ?? "Fuck you")
+
             self.registrationViewModel.phone = self.user?.phoneNumber ?? "123"
-            //self.fetchSwipes()
+            self.fullNameTextField.text = self.user?.name ?? ""
+            //self.emailTextField.text = self
+            self.registrationViewModel.fbid = self.user?.fbid ?? ""
+            self.loadUserPhotos()
             
         }
+    }
+    
+    fileprivate func loadUserPhotos() {
+        guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else {return}
+        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            self.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        //self.user?.imageUrl1
     }
     
     @objc fileprivate func handleRegister() {

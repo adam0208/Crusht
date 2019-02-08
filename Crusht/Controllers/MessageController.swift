@@ -49,8 +49,7 @@ class MessageController: UITableViewController {
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 
         
-        observeUserMessages()
-        observeMessages()
+        fetchUserAndSetupNavBarTitle()
     }
     
     @objc fileprivate func handleBack() {
@@ -74,7 +73,7 @@ class MessageController: UITableViewController {
                 let userDictionary = documentSnapshot.data()
                 let message = Message(dictionary: userDictionary)
                 self.messages.append(message)
-                self.fetchUserAndSetupNavBarTitle()
+             
                 //this will crash because of background thread, so lets call this on dispatch_async main thread
                 let messageStuff = Message(dictionary: userDictionary)
                 
@@ -111,38 +110,44 @@ class MessageController: UITableViewController {
     
     
     func observeMessages() {
-        self.fetchUserAndSetupNavBarTitle()
+        
         guard let uid = Auth.auth().currentUser?.uid else {return}
-
-        //Figure out the problem here you genious
         
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
-                if let err = err {
-                    print("FAILLLLLLLLL", err)
-                }
+            if let err = err {
+                print("FAILLLLLLLLL", err)
+            }
+            
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let message = Message(dictionary: userDictionary)
                 
-                //need to use where call and set it to from id
-                snapshot?.documents.forEach({ (documentSnapshot) in
-                    let userDictionary = documentSnapshot.data()
-                    let message = Message(dictionary: userDictionary)
-                    self.messages.append(message)
-                    
-                    //print(self.messages)
-                    //self.fetchUserAndSetupNavBarTitle()
+                self.messages.append(message)
+                
+                let messageStuff = Message(dictionary: userDictionary)
+                
+                if let chatPartnerId = messageStuff.chatPartnerId() {
+                    self.messagesDictionary[chatPartnerId] = message
+                    self.messages = Array(self.messagesDictionary.values)
                     self.messages.sort(by: { (message1, message2) -> Bool in
                         return message1.timestamp?.int32Value > message2.timestamp?.int32Value
+                        //refactor to cut cost
                     })
-                //this will crash because of background thread, so lets call this on dispatch_async main thread
+                }
+                
                 DispatchQueue.main.async(execute: {
+                    
                     self.tableView.reloadData()
-                    
                 })
-                    
-                    //changeHandler: nil)
-                })
-        
-    })
-}
+                
+            })
+            
+        })
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
@@ -221,7 +226,12 @@ class MessageController: UITableViewController {
     }
     
     func setupNavBarWithUser(_ user: User) {
-        //observeUserMessages()
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+        
+        observeUserMessages()
+        observeMessages()
         
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)

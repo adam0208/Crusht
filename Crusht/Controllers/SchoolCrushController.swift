@@ -10,12 +10,6 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-//two dimensinoal array not necessary
-
-//struct schoolshit {
-//    var uids: String
-//    var names: String
-//}
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -39,7 +33,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class SchoolCrushController: UITableViewController {
+class SchoolCrushController: UITableViewController, UISearchBarDelegate {
     
     
 //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
@@ -102,6 +96,24 @@ class SchoolCrushController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+        
+        view.addSubview(searchController.searchBar)
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search School"
+        navigationItem.searchController = self.searchController
+        definesPresentationContext = true
+      
+        
+        // Setup the Scope Bar
+        //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
+        // Setup the search footer
+       // tableView.tableFooterView = searchFooter
+      
     }
     
     fileprivate var user: User?
@@ -110,6 +122,21 @@ class SchoolCrushController: UITableViewController {
     var schoolArray = [User]()
     
     var users = [User]()
+    
+    //search bar stuff
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        users = schoolArray.filter({( user : User) -> Bool in
+            return user.name!.lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
+    }
     
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -124,7 +151,7 @@ class SchoolCrushController: UITableViewController {
             
             print(self.user?.phoneNumber ?? "Fuck you")
             
-            self.fetchSwipes()
+            //self.fetchSwipes()
             self.fetchSchool()
         }
     }
@@ -134,9 +161,7 @@ class SchoolCrushController: UITableViewController {
     
     fileprivate func fetchSchool() {
         
-        print("Fetching School Stuff ahahahahahah")
-        
-        let school = user?.school ?? "I suck a lot"
+        let school = user?.school ?? "Your School"
         
         navigationItem.title = school
         
@@ -172,18 +197,22 @@ class SchoolCrushController: UITableViewController {
                 })
                 
             })
+            
+            
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
                 
             })
+            
+            self.fetchSwipes()
+
         }
         
     }
     
-    var hasCrushed = Bool()
+    
     
     func hasTappedCrush(cell: UITableViewCell) {
-        
         
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
@@ -202,12 +231,17 @@ class SchoolCrushController: UITableViewController {
         
         matchUID = phoneNoDash
         
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+        //tableView.reloadRows(at: [indexPathTapped], with: .fade)
         
+        //cell.tintColor = .red
         
-        cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
         
-        handleLike()
+        handleLike(cell: cell)
+        }
+        else {
+            handleDislike(cell: cell)
+        }
         
     }
     
@@ -217,6 +251,8 @@ class SchoolCrushController: UITableViewController {
     
     
     func saveSwipeToFireStore(didLike: Int) {
+        
+        
         
         let phoneID = user?.phoneNumber ?? ""
         
@@ -252,6 +288,9 @@ class SchoolCrushController: UITableViewController {
                     print("Success saved swipe SETDATA")
                 }
             }
+            
+            self.fetchSwipes()
+            
         }
     }
     
@@ -268,8 +307,13 @@ class SchoolCrushController: UITableViewController {
             guard let data = snapshot?.data() else {return}
             print(data)
             
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            let hasMatched = data[uid] as? Int == 1
+            
+            //guard let uid = Auth.auth().currentUser?.uid else {return}
+            //Firestore.firestore()
+            
+            let phoneNumber = self.user?.phoneNumber ?? ""
+            
+            let hasMatched = data[phoneNumber] as? Int == 1
             if hasMatched {
                 print("we have a match!")
                 self.getCardUID(phoneNumber: cardUID)
@@ -278,7 +322,10 @@ class SchoolCrushController: UITableViewController {
     }
     
     fileprivate func getCardUID(phoneNumber: String) {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
         let phone = phoneNumber
+        print(phone, "LLLLLLLLLLLLLLLLLLLL")
         Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
             
             if let err = err {
@@ -289,6 +336,22 @@ class SchoolCrushController: UITableViewController {
                 let user = User(dictionary: userDictionary)
                 
                 let cardUID = user.uid!
+                print(user.name ?? "Not getting user")
+                
+                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                ]
+                let otherDocData: [String: Any] = ["uid": uid, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                ]
+               //this is for message controller
+                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
+                    if let err = err {
+                        print(err)
+                    }
+                    if (snapshot?.isEmpty)! {
+                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                    }
+                })
                 
                 self.presentMatchView(cardUID: cardUID)
                 
@@ -311,6 +374,12 @@ class SchoolCrushController: UITableViewController {
             self.swipes = data
             
             
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
+            
+            
         }
     }
     
@@ -318,9 +387,18 @@ class SchoolCrushController: UITableViewController {
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
+        matchView.sendMessageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
         self.navigationController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
+    }
+    
+    @objc fileprivate func handleMessageButtonTapped() {
+        let profileController = ProfilePageViewController()
+        present(profileController, animated: true)
+        let messageController = MessageController()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
     }
     
     // MARK: - Table view data source
@@ -329,14 +407,18 @@ class SchoolCrushController: UITableViewController {
     //    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50.0
+        return 60.0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+            if isFiltering() {
+                return users.count
+            }
         return schoolArray.count
     }
     
-    fileprivate var hasFavorited = false
+//    var hasFavorited = Bool()
     let cellId = "cellId"
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -344,28 +426,107 @@ class SchoolCrushController: UITableViewController {
         
         cellL.link = self
         
+        if isFiltering() {
+          let crush = users[indexPath.row]
+            cellL.textLabel?.text = crush.name
+            if let profileImageUrl = crush.imageUrl1 {
+                cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            }
+        } else {
         let crush = schoolArray[indexPath.row]
-        cellL.textLabel?.text = crush.name
-        if let profileImageUrl = crush.imageUrl1 {
-            cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            cellL.textLabel?.text = crush.name
+            if let profileImageUrl = crush.imageUrl1 {
+                cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            }
         }
+     
         
-        cellL.starButton.tintColor = hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+//        if hasFavorited == true {
+//        cellL.starButton.tintColor = .red
+//        }
+//        else {
+//            cellL.starButton.tintColor = .gray
+//        }
         
+        let crush = schoolArray[indexPath.row]
+        
+        let hasLiked = swipes[crush.phoneNumber ?? ""] as? Int == 1
+        
+        if hasLiked {
+            cellL.accessoryView?.tintColor = .red
+            hasFavorited = true
+        }
+        else{
+        cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        }
         return cellL
     }
     
-    func handleLike() {
+     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let crush = schoolArray[indexPath.row]
         
+        guard let profUID = crush.uid else {
+            return
+        }
+        
+        Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
+            guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
+            
+            var user = User(dictionary: dictionary)
+            user.uid = profUID
+            
+            self.showProfileForUser(user)
+        })
+    }
+    
+    fileprivate func showProfileForUser(_ user: User) {
+        let schoolProfileDetails = SchoolUserDetailsController()
+        schoolProfileDetails.user = user
+        present(schoolProfileDetails, animated: true)
+    }
+    
+    var hasFavorited = Bool()
+    // pass cell as a parameter to deal with it turning red
+    
+    func handleLike(cell: UITableViewCell) {
         
         saveSwipeToFireStore(didLike: 1)
         addCrushScore()
         
-        //cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+        cell.accessoryView?.tintColor = .red
+        
+      
+        
+    }
+    
+    func handleDislike(cell: UITableViewCell) {
+        
+        saveSwipeToFireStore(didLike: 0)
+        
+     cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        
+        
+        
     }
     
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
     }
     
+    //Searchbar stuff
+    
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+}
+
+extension SchoolCrushController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+       
+       filterContentForSearchText(searchController.searchBar.text!)
+    }
 }

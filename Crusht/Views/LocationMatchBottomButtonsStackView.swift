@@ -17,6 +17,7 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         return button
     }
     
+    
     let refreshButton = createButton(image: #imageLiteral(resourceName: "refresh_circle"))
     let dislikeButton = createButton(image: #imageLiteral(resourceName: "dismiss_circle"))
     let superLikeButton = createButton(image: #imageLiteral(resourceName: "super_like_circle"))
@@ -28,7 +29,7 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         distribution = .fillEqually
         heightAnchor.constraint(equalToConstant: 100).isActive = true
         
-        [refreshButton, dislikeButton, superLikeButton, likeButton, specialButton].forEach { (button) in
+        [refreshButton, dislikeButton, UIView(), likeButton, UIView()].forEach { (button) in
             self.addArrangedSubview(button)
         }
     }

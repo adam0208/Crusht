@@ -33,7 +33,7 @@ class FindCrushesTableViewController: UITableViewController {
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             print(self.user?.phoneNumber ?? "Fuck you")
-            //self.fetchSwipes()
+            self.fetchSwipes()
             
         }
     }
@@ -213,6 +213,7 @@ class FindCrushesTableViewController: UITableViewController {
     //var crushScoreIDFromPhoneNumber = String()
    
     fileprivate func getCardUID(phoneNumber: String) {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
         let phone = phoneNumber
         Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
             
@@ -224,7 +225,15 @@ class FindCrushesTableViewController: UITableViewController {
                 let user = User(dictionary: userDictionary)
                 
                 let cardUID = user.uid!
-                //self.crushScoreID = cardUID
+                
+                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                ]
+                let otherDocData: [String: Any] = ["uid": uid, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                ]
+                //this is for message controller
+                Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+            Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                
                 self.presentMatchView(cardUID: cardUID)
                 
             })
@@ -238,9 +247,18 @@ class FindCrushesTableViewController: UITableViewController {
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
+        matchView.sendMessageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
         self.navigationController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
+    }
+    
+    @objc fileprivate func handleMessageButtonTapped() {
+        let profileController = ProfilePageViewController()
+        present(profileController, animated: true)
+        let messageController = MessageController()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
     }
     
     var swipes = [String: Int]()
@@ -258,7 +276,12 @@ class FindCrushesTableViewController: UITableViewController {
             self.swipes = data
             // self.fetchUsersFromFirestore()
             //self.fetchUsersOnLoad()
+            
         }
+        DispatchQueue.main.async(execute: {
+            self.tableView.reloadData()
+            
+        })
     }
     
     func handleLike() {
@@ -344,14 +367,13 @@ class FindCrushesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        fetchCurrentUser()
         fetchContacts()
+        fetchCurrentUser()
+        
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))
         
         navigationItem.title = "Contacts"
     
-        navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
         //UINavigationItem.setLeftBarButton(back)
         tableView.register(ContactsCell.self, forCellReuseIdentifier: cellId)
@@ -365,54 +387,54 @@ class FindCrushesTableViewController: UITableViewController {
         dismiss(animated: true)
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+   // override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
-        
-        let button = UIButton(frame: CGRect(x:headerView.frame.size.width - 2*headerView.frame.size.width/3, y:0, width:headerView.frame.size.width/3, height:30))
-        button.setTitle("Contacts", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .yellow
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.addTarget(self, action: #selector(handleExpandClose), for: .touchUpInside)
-        //button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        button.tag = section
-        
-        let FBFreindbutton = UIButton(frame: CGRect(x:headerView.frame.size.width - headerView.frame.size.width/3, y:0, width:headerView.frame.size.width/3, height:30))
-        FBFreindbutton.setTitle("FB Friends", for: .normal)
-        FBFreindbutton.setTitleColor(.black, for: .normal)
-        FBFreindbutton.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        FBFreindbutton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        FBFreindbutton.addTarget(self, action: #selector(handleFBExpandClose), for: .touchUpInside)
-        
-        FBFreindbutton.tag = section
-        
-        let SchoolBttn = UIButton(frame: CGRect(x:headerView.frame.size.width - headerView.frame.size.width, y:0, width:headerView.frame.size.width/3, height:30))
-        SchoolBttn.setTitle("School", for: .normal)
-        SchoolBttn.setTitleColor(.black, for: .normal)
-        SchoolBttn.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        SchoolBttn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        SchoolBttn.addTarget(self, action: #selector(goToSchool), for: .touchUpInside)
-        
-        SchoolBttn.tag = section
-        
-        headerView.addSubview(button)
-        headerView.addSubview(FBFreindbutton)
-        headerView.addSubview(SchoolBttn)
-        
-        return headerView
-        
-    }
+//        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
+//
+//        let button = UIButton(frame: CGRect(x:headerView.frame.size.width - 2*headerView.frame.size.width/3, y:0, width:headerView.frame.size.width/3, height:30))
+//        button.setTitle("Contacts", for: .normal)
+//        button.setTitleColor(.black, for: .normal)
+//        button.backgroundColor = .yellow
+//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+//        button.addTarget(self, action: #selector(handleExpandClose), for: .touchUpInside)
+//        //button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        button.tag = section
+//
+//        let FBFreindbutton = UIButton(frame: CGRect(x:headerView.frame.size.width - headerView.frame.size.width/3, y:0, width:headerView.frame.size.width/3, height:30))
+//        FBFreindbutton.setTitle("FB Friends", for: .normal)
+//        FBFreindbutton.setTitleColor(.black, for: .normal)
+//        FBFreindbutton.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+//        FBFreindbutton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+//
+//        FBFreindbutton.addTarget(self, action: #selector(handleFBExpandClose), for: .touchUpInside)
+//
+//        FBFreindbutton.tag = section
+//
+//        let SchoolBttn = UIButton(frame: CGRect(x:headerView.frame.size.width - headerView.frame.size.width, y:0, width:headerView.frame.size.width/3, height:30))
+//        SchoolBttn.setTitle("School", for: .normal)
+//        SchoolBttn.setTitleColor(.black, for: .normal)
+//        SchoolBttn.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+//        SchoolBttn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+//
+//        SchoolBttn.addTarget(self, action: #selector(goToSchool), for: .touchUpInside)
+//
+//        SchoolBttn.tag = section
+//
+//        headerView.addSubview(button)
+//        headerView.addSubview(FBFreindbutton)
+//        headerView.addSubview(SchoolBttn)
+//
+//        return headerView
+//
+//    }
     
     fileprivate var expanded = false
     
-    @objc func goToSchool() {
-        let schoolController = SchoolCrushController()
-        let navControlla = UINavigationController(rootViewController: schoolController)
-        present(navControlla, animated: true)
-    }
+//    @objc func goToSchool() {
+//        let schoolController = SchoolCrushController()
+//        let navControlla = UINavigationController(rootViewController: schoolController)
+//        present(navControlla, animated: true)
+//    }
     
 //    @objc func handleSchoolExpandClose(button: UIButton) {
 //
@@ -439,53 +461,53 @@ class FindCrushesTableViewController: UITableViewController {
 //        }
 //    }
     
-    @objc func handleFBExpandClose(button: UIButton) {
-        print("expanding")
-        
-        let section = button.tag
-        
-        var indexPaths = [IndexPath]()
-        for row in twoDimensionalArray[section].names.indices {
-            print(0, row)
-            let indexPath = IndexPath(row: row, section: section)
-            indexPaths.append(indexPath)
-        }
-        
-        let isExpanded = twoDimensionalArray[section].isExpanded
-        twoDimensionalArray[section].isExpanded = !isExpanded
-        
-        if isExpanded {
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        } else {
-            tableView.insertRows(at: indexPaths, with: .fade)
-        }
-    }
-    
-    @objc func handleExpandClose(button: UIButton) {
-        print("Trying to expand and close section...")
-        
-        let section = button.tag
-        
-        // we'll try to close the section first by deleting the rows
-        var indexPaths = [IndexPath]()
-        for row in twoDimensionalArray[section].names.indices {
-            print(0, row)
-            let indexPath = IndexPath(row: row, section: section)
-            indexPaths.append(indexPath)
-        }
-        
-        let isExpanded = twoDimensionalArray[section].isExpanded
-        twoDimensionalArray[section].isExpanded = !isExpanded
-        
-        button.setTitle(isExpanded ? "Contacts" : "Contacts", for: .normal)
-        
-        if isExpanded {
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        } else {
-            tableView.insertRows(at: indexPaths, with: .fade)
-        }
-    }
-    
+//    @objc func handleFBExpandClose(button: UIButton) {
+//        print("expanding")
+//
+//        let section = button.tag
+//
+//        var indexPaths = [IndexPath]()
+//        for row in twoDimensionalArray[section].names.indices {
+//            print(0, row)
+//            let indexPath = IndexPath(row: row, section: section)
+//            indexPaths.append(indexPath)
+//        }
+//
+//        let isExpanded = twoDimensionalArray[section].isExpanded
+//        twoDimensionalArray[section].isExpanded = !isExpanded
+//
+//        if isExpanded {
+//            tableView.deleteRows(at: indexPaths, with: .fade)
+//        } else {
+//            tableView.insertRows(at: indexPaths, with: .fade)
+//        }
+//    }
+//
+//    @objc func handleExpandClose(button: UIButton) {
+//        print("Trying to expand and close section...")
+//
+//        let section = button.tag
+//
+//        // we'll try to close the section first by deleting the rows
+//        var indexPaths = [IndexPath]()
+//        for row in twoDimensionalArray[section].names.indices {
+//            print(0, row)
+//            let indexPath = IndexPath(row: row, section: section)
+//            indexPaths.append(indexPath)
+//        }
+//
+//        let isExpanded = twoDimensionalArray[section].isExpanded
+//        twoDimensionalArray[section].isExpanded = !isExpanded
+//
+//        button.setTitle(isExpanded ? "Contacts" : "Contacts", for: .normal)
+//
+//        if isExpanded {
+//            tableView.deleteRows(at: indexPaths, with: .fade)
+//        } else {
+//            tableView.insertRows(at: indexPaths, with: .fade)
+//        }
+//    }
+//
 
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -530,10 +552,24 @@ class FindCrushesTableViewController: UITableViewController {
         
         cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
         
-        cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         
-        if showIndexPaths {
-            //            cell.textLabel?.text = "\(favoritableContact.name)   Section:\(indexPath.section) Row:\(indexPath.row)"
+        let phoneString = favoritableContact.contact.phoneNumbers.first?.value.stringValue ?? ""
+        
+        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        
+        print(phoneNoDash)
+        
+        let hasLiked = swipes[phoneNoDash] as? Int == 1
+        
+        if hasLiked{
+            cell.accessoryView?.tintColor = .red
+        }
+        else {
+            cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         }
         
         return cell

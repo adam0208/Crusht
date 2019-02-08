@@ -34,8 +34,15 @@
 		2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */; };
 		2838170F21B8A26400B3E4FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170E21B8A26400B3E4FD /* User.swift */; };
 		2838171E21B8C90100B3E4FD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* Extension.swift */; };
+		2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707522026EF800EB83CE /* FacebookPhoneController.swift */; };
+		28597078220282CE00EB83CE /* VerifyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28597077220282CE00EB83CE /* VerifyAPI.swift */; };
+		2859707A2202C6F100EB83CE /* StartVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285970792202C6F100EB83CE /* StartVerificationViewController.swift */; };
+		2859707C2202C72400EB83CE /* VerificationResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707B2202C72400EB83CE /* VerificationResultViewController.swift */; };
+		2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */; };
+		2859708022037A3700EB83CE /* SchoolUserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */; };
 		285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285A34A521BC7B920086CC95 /* SettingsCells.swift */; };
 		286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */; };
+		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
 		28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */; };
@@ -155,8 +162,15 @@
 		2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
 		2838170E21B8A26400B3E4FD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2838171D21B8C90100B3E4FD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		2859707522026EF800EB83CE /* FacebookPhoneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookPhoneController.swift; sourceTree = "<group>"; };
+		28597077220282CE00EB83CE /* VerifyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyAPI.swift; sourceTree = "<group>"; };
+		285970792202C6F100EB83CE /* StartVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartVerificationViewController.swift; sourceTree = "<group>"; };
+		2859707B2202C72400EB83CE /* VerificationResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationResultViewController.swift; sourceTree = "<group>"; };
+		2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckVerificationViewController.swift; sourceTree = "<group>"; };
+		2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolUserDetailsController.swift; sourceTree = "<group>"; };
 		285A34A521BC7B920086CC95 /* SettingsCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCells.swift; sourceTree = "<group>"; };
 		286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
+		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide_out_menu_poster.png; sourceTree = "<group>"; };
@@ -382,6 +396,7 @@
 		283816F521B8927700B3E4FD /* ModelViews */ = {
 			isa = PBXGroup;
 			children = (
+				28597077220282CE00EB83CE /* VerifyAPI.swift */,
 				283816FE21B8A02900B3E4FD /* CardViewModel.swift */,
 				28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */,
 			);
@@ -394,6 +409,7 @@
 				2838171D21B8C90100B3E4FD /* Extension.swift */,
 				28908D8721C0AB2C00391A39 /* ExpandableNames.swift */,
 				28744A2021FF8BC800B438A8 /* GeoFire.swift */,
+				28711AAF220BABC400DD82EB /* SearchFooter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -421,6 +437,10 @@
 				28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */,
 				28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */,
 				28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */,
+				2859707522026EF800EB83CE /* FacebookPhoneController.swift */,
+				285970792202C6F100EB83CE /* StartVerificationViewController.swift */,
+				2859707B2202C72400EB83CE /* VerificationResultViewController.swift */,
+				2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -451,6 +471,7 @@
 			children = (
 				28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */,
 				286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */,
+				2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */,
 			);
 			path = "User Details";
 			sourceTree = "<group>";
@@ -834,10 +855,12 @@
 				2838170721B8A11000B3E4FD /* Advertiser.swift in Sources */,
 				28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */,
 				28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */,
+				2859707A2202C6F100EB83CE /* StartVerificationViewController.swift in Sources */,
 				283816F921B892C600B3E4FD /* ProfPageTopStackView.swift in Sources */,
 				285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */,
 				28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */,
 				28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */,
+				28597078220282CE00EB83CE /* VerifyAPI.swift in Sources */,
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
@@ -853,8 +876,10 @@
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */,
+				2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */,
 				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
+				2859708022037A3700EB83CE /* SchoolUserDetailsController.swift in Sources */,
 				28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */,
 				28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */,
 				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
@@ -865,6 +890,8 @@
 				28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */,
 				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
 				28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */,
+				2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */,
+				2859707C2202C72400EB83CE /* VerificationResultViewController.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
@@ -883,6 +910,7 @@
 				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
 				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,
 				28CFC6B321C5B30600387129 /* NewMessageController.swift in Sources */,
+				28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
