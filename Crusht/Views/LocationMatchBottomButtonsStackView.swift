@@ -17,6 +17,30 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         return button
     }
     
+    let likeBttn: UIButton = {
+       let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 60)
+        button.setTitle("👍", for: .normal)
+        button.backgroundColor = .white
+        button.heightAnchor.constraint(equalToConstant: 50)
+        button.widthAnchor.constraint(equalToConstant: 50)
+        button.layer.cornerRadius = 50
+       return button
+    }()
+    
+    let disLikeBttn: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 60)
+        button.setTitle("👎", for: .normal)
+        button.backgroundColor = .white
+        button.heightAnchor.constraint(equalToConstant: 50)
+        button.widthAnchor.constraint(equalToConstant: 50)
+        button.layer.cornerRadius = 50
+
+        //button.layer.masksToBounds = true
+        return button
+    }()
+    
     
     let refreshButton = createButton(image: #imageLiteral(resourceName: "refresh_circle"))
     let dislikeButton = createButton(image: #imageLiteral(resourceName: "dismiss_circle"))
@@ -29,7 +53,7 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         distribution = .fillEqually
         heightAnchor.constraint(equalToConstant: 100).isActive = true
         
-        [refreshButton, dislikeButton, UIView(), likeButton, UIView()].forEach { (button) in
+        [refreshButton, disLikeBttn, likeBttn].forEach { (button) in
             self.addArrangedSubview(button)
         }
     }

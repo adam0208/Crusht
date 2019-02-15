@@ -59,7 +59,7 @@ class LoginViewController: UIViewController {
         button.setTitle("Log in with Facebook", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = .blue
+        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
         button.layer.cornerRadius = 22
@@ -83,7 +83,8 @@ class LoginViewController: UIViewController {
     
     @objc func handleLogin () {
         let phoneNumberViewController = PhoneNumberViewController()
-        navigationController?.pushViewController(phoneNumberViewController, animated: true)
+        //navigationController?.pushViewController(phoneNumberViewController, animated: true)
+        present(phoneNumberViewController, animated: true)
 }
     let registrationViewModel = RegistrationViewModel()
     let registeringHUD = JGProgressHUD(style: .dark)
@@ -105,31 +106,36 @@ class LoginViewController: UIViewController {
         loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
             switch loginResult {
             case .failed(let error):
-               print("cccccccccccccccccccccccccccccccccccccc",error)
+                print("cccccccccccccccccccccccccccccccccccccc",error)
             case .cancelled:
                 print("User cancelled login.")
             case .success(grantedPermissions: _, declinedPermissions: _, token: _):
                 print("Logged in!")
-                    self.performRegistration()
+                self.performRegistration()
             }
-
+            
         }
     }
     
     
     fileprivate func performRegistration() {
-
+        
         let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
         Auth.auth().signInAndRetrieveData(with: credential) { (user, err) in
             if let err = err {
                 print("There was an error bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", err)
-
+                
                 return
             }
             
             print("Succesfully authenticated with Firebase.")
             self.fetchFacebookUser()
         }
+    }
+    
+    fileprivate func goToProfilePage() {
+        let profController = ProfilePageViewController()
+        present(profController, animated: true)
     }
     
     fileprivate func fetchFacebookUser() {
@@ -145,6 +151,7 @@ class LoginViewController: UIViewController {
                     let lastNameFB = responseDictionary["last_name"] as? String
                     let socialIdFB = responseDictionary["id"] as? String
                     let genderFB = responseDictionary["gender"] as? String
+                    let emailFB = responseDictionary["email"] as? String
                     let pictureUrlFB = responseDictionary["picture"] as? [String:Any]
                     let photoData = pictureUrlFB!["data"] as? [String:Any]
                     let photoUrl = photoData!["url"] as? String
@@ -157,6 +164,10 @@ class LoginViewController: UIViewController {
 
                 }
             }
+//            Firestore.firestore().collection("users").whereField .getDocuments(completion: { (snapshot, err) in
+//                    if let err = err {
+//                        print(err)
+//                    }
             self.saveInfoToFirestore()
             
         })
@@ -296,5 +307,7 @@ class LoginViewController: UIViewController {
         view.layer.addSublayer(gradientLayer)
         gradientLayer.frame = view.bounds
     }
+    
+
     
 }

@@ -94,9 +94,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         bottomStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         setupLayout()
         
-        bottomStackView.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+        bottomStackView.likeBttn.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         
-        bottomStackView.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+        bottomStackView.disLikeBttn.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+        topStackView.collegeOnlySwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
+        view.backgroundColor = .white
         fetchCurrentUser()
         //fetchUsersFromFirestore()
         //fetchUsersOnLoad()
@@ -184,19 +186,38 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     let hud = JGProgressHUD(style: .dark)
     
     func fetchUsersFromFirestore() {
+        
+//        if topStackView.collegeOnlySwitch.isOn == true {
+//            fetchSchoolUsersOnly()
+//        }
+        
+       // else {
+        
         hud.textLabel.text = "Fetching Users, hold tight :)"
         hud.show(in: view)
         hud.dismiss(afterDelay: 1)
         
+        
+        var radiusInt: Double?
+        
         let minAge = user?.minSeekingAge ?? 18
         let maxAge = user?.maxSeekingAge ?? 50
+        
+        //put distance stuff here
+        
+        if (user?.maxDistance ?? 10) < 10 {
+            radiusInt = 5
+        }
+        else {
+            radiusInt = 10
+        }
         
         let geoFirestoreRef = Firestore.firestore().collection("users")
         let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
         
         let userCenter = CLLocation(latitude: userLat, longitude: userLong)
         
-        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 10)
+        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: radiusInt!)
                 
 //        radiusQuery.observe(.documentEntered, with: { (key, location) in
 //            print("The document with documentID '\(self.user?.uid ?? "fuck")' entered the search area and is at location '\(userCenter)'")
@@ -213,6 +234,44 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 self.hud.dismiss(afterDelay: 2)
                 return
             }
+        
+            
+            var previousCardView: CardView?
+            
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let user = User(dictionary: userDictionary)
+                // if user.uid != Auth.auth().currentUser?.uid {
+                let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
+                if isNotCurrentUser && hasNotSwipedBefore  {
+                    let cardView = self.setupCardFromUser(user: user)
+                    
+                    previousCardView?.nextCardView = cardView
+                    previousCardView = cardView
+                    
+                    if self.topCardView == nil {
+                        self.topCardView = cardView
+                    }
+                }
+                
+            })
+            
+            }
+       // }
+            
+    }
+    
+    fileprivate func fetchSchoolUsersOnly() {
+        Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").getDocuments { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch user", err)
+                self.hud.textLabel.text = "Failed To Fetch user"
+                self.hud.show(in: self.view)
+                self.hud.dismiss(afterDelay: 2)
+                return
+            }
+            
             
             var previousCardView: CardView?
             
@@ -430,5 +489,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         overallStackView.bringSubviewToFront(cardDeckView)
     }
     
-    
+    @objc fileprivate func switchValueDidChange() {
+        fetchUsersFromFirestore()
+    }
 }

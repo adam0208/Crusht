@@ -89,11 +89,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         super.viewDidLoad()
         
         let cellId = "cellId"
-        
+                
         fetchCurrentUser()
         
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         
@@ -462,28 +462,28 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         return cellL
     }
     
-     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let crush = schoolArray[indexPath.row]
-        
-        guard let profUID = crush.uid else {
-            return
-        }
-        
-        Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
-            guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
-            
-            var user = User(dictionary: dictionary)
-            user.uid = profUID
-            
-            self.showProfileForUser(user)
-        })
-    }
+//     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let crush = schoolArray[indexPath.row]
+//        
+//        guard let profUID = crush.uid else {
+//            return
+//        }
+//        
+//        Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
+//            guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
+//            
+//            var user = User(dictionary: dictionary)
+//            user.uid = profUID
+//            
+//            self.showProfileForUser(user)
+//        })
+//    }
     
-    fileprivate func showProfileForUser(_ user: User) {
-        let schoolProfileDetails = SchoolUserDetailsController()
-        schoolProfileDetails.user = user
-        present(schoolProfileDetails, animated: true)
-    }
+//    fileprivate func showProfileForUser(_ user: User) {
+//        let schoolProfileDetails = SchoolUserDetailsController()
+//        schoolProfileDetails.user = user
+//        present(schoolProfileDetails, animated: true)
+//    }
     
     var hasFavorited = Bool()
     // pass cell as a parameter to deal with it turning red
@@ -511,6 +511,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
     
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.clear
     }
     
     //Searchbar stuff

@@ -21,7 +21,7 @@ class UserCell: UITableViewCell {
                 let timestampDate = Date(timeIntervalSince1970: seconds)
                 
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "hh:mm:ss a"
+                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss a"
                 timeLabel.text = dateFormatter.string(from: timestampDate)
             }
             

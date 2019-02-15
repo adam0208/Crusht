@@ -23,7 +23,7 @@ class ContactsCell: UITableViewCell {
             let starButton = UIButton(type: .system)
             starButton.setImage(#imageLiteral(resourceName: "heartIcon3Crusht"), for: .normal)
             starButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-            starButton.tintColor = .red
+            //starButton.tintColor = .red
             starButton.addTarget(self, action: #selector(handleMarkAsFavorite), for: .touchUpInside)
             
             accessoryView = starButton

@@ -40,10 +40,12 @@ class MessageController: UITableViewController {
         super.viewDidLoad()
         let cellId = "cellId"
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         
-        let image = UIImage(named: "new_message_icon")?.withRenderingMode(.alwaysOriginal)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
+      //  let image = UIImage(named: "new_message_icon")?.withRenderingMode(.alwaysOriginal)
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "📤", style: .plain, target: self, action: #selector(handleNewMessage))
         navigationItem.title = "Messages"
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)

@@ -7,8 +7,24 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
 
 class TransitionCrushesController: UIViewController {
+    
+//    var user: User?
+//
+//    fileprivate func fetchCurrentUser() {
+//        guard let uid = Auth.auth().currentUser?.uid else {return}
+//        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+//            if let err = err {
+//                print(err)
+//                return
+//            }
+//            guard let dictionary = snapshot?.data() else {return}
+//            self.user = User(dictionary: dictionary)
+//        }
+//    }
     
     let Text: UILabel = {
         let label = UILabel()
@@ -77,6 +93,7 @@ class TransitionCrushesController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //fetchCurrentUser()
         setupGradientLayer()
         
         let stack = UIStackView(arrangedSubviews: [Text, findCrushesThroughContacts,findCrushesThroughSchool,findCrushesThroughFacebook])
@@ -106,9 +123,11 @@ class TransitionCrushesController: UIViewController {
     }
     
     @objc fileprivate func handleFacebook() {
+        
         let fbcontroller = FacebookCrushController()
         let navigationController = UINavigationController(rootViewController: fbcontroller)
         present(navigationController, animated: true)
+        
     }
     
     @objc fileprivate func handleBack() {

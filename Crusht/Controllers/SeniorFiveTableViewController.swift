@@ -58,10 +58,15 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         }
     }
     
+    
+
+    
         override func viewDidLoad() {
+            super.viewDidLoad()
+            setupGradientLayer()
             fetchCurrentUser()
           
-            super.viewDidLoad()
+            
             tableView.tableFooterView = UIView()
             tableView.keyboardDismissMode = .interactive
             //setupNavigationItems()
@@ -98,7 +103,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
             return 40
             }
             else {
-                return 10
+                return 25
             }
         }
     
@@ -177,7 +182,6 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         
         DispatchQueue.main.async(execute: {
             
-           
             self.tableView.reloadData()
             self.tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
         })
@@ -233,7 +237,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         fileprivate func setupNavigationItems() {
             navigationItem.title = "Crush List"
             
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleCancel))
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Write Your 5", style: .plain, target: self, action: #selector(handleWritePost))
         }
         
@@ -247,15 +251,39 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         present(navcontroller, animated: true)
     }
     
-//this is buggy as hell
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+////this is expensive
+//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//
+//        if scrollView == tableView {
+//            if tableView.contentOffset.y < -70 {
+//                crushesArray.removeAll()
+//                fetchCurrentUser()
+//
+//            }
+//        }
+//    }
+    
+    let gradientLayer = CAGradientLayer()
+    
+    //    override func viewWillLayoutSubviews() {
+    //        super.viewWillLayoutSubviews()
+    //        gradientLayer.frame = tableView.bounds
+    //
+    //    }
+    
+    fileprivate func setupGradientLayer() {
         
-        if scrollView == tableView {
-            if tableView.contentOffset.y < -70 {
-                fetchCurrentUser()
-              
-            }
-        }
+        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        // make sure to user cgColor
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        tableView.layer.addSublayer(gradientLayer)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 800)
+        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 800))
+        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+        self.tableView.backgroundView = backgroundView
+        
     }
-        
+    
 }

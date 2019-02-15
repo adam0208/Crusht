@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Crusht want to keep using your location</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Crusht would like to use your location</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -38,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>FacebookAppID</key>
 	<string>493663857703946</string>
 	<key>FacebookDisplayName</key>
@@ -54,6 +50,10 @@
 	<true/>
 	<key>NSContactsUsageDescription</key>
 	<string>We needs your contacts to match you with your Crush!</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Crusht would like to use your location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Crusht want to keep using your location</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

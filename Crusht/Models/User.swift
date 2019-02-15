@@ -25,6 +25,9 @@ struct User: ProducesCardViewModel {
     
     var minSeekingAge: Int?
     var maxSeekingAge: Int?
+    
+    var minDistance: Int?
+    var maxDistance: Int?
 
     
     var toId: String?
@@ -35,6 +38,7 @@ struct User: ProducesCardViewModel {
     var lat: String?
     var long: String
     var deviceID: String?
+    var email: String?
     
     
     init(dictionary: [String: Any]) {
@@ -59,6 +63,9 @@ struct User: ProducesCardViewModel {
         self.lat = dictionary["lat"] as? String ?? ""
         self.long = dictionary["long"] as? String ?? ""
         self.deviceID = dictionary["deviceID"] as? String ?? ""
+        self.minDistance = dictionary["minDistance"] as? Int
+        self.maxDistance = dictionary["maxDistance"] as? Int
+        self.email = dictionary["email"] as? String ?? ""
     
     }
 

@@ -11,7 +11,7 @@ import UIKit
 class SeniorFivePostLable: UILabel {
     
     override var intrinsicContentSize: CGSize {
-        return .init(width: 0, height: 300)
+        return .init(width: 0, height: 200)
     }
     override func drawText(in rect: CGRect) {
         super.drawText(in: rect.insetBy(dx: 10, dy: 0))
@@ -34,7 +34,7 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
                 let timestampDate = Date(timeIntervalSince1970: seconds)
                 
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "hh:mm:ss a"
+                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss a"
                 timeLabel.text = dateFormatter.string(from: timestampDate)
             }
             
@@ -48,7 +48,9 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
         //label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = UIColor.darkGray
         //label.translatesAutoresizingMaskIntoConstraints = false
-         label.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -56,7 +58,7 @@ class SeniorFivePostsTableViewCell: UITableViewCell {
         let tf = SeniorFivePostLable()
         tf.text = "Enter Name"
         tf.numberOfLines = 0
-        tf.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        tf.font = UIFont.systemFont(ofSize: 20, weight: .light)
         return tf
     }()
     

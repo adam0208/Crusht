@@ -33,6 +33,7 @@ var school: String? { didSet { checkFormValidity() } }
     var phone: String!
     
     var fbid: String?
+    
    
 
     func performRegistration(completion: @escaping (Error?) -> ()) {
@@ -105,6 +106,7 @@ var school: String? { didSet { checkFormValidity() } }
                 "PhoneNumber": phone,
                 "deviceID": token ?? "",
                 "fbid": fbid ?? "",
+                "email": email ?? "",
             "ImageUrl1": imageUrl]
         //let userAge = ["Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
@@ -118,7 +120,7 @@ var school: String? { didSet { checkFormValidity() } }
     }
     
      func checkFormValidity() {
-        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && school?.isEmpty == false && "\(age ?? -1)".isEmpty == false && bindableImage.value != nil
+        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && school?.isEmpty == false && "\(age ?? -1)".isEmpty == false && bindableImage.value != nil && (age! > 17)
         bindableIsFormValid.value = isFormValid
     
     }

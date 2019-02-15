@@ -64,6 +64,7 @@ class NewSeniorFivePostTableViewController: UITableViewController {
         
         override func viewDidLoad() {
             super.viewDidLoad()
+            setupGradientLayer()
             fetchCurrentUser()
             tableView.tableFooterView = UIView()
             tableView.keyboardDismissMode = .interactive
@@ -82,14 +83,7 @@ class NewSeniorFivePostTableViewController: UITableViewController {
             let headerLabel = HeaderLabel()
              headerLabel.font = UIFont.boldSystemFont(ofSize: 16)
             if section == 0 {
-            
-                headerLabel.text = "\(user?.name ?? "fuck you")" + "'s Crushes"
-            }
-            else if section < 6 {
-                headerLabel.text = "Name of Crush"
-            }
-            else{
-                headerLabel.text = "Comments"
+                headerLabel.text = "\(user?.name ?? "")" + "'s Crushes"
             }
             
             return headerLabel
@@ -100,7 +94,12 @@ class NewSeniorFivePostTableViewController: UITableViewController {
         }
         
         override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 40
+            if section == 0 {
+                return 30
+            }
+            else {
+            return 15
+            }
         }
         
         override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -112,23 +111,23 @@ class NewSeniorFivePostTableViewController: UITableViewController {
             
             switch indexPath.section {
             case 1:
-                cell.textField.placeholder = "Enter Name"
+                cell.textField.placeholder = "Enter Crush"
                 cell.textField.addTarget(self, action: #selector(handleNameOne), for: .editingChanged)
                 
             case 2 :
-                cell.textField.placeholder = "Enter Name"
+                cell.textField.placeholder = "Enter Crush"
                 cell.textField.addTarget(self, action: #selector(handleNameTwo), for: .editingChanged)
                 
             case 3:
-                cell.textField.placeholder = "Enter Name"
+                cell.textField.placeholder = "Enter Crush"
                 cell.textField.addTarget(self, action: #selector(handleNameThree), for: .editingChanged)
                 
             case 4:
-                cell.textField.placeholder = "Enter Name"
+                cell.textField.placeholder = "Enter Crush"
                 cell.textField.addTarget(self, action: #selector(handleNameFour), for: .editingChanged)
                 
             case 5:
-                cell.textField.placeholder = "Enter Name"
+                cell.textField.placeholder = "Enter Crush"
                 cell.textField.addTarget(self, action: #selector(handleNameFive), for: .editingChanged)
                 
             default:
@@ -215,5 +214,29 @@ class NewSeniorFivePostTableViewController: UITableViewController {
         @objc fileprivate func handleCancel() {
             dismiss(animated: true)
         }
+    
+    
+    
+    let gradientLayer = CAGradientLayer()
+    
+    //    override func viewWillLayoutSubviews() {
+    //        super.viewWillLayoutSubviews()
+    //        gradientLayer.frame = tableView.bounds
+    //
+    //    }
+    
+    fileprivate func setupGradientLayer() {
         
+        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        // make sure to user cgColor
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        tableView.layer.addSublayer(gradientLayer)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 800)
+        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 800))
+        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+        self.tableView.backgroundView = backgroundView
+        
+    }
 }

@@ -137,7 +137,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 100, right: 0)
         //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
@@ -149,8 +149,24 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleback))
         
         setupKeyboardObservers()
+//
+//        let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
+//        buttonStackView.axis = .horizontal
+//        view.addSubview(buttonStackView)
+//
+//        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        buttonStackView.leftAnchor.constraint(equalTo: inputAccessoryView!.leftAnchor).isActive = true
+//        //buttonStackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+//        buttonStackView.widthAnchor.constraint(equalTo: inputAccessoryView!.widthAnchor).isActive = true
+//        buttonStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        buttonStackView.bottomAnchor.constraint(equalTo: inputAccessoryView!.topAnchor).isActive = true
+//        //        buttonStackView.isLayoutMarginsRelativeArrangement = true
+//        //        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
+
         
         collectionView.bringSubviewToFront(inputContainerView)
+      
     
     }
     
@@ -220,20 +236,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
-        buttonStackView.axis = .horizontal
-        containerView.addSubview(buttonStackView)
-        
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        buttonStackView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        //buttonStackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        buttonStackView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
-        buttonStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        buttonStackView.bottomAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        //        buttonStackView.isLayoutMarginsRelativeArrangement = true
-        //        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
-        containerView.bringSubviewToFront(buttonStackView)
+
 
         return containerView
         

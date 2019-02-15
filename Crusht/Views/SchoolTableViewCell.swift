@@ -28,7 +28,7 @@ class SchoolTableViewCell: UITableViewCell {
     
     let starButton: UIButton = {
     let button = UIButton(type: .system)
-    button.setImage(#imageLiteral(resourceName: "FaveBttn2"), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "heartIcon3Crusht.png"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
 
     button.tintColor = .red

@@ -12,8 +12,7 @@ import Contacts
 import JGProgressHUD
 import Alamofire
 
-class FindCrushesTableViewController: UITableViewController {
-    
+class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate {
     
 
     let cellId = "cellId123123"
@@ -34,6 +33,7 @@ class FindCrushesTableViewController: UITableViewController {
             self.user = User(dictionary: dictionary)
             print(self.user?.phoneNumber ?? "Fuck you")
             self.fetchSwipes()
+            self.tableView.reloadData()
             
         }
     }
@@ -58,21 +58,25 @@ class FindCrushesTableViewController: UITableViewController {
         
         cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
         
-        handleLike()
+        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
+            
+            handleLike()
+        }
+        else {
+            handleDislike()
+        }
     }
-    
-    //func sendMessageToNewUser() {
-    
+//    func sendMessageToNewUser() {
+//
 //        var swiftRequest = SwiftRequest();
-//        
+//
 //        var data = [
 //            "To" : "+15555555555",
 //            "From" : "+15555556666",
 //            "Body" : "Hello World"
 //        ];
-//        
-//        swiftRequest.post("https://api.twilio.com/2010-04-01/Accounts/[YOUR_ACCOUNT_SID]/Messages",
-//                          auth: ["username" : "[YOUR_ACCOUNT_SID]", "password" : "YOUR_AUTH_TOKEN"]
+//
+//        swiftRequest.post("https://api.twilio.com/2010-04-01/Accounts/[YOUR_ACCOUNT_SID]/Messages", auth: ["username" : "[YOUR_ACCOUNT_SID]", "password" : "YOUR_AUTH_TOKEN"]
 //            data: data,
 //            callback: {err, response, body in
 //                if err == nil {
@@ -81,58 +85,61 @@ class FindCrushesTableViewController: UITableViewController {
 //                    println("Error: \(err)")
 //                }
 //        });
-//}
-    
+//    }
+//
     var phoneID: String?
-    
+
     var twoDimensionalArray = [ExpandableNames]()
-    
-    
+    var filteredContanct = [ExpandableNames]()
+
     fileprivate func fetchContacts() {
         print("Attempting to fetch contacts today..")
-        
+
         let store = CNContactStore()
-        
+
         store.requestAccess(for: .contacts) { (granted, err) in
             if let err = err {
                 print("Failed to request access:", err)
                 return
             }
-            
+
             if granted {
                 print("Access granted")
-                
+
                 let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
                 let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
-                
+
                 do {
-                    
+
                     var favoritableContacts = [FavoritableContact]()
-                    
+
                     try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointerIfYouWantToStopEnumerating) in
-                        
+
                         print(contact.givenName)
                         print(contact.familyName)
                         print(contact.phoneNumbers.first?.value.stringValue ?? "")
-                        
+
                         favoritableContacts.append(FavoritableContact(contact: contact, hasFavorited: false))
-                        
+
+//                        self.filteredContanct = ["\(contact.givenName) \(contact.familyName)"]
                         //                        favoritableContacts.append(FavoritableContact(name: contact.givenName + " " + contact.familyName, hasFavorited: false))
                     })
-                    
+
                     let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
                     self.twoDimensionalArray = [names]
                     
+
                 } catch let err {
                     print("Failed to enumerate contacts:", err)
                 }
-                
+
             } else {
                 print("Access denied..")
             }
         }
     }
     
+
     var showIndexPaths = false
     
     func saveSwipeToFireStore(didLike: Int) {
@@ -231,9 +238,15 @@ class FindCrushesTableViewController: UITableViewController {
                 let otherDocData: [String: Any] = ["uid": uid, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
                 ]
                 //this is for message controller
-                Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
-            Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
-                
+                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
+                    if let err = err {
+                        print(err)
+                    }
+                    if (snapshot?.isEmpty)! {
+                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                    }
+                })
                 self.presentMatchView(cardUID: cardUID)
                 
             })
@@ -276,12 +289,12 @@ class FindCrushesTableViewController: UITableViewController {
             self.swipes = data
             // self.fetchUsersFromFirestore()
             //self.fetchUsersOnLoad()
-            
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
         }
-        DispatchQueue.main.async(execute: {
-            self.tableView.reloadData()
-            
-        })
+     
     }
     
     func handleLike() {
@@ -289,6 +302,10 @@ class FindCrushesTableViewController: UITableViewController {
         saveSwipeToFireStore(didLike: 1)
         addCrushScore()
         
+    }
+    
+   func handleDislike() {
+    saveSwipeToFireStore(didLike: 0)
     }
     
     fileprivate var crushScore: CrushScore?
@@ -367,6 +384,21 @@ class FindCrushesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(searchController.searchBar)
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Contacts"
+        navigationItem.searchController = self.searchController
+        definesPresentationContext = true
+        
+        
+        // Setup the Scope Bar
+        //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
         fetchContacts()
         fetchCurrentUser()
         
@@ -374,11 +406,11 @@ class FindCrushesTableViewController: UITableViewController {
         
         navigationItem.title = "Contacts"
     
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         //UINavigationItem.setLeftBarButton(back)
         tableView.register(ContactsCell.self, forCellReuseIdentifier: cellId)
         //tableView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
-        
+        tableView.reloadData()
     }
     
     let hud = JGProgressHUD(style: .dark)
@@ -387,156 +419,32 @@ class FindCrushesTableViewController: UITableViewController {
         dismiss(animated: true)
     }
     
-   // override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-//        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
-//
-//        let button = UIButton(frame: CGRect(x:headerView.frame.size.width - 2*headerView.frame.size.width/3, y:0, width:headerView.frame.size.width/3, height:30))
-//        button.setTitle("Contacts", for: .normal)
-//        button.setTitleColor(.black, for: .normal)
-//        button.backgroundColor = .yellow
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-//        button.addTarget(self, action: #selector(handleExpandClose), for: .touchUpInside)
-//        //button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-//        button.tag = section
-//
-//        let FBFreindbutton = UIButton(frame: CGRect(x:headerView.frame.size.width - headerView.frame.size.width/3, y:0, width:headerView.frame.size.width/3, height:30))
-//        FBFreindbutton.setTitle("FB Friends", for: .normal)
-//        FBFreindbutton.setTitleColor(.black, for: .normal)
-//        FBFreindbutton.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-//        FBFreindbutton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-//
-//        FBFreindbutton.addTarget(self, action: #selector(handleFBExpandClose), for: .touchUpInside)
-//
-//        FBFreindbutton.tag = section
-//
-//        let SchoolBttn = UIButton(frame: CGRect(x:headerView.frame.size.width - headerView.frame.size.width, y:0, width:headerView.frame.size.width/3, height:30))
-//        SchoolBttn.setTitle("School", for: .normal)
-//        SchoolBttn.setTitleColor(.black, for: .normal)
-//        SchoolBttn.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-//        SchoolBttn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-//
-//        SchoolBttn.addTarget(self, action: #selector(goToSchool), for: .touchUpInside)
-//
-//        SchoolBttn.tag = section
-//
-//        headerView.addSubview(button)
-//        headerView.addSubview(FBFreindbutton)
-//        headerView.addSubview(SchoolBttn)
-//
-//        return headerView
-//
-//    }
-    
-    fileprivate var expanded = false
-    
-//    @objc func goToSchool() {
-//        let schoolController = SchoolCrushController()
-//        let navControlla = UINavigationController(rootViewController: schoolController)
-//        present(navControlla, animated: true)
-//    }
-    
-//    @objc func handleSchoolExpandClose(button: UIButton) {
-//
-//        let section = button.tag
-//
-//        let names = schoolArray.count
-//
-//        // we'll try to close the section first by deleting the rows
-//        var indexPaths = [IndexPath]()
-//        for row in schoolArray[section].description.indices{
-//            print(0, row)
-//            let indexPath = IndexPath(row: names, section: section)
-//            indexPaths.append(indexPath)
-//        }
-//
-//        button.setTitle(expanded ? "School" : "School", for: .normal)
-//
-//        if expanded {
-//            tableView.deleteRows(at: indexPaths, with: .fade)
-//        } else {
-//            tableView.beginUpdates()
-//            tableView.insertRows(at: indexPaths, with: .fade)
-//            tableView.endUpdates()
-//        }
-//    }
-    
-//    @objc func handleFBExpandClose(button: UIButton) {
-//        print("expanding")
-//
-//        let section = button.tag
-//
-//        var indexPaths = [IndexPath]()
-//        for row in twoDimensionalArray[section].names.indices {
-//            print(0, row)
-//            let indexPath = IndexPath(row: row, section: section)
-//            indexPaths.append(indexPath)
-//        }
-//
-//        let isExpanded = twoDimensionalArray[section].isExpanded
-//        twoDimensionalArray[section].isExpanded = !isExpanded
-//
-//        if isExpanded {
-//            tableView.deleteRows(at: indexPaths, with: .fade)
-//        } else {
-//            tableView.insertRows(at: indexPaths, with: .fade)
-//        }
-//    }
-//
-//    @objc func handleExpandClose(button: UIButton) {
-//        print("Trying to expand and close section...")
-//
-//        let section = button.tag
-//
-//        // we'll try to close the section first by deleting the rows
-//        var indexPaths = [IndexPath]()
-//        for row in twoDimensionalArray[section].names.indices {
-//            print(0, row)
-//            let indexPath = IndexPath(row: row, section: section)
-//            indexPaths.append(indexPath)
-//        }
-//
-//        let isExpanded = twoDimensionalArray[section].isExpanded
-//        twoDimensionalArray[section].isExpanded = !isExpanded
-//
-//        button.setTitle(isExpanded ? "Contacts" : "Contacts", for: .normal)
-//
-//        if isExpanded {
-//            tableView.deleteRows(at: indexPaths, with: .fade)
-//        } else {
-//            tableView.insertRows(at: indexPaths, with: .fade)
-//        }
-//    }
-//
+//    fileprivate var expanded = false
 
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 36
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60.0
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return twoDimensionalArray.count
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if !twoDimensionalArray[section].isExpanded {
-            return 0
+        if isFiltering() {
+            return filteredContanct.count
         }
         
         return twoDimensionalArray[section].names.count
     }
     
-//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//
-//        let view:UIView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: self.view.bounds.size.width, height: 10))
-//        view.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
-//
-//        return view
-//    }
-    
-//    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 10.0
-//    }
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ContactCell
@@ -552,7 +460,6 @@ class FindCrushesTableViewController: UITableViewController {
         
         cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
         
-        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         
         let phoneString = favoritableContact.contact.phoneNumbers.first?.value.stringValue ?? ""
         
@@ -561,7 +468,6 @@ class FindCrushesTableViewController: UITableViewController {
         let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
         let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
         
-        print(phoneNoDash)
         
         let hasLiked = swipes[phoneNoDash] as? Int == 1
         
@@ -572,8 +478,65 @@ class FindCrushesTableViewController: UITableViewController {
             cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         }
         
+        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+        
+        if isFiltering() {
+            let favoritableContact = filteredContanct[indexPath.section].names[indexPath.row]
+            cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+            
+            cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
+          
+        } else {
+            let favoritableContact = twoDimensionalArray[indexPath.section].names[indexPath.row]
+            cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+            
+            cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
+        }
+        
+       
         return cell
     }
     
+    let searchController = UISearchController(searchResultsController: nil)
     
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+        
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        //let favoritableContact = twoDimensionalArray[IndexPath.section].names[IndexPath.row]
+        
+        filteredContanct = twoDimensionalArray.filter({( user : ExpandableNames) -> Bool in
+//            var favoritableContacts = [FavoritableContact]()
+//            let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
+//            self.twoDimensionalArray = [names]
+            return user.names.description.lowercased().contains(searchText.lowercased())
+        })
+        
+        DispatchQueue.main.async(execute: {
+            self.tableView.reloadData()
+            
+        })
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+ }
+
+
+extension FindCrushesTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
 }
+    
+    
+

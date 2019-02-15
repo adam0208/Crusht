@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
         window?.rootViewController = ProfilePageViewController()
         }
-        //window?.rootViewController = LoginViewController()
+       // window?.rootViewController = EnterMorePhoneInfoViewController()
         
         return true
     }

@@ -198,7 +198,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         fetchCurrentUser()
         
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         
         navigationItem.title = "Facebook Friends"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
@@ -206,7 +206,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search School"
+        searchController.searchBar.placeholder = "Search FB Friends"
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
         
@@ -404,9 +404,15 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                 let otherDocData: [String: Any] = ["uid": uid, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
                 ]
                 //this is for message controller
-                Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
-                
-                Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
+                    if let err = err {
+                        print(err)
+                    }
+                    if (snapshot?.isEmpty)! {
+                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                    }
+                })
                 
                 self.presentMatchView(cardUID: cardUID)
                 
@@ -495,7 +501,19 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                 cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
             }
         }
-        cellL.starButton.tintColor = hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+        
+        let crush = schoolArray[indexPath.row]
+        
+        let hasLiked = swipes[crush.phoneNumber ?? ""] as? Int == 1
+        
+        if hasLiked {
+            cellL.accessoryView?.tintColor = .red
+            hasFavorited = true
+        }
+        else{
+            cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        }
+        //cellL.starButton.tintColor = hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         
         return cellL
     }
@@ -511,6 +529,10 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.clear
     }
     
     let searchController = UISearchController(searchResultsController: nil)

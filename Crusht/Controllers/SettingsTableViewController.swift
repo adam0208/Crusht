@@ -74,6 +74,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
     }
     
+
+    
     
     func createBttn(selector: Selector) -> UIButton {
         let button = UIButton(type: .system)
@@ -89,13 +91,17 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //setupGradientLayer()
+        setupGradientLayer()
         setUpNavItems()
-        tableView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        tableView.tableFooterView = UIView()
+        //view.backgroundColor = .blue
+        //tableView.backgroundColor = UIColor.clear
+        //tableView.tableFooterView?.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         tableView.keyboardDismissMode = .interactive
+        //view.bringSubviewToFront(tableView)
+        //tableView.fillSuperview()
         //setupGradientLayer()
         fetchCurrentUser()
+        
         
     }
     
@@ -175,32 +181,41 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         headerLabel.font = UIFont.boldSystemFont(ofSize: 18)
         switch section {
         case 1:
-            headerLabel.text = "Name"
+            headerLabel.text = ""
         case 2 :
-            headerLabel.text = "School"
+            headerLabel.text = ""
         case 3:
-            headerLabel.text = "Age"
+            headerLabel.text = ""
         case 4:
-             headerLabel.text = "Bio"
+             headerLabel.text = ""
         case 5:
-            headerLabel.text = "Age Range Preferance"
+            headerLabel.text = "Match by Locantion prefrences"
         default:
-            headerLabel.text = "Location Range Preference"
+            headerLabel.text = ""
         }
         
 
         return headerLabel
     }
     
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 300
         }
-        return 45
+        else if section == 5 {
+            return 45
+        }
+        else if section == 7 || section == 8 {
+            return 20
+        }
+        else {
+        return 15
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 7
+        return 9
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -210,13 +225,15 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SettingsCells(style: .default, reuseIdentifier: nil)
         
+        
+        
         if indexPath.section == 5 {
             let ageRangeCell = AgeRangeTableViewCell(style: .default, reuseIdentifier: nil)
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinChanged), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChanged), for: .valueChanged)
             
-            ageRangeCell.minLabel.text = "Min \(user?.minSeekingAge ?? 18)"
-            ageRangeCell.maxLabel.text = "Max \(user?.maxSeekingAge ?? 50)"
+            ageRangeCell.minLabel.text = "Min Age: \(user?.minSeekingAge ?? 18)"
+            ageRangeCell.maxLabel.text = "Max Age: \(user?.maxSeekingAge ?? 50)"
             
             ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? 18)
             ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? 50)
@@ -225,9 +242,34 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
         else if indexPath.section == 6 {
             let locationRangeCell = LocationTableViewCell(style: .default, reuseIdentifier: nil)
+            locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
+            locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
             
+            locationRangeCell.minLabel.text = "Min Km: \(user?.minDistance ?? 1)"
+            locationRangeCell.maxLabel.text = "Max Km: \(user?.maxDistance ?? 50)"
+            
+            locationRangeCell.minSlider.value = Float(user?.minDistance ?? 1)
+            locationRangeCell.maxSlider.value = Float(user?.maxDistance ?? 50)
+            
+    
             return locationRangeCell
         }
+        else if indexPath.section == 7 {
+            
+            let fbCell = FbConnectCell(style: .default, reuseIdentifier: nil)
+            
+            return fbCell
+           
+        }
+        
+        else if indexPath.section == 8 {
+            let logoutCell = LogoutBttnCell(style: .default, reuseIdentifier: nil)
+            
+            logoutCell.logOutBttn.addTarget(self, action: #selector(handleLogOut), for: .touchUpInside)
+            
+            return logoutCell
+        }
+    
         
         switch indexPath.section {
         case 1:
@@ -266,6 +308,16 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
       evaluateMinMax()
     }
     
+    @objc fileprivate func handleMinChangedDistance (slider: UISlider) {
+        
+        evaluateMinMaxDistance()
+    }
+    
+    @objc fileprivate func handleMaxChangedDistance (slider: UISlider) {
+        
+        evaluateMinMaxDistance()
+    }
+    
     
     fileprivate func evaluateMinMax() {
         guard let ageRangeCell = tableView.cellForRow(at: [5, 0]) as? AgeRangeTableViewCell else { return }
@@ -278,6 +330,19 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         
         user?.minSeekingAge = minValue
         user?.maxSeekingAge = maxValue
+    }
+    
+    fileprivate func evaluateMinMaxDistance() {
+        guard let locationRangeCell = tableView.cellForRow(at: [6, 0]) as? LocationTableViewCell else { return }
+        let minValue = Int(locationRangeCell.minSlider.value)
+        var maxValue = Int(locationRangeCell.maxSlider.value)
+        maxValue = max(minValue, maxValue)
+        locationRangeCell.maxSlider.value = Float(maxValue)
+        locationRangeCell.minLabel.text = "Min \(minValue)"
+        locationRangeCell.maxLabel.text = "Max \(maxValue)"
+        
+        user?.minDistance = minValue
+        user?.maxDistance = maxValue
     }
     
     @objc fileprivate func handleNameChange(textField: UITextField) {
@@ -302,10 +367,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
-        ]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save Changes", style: .plain, target: self, action: #selector(handleSave))
+        
     }
     
     @objc fileprivate func handleSave() {
@@ -321,6 +384,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "Bio": user?.bio ?? "",
             "minSeekingAge": user?.minSeekingAge ?? 18,
             "maxSeekingAge": user?.maxSeekingAge ?? 50,
+            "minDistance": user?.minDistance ?? 1,
+            "maxDistance": user?.maxDistance ?? 5,
+            "fbid": user?.fbid ?? "",
+            "PhoneNumber": user?.phoneNumber ?? ""
             ]
         
         let hud = JGProgressHUD(style: .dark)
@@ -358,5 +425,52 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         dismiss(animated: true)
     }
 
+    let gradientLayer = CAGradientLayer()
+    
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        gradientLayer.frame = tableView.bounds
+//
+//    }
+    
+    fileprivate func setupGradientLayer() {
+        
+        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        // make sure to user cgColor
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        tableView.layer.addSublayer(gradientLayer)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 800)
+        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 800))
+        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+        self.tableView.backgroundView = backgroundView
 
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.section == 7 || indexPath.section == 8 {
+            cell.backgroundColor = UIColor.clear
+        }
+        else {
+        cell.backgroundColor = UIColor.white
+        }
+    }
+//    func setTableViewBackgroundGradient(sender: UITableViewController, _ topColor:UIColor, _ bottomColor:UIColor) {
+//
+//        let gradientBackgroundColors = [topColor.#colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1), bottomColor.#colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)]
+//        let gradientLocations = [0.0,1.0]
+//
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.colors = gradientBackgroundColors
+//        gradientLayer.locations = gradientLocations
+//
+//        gradientLayer.frame = sender.tableView.bounds
+//        let backgroundView = UIView(frame: sender.tableView.bounds)
+//        backgroundView.layer.insertSublayer(gradientLayer, atIndex: 0)
+//        sender.tableView.backgroundView = backgroundView
+//    }
+//
 }
+
+

@@ -133,7 +133,7 @@ class EnterMorePhoneInfoViewController: UIViewController {
 
             self.registrationViewModel.phone = self.user?.phoneNumber ?? "123"
             self.fullNameTextField.text = self.user?.name ?? ""
-            //self.emailTextField.text = self
+            //self.emailTextField.text = self.user?.email ?? ""
             self.registrationViewModel.fbid = self.user?.fbid ?? ""
             self.loadUserPhotos()
             
