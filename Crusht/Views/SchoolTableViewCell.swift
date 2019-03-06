@@ -63,12 +63,7 @@ class SchoolTableViewCell: UITableViewCell {
         starButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         starButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
         starButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        if hasFavoried == true {
-            starButton.tintColor = .red
-        }
-        else {
-            starButton.tintColor = .gray 
-        }
+     
         starButton.addTarget(self, action: #selector(handleTapped), for: .touchUpInside)
         
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
@@ -110,7 +105,7 @@ class SchoolTableViewCell: UITableViewCell {
     
     @objc func handleTapped() {
         link?.hasTappedCrush(cell: self)
-        starButton.tintColor = .red
+        //starButton.tintColor = .red
         print("CRUSHBUTTONTAPPED")
     }
     

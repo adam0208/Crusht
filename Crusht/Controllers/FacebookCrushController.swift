@@ -82,6 +82,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                     for i in  0..<data.count {
                         let dict = data[i] as! NSDictionary
                         let temp = dict.value(forKey: "id") as! String
+                        print("lililililiilli", temp)
                         Firestore.firestore().collection("users").whereField("fbid", isEqualTo: temp).getDocuments(completion: { (snapshot, err) in
                             if let err = err {
                                 print("failed getting fb friends", err)
@@ -90,28 +91,21 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                                 let userDictionary = documentSnapshot.data()
                                 let crush = User(dictionary: userDictionary)
                                 
-                                self.schoolArray.append(crush)
+                                self.fbArray.append(crush)
                                 
+                           
                                 
-                                print(self.schoolArray)
-                                //                let crushStuff = User(dictionary: userDictionary)
-                                //                if let crushPartnerId = crushStuff.crushPartnerId() {
-                                //                    self.schoolUserDictionary[crushPartnerId] = user
-                                //                    self.users = Array(self.schoolUserDictionary.values)
-                                //                }
-                                
-                                self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
+                                self.fbArray.sorted(by: { (crush1, crush2) -> Bool in
                                     return crush1.name > crush2.name
                                 })
-                                
-                            })
-                            DispatchQueue.main.async(execute: {
-                                self.tableView.reloadData()
                                 
                             })
                             
                         })
                     }
+                    
+                    
+                    self.fetchSwipes()
                     
                     
                 }
@@ -190,6 +184,8 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         
     }
     
+    var facebookCell = FacebookCrushCell()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -201,7 +197,9 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         
         navigationItem.title = "Facebook Friends"
-        tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+        
+        tableView.register(FacebookCrushCell.self, forCellReuseIdentifier: cellId)
+        
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
@@ -223,7 +221,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        users = schoolArray.filter({( user : User) -> Bool in
+        users = fbArray.filter({( user : User) -> Bool in
             return user.name!.lowercased().contains(searchText.lowercased())
         })
         
@@ -233,71 +231,69 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     fileprivate var user: User?
     let hud = JGProgressHUD(style: .dark)
     
-    var schoolArray = [User]()
+    fileprivate var fbArray = [User]()
     
-    var users = [User]()
+    fileprivate var users = [User]()
     
     
     var schoolUserDictionary = [String: User]()
     
-    fileprivate func fetchSchool() {
-        
-        print("Fetching School Stuff ahahahahahah")
-        
-        let school = user?.school ?? "I suck a lot"
-        
-        navigationItem.title = school
-        
-        print(school)
-        
-        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school)
-        
-        query.getDocuments { (snapshot, err) in
-            if let err = err {
-                print("failed to fetch user", err)
-                self.hud.textLabel.text = "Failed To Fetch user"
-                self.hud.show(in: self.view)
-                self.hud.dismiss(afterDelay: 2)
-                return
-            }
-            
-            snapshot?.documents.forEach({ (documentSnapshot) in
-                let userDictionary = documentSnapshot.data()
-                let crush = User(dictionary: userDictionary)
-                
-                self.schoolArray.append(crush)
-                
-                
-                print(self.schoolArray)
-                //                let crushStuff = User(dictionary: userDictionary)
-                //                if let crushPartnerId = crushStuff.crushPartnerId() {
-                //                    self.schoolUserDictionary[crushPartnerId] = user
-                //                    self.users = Array(self.schoolUserDictionary.values)
-                //                }
-                
-                self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
-                    return crush1.name > crush2.name
-                })
-                
-            })
-            DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
-                
-            })
-        }
-        
-    }
+//    fileprivate func fetchSchool() {
+//        
+//        print("Fetching School Stuff ahahahahahah")
+//        
+//        let school = user?.school ?? "I suck a lot"
+//        
+//        navigationItem.title = school
+//        
+//        print(school)
+//        
+//        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school)
+//        
+//        query.getDocuments { (snapshot, err) in
+//            if let err = err {
+//                print("failed to fetch user", err)
+//                self.hud.textLabel.text = "Failed To Fetch user"
+//                self.hud.show(in: self.view)
+//                self.hud.dismiss(afterDelay: 2)
+//                return
+//            }
+//            
+//            snapshot?.documents.forEach({ (documentSnapshot) in
+//                let userDictionary = documentSnapshot.data()
+//                let crush = User(dictionary: userDictionary)
+//                
+//                self.schoolArray.append(crush)
+//                
+//                
+//                print(self.schoolArray)
+//                //                let crushStuff = User(dictionary: userDictionary)
+//                //                if let crushPartnerId = crushStuff.crushPartnerId() {
+//                //                    self.schoolUserDictionary[crushPartnerId] = user
+//                //                    self.users = Array(self.schoolUserDictionary.values)
+//                //                }
+//                
+//                self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
+//                    return crush1.name > crush2.name
+//                })
+//                
+//            })
+//            DispatchQueue.main.async(execute: {
+//                self.tableView.reloadData()
+//                
+//            })
+//        }
+//        
+//    }
     
-    var hasCrushed = Bool()
-    
-    func hasTappedCrush(cell: UITableViewCell) {
+     func hasTappedFBCrush(cell: UITableViewCell) {
         
         
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
         print("YOU Have selected something")
         
-        let crush = schoolArray[indexPathTapped.row]
+        let crush = fbArray[indexPathTapped.row]
         
         crushScoreID = crush.uid ?? ""
         
@@ -310,17 +306,31 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         
         matchUID = phoneNoDash
         
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+        //tableView.reloadRows(at: [indexPathTapped], with: .fade)
         
-        cell.accessoryView?.tintColor = .red
+        //cell.tintColor = .red
         
-        handleLike()
+        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
+            
+            handleLike(cell: cell)
+        }
+        else {
+            handleDislike(cell: cell)
+        }
         
     }
     
     var crushScoreID = String()
     
     var matchUID = String()
+    
+    func handleDislike(cell: UITableViewCell) {
+        
+        saveSwipeToFireStore(didLike: 0)
+        
+        cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        
+    }
     
     
     func saveSwipeToFireStore(didLike: Int) {
@@ -434,17 +444,12 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
             
-            if self.swipes == [phoneID: 1] {
-                self.handleTint()
-            }
-            
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
             
         }
-    }
-    
-    fileprivate func handleTint() {
-        
-        
     }
     
     
@@ -479,14 +484,16 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         if isFiltering() {
             return users.count
         }
-        return schoolArray.count
+        return fbArray.count
     }
     
     fileprivate var hasFavorited = false
     let cellId = "cellId"
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
+       let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! FacebookCrushCell
+        
+         cellL.fblink = self
         
         if isFiltering() {
             let crush = users[indexPath.row]
@@ -495,14 +502,14 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                 cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
             }
         } else {
-            let crush = schoolArray[indexPath.row]
+            let crush = fbArray[indexPath.row]
             cellL.textLabel?.text = crush.name
             if let profileImageUrl = crush.imageUrl1 {
                 cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
             }
         }
         
-        let crush = schoolArray[indexPath.row]
+        let crush = fbArray[indexPath.row]
         
         let hasLiked = swipes[crush.phoneNumber ?? ""] as? Int == 1
         
@@ -518,13 +525,14 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         return cellL
     }
     
-    func handleLike() {
+    func handleLike(cell: UITableViewCell) {
         
         
         saveSwipeToFireStore(didLike: 1)
         addCrushScore()
         
-        //cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+        cell.accessoryView?.tintColor = .red
+        
     }
     
     @objc fileprivate func handleBack() {

@@ -59,6 +59,7 @@ class LoginViewController: UIViewController {
         button.setTitle("Log in with Facebook", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
@@ -67,12 +68,15 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+   
+    
     let phoneLoginBttn: UIButton = {
         
         let button = UIButton(type: .system)
         button.setTitle("Log in with Phone", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
@@ -161,14 +165,22 @@ class LoginViewController: UIViewController {
                     self.fullName = "\(firstNameFB ?? "") \(lastNameFB ?? "")"
                     self.photoUrl = photoUrl
                     self.socialID = socialIdFB
+                    self.email = emailFB
 
                 }
             }
-//            Firestore.firestore().collection("users").whereField .getDocuments(completion: { (snapshot, err) in
-//                    if let err = err {
-//                        print(err)
-//                    }
-            self.saveInfoToFirestore()
+            Firestore.firestore().collection("users").whereField("email", isEqualTo: self.email ?? "").getDocuments(completion: { (snapshot, err) in
+                if let err = err {
+                    print(err)
+                }
+                if (snapshot?.isEmpty)! {
+                    self.saveInfoToFirestore()
+                }
+                else {
+                    let profileController = ProfilePageViewController()
+                    self.present(profileController, animated: true)
+                }
+            })
             
         })
     }
@@ -208,6 +220,7 @@ class LoginViewController: UIViewController {
     var age: Int?
     var photoUrl: String?
     var socialID: String?
+    var email: String?
     
     fileprivate func saveInfoToFirestore() {
         let uid = Auth.auth().currentUser?.uid ?? ""
@@ -219,6 +232,7 @@ class LoginViewController: UIViewController {
              "Bio": "",
              "minSeekingAge": 18,
              "maxSeekingAge": 50,
+             "email": email ?? "",
              "fbid": socialID ?? "",
              "ImageUrl1": photoUrl!]
         //let userAge = ["Age": age]
@@ -275,6 +289,10 @@ class LoginViewController: UIViewController {
         let logoImage = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/2, height: UIScreen.main.bounds.size.height/3))
         logoImage.image = #imageLiteral(resourceName: "CrushTLogoIcon")
         logoImage.contentMode = .scaleAspectFit
+        
+        let width = self.view.bounds.width
+        let height = self.view.bounds.height
+        
         
         let overallStackView = UIStackView(arrangedSubviews: [logoImage, UIView(), Text, UIView(), FBLoginBttn, UIView(), phoneLoginBttn])
         overallStackView.axis = .vertical

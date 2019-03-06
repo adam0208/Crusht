@@ -36,7 +36,6 @@
 		2838171E21B8C90100B3E4FD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* Extension.swift */; };
 		2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707522026EF800EB83CE /* FacebookPhoneController.swift */; };
 		28597078220282CE00EB83CE /* VerifyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28597077220282CE00EB83CE /* VerifyAPI.swift */; };
-		2859707A2202C6F100EB83CE /* StartVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285970792202C6F100EB83CE /* StartVerificationViewController.swift */; };
 		2859707C2202C72400EB83CE /* VerificationResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707B2202C72400EB83CE /* VerificationResultViewController.swift */; };
 		2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */; };
 		2859708022037A3700EB83CE /* SchoolUserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */; };
@@ -80,6 +79,7 @@
 		28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */; };
 		28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */; };
 		289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 289224BB21B9C1B20047E29B /* GoogleService-Info.plist */; };
+		28A1B6522218D68C00666155 /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A1B6512218D68C00666155 /* TODO.swift */; };
 		28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */; };
 		28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */; };
 		28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */; };
@@ -107,6 +107,7 @@
 		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
 		28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9621C41A7800B7051F /* SendMessageButton.swift */; };
 		28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */; };
+		28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE2D72216672000896198 /* FacebookCrushCell.swift */; };
 		93EA35963A0441CD6DC3A04D /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */; };
 		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
 		EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */; };
@@ -165,7 +166,6 @@
 		2838171D21B8C90100B3E4FD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		2859707522026EF800EB83CE /* FacebookPhoneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookPhoneController.swift; sourceTree = "<group>"; };
 		28597077220282CE00EB83CE /* VerifyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyAPI.swift; sourceTree = "<group>"; };
-		285970792202C6F100EB83CE /* StartVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartVerificationViewController.swift; sourceTree = "<group>"; };
 		2859707B2202C72400EB83CE /* VerificationResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationResultViewController.swift; sourceTree = "<group>"; };
 		2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckVerificationViewController.swift; sourceTree = "<group>"; };
 		2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolUserDetailsController.swift; sourceTree = "<group>"; };
@@ -209,6 +209,7 @@
 		28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindCrushesTableViewController.swift; sourceTree = "<group>"; };
 		28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewController.swift; sourceTree = "<group>"; };
 		289224BB21B9C1B20047E29B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		28A1B6512218D68C00666155 /* TODO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutBttnCell.swift; sourceTree = "<group>"; };
 		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
@@ -237,6 +238,7 @@
 		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		28F46D9621C41A7800B7051F /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "itsamatch@2x copy.png"; sourceTree = "<group>"; };
+		28FDE2D72216672000896198 /* FacebookCrushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushCell.swift; sourceTree = "<group>"; };
 		36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				28857C9121B8D1D400A654A0 /* super_like_circle@2x.png */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
 				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
+				28A1B6512218D68C00666155 /* TODO.swift */,
 			);
 			path = Crusht;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */,
 				28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */,
 				28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */,
+				28FDE2D72216672000896198 /* FacebookCrushCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -441,7 +445,6 @@
 				28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */,
 				28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */,
 				2859707522026EF800EB83CE /* FacebookPhoneController.swift */,
-				285970792202C6F100EB83CE /* StartVerificationViewController.swift */,
 				2859707B2202C72400EB83CE /* VerificationResultViewController.swift */,
 				2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */,
 			);
@@ -852,7 +855,6 @@
 				2838170721B8A11000B3E4FD /* Advertiser.swift in Sources */,
 				28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */,
 				28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */,
-				2859707A2202C6F100EB83CE /* StartVerificationViewController.swift in Sources */,
 				283816F921B892C600B3E4FD /* ProfPageTopStackView.swift in Sources */,
 				285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */,
 				28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */,
@@ -864,6 +866,7 @@
 				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
 				28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
+				28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
 				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
 				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
@@ -873,6 +876,7 @@
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */,
+				28A1B6522218D68C00666155 /* TODO.swift in Sources */,
 				2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */,
 				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,

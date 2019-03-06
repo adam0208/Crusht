@@ -128,6 +128,11 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
                     self.twoDimensionalArray = [names]
                     
+                    DispatchQueue.main.async(execute: {
+                        self.tableView.reloadData()
+                        
+                    })
+                    
 
                 } catch let err {
                     print("Failed to enumerate contacts:", err)

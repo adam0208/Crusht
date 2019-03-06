@@ -234,7 +234,7 @@ class NewSeniorFivePostTableViewController: UITableViewController {
         gradientLayer.locations = [0, 1]
         tableView.layer.addSublayer(gradientLayer)
         gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 800)
-        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 800))
+        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 1000))
         backgroundView.layer.insertSublayer(gradientLayer, at: 0)
         self.tableView.backgroundView = backgroundView
         

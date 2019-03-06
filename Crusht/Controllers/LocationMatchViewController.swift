@@ -477,6 +477,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         view.backgroundColor = .white
         
+        cardDeckView.layer.cornerRadius = 40
+        cardDeckView.clipsToBounds = true
+        
         let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomStackView])
         overallStackView.axis = .vertical
         

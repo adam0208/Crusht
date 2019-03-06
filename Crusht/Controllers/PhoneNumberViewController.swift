@@ -44,7 +44,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         button.setTitle("Get Verification Code", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
         
@@ -63,7 +63,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         
         stack.axis = .vertical
         
-        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 250, left: 30, bottom: 250, right: 30))
+        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/3, left: 30, bottom: view.bounds.height/3, right: 30))
         
         
         stack.spacing = 20

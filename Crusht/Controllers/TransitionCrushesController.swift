@@ -32,6 +32,8 @@ class TransitionCrushesController: UIViewController {
         label.text = "Find Crushes Via..."
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+
         label.textColor = .black
         return label
     }()
@@ -59,6 +61,7 @@ class TransitionCrushesController: UIViewController {
         button.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         
         button.layer.cornerRadius = 22
         
@@ -72,6 +75,8 @@ class TransitionCrushesController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
         
@@ -102,7 +107,9 @@ class TransitionCrushesController: UIViewController {
         
         stack.axis = .vertical
         
-        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 180, left: 30, bottom: 180, right: 30))
+        let padding = view.bounds.height/4
+        
+        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: padding, left: 30, bottom: padding, right: 30))
         
         stack.spacing = 20
         

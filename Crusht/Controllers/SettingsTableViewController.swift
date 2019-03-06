@@ -291,7 +291,9 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             cell.textField.text = user?.bio
             cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
         default:
-            cell.textField .placeholder = "age stuff"
+            cell.textField.placeholder = "Phone Number"
+            cell.textField.text = user?.phoneNumber
+            
         }
 
         
@@ -361,6 +363,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     @objc fileprivate func handleBioChange(textField: UITextField) {
         self.user?.bio = textField.text
     }
+
+    
     
     fileprivate func setUpNavItems() {
         navigationItem.title = "Settings "
@@ -386,6 +390,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "maxSeekingAge": user?.maxSeekingAge ?? 50,
             "minDistance": user?.minDistance ?? 1,
             "maxDistance": user?.maxDistance ?? 5,
+            "email": user?.email ?? "",
             "fbid": user?.fbid ?? "",
             "PhoneNumber": user?.phoneNumber ?? ""
             ]
@@ -441,7 +446,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]
         tableView.layer.addSublayer(gradientLayer)
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 800)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 1000)
         let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 800))
         backgroundView.layer.insertSublayer(gradientLayer, at: 0)
         self.tableView.backgroundView = backgroundView

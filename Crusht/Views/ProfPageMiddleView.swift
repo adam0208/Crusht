@@ -40,7 +40,7 @@ class ProfPageMiddleView: UIView {
         button.heightAnchor.constraint(equalToConstant: 250).isActive = true
         button.widthAnchor.constraint(equalToConstant: 80).isActive = true
         button.imageView?.contentMode = .scaleAspectFill
-        
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.layer.cornerRadius = 70
         button.clipsToBounds = true
         return button
@@ -62,6 +62,7 @@ class ProfPageMiddleView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.layer.cornerRadius = 16
         return button
     }()
@@ -74,6 +75,7 @@ class ProfPageMiddleView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.layer.cornerRadius = 16
         
         return button
@@ -100,8 +102,6 @@ class ProfPageMiddleView: UIView {
     }
     
     let gradientLayer = CAGradientLayer()
-    
- 
     
     fileprivate func setupGradientLayer() {
         

@@ -70,7 +70,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
             tableView.tableFooterView = UIView()
             tableView.keyboardDismissMode = .interactive
             //setupNavigationItems()
-            tableView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+            //tableView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
             
         }
     
@@ -280,7 +280,7 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         gradientLayer.locations = [0, 1]
         tableView.layer.addSublayer(gradientLayer)
         gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 800)
-        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 800))
+        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 1200))
         backgroundView.layer.insertSublayer(gradientLayer, at: 0)
         self.tableView.backgroundView = backgroundView
         

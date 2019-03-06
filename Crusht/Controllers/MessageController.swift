@@ -64,7 +64,7 @@ class MessageController: UITableViewController {
 
     func observeUserMessages() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        
+        //Firestore.firestore.coll
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
             if let err = err {
                 print("HELLLLLLLLNO", err)
