@@ -535,6 +535,32 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let crush = fbArray[indexPath.row]
+        
+        guard let profUID = crush.uid else {
+            return
+        }
+        //
+        //        let userDetailsController = UserDetailsController()
+        //        //userDetailsController.view.backgroundColor = .purple
+        //        userDetailsController.cardViewModel =
+        //        present(userDetailsController, animated: true)
+        Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
+            guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
+            
+            var user = User(dictionary: dictionary)
+            user.uid = profUID
+            let userDetailsController = UserDetailsController()
+            //userDetailsController.view.backgroundColor = .purple
+            userDetailsController.cardViewModel = user.toCardViewModel()
+            self.present(userDetailsController, animated: true)
+            
+        })
+    }
+    
+    
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
     }

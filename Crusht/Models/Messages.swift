@@ -12,6 +12,7 @@ import Firebase
 class Message: NSObject {
     
     var fromId: String?
+    var fromName: String?
     var text: String?
     var timestamp: NSNumber?
     var toId: String?
@@ -28,6 +29,7 @@ class Message: NSObject {
         self.text = dictionary["text"] as? String
         self.toId = dictionary["toId"] as? String
         self.toName = dictionary["toName"] as? String
+        self.fromName = dictionary["fromName"] as? String
         self.timestamp = dictionary["timestamp"] as? NSNumber
         self.imageUrl = dictionary["imageUrl"] as? String
         self.imageWidth = dictionary["imageWidth"] as? NSNumber

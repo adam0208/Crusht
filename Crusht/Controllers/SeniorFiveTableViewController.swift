@@ -58,14 +58,10 @@ class SeniorFiveTableViewController: UITableViewController, UINavigationControll
         }
     }
     
-    
-
-    
         override func viewDidLoad() {
             super.viewDidLoad()
             setupGradientLayer()
             fetchCurrentUser()
-          
             
             tableView.tableFooterView = UIView()
             tableView.keyboardDismissMode = .interactive

@@ -33,6 +33,10 @@ class CustomTextField: UITextField {
         return .init(width: 0, height: height)
     }
     
+    public func textField(_ textField: CustomTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return range.location < 200
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

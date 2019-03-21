@@ -19,22 +19,22 @@ class SchoolUserDetailsController: UIViewController {
             bioLabel.text = user?.bio
             nameLabel.text = user?.name
             
-            if (user?.crushScore!)! > 50 && (user?.crushScore!)! <= 100 {
-            scoreText.text = "😊"
-            }
-            else if (user?.crushScore!)! > 100 && (user?.crushScore!)! <= 200 {
-                scoreText.text = "😊😎"
-            }
-            else if (user?.crushScore!)! > 200 && (user?.crushScore!)! <= 400 {
-                scoreText.text = "😊😎😍"
-            }
-            else if (user?.crushScore!)! > 400 && (user?.crushScore!)! <= 800 {
-                scoreText.text = "😊😎😍🔥"
-            }
-            else {
+//            if (user?.crushScore!)! > 50 && (user?.crushScore!)! <= 100 {
+//            scoreText.text = "😊"
+//            }
+//            else if (user?.crushScore!)! > 100 && (user?.crushScore!)! <= 200 {
+//                scoreText.text = "😊😎"
+//            }
+//            else if (user?.crushScore!)! > 200 && (user?.crushScore!)! <= 400 {
+//                scoreText.text = "😊😎😍"
+//            }
+//            else if (user?.crushScore!)! > 400 && (user?.crushScore!)! <= 800 {
+//                scoreText.text = "😊😎😍🔥"
+//            }
+          //  else {
                 scoreText.text = "😬"
             }
-        }
+        //}
         
     }
     
@@ -93,9 +93,17 @@ class SchoolUserDetailsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadUserPhotos()
+        
+        bioLabel.text = user?.bio
+        nameLabel.text = user?.name
+        scoreText.text = "😬"
+        
+        navigationController?.isNavigationBarHidden = true
+        
         view.backgroundColor = .white
         
-        let stack = UIStackView(arrangedSubviews: [profPhoto, nameLabel, scoreText, bioLabel, dismissButton])
+        let stack = UIStackView(arrangedSubviews: [profPhoto, nameLabel, scoreText, bioLabel])
         stack.axis = .vertical
         
         view.addSubview(stack)
@@ -104,13 +112,18 @@ class SchoolUserDetailsController: UIViewController {
         
         stack.fillSuperview()
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDismiss))
+
+        
+        view.addGestureRecognizer(tap)
+        
 //                dismissButton.anchor(top: sta.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 16, bottom: 16, right: 16), size: .init(width: 50, height: 50))
         
         
     }
 
     @objc fileprivate func handleDismiss() {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
 
 }

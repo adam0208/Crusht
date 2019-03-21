@@ -285,7 +285,6 @@ class LoginViewController: UIViewController {
     fileprivate func setupLayout () {
         navigationController?.isNavigationBarHidden = true
         
-        
         let logoImage = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/2, height: UIScreen.main.bounds.size.height/3))
         logoImage.image = #imageLiteral(resourceName: "CrushTLogoIcon")
         logoImage.contentMode = .scaleAspectFit

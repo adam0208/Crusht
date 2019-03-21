@@ -158,11 +158,9 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             print("We have your location!")
         }
         
-
-      
+        
         fetchCurrentUser()
         setLabelText()
-   
         
         profPicView.layer.cornerRadius = 100
 
@@ -181,7 +179,9 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         hud.textLabel.text = "Getting your info you silly goose"
         hud.show(in: view)
        
-        hud.dismiss(afterDelay: 1)
+        hud.dismiss(afterDelay: 2)
+        
+        
         
     }
     
@@ -196,6 +196,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     var userLong = Double()
     
     fileprivate func fetchCurrentUser() {
+       
 
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
@@ -219,6 +220,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
                 }
             }
             self.loadUserPhotos()
+            
         }
     }
     

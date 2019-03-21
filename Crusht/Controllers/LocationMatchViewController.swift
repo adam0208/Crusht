@@ -190,8 +190,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
 //        if topStackView.collegeOnlySwitch.isOn == true {
 //            fetchSchoolUsersOnly()
 //        }
-        
-       // else {
+//
+//        else {
         
         hud.textLabel.text = "Fetching Users, hold tight :)"
         hud.show(in: view)
@@ -258,7 +258,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             })
             
             }
-       // }
+        //}
             
     }
     
@@ -272,6 +272,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 return
             }
             
+            self.topCardView = nil
             
             var previousCardView: CardView?
             
@@ -469,6 +470,13 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     fileprivate func fetchUsersOnLoad() {
         cardDeckView.subviews.forEach({$0.removeFromSuperview()})
         fetchUsersFromFirestore()
+        
+    }
+    
+    fileprivate func fetchSchoolUsersCall() {
+        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
+        fetchSchoolUsersOnly()
+        
     }
     
     //MARK:- Fileprivate
@@ -493,6 +501,13 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     @objc fileprivate func switchValueDidChange() {
-        fetchUsersFromFirestore()
+        if topStackView.collegeOnlySwitch.isOn == true {
+        fetchSchoolUsersCall()
+        }
+        else{
+            fetchUsersOnLoad()
+            
+        }
     }
+ 
 }

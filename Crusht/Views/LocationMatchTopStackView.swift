@@ -34,6 +34,7 @@ class LocationMatchTopStackView: UIStackView {
         distribution = .fillEqually
         backgroundColor = .white
         iconLogo.contentMode = .scaleAspectFit
+        
         let stackview = UIStackView(arrangedSubviews: [collegeLabel, collegeOnlySwitch])
         stackview.axis = .horizontal
         //iconLogo.backgroundColor = .white
@@ -43,7 +44,7 @@ class LocationMatchTopStackView: UIStackView {
         homeButton.titleLabel?.font = UIFont.systemFont(ofSize: 50)
         homeButton.titleLabel?.adjustsFontSizeToFitWidth = true
         
-        [homeButton, stackview].forEach { (v) in
+        [homeButton, UIView(), stackview].forEach { (v) in
             addArrangedSubview(v)
         }
         

@@ -107,7 +107,8 @@ var school: String? { didSet { checkFormValidity() } }
                 "deviceID": token ?? "",
                 "fbid": fbid ?? "",
                 "email": email ?? "",
-            "ImageUrl1": imageUrl]
+            "ImageUrl1": imageUrl,
+        ]
         //let userAge = ["Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
             self.bindableIsRegistering.value = false

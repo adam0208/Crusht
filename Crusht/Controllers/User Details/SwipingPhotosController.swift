@@ -35,7 +35,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
             barView.layer.cornerRadius = 4
             barsStackView.addArrangedSubview(barView)
         }
-        barsStackView.arrangedSubviews.first?.backgroundColor = .white
+        barsStackView.arrangedSubviews.first?.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         barsStackView.spacing = 4
         barsStackView.distribution = .fillEqually
         //let paddingTop = UIApplication.shared.statusBarFrame.height + 8
@@ -53,7 +53,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         let currentPhotoController = viewControllers?.first
         if let index = controllers.firstIndex(where: {$0 == currentPhotoController}) {
             barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
-            barsStackView.arrangedSubviews[index].backgroundColor = .white
+            barsStackView.arrangedSubviews[index].backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         }
         
         
@@ -100,7 +100,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
                 setViewControllers([nextController], direction: .forward, animated: false)
                 
                 //barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
-                barsStackView.arrangedSubviews[nextIndex].backgroundColor = .white
+                barsStackView.arrangedSubviews[nextIndex].backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
             } else {
             
             let prevIndex = max(0, index - 1)
@@ -109,7 +109,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
             setViewControllers([prevController], direction: .forward, animated: false)
                 
                 //barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
-                barsStackView.arrangedSubviews[prevIndex].backgroundColor = .white
+                barsStackView.arrangedSubviews[prevIndex].backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
                 
             }
         }

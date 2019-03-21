@@ -557,21 +557,34 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         sendMessageWithProperties(properties)
     }
     
+    var fromName = String()
+    
     fileprivate func sendMessageWithProperties(_ properties: [String: AnyObject])
         //let ref = Firestore.firestore().collection("messages")
     {
         //is it there best thing to include the name inside of the message node
         let toId = user!.uid!
-        let toDevice = user?.deviceID!
+        //let toDevice = user?.deviceID!
         let fromId = Auth.auth().currentUser!.uid
         
+        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+            }
+            let userFromNameDictionary = snapshot?.data()
+            let userFromName = User(dictionary: userFromNameDictionary!)
+            self.fromName = userFromName.name ?? ""
+        }
+        
+        
+        
         let timestamp = Int(Date().timeIntervalSince1970)
-        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "timestamp": timestamp as AnyObject]
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": fromName as AnyObject, "timestamp": timestamp as AnyObject]
         
         properties.forEach({values[$0] = $1})
         
         //flip to id and from id to fix message controller query glitch
-        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "timestamp": timestamp as AnyObject]
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
         
         properties.forEach({otherValues[$0] = $1})
         

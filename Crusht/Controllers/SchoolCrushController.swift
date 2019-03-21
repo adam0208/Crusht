@@ -340,18 +340,42 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 
                 let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
                 ]
-                let otherDocData: [String: Any] = ["uid": uid, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
-                ]
+             
                //this is for message controller
                 Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
                     if let err = err {
                         print(err)
                     }
+                    
+                    
                     if (snapshot?.isEmpty)! {
                         Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
-                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                        
+                        Firestore.firestore().collection("users").document(uid).getDocument(completion: { (snapshot, err) in
+                            if let err = err {
+                                print(err, "getting whatever failed")
+                            }
+                            let secondUserDictionary = snapshot?.data()
+                            let secondUser = User(dictionary: secondUserDictionary!)
+                            let otherDocData: [String: Any] = ["uid": uid, "Full Name": secondUser.name ?? "", "School": secondUser.school ?? "", "ImageUrl1": secondUser.imageUrl1!
+                            ]
+                            Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                            //print(user.name ?? "Hey champ!")
+                        })
+                        
                     }
                 })
+    
+//                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
+//                    if let err = err {
+//                        print(err)
+//                    }
+//
+//                    if (snapshot?.isEmpty)! {
+//                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+//                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+//                    }
+//                })
                 
                 self.presentMatchView(cardUID: cardUID)
                 
@@ -462,28 +486,37 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         return cellL
     }
     
-//     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let crush = schoolArray[indexPath.row]
-//        
-//        guard let profUID = crush.uid else {
-//            return
-//        }
-//        
-//        Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
-//            guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
-//            
-//            var user = User(dictionary: dictionary)
-//            user.uid = profUID
-//            
-//            self.showProfileForUser(user)
-//        })
-//    }
+     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let crush = schoolArray[indexPath.row]
+        
+        guard let profUID = crush.uid else {
+            return
+        }
+//
+//        let userDetailsController = UserDetailsController()
+//        //userDetailsController.view.backgroundColor = .purple
+//        userDetailsController.cardViewModel =
+//        present(userDetailsController, animated: true)
+        Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
+            guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
+            
+            var user = User(dictionary: dictionary)
+            user.uid = profUID
+            let userDetailsController = UserDetailsController()
+
+            userDetailsController.cardViewModel = user.toCardViewModel()
+            self.present(userDetailsController, animated: true)
+            
+        })
+    }
     
-//    fileprivate func showProfileForUser(_ user: User) {
-//        let schoolProfileDetails = SchoolUserDetailsController()
-//        schoolProfileDetails.user = user
-//        present(schoolProfileDetails, animated: true)
-//    }
+    fileprivate func showProfileForUser(_ user: User) {
+        let schoolProfileDetails = SchoolUserDetailsController()
+        schoolProfileDetails.user = user
+        let navController = UINavigationController(rootViewController: schoolProfileDetails)
+        present(navController, animated: true)
+    }
     
     var hasFavorited = Bool()
     // pass cell as a parameter to deal with it turning red

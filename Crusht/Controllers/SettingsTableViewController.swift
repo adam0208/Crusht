@@ -289,6 +289,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         case 4:
             cell.textField.placeholder = "Bio"
             cell.textField.text = user?.bio
+           
             cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
         default:
             cell.textField.placeholder = "Phone Number"
@@ -298,6 +299,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
 
         
         return cell
+    }
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return range.location < 200
     }
     
     @objc fileprivate func handleMinChanged (slider: UISlider) {
@@ -362,6 +367,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     @objc fileprivate func handleBioChange(textField: UITextField) {
         self.user?.bio = textField.text
+        
     }
 
     
@@ -392,7 +398,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "maxDistance": user?.maxDistance ?? 5,
             "email": user?.email ?? "",
             "fbid": user?.fbid ?? "",
-            "PhoneNumber": user?.phoneNumber ?? ""
+            "PhoneNumber": user?.phoneNumber ?? "",
+            "deviceID": Messaging.messaging().fcmToken ?? ""
             ]
         
         let hud = JGProgressHUD(style: .dark)
