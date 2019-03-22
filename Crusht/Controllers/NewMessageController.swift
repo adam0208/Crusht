@@ -128,6 +128,7 @@ class NewMessageController: UITableViewController {
         dismiss(animated: true) {
             print("Dismiss completed")
             let user = self.users[indexPath.row]
+            
             self.messagesController.showChatControllerForUser(user)
         }
     }

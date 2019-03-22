@@ -47,6 +47,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
      var messages = [Message]()
     
+    var fromName: String?
+    
     func observeMoreMessages() {
         //guard let uid = Auth.auth().currentUser?.uid else {return}
         let toId = user!.uid!
@@ -138,7 +140,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         super.viewDidLoad()
         
         
-        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 100, right: 0)
+        
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
         //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
@@ -557,29 +560,29 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         sendMessageWithProperties(properties)
     }
     
-    var fromName = String()
-    
     fileprivate func sendMessageWithProperties(_ properties: [String: AnyObject])
         //let ref = Firestore.firestore().collection("messages")
     {
+        
         //is it there best thing to include the name inside of the message node
         let toId = user!.uid!
         //let toDevice = user?.deviceID!
         let fromId = Auth.auth().currentUser!.uid
         
-        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-            }
-            let userFromNameDictionary = snapshot?.data()
-            let userFromName = User(dictionary: userFromNameDictionary!)
-            self.fromName = userFromName.name ?? ""
-        }
-        
-        
+//        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
+//            if let err = err {
+//                print(err)
+//            }
+//            let userFromNameDictionary = snapshot?.data()
+//            let userFromName = User(dictionary: userFromNameDictionary!)
+//            self.fromName = userFromName.name ?? "loser"
+//            print(userFromName.name ?? "hi ho yo")
+//        }
+//
+//        print(fromName, "Fuck you bro")
         
         let timestamp = Int(Date().timeIntervalSince1970)
-        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": fromName as AnyObject, "timestamp": timestamp as AnyObject]
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": self.fromName as AnyObject, "timestamp": timestamp as AnyObject]
         
         properties.forEach({values[$0] = $1})
         
