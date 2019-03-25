@@ -136,6 +136,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     let cellId = "cellId"
     
+    var timer: Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -169,9 +171,26 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 
         
         collectionView.bringSubviewToFront(inputContainerView)
+        
+//        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: true)
       
     
     }
+    
+    @objc func handleReloadTable() {
+        messages.removeAll()
+        observeMessages()
+        observeMoreMessages()
+
+//            DispatchQueue.main.async(execute: {
+//                self.collectionView?.reloadData()
+//
+//                //scroll to the last index
+//                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+//                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+//            })
+    }
+
     
     @objc func handleback() {
         let messageController = MessageController()
@@ -195,9 +214,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     lazy var inputContainerView: UIView = {
+        
+        //need to fix for iphone x
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
         containerView.backgroundColor = UIColor.white
+//        containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         let uploadImageView = UIImageView()
         uploadImageView.isUserInteractionEnabled = true
@@ -228,6 +250,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         self.inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
         self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        
         
         let separatorLineView = UIView()
         separatorLineView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)

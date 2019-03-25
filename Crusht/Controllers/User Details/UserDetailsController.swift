@@ -46,24 +46,24 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
                 self.crushScore = CrushScore(dictionary: dictionary)
                 
                 if (self.crushScore?.crushScore ?? 0) > 10 && (self.crushScore?.crushScore ?? 0) <= 50 {
-                    self.crushScoreLabel.text = "😊"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
                     self.crushScoreLabel.text = "😊😎"
                 }
-                else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
+                else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
                     self.crushScoreLabel.text = "😊😎😍"
                 }
-                else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
+                else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
                     self.crushScoreLabel.text = "😊😎😍🔥"
                 }
-                else if (self.crushScore?.crushScore ?? 0) > 400 {
+                else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
                     self.crushScoreLabel.text = "😊😎😍🔥❤️"
+                }
+                else if (self.crushScore?.crushScore ?? 0) > 400 {
+                    self.crushScoreLabel.text = "😊😎😍🔥❤️👀"
                 }
                 
             }
             else {
-                self.crushScoreLabel.text = "😬"
+                self.crushScoreLabel.text = "😊"
             }
         }
         

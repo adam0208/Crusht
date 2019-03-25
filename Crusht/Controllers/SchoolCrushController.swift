@@ -338,7 +338,16 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 let cardUID = user.uid!
                 print(user.name ?? "Not getting user")
                 
-                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                Firestore.firestore().collection("users").document(uid).getDocument(completion: { (snapshot, err) in
+                    if let err = err {
+                        print(err, "getting whatever failed")
+                    }
+                    let secondUserDictionary = snapshot?.data()
+                    let secondUser = User(dictionary: secondUserDictionary!)
+                    let otherDocData: [String: Any] = ["uid": uid, "Full Name": secondUser.name ?? "", "School": secondUser.school ?? "", "ImageUrl1": secondUser.imageUrl1!, "matchName": user.name ?? ""
+                    ]
+                
+                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!, "matchName": secondUser.name ?? ""
                 ]
              
                //this is for message controller
@@ -351,20 +360,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                     if (snapshot?.isEmpty)! {
                         Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
                         
-                        Firestore.firestore().collection("users").document(uid).getDocument(completion: { (snapshot, err) in
-                            if let err = err {
-                                print(err, "getting whatever failed")
-                            }
-                            let secondUserDictionary = snapshot?.data()
-                            let secondUser = User(dictionary: secondUserDictionary!)
-                            let otherDocData: [String: Any] = ["uid": uid, "Full Name": secondUser.name ?? "", "School": secondUser.school ?? "", "ImageUrl1": secondUser.imageUrl1!
-                            ]
-                            Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
-                            //print(user.name ?? "Hey champ!")
-                        })
                         
-                    }
+                            Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                    
+                            //print(user.name ?? "Hey champ!")
+                        }
+                        
+                    })
                 })
+            
     
 //                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
 //                    if let err = err {

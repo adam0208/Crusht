@@ -40,12 +40,14 @@ class TransitionCrushesController: UIViewController {
     
     let findCrushesThroughContacts: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("From your Contacts", for: .normal)
+        button.setTitle("Your Contacts", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+
         
         button.layer.cornerRadius = 22
         
@@ -55,7 +57,7 @@ class TransitionCrushesController: UIViewController {
     
     let findCrushesThroughSchool: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("From Your School", for: .normal)
+        button.setTitle("Your School", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
@@ -79,6 +81,8 @@ class TransitionCrushesController: UIViewController {
 
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+
         
         button.layer.cornerRadius = 22
         
@@ -91,6 +95,8 @@ class TransitionCrushesController: UIViewController {
         button.setTitle("Back", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+
 
         return button
     }()

@@ -11,7 +11,7 @@ import UIKit
 class ProfPageTopStackView: UIStackView {
 
     let homeButton = UIButton(type: .system)
-    let iconLogo = UIImageView(image: #imageLiteral(resourceName: "CrushTLogoIcon"))
+    let iconLogo = UIImageView(image: #imageLiteral(resourceName: "CrushtLogoLiam"))
     let messageButton = UIButton(type: .system)
     let restView = UIView()
     let moreView = UIView()
@@ -24,8 +24,16 @@ class ProfPageTopStackView: UIStackView {
         spacing = 0
 
         //iconLogo.contentMode = .scaleAspectFill
-        messageButton.setImage(#imageLiteral(resourceName: "top_right_messages").withRenderingMode(.alwaysOriginal), for: .normal)
-        homeButton.setImage(#imageLiteral(resourceName: "top_left_profile").withRenderingMode(.alwaysOriginal), for: .normal)
+        //messageButton.setImage(#imageLiteral(resourceName: "top_right_messages").withRenderingMode(.alwaysOriginal), for: .normal)
+       // homeButton.setImage(#imageLiteral(resourceName: "top_left_profile").withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        messageButton.titleLabel?.font = UIFont.systemFont(ofSize: 40)
+        messageButton.setTitle("✉️", for: .normal)
+        messageButton.titleLabel?.adjustsFontForContentSizeCategory = true
+       
+        homeButton.titleLabel?.font = UIFont.systemFont(ofSize: 40)
+        homeButton.setTitle("👤", for: .normal)
+        homeButton.titleLabel?.adjustsFontForContentSizeCategory = true
         
         [homeButton, moreView, iconLogo, evenMoreView, messageButton].forEach { (v) in
             addArrangedSubview(v)

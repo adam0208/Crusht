@@ -52,6 +52,8 @@ class MessageController: UITableViewController {
 
         
         fetchUserAndSetupNavBarTitle()
+        
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: true)
     }
     
     @objc fileprivate func handleBack() {

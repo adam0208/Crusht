@@ -25,6 +25,8 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         button.heightAnchor.constraint(equalToConstant: 50)
         button.widthAnchor.constraint(equalToConstant: 50)
         button.layer.cornerRadius = 50
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+
        return button
     }()
     
@@ -36,6 +38,8 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         button.heightAnchor.constraint(equalToConstant: 50)
         button.widthAnchor.constraint(equalToConstant: 50)
         button.layer.cornerRadius = 50
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+
 
         //button.layer.masksToBounds = true
         return button

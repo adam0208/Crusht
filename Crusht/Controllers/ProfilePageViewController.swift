@@ -34,14 +34,19 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         fetchCurrentUser()
     }
     
+    let hud = JGProgressHUD(style: .dark)
     let bottomStackView = ProfPageBottomStackView()
     let topStackView = ProfPageTopStackView()
     let profPicView = ProfPageMiddleView()
     //let profBttnView = ProfPageMidButtonView()
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
-        let locationViewController = LocationMatchViewController()
-        present(locationViewController, animated: true)
+        hud.textLabel.text = "Feature not available for test flight"
+        hud.show(in: view)
+        
+        hud.dismiss(afterDelay: 2)
+//        let locationViewController = LocationMatchViewController()
+//        present(locationViewController, animated: true)
     }
     
     @objc fileprivate func handleFindCrushesTapped() {
@@ -138,7 +143,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     }
     
     let locationManager = CLLocationManager()
-    let hud = JGProgressHUD(style: .dark)
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,7 +177,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
 
         
         profPicView.selectPhotoButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
+//        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         setupLayout()

@@ -79,6 +79,8 @@ class UserCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = UIColor.darkGray
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        
         return label
     }()
     

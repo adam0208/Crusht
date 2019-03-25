@@ -102,6 +102,7 @@
 		28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */; };
 		28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */; };
 		28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */; };
+		28F148862249725E00E5FB39 /* CrushtLogoLiam.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F148852249725E00E5FB39 /* CrushtLogoLiam.png */; };
 		28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */; };
 		28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */; };
 		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
@@ -233,6 +234,7 @@
 		28F1121921F522A900A1CD73 /* Crusht.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crusht.entitlements; sourceTree = "<group>"; };
 		28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterMorePhoneInfoViewController.swift; sourceTree = "<group>"; };
+		28F148852249725E00E5FB39 /* CrushtLogoLiam.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CrushtLogoLiam.png; sourceTree = "<group>"; };
 		28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFivePostsTableViewCell.swift; sourceTree = "<group>"; };
 		28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveModel.swift; sourceTree = "<group>"; };
 		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
 				283816CD21B8925F00B3E4FD /* Assets.xcassets */,
 				28148F3621D6C1530016BD22 /* play.png */,
+				28F148852249725E00E5FB39 /* CrushtLogoLiam.png */,
 				28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */,
 				28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */,
 				28CFC6AE21C56BAB00387129 /* heart2crusht.png */,
@@ -635,6 +638,7 @@
 				28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */,
 				28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */,
 				28BE624E21BDDBDE00EAFFE2 /* infoButton.png in Resources */,
+				28F148862249725E00E5FB39 /* CrushtLogoLiam.png in Resources */,
 				28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */,
 				28CFC6B121C56D3500387129 /* heartIcon3Crusht.png in Resources */,
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
