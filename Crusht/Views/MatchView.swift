@@ -46,8 +46,8 @@ class MatchView: UIView {
     
     
     fileprivate let itsAMatchImageView: UIImageView = {
-        let iv = UIImageView(image: #imageLiteral(resourceName: "itsamatch copy"))
-        iv.contentMode = .scaleAspectFill
+        let iv = UIImageView(image: #imageLiteral(resourceName: "CrushtLogoLiam"))
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     
@@ -174,7 +174,7 @@ class MatchView: UIView {
         
         let imageWidth: CGFloat = 140
         
-        itsAMatchImageView.anchor(top: nil, leading: nil, bottom: descriptionLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 16, right: 0), size: .init(width: 300, height: 80))
+        itsAMatchImageView.anchor(top: nil, leading: nil, bottom: descriptionLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 16, right: 0), size: .init(width: 300, height: 150))
         itsAMatchImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         
         descriptionLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: currentUserImageView.topAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 32, right: 0), size: .init(width: 0, height: 50))
