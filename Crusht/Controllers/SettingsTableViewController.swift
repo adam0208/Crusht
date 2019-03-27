@@ -85,7 +85,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         button.addTarget(self, action: selector, for: .touchUpInside)
-        button.imageView?.contentMode = .scaleToFill
+        button.imageView?.contentMode = .scaleAspectFill
         return button
     }
     
@@ -225,15 +225,15 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SettingsCells(style: .default, reuseIdentifier: nil)
         
-        
+
         
         if indexPath.section == 5 {
             let ageRangeCell = AgeRangeTableViewCell(style: .default, reuseIdentifier: nil)
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinChanged), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChanged), for: .valueChanged)
             
-            ageRangeCell.minLabel.text = "Min Age: \(user?.minSeekingAge ?? 18)"
-            ageRangeCell.maxLabel.text = "Max Age: \(user?.maxSeekingAge ?? 50)"
+            ageRangeCell.minLabel.text = " Min Age: \(user?.minSeekingAge ?? 18)"
+            ageRangeCell.maxLabel.text = " Max Age: \(user?.maxSeekingAge ?? 50)"
             
             ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? 18)
             ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? 50)
@@ -245,8 +245,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
             locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
             
-            locationRangeCell.minLabel.text = "Min Km: \(user?.minDistance ?? 1)"
-            locationRangeCell.maxLabel.text = "Max Km: \(user?.maxDistance ?? 50)"
+            locationRangeCell.minLabel.text = " Min Km: \(user?.minDistance ?? 1)"
+            locationRangeCell.maxLabel.text = " Max Km: \(user?.maxDistance ?? 50)"
             
             locationRangeCell.minSlider.value = Float(user?.minDistance ?? 1)
             locationRangeCell.maxSlider.value = Float(user?.maxDistance ?? 50)
@@ -370,15 +370,23 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         
     }
 
-    
+    @objc fileprivate func goToProfile() {
+        let userDetailsController = UserDetailsController()
+        
+        userDetailsController.cardViewModel = user?.toCardViewModel()
+        self.present(userDetailsController, animated: true)
+    }
     
     fileprivate func setUpNavItems() {
-        navigationItem.title = "Settings "
+        navigationItem.title = "Settings"
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save Changes", style: .plain, target: self, action: #selector(handleSave))
+        navigationItem.rightBarButtonItems = [
         
+         UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
+         UIBarButtonItem(title: "Preview", style: .plain, target: self, action: #selector(goToProfile))
+        ]
     }
     
     @objc fileprivate func handleSave() {

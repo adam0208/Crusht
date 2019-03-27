@@ -181,9 +181,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let crush = User(dictionary: userDictionary)
+                let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+                
+                if isNotCurrentUser {
                 
                 self.schoolArray.append(crush)
-                
+                    
+                }
                 
                 print(self.schoolArray)
                 //                let crushStuff = User(dictionary: userDictionary)

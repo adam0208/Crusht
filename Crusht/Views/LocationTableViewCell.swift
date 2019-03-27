@@ -29,12 +29,14 @@ class LocationTableViewCell: UITableViewCell {
     let minLabel: UILabel = {
         let label = LocationRangeLabel()
         label.text = "Min: 18"
+        label.font = UIFont.systemFont(ofSize: 15)
         return label
     }()
     
     let maxLabel: UILabel = {
         let label = LocationRangeLabel()
         label.text = "Max: 18"
+        label.font = UIFont.systemFont(ofSize: 15)
         return label
     }()
     
@@ -58,6 +60,18 @@ class LocationTableViewCell: UITableViewCell {
         overallStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
         overallStackView.fillSuperview()
         
+    }
+    
+    override var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set (newFrame) {
+            var frame = newFrame
+            frame.origin.x += 10
+            frame.size.width -= 2 * 12
+            super.frame = frame
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

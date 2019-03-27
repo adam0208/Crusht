@@ -98,12 +98,21 @@ class VerifyViewController: UIViewController {
                      "maxSeekingAge": 50,
                      "ImageUrl1": ""
                      ]
-               
-                Firestore.firestore().collection("users").document(uid).setData(docData)
                 
-                let enterPhoneInfo = EnterMorePhoneInfoViewController()
-              
-                self.present(enterPhoneInfo, animated: true)
+                Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: self.phoneNumber ?? "").getDocuments(completion: { (snapshot, err) in
+                    if let err = err {
+                        print(err)
+                    }
+                    if (snapshot?.isEmpty)! {
+                        Firestore.firestore().collection("users").document(uid).setData(docData)
+                        let enterPhoneInfo = EnterMorePhoneInfoViewController()
+                        self.present(enterPhoneInfo, animated: true)
+                    }
+                    else {
+                        let profileController = ProfilePageViewController()
+                        self.present(profileController, animated: true)
+                    }
+                })
                 
             }
         }

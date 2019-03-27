@@ -184,7 +184,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         hud.textLabel.text = "Getting your info you silly goose"
         hud.show(in: view)
        
-        hud.dismiss(afterDelay: 2)
+        hud.dismiss(afterDelay: 1)
         
         
         

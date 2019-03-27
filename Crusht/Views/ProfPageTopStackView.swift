@@ -28,7 +28,7 @@ class ProfPageTopStackView: UIStackView {
        // homeButton.setImage(#imageLiteral(resourceName: "top_left_profile").withRenderingMode(.alwaysOriginal), for: .normal)
         
         messageButton.titleLabel?.font = UIFont.systemFont(ofSize: 40)
-        messageButton.setTitle("✉️", for: .normal)
+        messageButton.setTitle("💬", for: .normal)
         messageButton.titleLabel?.adjustsFontForContentSizeCategory = true
        
         homeButton.titleLabel?.font = UIFont.systemFont(ofSize: 40)

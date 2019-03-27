@@ -165,7 +165,52 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         let cardUID = phoneNoDash
         
+        let twilioPhoneData: [String: Any] = ["phoneToInvite": phoneNoDash]
+        
         let documentData = [cardUID: didLike]
+        
+        Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phoneNoDash).getDocuments { (snapshot, err) in
+            
+            if let err = err {
+                print("Major fuck up", err)
+            }
+           
+            if (snapshot?.isEmpty)! {
+                Firestore.firestore().collection("twilio-invites").addDocument(data: twilioPhoneData)
+                
+                Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
+                    if let err = err {
+                        print("Failed to fetch swipe doc", err)
+                        return
+                    }
+                    if snapshot?.exists == true {
+                        Firestore.firestore().collection("phone-swipes").document(phoneNumber).updateData(documentData) { (err) in
+                            if let err = err {
+                                print("failed to save swipe", err)
+                                return
+                            }
+                            if didLike == 1 {
+                                self.checkIfMatchExists(cardUID: cardUID)
+                            }
+                            print("Success")
+                        }
+                    } else {
+                        Firestore.firestore().collection("phone-swipes").document(phoneNumber).setData(documentData) { (err) in
+                            if let err = err {
+                                print("Error", err)
+                                return
+                            }
+                            if didLike == 1 {
+                                self.checkIfMatchExists(cardUID: cardUID)
+                            }
+                            print("Success saved swipe SETDATA")
+                        }
+                    }
+                }
+                
+            }
+            
+            else {
         
         Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
             if let err = err {
@@ -195,6 +240,9 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     print("Success saved swipe SETDATA")
                 }
             }
+        }
+        }
+            
         }
     }
     

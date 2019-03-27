@@ -30,6 +30,17 @@ class LogoutBttnCell: UITableViewCell {
      
 
     }
+    override var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set (newFrame) {
+            var frame = newFrame
+            frame.origin.x += 10
+            frame.size.width -= 2 * 12
+            super.frame = frame
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -63,6 +74,17 @@ let FBLoginBttn: UIButton = {
         //self.init(frame: )
     }
     
+    override var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set (newFrame) {
+            var frame = newFrame
+            frame.origin.x += 10
+            frame.size.width -= 2 * 12
+            super.frame = frame
+        }
+    }
 
 
     required init?(coder aDecoder: NSCoder) {
