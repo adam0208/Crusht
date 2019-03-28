@@ -35,7 +35,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 private let reuseIdentifier = "Cell"
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UITextViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var user: User? {
         didSet {
@@ -126,12 +126,28 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         })
     }
  
-    lazy var inputTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Enter message..."
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.delegate = self
-        return textField
+    lazy var inputTextField: UITextView = {
+        let textView = UITextView()
+        textView.text = ""
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.delegate = self
+        textView.isEditable = true
+        
+        textView.font = UIFont.systemFont(ofSize: 16)
+        func adjustUITextViewHeight(arg : UITextView)
+        {
+            arg.translatesAutoresizingMaskIntoConstraints = true
+            arg.sizeToFit()
+            arg.isScrollEnabled = false
+        }
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            
+        textView.text = nil
+        
+        
+            
+        }
+        return textView
     }()
     
     let cellId = "cellId"
@@ -141,7 +157,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+       // listenForMessages()
         
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
         //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
@@ -154,6 +170,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleback))
         
         setupKeyboardObservers()
+        
 //
 //        let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
 //        buttonStackView.axis = .horizontal
@@ -172,15 +189,69 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         collectionView.bringSubviewToFront(inputContainerView)
         
-//        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: true)
-      
+//        DispatchQueue.main.async {
+//            // timer needs a runloop?
+//            self.timer = Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(self.listenForMessages(_:)), userInfo: nil, repeats: false)
+//        }
+        
+//        Timer.scheduledTimer(timeInterval: 1.1,
+//                             target: self,
+//                             selector: #selector(self.listenForMessages(_:)),
+//                             userInfo: nil,
+//                             repeats: true)
     
+    }
+    
+    fileprivate func listenForMessages() {
+        
+        let toId = user!.uid!
+        let fromId = Auth.auth().currentUser!.uid
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            snapshot?.documents.forEach({ (documentSnapshot) in
+
+                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addSnapshotListener({ (querySnapshot, err) in
+                            guard let snapshot = querySnapshot else {
+                                print("Error: \(err.debugDescription)")
+                                return
+                            }
+                            
+                            /// Check if snapshot has documents and not empty
+                            guard snapshot.documents.last != nil else {
+                                // The collection is empty.
+                                return
+                            }
+                            snapshot.documentChanges.forEach({ (diff) in
+                                print(diff.document.data())
+                                if (diff.type == .added) {
+                                    self.messages.removeAll()
+                                    self.observeMessages()
+                                    self.observeMoreMessages()
+                                }
+                                else if (diff.type == .modified) {
+                                   
+                                }
+                                else if (diff.type == .removed) {
+                                    
+                                }
+                            })
+                        })
+                            
+                        })
+                })
+    
+        
     }
     
     @objc func handleReloadTable() {
         messages.removeAll()
         observeMessages()
         observeMoreMessages()
+        
+        
 
 //            DispatchQueue.main.async(execute: {
 //                self.collectionView?.reloadData()

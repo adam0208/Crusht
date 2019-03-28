@@ -108,6 +108,8 @@
 		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
 		28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9621C41A7800B7051F /* SendMessageButton.swift */; };
 		28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */; };
+		28F54071224C163F00EC5062 /* BioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54070224C163F00EC5062 /* BioCell.swift */; };
+		28F54073224C23C600EC5062 /* BioTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54072224C23C600EC5062 /* BioTextView.swift */; };
 		28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE2D72216672000896198 /* FacebookCrushCell.swift */; };
 		93EA35963A0441CD6DC3A04D /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */; };
 		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
@@ -240,6 +242,8 @@
 		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		28F46D9621C41A7800B7051F /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "itsamatch@2x copy.png"; sourceTree = "<group>"; };
+		28F54070224C163F00EC5062 /* BioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioCell.swift; sourceTree = "<group>"; };
+		28F54072224C23C600EC5062 /* BioTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioTextView.swift; sourceTree = "<group>"; };
 		28FDE2D72216672000896198 /* FacebookCrushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushCell.swift; sourceTree = "<group>"; };
 		36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -385,6 +389,8 @@
 				2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */,
 				28857CDB21B9B82700A654A0 /* CustomTextField.swift */,
 				285A34A521BC7B920086CC95 /* SettingsCells.swift */,
+				28F54070224C163F00EC5062 /* BioCell.swift */,
+				28F54072224C23C600EC5062 /* BioTextView.swift */,
 				28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */,
 				28908D8921C0AB6400391A39 /* ContactsCell.swift */,
 				28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */,
@@ -856,6 +862,7 @@
 			files = (
 				2838170F21B8A26400B3E4FD /* User.swift in Sources */,
 				28857CCD21B9A93500A654A0 /* EnterInfoViewController.swift in Sources */,
+				28F54071224C163F00EC5062 /* BioCell.swift in Sources */,
 				2838170721B8A11000B3E4FD /* Advertiser.swift in Sources */,
 				28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */,
 				28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */,
@@ -899,6 +906,7 @@
 				2859707C2202C72400EB83CE /* VerificationResultViewController.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
+				28F54073224C23C600EC5062 /* BioTextView.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
 				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
 				283816FB21B89F8C00B3E4FD /* ProfPageBottomStackView.swift in Sources */,

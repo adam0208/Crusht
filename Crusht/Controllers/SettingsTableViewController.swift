@@ -19,7 +19,7 @@ class CustomImagePickerController: UIImagePickerController {
     var imageBttn: UIButton?
 }
 
-class SettingsTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SettingsTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
     
     var delegate: SettingsControllerDelegate?
     
@@ -203,9 +203,12 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         if section == 0 {
             return 300
         }
+      
+            
         else if section == 5 {
             return 45
         }
+            
         else if section == 7 || section == 8 {
             return 20
         }
@@ -287,15 +290,30 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             }
             cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
         case 4:
-            cell.textField.placeholder = "Bio"
-            cell.textField.text = user?.bio
-           
-            cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
+            let bioCell = BioCell(style: .default, reuseIdentifier: nil)
+            bioCell.textView.font = UIFont.systemFont(ofSize: 16)
+            bioCell.textView.text = user?.bio
+            bioCell.textView.delegate = self
+            if bioCell.textView.text == "" {
+                bioCell.textView.text = "Bio"
+            }
+            func textViewDidChange(textView: UITextView) {
+                handleBioChange(textView: bioCell.textView)
+            }
+            
+            
+            return bioCell
+//            cell.textField.placeholder = "Bio"
+//            cell.textField.text = user?.bio
+//
+//            cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
         default:
             cell.textField.placeholder = "Phone Number"
             cell.textField.text = user?.phoneNumber
             
         }
+        
+  
 
         
         return cell
@@ -365,12 +383,20 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         self.user?.age = Int(textField.text ?? "")
     }
     
-    @objc fileprivate func handleBioChange(textField: UITextField) {
-        self.user?.bio = textField.text
+    @objc fileprivate func handleBioChange(textView: UITextView) {
+        self.user?.bio = textView.text
         
     }
+    
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if indexPath.row == 4 {
+//            return 60
+//        }
+//        else { return 50 }
+//    }
 
     @objc fileprivate func goToProfile() {
+        //handleSave()
         let userDetailsController = UserDetailsController()
         
         userDetailsController.cardViewModel = user?.toCardViewModel()
@@ -388,8 +414,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
          UIBarButtonItem(title: "Preview", style: .plain, target: self, action: #selector(goToProfile))
         ]
     }
+    let bioTextView = BioTextView()
     
     @objc fileprivate func handleSave() {
+        
         guard let uid = Auth.auth().currentUser?.uid else { return}
         let docData: [String: Any] = [
             "uid": uid,
@@ -410,12 +438,12 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "deviceID": Messaging.messaging().fcmToken ?? ""
             ]
         
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Saving Changes"
-        hud.show(in: view)
+  //      let hud = JGProgressHUD(style: .dark)
+//        hud.textLabel.text = "Saving Changes"
+//        hud.show(in: view)
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
             in
-            hud.dismiss()
+            //hud.dismiss()
             if let err = err {
                 print("Failed to retrieve user settings", err)
                 return

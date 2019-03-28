@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 class SettingsCells: UITableViewCell {
     
     class SettingsTextField: UITextField {
@@ -22,11 +24,13 @@ class SettingsCells: UITableViewCell {
         override var intrinsicContentSize: CGSize {
         return .init(width: 0, height: 50)
         }
+    
     }
     
     let textField: UITextField = {
         let tf = SettingsTextField()
         tf.placeholder = "Enter Name"
+        //tf.isscro = false
         return tf
     } ()
 

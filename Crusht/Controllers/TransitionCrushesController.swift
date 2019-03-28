@@ -38,6 +38,19 @@ class TransitionCrushesController: UIViewController {
         return label
     }()
     
+    let privacyText: UILabel = {
+        let label = UILabel()
+        
+        label.text = "If one of your contacts doesn't have the app, a annonomous message will be sent to their device informing them that \"someone\" has a crush on them."
+        label.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        
+        label.textColor = .black
+        return label
+    }()
+    
     let findCrushesThroughContacts: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Your Contacts", for: .normal)
@@ -92,8 +105,8 @@ class TransitionCrushesController: UIViewController {
     
     let backButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Back", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+        button.setTitle("👈", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 50, weight: .heavy)
         button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
 
@@ -107,20 +120,19 @@ class TransitionCrushesController: UIViewController {
         //fetchCurrentUser()
         setupGradientLayer()
         
-        let stack = UIStackView(arrangedSubviews: [Text, findCrushesThroughContacts,findCrushesThroughSchool,findCrushesThroughFacebook])
+        let stack = UIStackView(arrangedSubviews: [Text, findCrushesThroughContacts,findCrushesThroughSchool,findCrushesThroughFacebook, privacyText])
         view.addSubview(stack)
         view.addSubview(backButton)
         
         stack.axis = .vertical
         
-        let padding = view.bounds.height/4
+        let padding = view.bounds.height/5
         
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: padding, left: 30, bottom: padding, right: 30))
         
         stack.spacing = 20
         
-        backButton.anchor(top: nil, leading: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: nil)
-        
+        backButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: -20, left: 20, bottom: 0, right: 0))
     }
     
     @objc fileprivate func handleContacts() {
