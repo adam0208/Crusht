@@ -10,8 +10,8 @@ import UIKit
 
 class LocationMatchTopStackView: UIStackView {
 
-    let homeButton = UIButton(type: .system)
-    let iconLogo = UIImageView(image: #imageLiteral(resourceName: "CrushTLogoIcon"))
+    let homeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+    
     
     let collegeOnlySwitch: UISwitch = {
         let button = UISwitch()
@@ -21,22 +21,34 @@ class LocationMatchTopStackView: UIStackView {
         return button
     }()
     
+    let switchView: UIView = {
+        let view = UIView()
+        //view.centerInSuperview()
+        
+        return view
+    }()
+    
     let collegeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Only Your School"
+        label.text = "Only Your School  "
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        switchView.addSubview(collegeOnlySwitch)
+        collegeOnlySwitch.anchor(top: switchView.topAnchor, leading: nil, bottom: switchView.bottomAnchor, trailing: nil, padding: .init(top: 12, left: 0, bottom: 0, right: 0))
+
         heightAnchor.constraint(equalToConstant: 60).isActive = true
         distribution = .fillEqually
         backgroundColor = .white
-        iconLogo.contentMode = .scaleAspectFit
         
-        let stackview = UIStackView(arrangedSubviews: [collegeLabel, collegeOnlySwitch])
+        let stackview = UIStackView(arrangedSubviews: [collegeLabel, switchView])
         stackview.axis = .horizontal
+        addSubview(stackview)
+        stackview.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 50))
         //iconLogo.backgroundColor = .white
 //        homeButton.setImage(#imageLiteral(resourceName: "ChrushtHomeIcon4").withRenderingMode(.alwaysOriginal), for: .normal)
         //homeButton.backgroundColor = .white
@@ -44,9 +56,8 @@ class LocationMatchTopStackView: UIStackView {
         homeButton.titleLabel?.font = UIFont.systemFont(ofSize: 50)
         homeButton.titleLabel?.adjustsFontSizeToFitWidth = true
         
-        [homeButton, UIView(), stackview].forEach { (v) in
-            addArrangedSubview(v)
-        }
+        addSubview(homeButton)
+        homeButton.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil)
         
         //        let buttons = [#imageLiteral(resourceName: "CrushtHomIcon"), #imageLiteral(resourceName: "CrushTLogoIcon")].map{ (img) -> UIView in
         //            let button = UIButton(type: .system)

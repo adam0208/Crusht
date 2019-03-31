@@ -26,13 +26,15 @@ var password: String? { didSet { checkFormValidity() } }
     
 var school: String? { didSet { checkFormValidity() } }
     
-    var age: Int? { didSet {checkFormValidity() }}
+    //var age: Int? { didSet {checkFormValidity() }}
     
     var bio: String? { didSet {checkFormValidity() }}
     
     var phone: String!
     
     var fbid: String?
+    
+    var birthday: String? { didSet {checkFormValidity() }}
     
    
 
@@ -100,7 +102,7 @@ var school: String? { didSet { checkFormValidity() } }
              "uid": uid,
              "Bio": bio ?? "",
              "School": school ?? "",
-            "Age": age ?? 18,
+            "Birthday": birthday ?? "",
             "minSeekingAge": 18,
                 "maxSeekingAge": 50,
                 "PhoneNumber": phone,
@@ -108,6 +110,7 @@ var school: String? { didSet { checkFormValidity() } }
                 "fbid": fbid ?? "",
                 "email": email ?? "",
             "ImageUrl1": imageUrl,
+            "verified": "0"
         ]
         //let userAge = ["Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
@@ -121,9 +124,11 @@ var school: String? { didSet { checkFormValidity() } }
     }
     
      func checkFormValidity() {
-        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && school?.isEmpty == false && "\(age ?? -1)".isEmpty == false && bindableImage.value != nil && (age! > 17)
+        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && school?.isEmpty == false && birthday?.isEmpty == false && bindableImage.value != nil
         bindableIsFormValid.value = isFormValid
     
     }
+    
+    //check for age here!
 
 }

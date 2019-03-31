@@ -154,11 +154,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     var timer: Timer?
     
+  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
        // listenForMessages()
-        
+                
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
         //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
@@ -167,7 +169,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         collectionView?.keyboardDismissMode = .interactive
      
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleback))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleback))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "👮‍♀️", style: .plain, target: self, action: #selector(handleReport))
+//        navigationItem.leftItemsSupplementBackButton = true
+//        navigationItem.leftBarButtonItem?.title = "👈"
         
         setupKeyboardObservers()
         
@@ -200,6 +205,19 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 //                             userInfo: nil,
 //                             repeats: true)
     
+    }
+    
+    @objc fileprivate func handleReport() {
+        let reportController = ReportControllerViewController()
+        reportController.reportEmail = user?.email ?? ""
+        reportController.reportUID = user?.uid ?? ""
+        reportController.reportName = user?.name ?? ""
+        reportController.uid = Auth.auth().currentUser!.uid
+        
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = "👈"
+        navigationItem.backBarButtonItem = myBackButton
+         navigationController?.pushViewController(reportController, animated: true)
     }
     
     fileprivate func listenForMessages() {
@@ -264,9 +282,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 
     
     @objc func handleback() {
-        let messageController = MessageController()
-        let navController = UINavigationController(rootViewController: messageController)
-        present(navController, animated: true)
+      self.dismiss(animated: true)
     }
     
     @objc fileprivate func handleStubTapped() {

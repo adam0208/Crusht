@@ -41,17 +41,19 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     //let profBttnView = ProfPageMidButtonView()
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
-        hud.textLabel.text = "Feature not available for test flight"
-        hud.show(in: view)
-        
-        hud.dismiss(afterDelay: 2)
-//        let locationViewController = LocationMatchViewController()
-//        present(locationViewController, animated: true)
+//        hud.textLabel.text = "Feature not available for test flight"
+//        hud.show(in: view)
+//
+//        hud.dismiss(afterDelay: 2)
+        let locationViewController = LocationMatchViewController()
+        let navigationController = UINavigationController(rootViewController: locationViewController)
+        present(navigationController, animated: true)
     }
     
     @objc fileprivate func handleFindCrushesTapped() {
         let transController = TransitionCrushesController()
-        present(transController, animated: true)
+        let navigationController = UINavigationController(rootViewController: transController)
+        present(navigationController, animated: true)
     }
     
     @objc func handleSelectPhoto () {
@@ -70,8 +72,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     @objc func handleSeniorFive() {
         let seniorController = SeniorFiveTableViewController()
-        let navController = UINavigationController(rootViewController: seniorController)
-        present(navController, animated: true)
+        navigationController?.pushViewController(seniorController, animated: true)
         
     }
     
@@ -79,6 +80,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         let messageController = MessageController()
         let navController = UINavigationController(rootViewController: messageController)
         present(navController, animated: true)
+     //navigationController?.pushViewController(messageController, animated: true)
         
     }
     
@@ -147,7 +149,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.isNavigationBarHidden = true
         self.locationManager.requestAlwaysAuthorization()
         
         // For use in foreground
@@ -176,7 +178,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         profPicView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
 
         
-        profPicView.selectPhotoButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+        profPicView.selectPhotoButton.addTarget(self, action: #selector(goToProfile), for: .touchUpInside)
 //        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -188,6 +190,14 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
         
         
+    }
+    
+    @objc fileprivate func goToProfile() {
+        //handleSave()
+        let userDetailsController = UserDetailsController()
+        
+        userDetailsController.cardViewModel = user?.toCardViewModel()
+        self.present(userDetailsController, animated: true)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

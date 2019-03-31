@@ -41,7 +41,7 @@ class TransitionCrushesController: UIViewController {
     let privacyText: UILabel = {
         let label = UILabel()
         
-        label.text = "If one of your contacts doesn't have the app, a annonomous message will be sent to their device informing them that \"someone\" has a crush on them."
+        label.text = "If one of your contacts doesn't have the app, an annonomous message will be sent to their device informing them that \"someone\" has a crush on them."
         label.font = UIFont.systemFont(ofSize: 24, weight: .light)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -119,7 +119,7 @@ class TransitionCrushesController: UIViewController {
 
         //fetchCurrentUser()
         setupGradientLayer()
-        
+        navigationController?.isNavigationBarHidden = true
         let stack = UIStackView(arrangedSubviews: [Text, findCrushesThroughContacts,findCrushesThroughSchool,findCrushesThroughFacebook, privacyText])
         view.addSubview(stack)
         view.addSubview(backButton)
@@ -137,27 +137,23 @@ class TransitionCrushesController: UIViewController {
     
     @objc fileprivate func handleContacts() {
         let contactsController = FindCrushesTableViewController()
-        let navigationController = UINavigationController(rootViewController: contactsController)
-        present(navigationController, animated: true)
+        navigationController?.pushViewController(contactsController, animated: true)
     }
     
     @objc fileprivate func handleSchool() {
         let schoolController = SchoolCrushController()
-        let navigationController = UINavigationController(rootViewController: schoolController)
-        present(navigationController, animated: true)
+        navigationController?.pushViewController(schoolController, animated: true)
     }
     
     @objc fileprivate func handleFacebook() {
         
         let fbcontroller = FacebookCrushController()
-        let navigationController = UINavigationController(rootViewController: fbcontroller)
-        present(navigationController, animated: true)
+        navigationController?.pushViewController(fbcontroller, animated: true)
         
     }
     
     @objc fileprivate func handleBack() {
-        let profileController = ProfilePageViewController()
-        present(profileController, animated: true)
+      self.dismiss(animated: true)
     }
 
     let gradientLayer = CAGradientLayer()

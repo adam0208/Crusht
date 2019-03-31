@@ -74,7 +74,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.isNavigationBarHidden = true
+
         self.locationManager.requestAlwaysAuthorization()
         
         // For use in foreground
@@ -166,8 +167,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     @objc func handleHomeBttnTapped() {
-        let profPageController = ProfilePageViewController()
-        present(profPageController, animated: true)
+        self.dismiss(animated: true)
     }
     
     fileprivate func setupFirestoreUserCards() {
@@ -206,16 +206,18 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         //put distance stuff here
         
         if (user?.maxDistance ?? 10) < 10 {
-            radiusInt = 5
+            radiusInt = 0
         }
         else {
-            radiusInt = 10
+            radiusInt = 5
         }
         
         let geoFirestoreRef = Firestore.firestore().collection("users")
         let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
         
         let userCenter = CLLocation(latitude: userLat, longitude: userLong)
+        
+        
         
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: radiusInt!)
                 
@@ -226,6 +228,12 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
 //        let query = Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge)
         //order(by: "uid").start(after: [lastFetchedUser?.uid ?? ""]).limit(to: 2)
         topCardView = nil
+        //geoFirestore.do
+
+//        radiusQuery.observe(.documentEntered) { (key, location) in
+//            
+//        }
+//        
     radiusQuery.geoFirestore.getCollectionReference().firestore.collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
             if let err = err {
                 print("failed to fetch user", err)
@@ -509,5 +517,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             
         }
     }
+    
+    
  
 }

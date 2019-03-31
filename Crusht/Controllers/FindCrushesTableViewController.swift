@@ -445,7 +445,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         searchController.searchBar.placeholder = "Search Contacts"
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
-        
+        navigationController?.isNavigationBarHidden = false
         
         // Setup the Scope Bar
         //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
@@ -458,7 +458,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))
         
         navigationItem.title = "Contacts"
-    
+//        navigationItem.leftItemsSupplementBackButton = true
+//        navigationItem.leftBarButtonItem?.title = "👈"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         //UINavigationItem.setLeftBarButton(back)
         tableView.register(ContactsCell.self, forCellReuseIdentifier: cellId)

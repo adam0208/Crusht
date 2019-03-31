@@ -36,9 +36,14 @@ struct User: ProducesCardViewModel {
     var fbid: String?
     
     var lat: String?
-    var long: String
+    var long: String?
     var deviceID: String?
     var email: String?
+    
+    var verified: String?
+    
+    var birthday: String?
+    
     
     
     init(dictionary: [String: Any]) {
@@ -46,7 +51,7 @@ struct User: ProducesCardViewModel {
        
         //let age = dictionary["Age"] as? Int
         self.name = dictionary["Full Name"] as? String ?? ""
-        self.age = dictionary["Age"] as? Int
+        self.birthday = dictionary["Birthday"] as? String ?? ""
         self.school = dictionary["School"] as? String ?? ""
         self.imageUrl1 = dictionary["ImageUrl1"] as? String
         self.imageUrl2 = dictionary["ImageUrl2"] as? String
@@ -66,7 +71,8 @@ struct User: ProducesCardViewModel {
         self.minDistance = dictionary["minDistance"] as? Int
         self.maxDistance = dictionary["maxDistance"] as? Int
         self.email = dictionary["email"] as? String ?? ""
-    
+        self.verified = dictionary["verified"] as? String ?? ""
+        self.age = calcAge(birthday: self.birthday!)
     }
 
 func toCardViewModel() -> CardViewModel {
@@ -95,4 +101,30 @@ func toCardViewModel() -> CardViewModel {
         return fromId == Auth.auth().currentUser?.uid ? toId : fromId
     }
     
+    func calcAge(birthday: String) -> Int {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "MM/dd/yyyy"
+        let birthdayDate = dateFormater.date(from: birthday)
+        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
+        let now = Date()
+        let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
+        let age = calcAge.year
+        return age!
+    }
+    
+    
+}
+
+extension Date{
+    var daysInMonth:Int{
+        let calendar = Calendar.current
+        
+        let dateComponents = DateComponents(year: calendar.component(.year, from: self), month: calendar.component(.month, from: self))
+        let date = calendar.date(from: dateComponents)!
+        
+        let range = calendar.range(of: .day, in: .month, for: date)!
+        let numDays = range.count
+        
+        return numDays
+    }
 }

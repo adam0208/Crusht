@@ -192,8 +192,10 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         let cellId = "cellId"
         
         fetchCurrentUser()
-        
-        //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+//        navigationItem.leftItemsSupplementBackButton = true
+//        navigationItem.leftBarButtonItem?.title = "👈"
+         navigationController?.isNavigationBarHidden = false
+
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         
         navigationItem.title = "Facebook Friends"

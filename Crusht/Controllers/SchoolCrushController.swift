@@ -91,7 +91,9 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         let cellId = "cellId"
                 
         fetchCurrentUser()
-        
+//        navigationItem.leftItemsSupplementBackButton = true
+//        navigationItem.leftBarButtonItem?.title = "👈"
+         navigationController?.isNavigationBarHidden = false
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
@@ -163,6 +165,12 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
         let school = user?.school ?? "Your School"
         
+        let age = user?.age ?? 25
+        
+        let lowestAge = age - 4
+        
+        let highestAge = age + 4
+        
         navigationItem.title = school
         
         print(school)
@@ -171,8 +179,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
         query.getDocuments { (snapshot, err) in
             if let err = err {
-                print("failed to fetch user", err)
-                self.hud.textLabel.text = "Failed To Fetch user"
+                print("failed to fetch ", err)
+                self.hud.textLabel.text = "Failed To Fetch School"
                 self.hud.show(in: self.view)
                 self.hud.dismiss(afterDelay: 2)
                 return
@@ -183,7 +191,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 let crush = User(dictionary: userDictionary)
                 let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
                 
-                if isNotCurrentUser {
+                let maxAge = crush.age < ((self.user?.age)! + 5)
+                
+                let minAge = crush.age > ((self.user?.age)! - 5)
+                
+                if isNotCurrentUser && minAge && maxAge {
                 
                 self.schoolArray.append(crush)
                     

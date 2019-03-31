@@ -45,8 +45,22 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         return button
     }()
     
+    let refreshButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 60)
+        button.setTitle("♻️", for: .normal)
+        button.backgroundColor = .white
+        button.heightAnchor.constraint(equalToConstant: 50)
+        button.widthAnchor.constraint(equalToConstant: 50)
+        button.layer.cornerRadius = 50
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        
+        
+        //button.layer.masksToBounds = true
+        return button
+    }()
     
-    let refreshButton = createButton(image: #imageLiteral(resourceName: "refresh_circle"))
+    //let refreshButton = createButton(image: #imageLiteral(resourceName: "refresh_circle"))
     let dislikeButton = createButton(image: #imageLiteral(resourceName: "dismiss_circle"))
     let superLikeButton = createButton(image: #imageLiteral(resourceName: "super_like_circle"))
     let likeButton = createButton(image: #imageLiteral(resourceName: "like_circle"))

@@ -40,7 +40,11 @@ class MessageController: UITableViewController {
         super.viewDidLoad()
         let cellId = "cellId"
         
+        navigationController?.isNavigationBarHidden = false
+
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+//        navigationItem.leftItemsSupplementBackButton = true
+//        navigationItem.leftBarButtonItem?.title = "👈"
         
       //  let image = UIImage(named: "new_message_icon")?.withRenderingMode(.alwaysOriginal)
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
@@ -57,8 +61,7 @@ class MessageController: UITableViewController {
     }
     
     @objc fileprivate func handleBack() {
-        let profController = ProfilePageViewController()
-        present(profController, animated: true)
+        self.dismiss(animated: true)
     }
     
     var messages = [Message]()
@@ -286,6 +289,9 @@ class MessageController: UITableViewController {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
         chatLogController.user = user
         chatLogController.fromName = navigationItem.title
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = "👈"
+        navigationItem.backBarButtonItem = myBackButton
         navigationController?.pushViewController(chatLogController, animated: true)
     }
     

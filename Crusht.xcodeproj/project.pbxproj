@@ -34,6 +34,8 @@
 		2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */; };
 		2838170F21B8A26400B3E4FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170E21B8A26400B3E4FD /* User.swift */; };
 		2838171E21B8C90100B3E4FD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* Extension.swift */; };
+		2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */; };
+		2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A141224EE4C500A2CEB9 /* Reports.swift */; };
 		2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707522026EF800EB83CE /* FacebookPhoneController.swift */; };
 		28597078220282CE00EB83CE /* VerifyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28597077220282CE00EB83CE /* VerifyAPI.swift */; };
 		2859707C2202C72400EB83CE /* VerificationResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707B2202C72400EB83CE /* VerificationResultViewController.swift */; };
@@ -44,6 +46,7 @@
 		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
+		2883A988224E8FE200300CD4 /* SlackCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2883A987224E8FE200300CD4 /* SlackCrushController.swift */; };
 		28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */; };
 		28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5A21B8D1D100A654A0 /* IMG_0184.png */; };
 		28857C9E21B8D1D500A654A0 /* lady5c.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5C21B8D1D100A654A0 /* lady5c.jpg */; };
@@ -167,6 +170,8 @@
 		2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
 		2838170E21B8A26400B3E4FD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2838171D21B8C90100B3E4FD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportControllerViewController.swift; sourceTree = "<group>"; };
+		2850A141224EE4C500A2CEB9 /* Reports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reports.swift; sourceTree = "<group>"; };
 		2859707522026EF800EB83CE /* FacebookPhoneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookPhoneController.swift; sourceTree = "<group>"; };
 		28597077220282CE00EB83CE /* VerifyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyAPI.swift; sourceTree = "<group>"; };
 		2859707B2202C72400EB83CE /* VerificationResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationResultViewController.swift; sourceTree = "<group>"; };
@@ -177,6 +182,7 @@
 		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		2883A987224E8FE200300CD4 /* SlackCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackCrushController.swift; sourceTree = "<group>"; };
 		28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide_out_menu_poster.png; sourceTree = "<group>"; };
 		28857C5A21B8D1D100A654A0 /* IMG_0184.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0184.png; sourceTree = "<group>"; };
 		28857C5C21B8D1D100A654A0 /* lady5c.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = lady5c.jpg; path = ../../CrushtUI/lady5c.jpg; sourceTree = "<group>"; };
@@ -456,6 +462,8 @@
 				2859707522026EF800EB83CE /* FacebookPhoneController.swift */,
 				2859707B2202C72400EB83CE /* VerificationResultViewController.swift */,
 				2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */,
+				2883A987224E8FE200300CD4 /* SlackCrushController.swift */,
+				2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -468,6 +476,7 @@
 				28CFC6B421C5B3ED00387129 /* Messages.swift */,
 				28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */,
 				288C87CC21F28C25000B5058 /* SchoolCrushes.swift */,
+				2850A141224EE4C500A2CEB9 /* Reports.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -874,8 +883,10 @@
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
+				2883A988224E8FE200300CD4 /* SlackCrushController.swift in Sources */,
 				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
 				28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */,
+				2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
 				28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
@@ -903,6 +914,7 @@
 				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
 				28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */,
 				2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */,
+				2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */,
 				2859707C2202C72400EB83CE /* VerificationResultViewController.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
@@ -1104,6 +1116,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				INFOPLIST_FILE = Crusht/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1124,6 +1137,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				INFOPLIST_FILE = Crusht/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

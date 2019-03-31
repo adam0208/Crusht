@@ -288,7 +288,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             if let age = user?.age {
             cell.textField.text = String(age)
             }
-            cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
+            //cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
         case 4:
             let bioCell = BioCell(style: .default, reuseIdentifier: nil)
             bioCell.textView.font = UIFont.systemFont(ofSize: 16)
@@ -379,10 +379,6 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         self.user?.school = textField.text
     }
     
-    @objc fileprivate func handleAgeChange(textField: UITextField) {
-        self.user?.age = Int(textField.text ?? "")
-    }
-    
     @objc fileprivate func handleBioChange(textView: UITextView) {
         self.user?.bio = textView.text
         
@@ -394,25 +390,14 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
 //        }
 //        else { return 50 }
 //    }
-
-    @objc fileprivate func goToProfile() {
-        //handleSave()
-        let userDetailsController = UserDetailsController()
-        
-        userDetailsController.cardViewModel = user?.toCardViewModel()
-        self.present(userDetailsController, animated: true)
-    }
     
     fileprivate func setUpNavItems() {
         navigationItem.title = "Settings"
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         
-        navigationItem.rightBarButtonItems = [
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))
         
-         UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-         UIBarButtonItem(title: "Preview", style: .plain, target: self, action: #selector(goToProfile))
-        ]
     }
     let bioTextView = BioTextView()
     
@@ -425,7 +410,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "ImageUrl1": user?.imageUrl1 ?? "",
             "ImageUrl2": user?.imageUrl2 ?? "",
             "ImageUrl3": user?.imageUrl3 ?? "",
-            "Age": user?.age ?? -1,
+            "Birthday": user?.birthday ?? "",
             "School": user?.school ?? "",
             "Bio": user?.bio ?? "",
             "minSeekingAge": user?.minSeekingAge ?? 18,

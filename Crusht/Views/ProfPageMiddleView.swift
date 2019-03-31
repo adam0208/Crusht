@@ -14,7 +14,7 @@ class ProfPageMiddleView: UIView {
         super.draw(rect)
         
         let gradientLayer = CAGradientLayer()
-        let leftColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        let leftColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
         let rightColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
         gradientLayer.colors = [leftColor.cgColor, rightColor.cgColor]
         gradientLayer.locations = [0, 1]
