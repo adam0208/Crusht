@@ -1,24 +1,16 @@
 //
-//  ReportControllerViewController.swift
+//  MessageReportController.swift
 //  Crusht
 //
-//  Created by William Kelly on 3/29/19.
+//  Created by William Kelly on 4/6/19.
 //  Copyright © 2019 William Kelly. All rights reserved.
 //
 
 import UIKit
 import Firebase
 
-class ReportControllerViewController: UIViewController {
-    
-    override func viewWillDisappear(_ animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = true
-    }
-    
-  
-    
+class MessageReportController: UIViewController {
+
     var reports: Reports?
     
     var reportUID = String()
@@ -35,7 +27,7 @@ class ReportControllerViewController: UIViewController {
     let textView: UITextView = {
         let tv = ReportTextView()
         tv.font = UIFont.systemFont(ofSize: 25)
-         tv.textColor = .lightGray
+        tv.textColor = .lightGray
         tv.adjustsFontForContentSizeCategory = true
         return tv
     }()
@@ -54,19 +46,19 @@ class ReportControllerViewController: UIViewController {
         return button
     }()
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        let myBackButton = UIBarButtonItem()
-//        myBackButton.title = "👈"
-//        navigationItem.backBarButtonItem = myBackButton
-//    }
-
- lazy var stackView = UIStackView(arrangedSubviews: [textView, reportBttn])
+    //    override func viewWillAppear(_ animated: Bool) {
+    //        super.viewWillAppear(animated)
+    //
+    //        let myBackButton = UIBarButtonItem()
+    //        myBackButton.title = "👈"
+    //        navigationItem.backBarButtonItem = myBackButton
+    //    }
+    
+    lazy var stackView = UIStackView(arrangedSubviews: [textView, reportBttn])
     
     override func viewDidLoad() {
         super.viewDidLoad()
- 
+        
         navigationController?.navigationBar.isHidden = false
         setupNotificationObservers()
         setupTapGesture()
@@ -74,13 +66,13 @@ class ReportControllerViewController: UIViewController {
         setupGradientLayer()
         textView.text = "Please tell us why you are reporting this user. We take these accusations seriously."
         textView.textColor = UIColor.lightGray
-       
+        
         view.addSubview(stackView)
         stackView.axis = .vertical
         
         stackView.spacing = 16
         
-        stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.frame.height/4, left: 20, bottom: view.frame.height/1.3, right: 20))
+        stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 100, left: 20, bottom: 400, right: 20))
         
     }
     
@@ -92,7 +84,7 @@ class ReportControllerViewController: UIViewController {
                                       "text": textView.text,
                                       "reporter-uid": uid,
                                       "number-of-reports": 1
-                                      
+            
         ]
         
         Firestore.firestore().collection("reported").whereField("uid", isEqualTo: reportUID).getDocuments { (snapshot, err) in
@@ -116,7 +108,7 @@ class ReportControllerViewController: UIViewController {
                                                       "email": self.reportEmail,
                                                       "text": self.textView.text,
                                                       "reporter-uid": self.uid,
-                                                     "number-of-reports": (self.reports?.reportNumber)! + 1
+                                                      "number-of-reports": (self.reports?.reportNumber)! + 1
                     ]
                     Firestore.firestore().collection("reported").document(self.reportUID).collection("user-reports").addDocument(data: newDocData)
                 })
@@ -143,7 +135,7 @@ class ReportControllerViewController: UIViewController {
         view.layer.addSublayer(gradientLayer)
         gradientLayer.frame = view.bounds
     }
-
+    
     fileprivate func setupTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
     }
@@ -177,35 +169,6 @@ class ReportControllerViewController: UIViewController {
         let difference = keyboardFrame.height - bottomSpace
         self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
     }
-    
-
-}
-
-class ReportTextView: UITextView, UITextViewDelegate {
-    
-    func adjustUITextViewHeight(arg : UITextView)
-    {
-        arg.translatesAutoresizingMaskIntoConstraints = true
-        arg.sizeToFit()
-        arg.isScrollEnabled = false
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return .init(width: 0, height: 100)
-    }
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
-        }
-    }
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Placeholder"
-            textView.textColor = UIColor.lightGray
-        }
-    }
-    
     
     
 }

@@ -28,10 +28,67 @@ extension ProfilePageViewController: UIImagePickerControllerDelegate, UINavigati
     
 }
 
+
+
 class ProfilePageViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CLLocationManagerDelegate {
     
     func didFinishLoggingIn() {
         fetchCurrentUser()
+    }
+    
+    let messageBadge: UILabel = {
+        let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
+        label.layer.borderColor = UIColor.clear.cgColor
+        label.layer.borderWidth = 2
+        label.layer.cornerRadius = label.bounds.size.height / 2
+        label.textAlignment = .center
+        label.layer.masksToBounds = true
+        label.font = UIFont.systemFont(ofSize: 10)
+        label.textColor = .white
+        label.backgroundColor = .red
+        label.text = "!"
+        return label
+    }()
+    
+    let matchAlert: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("❤️ Match Alert! ❤️", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        button.addTarget(self, action: #selector(goToMatches), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc fileprivate func goToMatches() {
+        let messageController = MessageController()
+        messageBadge.removeFromSuperview()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
+    }
+    
+    fileprivate func listenForMessages() {
+        guard let toId = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
+            .addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                    }
+                    if (diff.type == .modified) {
+                        self.topStackView.messageButton.addSubview(self.messageBadge)
+                        
+                    }
+                    if (diff.type == .removed) {
+                    }
+                }
+        }
     }
     
     let hud = JGProgressHUD(style: .dark)
@@ -48,6 +105,8 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         let locationViewController = LocationMatchViewController()
         let navigationController = UINavigationController(rootViewController: locationViewController)
         present(navigationController, animated: true)
+        
+       // navigationController?.pushViewController(locationViewController, animated: true)
     }
     
     @objc fileprivate func handleFindCrushesTapped() {
@@ -78,10 +137,36 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     @objc func handleMessages() {
         let messageController = MessageController()
+        messageBadge.removeFromSuperview()
         let navController = UINavigationController(rootViewController: messageController)
         present(navController, animated: true)
      //navigationController?.pushViewController(messageController, animated: true)
         
+    }
+    
+    fileprivate func listenforMatches() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).collection("matches")
+            .addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                        self.view.addSubview(self.matchAlert)
+                        self.matchAlert.anchor(top: self.view.topAnchor, leading: self.view.leadingAnchor, bottom: nil, trailing: self.view.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            self.matchAlert.removeFromSuperview()
+                        }
+                    }
+                    if (diff.type == .modified) {
+                        
+                    }
+                    if (diff.type == .removed) {
+                    }
+                }
+        }
     }
     
     
@@ -150,6 +235,8 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
+        listenForMessages()
+//        listenforMatches()
         self.locationManager.requestAlwaysAuthorization()
         
         // For use in foreground
@@ -177,7 +264,6 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         profPicView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
         profPicView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
 
-        
         profPicView.selectPhotoButton.addTarget(self, action: #selector(goToProfile), for: .touchUpInside)
 //        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)

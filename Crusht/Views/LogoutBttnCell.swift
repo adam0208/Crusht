@@ -18,6 +18,7 @@ class LogoutBttnCell: UITableViewCell {
         button.setTitleColor(.white, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.layer.cornerRadius = 16
         return button
     }()
@@ -36,8 +37,8 @@ class LogoutBttnCell: UITableViewCell {
         }
         set (newFrame) {
             var frame = newFrame
-            frame.origin.x += 10
-            frame.size.width -= 2 * 12
+            frame.origin.x += 40
+            frame.size.width -= 2 * 40
             super.frame = frame
         }
     }
@@ -60,6 +61,8 @@ let FBLoginBttn: UIButton = {
     button.heightAnchor.constraint(equalToConstant: 60).isActive = true
     button.widthAnchor.constraint(equalToConstant: 100)
     button.layer.cornerRadius = 22
+    button.titleLabel?.adjustsFontForContentSizeCategory = true
+
     //button.addTarget(self, action: #selector(loginButtonClicked), for: .touchUpInside)
     return button
 }()
@@ -80,8 +83,8 @@ let FBLoginBttn: UIButton = {
         }
         set (newFrame) {
             var frame = newFrame
-            frame.origin.x += 10
-            frame.size.width -= 2 * 12
+            frame.origin.x += 40
+            frame.size.width -= 2 * 40
             super.frame = frame
         }
     }

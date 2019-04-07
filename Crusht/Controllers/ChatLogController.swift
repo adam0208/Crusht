@@ -118,6 +118,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                         let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                         self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                     })
+                    
+                    
+                    
                     }
                 })
                     
@@ -133,7 +136,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         textView.delegate = self
         textView.isEditable = true
         
-        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.font = UIFont.systemFont(ofSize: 20)
+        textView.adjustsFontForContentSizeCategory = true
         func adjustUITextViewHeight(arg : UITextView)
         {
             arg.translatesAutoresizingMaskIntoConstraints = true
@@ -154,12 +158,36 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     var timer: Timer?
     
-  
-    
+    fileprivate func listenForMessages() {
+        let toId = user!.uid!
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId)
+            .addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                    }
+                    if (diff.type == .modified) {
+                        self.messages.removeAll()
+                        self.observeMessages()
+                        self.observeMoreMessages()
+                    }
+                    if (diff.type == .removed) {
+                    }
+                }
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // listenForMessages()
+       listenForMessages()
+        
+        
+        
+        //navigationController?.title.
                 
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
         //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
@@ -208,7 +236,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     }
     
     @objc fileprivate func handleReport() {
-        let reportController = ReportControllerViewController()
+        let reportController = MessageReportController()
         reportController.reportEmail = user?.email ?? ""
         reportController.reportUID = user?.uid ?? ""
         reportController.reportName = user?.name ?? ""
@@ -218,50 +246,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         myBackButton.title = "👈"
         navigationItem.backBarButtonItem = myBackButton
          navigationController?.pushViewController(reportController, animated: true)
-    }
-    
-    fileprivate func listenForMessages() {
-        
-        let toId = user!.uid!
-        let fromId = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
-                print("Error making individual convo", err)
-                return
-            }
-            snapshot?.documents.forEach({ (documentSnapshot) in
-
-                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addSnapshotListener({ (querySnapshot, err) in
-                            guard let snapshot = querySnapshot else {
-                                print("Error: \(err.debugDescription)")
-                                return
-                            }
-                            
-                            /// Check if snapshot has documents and not empty
-                            guard snapshot.documents.last != nil else {
-                                // The collection is empty.
-                                return
-                            }
-                            snapshot.documentChanges.forEach({ (diff) in
-                                print(diff.document.data())
-                                if (diff.type == .added) {
-                                    self.messages.removeAll()
-                                    self.observeMessages()
-                                    self.observeMoreMessages()
-                                }
-                                else if (diff.type == .modified) {
-                                   
-                                }
-                                else if (diff.type == .removed) {
-                                    
-                                }
-                            })
-                        })
-                            
-                        })
-                })
-    
-        
     }
     
     @objc func handleReloadTable() {
@@ -333,11 +317,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         containerView.addSubview(self.inputTextField)
         //x,y,w,h
-        self.inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
-        self.inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+//        self.inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
+//        self.inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+//        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
+//        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
+        self.inputTextField.anchor(top: containerView.topAnchor, leading: uploadImageView.trailingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 0))
         
         let separatorLineView = UIView()
         separatorLineView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)

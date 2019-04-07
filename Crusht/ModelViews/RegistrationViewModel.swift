@@ -24,7 +24,8 @@ var fullName: String? {
 var email: String? { didSet { checkFormValidity() } }
 var password: String? { didSet { checkFormValidity() } }
     
-var school: String? { didSet { checkFormValidity() } }
+var school: String?
+//{ didSet { checkFormValidity() } }
     
     //var age: Int? { didSet {checkFormValidity() }}
     
@@ -34,7 +35,8 @@ var school: String? { didSet { checkFormValidity() } }
     
     var fbid: String?
     
-    var birthday: String? { didSet {checkFormValidity() }}
+    var birthday: String?
+    //{ didSet {checkFormValidity() }}
     
    
 
@@ -102,7 +104,8 @@ var school: String? { didSet { checkFormValidity() } }
              "uid": uid,
              "Bio": bio ?? "",
              "School": school ?? "",
-            "Birthday": birthday ?? "",
+            "Birthday": birthday ?? "10-31-1995",
+            "Age": calcAge(birthday: birthday!),
             "minSeekingAge": 18,
                 "maxSeekingAge": 50,
                 "PhoneNumber": phone,
@@ -124,9 +127,20 @@ var school: String? { didSet { checkFormValidity() } }
     }
     
      func checkFormValidity() {
-        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && school?.isEmpty == false && birthday?.isEmpty == false && bindableImage.value != nil
+        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && bindableImage.value != nil
         bindableIsFormValid.value = isFormValid
     
+    }
+    
+    func calcAge(birthday: String) -> Int {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "MM/dd/yyyy"
+        let birthdayDate = dateFormater.date(from: birthday)
+        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
+        let now = Date()
+        let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
+        let age = calcAge.year
+        return age!
     }
     
     //check for age here!

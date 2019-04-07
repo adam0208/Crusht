@@ -60,6 +60,21 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         return button
     }()
     
+    let reportButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 60)
+        button.setTitle("👮‍♀️", for: .normal)
+        button.backgroundColor = .white
+        button.heightAnchor.constraint(equalToConstant: 50)
+        button.widthAnchor.constraint(equalToConstant: 50)
+        button.layer.cornerRadius = 50
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        
+        
+        //button.layer.masksToBounds = true
+        return button
+    }()
+    
     //let refreshButton = createButton(image: #imageLiteral(resourceName: "refresh_circle"))
     let dislikeButton = createButton(image: #imageLiteral(resourceName: "dismiss_circle"))
     let superLikeButton = createButton(image: #imageLiteral(resourceName: "super_like_circle"))
@@ -71,7 +86,7 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         distribution = .fillEqually
         heightAnchor.constraint(equalToConstant: 100).isActive = true
         
-        [refreshButton, disLikeBttn, likeBttn].forEach { (button) in
+        [refreshButton, disLikeBttn, likeBttn, reportButton].forEach { (button) in
             self.addArrangedSubview(button)
         }
     }

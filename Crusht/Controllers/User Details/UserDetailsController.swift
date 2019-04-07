@@ -81,7 +81,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     let crushScoreLabel: UILabel = {
         let label = UILabel()
-        label.text = "HI im a loser hahahahh hahahha"
+        label.text = ""
         label.numberOfLines = 0
         return label
     }()

@@ -95,6 +95,7 @@
 		28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624A21BDB76A00EAFFE2 /* LoginController.swift */; };
 		28BE624E21BDDBDE00EAFFE2 /* infoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624D21BDDBDE00EAFFE2 /* infoButton.png */; };
 		28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */; };
+		28C06E0B22593CE3004F0C1E /* MessageReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C06E0A22593CE3004F0C1E /* MessageReportController.swift */; };
 		28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */; };
 		28CFC6AF21C56BAB00387129 /* heart2crusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CFC6AE21C56BAB00387129 /* heart2crusht.png */; };
 		28CFC6B121C56D3500387129 /* heartIcon3Crusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */; };
@@ -231,6 +232,7 @@
 		28BE624A21BDB76A00EAFFE2 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		28BE624D21BDDBDE00EAFFE2 /* infoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoButton.png; sourceTree = "<group>"; };
 		28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
+		28C06E0A22593CE3004F0C1E /* MessageReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageReportController.swift; sourceTree = "<group>"; };
 		28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTableViewCell.swift; sourceTree = "<group>"; };
 		28CFC6AE21C56BAB00387129 /* heart2crusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart2crusht.png; sourceTree = "<group>"; };
 		28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heartIcon3Crusht.png; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 				2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */,
 				2883A987224E8FE200300CD4 /* SlackCrushController.swift */,
 				2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */,
+				28C06E0A22593CE3004F0C1E /* MessageReportController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -905,6 +908,7 @@
 				2859708022037A3700EB83CE /* SchoolUserDetailsController.swift in Sources */,
 				28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */,
 				28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */,
+				28C06E0B22593CE3004F0C1E /* MessageReportController.swift in Sources */,
 				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
 				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,
 				28CFC6B521C5B3ED00387129 /* Messages.swift in Sources */,

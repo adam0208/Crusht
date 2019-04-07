@@ -49,7 +49,7 @@ struct User: ProducesCardViewModel {
     init(dictionary: [String: Any]) {
         //initialize our user stuff
        
-        //let age = dictionary["Age"] as? Int
+        self.age = dictionary["Age"] as? Int
         self.name = dictionary["Full Name"] as? String ?? ""
         self.birthday = dictionary["Birthday"] as? String ?? ""
         self.school = dictionary["School"] as? String ?? ""
@@ -72,7 +72,7 @@ struct User: ProducesCardViewModel {
         self.maxDistance = dictionary["maxDistance"] as? Int
         self.email = dictionary["email"] as? String ?? ""
         self.verified = dictionary["verified"] as? String ?? ""
-        self.age = calcAge(birthday: self.birthday!)
+        //self.age = calcAge(birthday: self.birthday!)
     }
 
 func toCardViewModel() -> CardViewModel {
@@ -93,7 +93,7 @@ func toCardViewModel() -> CardViewModel {
     if let url = imageUrl2 { imageUrls.append(url) }
     if let url = imageUrl3 { imageUrls.append(url) }
     
-    return CardViewModel(uid: self.uid ?? "", bio: self.bio ?? "", imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
+    return CardViewModel(uid: self.uid ?? "", bio: self.bio ?? "", email: self.email ?? "", imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     
     }
     

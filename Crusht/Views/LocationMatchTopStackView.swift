@@ -39,6 +39,7 @@ class LocationMatchTopStackView: UIStackView {
         super.init(frame: frame)
         
         switchView.addSubview(collegeOnlySwitch)
+        switchView.bringSubviewToFront(collegeOnlySwitch)
         collegeOnlySwitch.anchor(top: switchView.topAnchor, leading: nil, bottom: switchView.bottomAnchor, trailing: nil, padding: .init(top: 12, left: 0, bottom: 0, right: 0))
 
         heightAnchor.constraint(equalToConstant: 60).isActive = true

@@ -285,9 +285,9 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             cell.textField.addTarget(self, action: #selector(handleSchoolChange), for: .editingChanged)
         case 3:
             cell.textField.placeholder = "Age"
-            if let age = user?.age {
+            let age = calcAge(birthday: (user?.birthday ?? "10-31-1995"))
             cell.textField.text = String(age)
-            }
+            
             //cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
         case 4:
             let bioCell = BioCell(style: .default, reuseIdentifier: nil)
@@ -410,6 +410,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "ImageUrl1": user?.imageUrl1 ?? "",
             "ImageUrl2": user?.imageUrl2 ?? "",
             "ImageUrl3": user?.imageUrl3 ?? "",
+            "Age": calcAge(birthday: user?.birthday ?? "10-31-1995"),
             "Birthday": user?.birthday ?? "",
             "School": user?.school ?? "",
             "Bio": user?.bio ?? "",
@@ -439,6 +440,17 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             
             })
         }
+    }
+    
+    func calcAge(birthday: String) -> Int {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "MM/dd/yyyy"
+        let birthdayDate = dateFormater.date(from: birthday)
+        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
+        let now = Date()
+        let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
+        let age = calcAge.year
+        return age!
     }
     
     @objc fileprivate func handleLogOut() {

@@ -31,8 +31,21 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class MessageController: UITableViewController {
+class MessageController: UITableViewController, UISearchBarDelegate {
     
+    let badge: UILabel = {
+    let label = UILabel(frame: CGRect(x: 10, y: -10, width: 20, height: 20))
+        label.layer.borderColor = UIColor.clear.cgColor
+    label.layer.borderWidth = 2
+    label.layer.cornerRadius = label.bounds.size.height / 2
+    label.textAlignment = .center
+    label.layer.masksToBounds = true
+    label.font = UIFont(name: "SanFranciscoText-Light", size: 13)
+    label.textColor = .white
+    label.backgroundColor = .red
+    label.text = "80"
+        return label
+    }()
     
     //ADD COLLECTION CALLED USER MESSAGE OR SOMETING TO DOCUMENT SO ONLY GET ONE MESSAGE
 
@@ -49,7 +62,8 @@ class MessageController: UITableViewController {
       //  let image = UIImage(named: "new_message_icon")?.withRenderingMode(.alwaysOriginal)
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "📤", style: .plain, target: self, action: #selector(handleNewMessage))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "💑", style: .plain, target: self, action: #selector(handleNewMessage))
+        
         navigationItem.title = "Messages"
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
@@ -58,15 +72,27 @@ class MessageController: UITableViewController {
         fetchUserAndSetupNavBarTitle()
         
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: true)
+        
+        view.addSubview(searchController.searchBar)
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Messages"
+        navigationItem.searchController = self.searchController
+        definesPresentationContext = true
+        
+        
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     @objc fileprivate func handleBack() {
         self.dismiss(animated: true)
     }
-    
+  
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
-
+      var messageArray = [Message]()
     func observeUserMessages() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         //Firestore.firestore.coll
@@ -156,19 +182,46 @@ class MessageController: UITableViewController {
         return 60
     }
     
+    var users = [User]()
+    
+    //search bar stuff
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        messageArray = messages.filter({( message : Message) -> Bool in
+            return message.fromName!.lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if isFiltering() {
+            return messageArray.count
+        }
         return messages.count
     }
     
-    var users = [User]()
     let cellId = "cellId"
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         //let user = users[indexPath.row]
         
-        let message = messages[indexPath.row]
-        cell.message = message
+      
+        
+        if isFiltering() {
+            let message = messages[indexPath.row]
+            cell.message = message
+        } else {
+            let message = messages[indexPath.row]
+            cell.message = message
+        }
         
 //        let message = messages[indexPath.row]
 //        cell.textLabel?.text = message.toName
@@ -295,4 +348,21 @@ class MessageController: UITableViewController {
         navigationController?.pushViewController(chatLogController, animated: true)
     }
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
 }
+
+extension MessageController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
+
+    
+
