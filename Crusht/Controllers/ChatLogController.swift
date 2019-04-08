@@ -185,8 +185,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
        listenForMessages()
         
-        
-        
         //navigationController?.title.
                 
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
@@ -198,12 +196,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         collectionView?.keyboardDismissMode = .interactive
      
 //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleback))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "👮‍♀️", style: .plain, target: self, action: #selector(handleReport))
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "👮‍♀️", style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(title: "👤  ", style: .plain, target: self, action: #selector(goToProfile))]
 //        navigationItem.leftItemsSupplementBackButton = true
 //        navigationItem.leftBarButtonItem?.title = "👈"
         
         setupKeyboardObservers()
-        
 //
 //        let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
 //        buttonStackView.axis = .horizontal
@@ -232,6 +229,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 //                             selector: #selector(self.listenForMessages(_:)),
 //                             userInfo: nil,
 //                             repeats: true)
+    
+    }
+    
+    @objc fileprivate func goToProfile() {
+    
+        
+        let userDetailsController = UserDetailsController()
+    
+        userDetailsController.cardViewModel = user!.toCardViewModel()
+        self.present(userDetailsController, animated: true)
     
     }
     
@@ -306,7 +313,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         let sendButton = UIButton(type: .system)
         sendButton.setTitle("Send", for: UIControl.State())
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        sendButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        
         sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
         containerView.addSubview(sendButton)
         //x,y,w,h
@@ -322,7 +330,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 //        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
 //        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
-        self.inputTextField.anchor(top: containerView.topAnchor, leading: uploadImageView.trailingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 0))
+        self.inputTextField.anchor(top: containerView.topAnchor, leading: uploadImageView.trailingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 90))
+    
+        sendButton.anchor(top: nil, leading: self.inputTextField.trailingAnchor, bottom: nil, trailing: containerView.trailingAnchor)
         
         let separatorLineView = UIView()
         separatorLineView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -536,6 +546,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         cell.textView.text = message.text
         
+        
+        
         setupCell(cell, message: message)
         
         if let text = message.text {
@@ -549,6 +561,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         }
         
         cell.playButton.isHidden = message.videoUrl == nil
+        
+        inputTextField.becomeFirstResponder()
         
         return cell
     }
@@ -664,6 +678,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         //let toDevice = user?.deviceID!
         let fromId = Auth.auth().currentUser!.uid
         
+        let toName = user?.name ?? ""
+        
 //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
 //            if let err = err {
 //                print(err)
@@ -677,12 +693,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 //        print(fromName, "Fuck you bro")
         
         let timestamp = Int(Date().timeIntervalSince1970)
-        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": self.fromName as AnyObject, "timestamp": timestamp as AnyObject]
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": self.fromName as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         
         properties.forEach({values[$0] = $1})
         
         //flip to id and from id to fix message controller query glitch
-        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": user?.name as AnyObject, "toName": self.fromName as AnyObject, "timestamp": timestamp as AnyObject]
         
         properties.forEach({otherValues[$0] = $1})
         
@@ -783,8 +799,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 
         
         messages.removeAll()
-        observeMoreMessages()
-        observeMessages()
+        
         
         
     }

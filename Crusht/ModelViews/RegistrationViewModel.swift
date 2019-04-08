@@ -27,7 +27,7 @@ var password: String? { didSet { checkFormValidity() } }
 var school: String?
 //{ didSet { checkFormValidity() } }
     
-    //var age: Int? { didSet {checkFormValidity() }}
+    var age: Int?
     
     var bio: String? { didSet {checkFormValidity() }}
     
@@ -105,7 +105,7 @@ var school: String?
              "Bio": bio ?? "",
              "School": school ?? "",
             "Birthday": birthday ?? "10-31-1995",
-            "Age": calcAge(birthday: birthday!),
+            "Age": age ?? 19,
             "minSeekingAge": 18,
                 "maxSeekingAge": 50,
                 "PhoneNumber": phone,

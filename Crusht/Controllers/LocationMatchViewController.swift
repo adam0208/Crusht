@@ -100,6 +100,12 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         topStackView.homeButton.addTarget(self, action: #selector(handleHomeBttnTapped), for: .touchUpInside)
         bottomStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         setupLayout()
+     
+       
+      
+                                                                    
+        topStackView.switchView.isUserInteractionEnabled = true
+       
         
         bottomStackView.likeBttn.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomStackView.reportButton.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
@@ -548,11 +554,14 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     @objc fileprivate func switchValueDidChange() {
+        
         if topStackView.collegeOnlySwitch.isOn == true {
         fetchSchoolUsersCall()
         }
         else{
+            
             fetchUsersOnLoad()
+            
             
         }
     }

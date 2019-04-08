@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import Contacts
 import JGProgressHUD
-import Alamofire
+
 
 class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate {
     

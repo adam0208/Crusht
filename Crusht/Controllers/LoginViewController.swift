@@ -27,10 +27,13 @@ class LoginViewController: UIViewController {
     let Text: UILabel = {
         let label = UILabel()
      
-        label.text = "Wanna know if a crush is mutual?"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+        label.text = "Wanna"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
         label.textAlignment = .center
         label.textColor = .black
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        
         return label
     }()
   
@@ -286,22 +289,24 @@ class LoginViewController: UIViewController {
         navigationController?.isNavigationBarHidden = true
         
         let logoImage = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/2, height: UIScreen.main.bounds.size.height/3))
-        logoImage.image = #imageLiteral(resourceName: "CrushTLogoIcon")
+        logoImage.image = #imageLiteral(resourceName: "CrushtLogoLiam")
         logoImage.contentMode = .scaleAspectFit
         
         let width = self.view.bounds.width
         let height = self.view.bounds.height
         
+        view.addSubview(Text)
         
-        let overallStackView = UIStackView(arrangedSubviews: [logoImage, UIView(), Text, UIView(), FBLoginBttn, UIView(), phoneLoginBttn])
+        let overallStackView = UIStackView(arrangedSubviews: [logoImage, Text, phoneLoginBttn, UIView(), FBLoginBttn])
         overallStackView.axis = .vertical
         view.addSubview(overallStackView)
         
                 overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
                 overallStackView.isLayoutMarginsRelativeArrangement = true
-                overallStackView.layoutMargins = .init(top: 0, left: 30, bottom: 80, right: 30)
+                overallStackView.layoutMargins = .init(top: -40, left: 30, bottom: 80, right: 30)
                 overallStackView.spacing = 10
-        
+       
+//        Text.anchor(top: overallStackView.bottomAnchor, leading: nil, bottom: nil, trailing: nil)
        
     }
     

@@ -96,7 +96,7 @@ class FacebookPhoneController: UIViewController {
         
         stack.axis = .vertical
         
-        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/4, left: 30, bottom: view.bounds.height/4, right: 30))
+        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/3.5, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         
         stack.spacing = 20

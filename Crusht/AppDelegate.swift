@@ -55,14 +55,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.makeKeyAndVisible()
         let profController = ProfilePageViewController()
-        
+
         if Auth.auth().currentUser == nil {
             window?.rootViewController = LoginViewController()
         } else {
         window?.rootViewController = profController
 
         }
-        //window?.rootViewController = EnterMorePhoneInfoViewController()
+       // window?.rootViewController = PhoneNumberViewController()
+       // window?.rootViewController = EnterMorePhoneInfoViewController()
         
         return true
     }

@@ -59,7 +59,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.heightAnchor.constraint(equalToConstant: 80).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        button.addTarget(self, action: #selector(goToMatches), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(goToMatches), for: .touchUpInside)
         return button
     }()
     
@@ -95,18 +95,14 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     let bottomStackView = ProfPageBottomStackView()
     let topStackView = ProfPageTopStackView()
     let profPicView = ProfPageMiddleView()
-    //let profBttnView = ProfPageMidButtonView()
+    let animationView = AnimationView()
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
-//        hud.textLabel.text = "Feature not available for test flight"
-//        hud.show(in: view)
-//
-//        hud.dismiss(afterDelay: 2)
+
         let locationViewController = LocationMatchViewController()
         let navigationController = UINavigationController(rootViewController: locationViewController)
         present(navigationController, animated: true)
         
-       // navigationController?.pushViewController(locationViewController, animated: true)
     }
     
     @objc fileprivate func handleFindCrushesTapped() {
@@ -269,10 +265,11 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         setupLayout()
-        hud.textLabel.text = "Getting your info you silly goose"
-        hud.show(in: view)
-       
-        hud.dismiss(afterDelay: 1)
+        view.addSubview(animationView)
+        animationView.fillSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.animationView.removeFromSuperview()
+        }
         
         
         

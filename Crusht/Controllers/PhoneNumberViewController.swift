@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import UserNotifications
+import CountryPicker
 
 class PhoneNumberText: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -24,18 +25,34 @@ class PhoneNumberText: UITextField {
     }
 }
 
-class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
+class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryPickerDelegate {
 
     let phoneNumberTextField: UITextField = {
         let tf = PhoneNumberText()
         tf.keyboardType = UIKeyboardType.phonePad
-        tf.placeholder = "+19177449835"
+        tf.placeholder = "3138886434"
         tf.backgroundColor = .white
-        tf.layer.cornerRadius = 22
-        tf.font = UIFont.systemFont(ofSize: 30)
+        tf.layer.cornerRadius = 15
+        tf.font = UIFont.systemFont(ofSize: 25)
         tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
        
+        return tf
+    }()
+    
+    let countryCodeTF: UITextField = {
+        let tf = PhoneNumberText()
+        tf.keyboardType = UIKeyboardType.phonePad
+        
+        tf.text = "🇺🇸"
+        
+        tf.backgroundColor = .white
+        tf.layer.cornerRadius = 15
+        tf.font = UIFont.systemFont(ofSize: 25)
+        tf.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        
         return tf
     }()
     
@@ -56,29 +73,61 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    var picker = CountryPicker()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupGradientLayer()
         
-        let stack = UIStackView(arrangedSubviews: [phoneNumberTextField, sendButton])
+        countryCodeTF.inputView = picker
+        
+        let horizontalStack = UIStackView(arrangedSubviews: [countryCodeTF, phoneNumberTextField])
+       
+        horizontalStack.axis = .horizontal
+        horizontalStack.spacing = 11
+        
+        
+        let stack = UIStackView(arrangedSubviews: [horizontalStack, sendButton])
         view.addSubview(stack)
+        
         
         stack.axis = .vertical
         
-        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/3.5, left: 30, bottom: view.bounds.height/3.5, right: 30))
+        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/3.5, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         
         stack.spacing = 20
         
+        //phone picker
+        
+        let locale = Locale.current
+        let code = (locale as NSLocale).object(forKey: NSLocale.Key.countryCode) as! String?
+        //init Picker
+        picker.displayOnlyCountriesWithCodes = ["US", "DK", "SE", "NO", "DE"] //display only
+        picker.exeptCountriesWithCodes = ["RU"] //exept country
+        let theme = CountryViewTheme(countryCodeTextColor: .white, countryNameTextColor: .white, rowBackgroundColor: .clear, showFlagsBorder: false)        //optional for UIPickerView theme changes
+        picker.theme = theme //optional for UIPickerView theme changes
+        picker.countryPickerDelegate = self
+        picker.showPhoneNumbers = true
+        picker.setCountry(code!)
+        
 
+    }
+    
+    func countryPhoneCodePicker(_ picker: CountryPicker, didSelectCountryWithName name: String, countryCode: String, phoneCode: String, flag: UIImage) {
+        //pick up anythink
+        countryCodeTF.text = phoneCode
     }
     
     //@IBAction func enterPhone(_ sender: Any)
     @objc fileprivate func handleEnterPhone() {
         
-        let alert = UIAlertController(title: "Phone Number", message: "Is this your phone number? \n \(phoneNumberTextField.text!)", preferredStyle: .alert)
+        let codeText = "\(countryCodeTF.text ?? "")\(phoneNumberTextField.text ?? "")"
+        
+        let alert = UIAlertController(title: "Phone Number", message: "Is this your phone number? \n \(codeText)", preferredStyle: .alert)
         let action = UIAlertAction(title: "Yes", style: .default){(UIAlertAction) in
-            PhoneAuthProvider.provider().verifyPhoneNumber(self.phoneNumberTextField.text!, uiDelegate: nil) { (verificationID, error) in
+            
+            PhoneAuthProvider.provider().verifyPhoneNumber(codeText, uiDelegate: nil) { (verificationID, error) in
                 if let error = error {
                     print(error.localizedDescription)
                     //show alert
@@ -100,7 +149,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
     
     fileprivate func goToVerify() {
         let verifyController = VerifyViewController()
-        verifyController.phoneNumber = phoneNumberTextField.text
+        verifyController.phoneNumber = "\(countryCodeTF.text ?? "")\(phoneNumberTextField.text ?? "")"
         let registerViewModel = RegistrationViewModel()
         registerViewModel.phone = phoneNumberTextField.text
         present(verifyController, animated: true)

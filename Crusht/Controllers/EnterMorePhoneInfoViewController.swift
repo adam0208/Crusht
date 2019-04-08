@@ -31,12 +31,15 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
-        schoolTextField.text = formatter.string(from: datepicker.date)
+        ageTextField.text = formatter.string(from: datepicker.date)
+        
         self.view.endEditing(true)
     }
     
     @objc func cancelDatePicker(){
         self.view.endEditing(true)
+        registrationViewModel.birthday = "\(ageTextField.text ?? "10-31-1995") "
+        registrationViewModel.age = self.calcAge(birthday: ageTextField.text!)
     }
 
     
@@ -45,11 +48,22 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
         if let day = components.day, let month = components.month, let year = components.year {
             print("\(day) \(month) \(year)")
            ageTextField.text = "\(day)-\(month)-\(year)"
-        registrationViewModel.birthday?.isEmpty == false
+        registrationViewModel.birthday = "\(ageTextField.text ?? "10-31-1995") "
+            registrationViewModel.age = self.calcAge(birthday: ageTextField.text!)
         }
         
     }
     
+    func calcAge(birthday: String) -> Int {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "MM/dd/yyyy"
+        let birthdayDate = dateFormater.date(from: birthday)
+        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
+        let now = Date()
+        let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
+        let age = calcAge.year
+        return age!
+    }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -65,10 +79,11 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         schoolTextField.text = myPickerData[row]
-        registrationViewModel.school?.isEmpty == false
+        registrationViewModel.school = schoolTextField.text
+        
     }
     
-    let myPickerData = [String](arrayLiteral: "Abilene Cristian University", "Adelphi University", "Agnes Scott College", "Air Force Institute of Technology", "Alabama A&M University", "Alabama State University", "Alaska Pacific University", "Albertson College of Idaho", "Albion College", "Alderson-Broaddus College", "Alfred University", "Allegheny College", "Allentown College of Saint Francis de Sales", "Alma College", "Alverno College", "Ambassador University", "American Coastline University", "American Graduate School of International Managemen", "American International College", "American University", "Amherst College", "Andrews University", "Angelo State University", "Antioch College", "Antioch New England", "Antioch University-Los Angeles", "Antioch University-Seattle", "Appalachian State University", "Aquinas College", "Arizona State University", "Arizona State University East", "Arizona State University West", "Arizona Western College", "Arkansas State University", "Arkansas Tech University", "Armstrong State College", "Ashland University", "Assumption College", "Athens State College", "Auburn University", "Auburn University - Montgomery", "Augsburg College", "Augustana College (IL)", "Augustana College (SD)", "Aurora University", "Austin College", "Austin Peay State University", "Averett College", "Avila College", "Azusa Pacific University", "Babson College",    "Baldwin-Wallace College",
+    let myPickerData = [String](arrayLiteral: "", "No College", "Abilene Cristian University", "Adelphi University", "Agnes Scott College", "Air Force Institute of Technology", "Alabama A&M University", "Alabama State University", "Alaska Pacific University", "Albertson College of Idaho", "Albion College", "Alderson-Broaddus College", "Alfred University", "Allegheny College", "Allentown College of Saint Francis de Sales", "Alma College", "Alverno College", "Ambassador University", "American Coastline University", "American Graduate School of International Managemen", "American International College", "American University", "Amherst College", "Andrews University", "Angelo State University", "Antioch College", "Antioch New England", "Antioch University-Los Angeles", "Antioch University-Seattle", "Appalachian State University", "Aquinas College", "Arizona State University", "Arizona State University East", "Arizona State University West", "Arizona Western College", "Arkansas State University", "Arkansas Tech University", "Armstrong State College", "Ashland University", "Assumption College", "Athens State College", "Auburn University", "Auburn University - Montgomery", "Augsburg College", "Augustana College (IL)", "Augustana College (SD)", "Aurora University", "Austin College", "Austin Peay State University", "Averett College", "Avila College", "Azusa Pacific University", "Babson College",    "Baldwin-Wallace College",
         
         
         "Ball State University",
@@ -2191,7 +2206,6 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
     let schoolTextField: CustomTextField = {
         let tf = CustomTextField(padding: 10, height: 45)
         tf.placeholder = "Enter School"
-        tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
        
         
         return tf
@@ -2207,9 +2221,7 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
     
     let ageTextField: CustomTextField = {
         let tf = CustomTextField(padding: 10, height: 45)
-        tf.placeholder = "Enter Age"
-        tf.keyboardType = .numberPad
-        tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
+        tf.placeholder = "Enter Birthday"
         return tf
     }()
     
@@ -2226,13 +2238,10 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
             registrationViewModel.fullName = textField.text
         } else if textField == emailTextField {
             registrationViewModel.email = textField.text
-        } else  if textField == bioTextField {
-            registrationViewModel.bio = textField.text
-        } else if textField == schoolTextField {
-            registrationViewModel.school = textField.text
         }
         else {
-            registrationViewModel.birthday = textField.text
+            registrationViewModel.bio = textField.text
+        
         }
     }
     
@@ -2293,7 +2302,7 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
         self.handleTapDismiss()
         print("Register our User in Firebase Auth")
         let profilePageViewController = ProfilePageViewController()
-     
+        registrationViewModel.age = self.calcAge(birthday: ageTextField.text!)
         registrationViewModel.performRegistration { [weak self] (err) in
             if let err = err {
                 self?.showHUDWithError(error: err)
@@ -2342,7 +2351,9 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
         datepicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         schoolPicker.delegate = self
         schoolTextField.inputView = schoolPicker
+       // datepicker.delegate = self
         ageTextField.inputView = datepicker
+        
         fetchCurrentUser()
         setupGradientLayer()
         setupLayout()

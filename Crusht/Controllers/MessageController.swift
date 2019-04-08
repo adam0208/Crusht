@@ -130,6 +130,27 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         })
     }
     
+    fileprivate func listenForMessages() {
+        guard let toId = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
+            .addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                    }
+                    if (diff.type == .modified) {
+                        self.handleReloadTable()
+                        
+                    }
+                    if (diff.type == .removed) {
+                    }
+                }
+        }
+    }
+    
     var timer: Timer?
     
     @objc func handleReloadTable() {
@@ -192,8 +213,10 @@ class MessageController: UITableViewController, UISearchBarDelegate {
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        
         messageArray = messages.filter({( message : Message) -> Bool in
-            return message.fromName!.lowercased().contains(searchText.lowercased())
+            return message.toName!.lowercased().contains(searchText.lowercased())
+            
         })
         
         tableView.reloadData()

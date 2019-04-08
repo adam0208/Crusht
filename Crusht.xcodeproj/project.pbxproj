@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2D21C0C18D001F6BC5 /* MessageController.swift */; };
 		28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */; };
-		280B1ECF21CAC30300A89C5E /* new_message_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B1ECE21CAC30200A89C5E /* new_message_icon.png */; };
 		280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */; };
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
@@ -46,22 +45,12 @@
 		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
+		287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F3A8F225B1C43008F5BD0 /* AnimationView.swift */; };
 		2883A988224E8FE200300CD4 /* SlackCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2883A987224E8FE200300CD4 /* SlackCrushController.swift */; };
 		28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */; };
 		28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5A21B8D1D100A654A0 /* IMG_0184.png */; };
-		28857C9E21B8D1D500A654A0 /* lady5c.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5C21B8D1D100A654A0 /* lady5c.jpg */; };
-		28857CA221B8D1D500A654A0 /* jane3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6021B8D1D100A654A0 /* jane3.jpg */; };
-		28857CA321B8D1D500A654A0 /* kelly2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6121B8D1D100A654A0 /* kelly2.jpg */; };
-		28857CA421B8D1D500A654A0 /* dismiss_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6221B8D1D200A654A0 /* dismiss_circle@2x.png */; };
-		28857CA521B8D1D500A654A0 /* like_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6321B8D1D200A654A0 /* like_circle@2x.png */; };
 		28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6421B8D1D200A654A0 /* NoProfileImage.png */; };
-		28857CB621B8D1D500A654A0 /* refresh_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C8B21B8D1D300A654A0 /* refresh_circle@2x.png */; };
-		28857CB721B8D1D500A654A0 /* jane1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C8C21B8D1D300A654A0 /* jane1.jpg */; };
-		28857CBA21B8D1D500A654A0 /* kelly3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C8F21B8D1D400A654A0 /* kelly3.jpg */; };
-		28857CBB21B8D1D500A654A0 /* boost_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9021B8D1D400A654A0 /* boost_circle@2x.png */; };
-		28857CBC21B8D1D500A654A0 /* super_like_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9121B8D1D400A654A0 /* super_like_circle@2x.png */; };
 		28857CBF21B8D1D500A654A0 /* FaveBttn2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9421B8D1D500A654A0 /* FaveBttn2.png */; };
-		28857CC021B8D1D500A654A0 /* jane2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9521B8D1D500A654A0 /* jane2.jpg */; };
 		28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */; };
 		28857CC321B8D1D600A654A0 /* CrushTLogoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */; };
 		28857CC521B98C6B00A654A0 /* ProfPageMidButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CC421B98C6B00A654A0 /* ProfPageMidButtonView.swift */; };
@@ -140,7 +129,6 @@
 /* Begin PBXFileReference section */
 		28067D2D21C0C18D001F6BC5 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
-		280B1ECE21CAC30200A89C5E /* new_message_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = new_message_icon.png; path = ../../new_message_icon.png; sourceTree = "<group>"; };
 		280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SeniorFiveIcon.png; sourceTree = "<group>"; };
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
@@ -183,22 +171,12 @@
 		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		287F3A8F225B1C43008F5BD0 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		2883A987224E8FE200300CD4 /* SlackCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackCrushController.swift; sourceTree = "<group>"; };
 		28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide_out_menu_poster.png; sourceTree = "<group>"; };
 		28857C5A21B8D1D100A654A0 /* IMG_0184.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0184.png; sourceTree = "<group>"; };
-		28857C5C21B8D1D100A654A0 /* lady5c.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = lady5c.jpg; path = ../../CrushtUI/lady5c.jpg; sourceTree = "<group>"; };
-		28857C6021B8D1D100A654A0 /* jane3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = jane3.jpg; path = ../../CrushtUI/jane3.jpg; sourceTree = "<group>"; };
-		28857C6121B8D1D100A654A0 /* kelly2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = kelly2.jpg; path = ../../CrushtUI/kelly2.jpg; sourceTree = "<group>"; };
-		28857C6221B8D1D200A654A0 /* dismiss_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dismiss_circle@2x.png"; path = "../../CrushtUI/dismiss_circle@2x.png"; sourceTree = "<group>"; };
-		28857C6321B8D1D200A654A0 /* like_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "like_circle@2x.png"; path = "../../CrushtUI/like_circle@2x.png"; sourceTree = "<group>"; };
 		28857C6421B8D1D200A654A0 /* NoProfileImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoProfileImage.png; sourceTree = "<group>"; };
-		28857C8B21B8D1D300A654A0 /* refresh_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "refresh_circle@2x.png"; path = "../../CrushtUI/refresh_circle@2x.png"; sourceTree = "<group>"; };
-		28857C8C21B8D1D300A654A0 /* jane1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = jane1.jpg; path = ../../CrushtUI/jane1.jpg; sourceTree = "<group>"; };
-		28857C8F21B8D1D400A654A0 /* kelly3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = kelly3.jpg; path = ../../CrushtUI/kelly3.jpg; sourceTree = "<group>"; };
-		28857C9021B8D1D400A654A0 /* boost_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "boost_circle@2x.png"; path = "../../CrushtUI/boost_circle@2x.png"; sourceTree = "<group>"; };
-		28857C9121B8D1D400A654A0 /* super_like_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "super_like_circle@2x.png"; path = "../../CrushtUI/super_like_circle@2x.png"; sourceTree = "<group>"; };
 		28857C9421B8D1D500A654A0 /* FaveBttn2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FaveBttn2.png; sourceTree = "<group>"; };
-		28857C9521B8D1D500A654A0 /* jane2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = jane2.jpg; path = ../../CrushtUI/jane2.jpg; sourceTree = "<group>"; };
 		28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChrushtHomeIcon4.png; sourceTree = "<group>"; };
 		28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CrushTLogoIcon.png; sourceTree = "<group>"; };
 		28857CC421B98C6B00A654A0 /* ProfPageMidButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfPageMidButtonView.swift; sourceTree = "<group>"; };
@@ -339,27 +317,15 @@
 				28BE624D21BDDBDE00EAFFE2 /* infoButton.png */,
 				28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */,
 				28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */,
-				28857C9021B8D1D400A654A0 /* boost_circle@2x.png */,
 				280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */,
 				28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */,
 				28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */,
-				28857C6221B8D1D200A654A0 /* dismiss_circle@2x.png */,
 				28857C9421B8D1D500A654A0 /* FaveBttn2.png */,
 				28857C5A21B8D1D100A654A0 /* IMG_0184.png */,
-				280B1ECE21CAC30200A89C5E /* new_message_icon.png */,
-				28857C8C21B8D1D300A654A0 /* jane1.jpg */,
-				28857C9521B8D1D500A654A0 /* jane2.jpg */,
-				28857C6021B8D1D100A654A0 /* jane3.jpg */,
-				28857C6121B8D1D100A654A0 /* kelly2.jpg */,
 				28857CC621B98F9200A654A0 /* top_left_profile@2x.png */,
 				28857CC721B98F9200A654A0 /* top_right_messages@2x.png */,
-				28857C8F21B8D1D400A654A0 /* kelly3.jpg */,
-				28857C5C21B8D1D100A654A0 /* lady5c.jpg */,
-				28857C6321B8D1D200A654A0 /* like_circle@2x.png */,
 				28857C6421B8D1D200A654A0 /* NoProfileImage.png */,
-				28857C8B21B8D1D300A654A0 /* refresh_circle@2x.png */,
 				28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */,
-				28857C9121B8D1D400A654A0 /* super_like_circle@2x.png */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
 				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
 				28A1B6512218D68C00666155 /* TODO.swift */,
@@ -413,6 +379,7 @@
 				28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */,
 				28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */,
 				28FDE2D72216672000896198 /* FacebookCrushCell.swift */,
+				287F3A8F225B1C43008F5BD0 /* AnimationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -538,7 +505,6 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				135C14FC3E7469E297AF6393 /* [CP] Embed Pods Frameworks */,
-				659BD9C46E47344FD8398EEC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -641,17 +607,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				28857CBF21B8D1D500A654A0 /* FaveBttn2.png in Resources */,
-				28857CBC21B8D1D500A654A0 /* super_like_circle@2x.png in Resources */,
 				28857CC321B8D1D600A654A0 /* CrushTLogoIcon.png in Resources */,
 				28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */,
-				280B1ECF21CAC30300A89C5E /* new_message_icon.png in Resources */,
-				28857C9E21B8D1D500A654A0 /* lady5c.jpg in Resources */,
-				28857CA521B8D1D500A654A0 /* like_circle@2x.png in Resources */,
-				28857CA221B8D1D500A654A0 /* jane3.jpg in Resources */,
-				28857CC021B8D1D500A654A0 /* jane2.jpg in Resources */,
 				28857CC821B98F9300A654A0 /* top_left_profile@2x.png in Resources */,
 				28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */,
-				28857CB621B8D1D500A654A0 /* refresh_circle@2x.png in Resources */,
 				28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */,
 				28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */,
 				28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */,
@@ -663,17 +622,12 @@
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
 				28908D8621C0A99A00391A39 /* MessagesIconCrusht.png in Resources */,
 				28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */,
-				28857CB721B8D1D500A654A0 /* jane1.jpg in Resources */,
 				28908D8221C0A41600391A39 /* CrushtLogoPinkBackground.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
-				28857CBB21B8D1D500A654A0 /* boost_circle@2x.png in Resources */,
 				28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */,
 				280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */,
-				28857CA421B8D1D500A654A0 /* dismiss_circle@2x.png in Resources */,
 				28148F3721D6C1540016BD22 /* play.png in Resources */,
-				28857CA321B8D1D500A654A0 /* kelly2.jpg in Resources */,
 				28CFC6AF21C56BAB00387129 /* heart2crusht.png in Resources */,
-				28857CBA21B8D1D500A654A0 /* kelly3.jpg in Resources */,
 				28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */,
 				28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
@@ -706,9 +660,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/CountryPickerSwift/CountryPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
@@ -727,9 +681,9 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountryPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
@@ -769,56 +723,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		659BD9C46E47344FD8398EEC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh",
-				"${PODS_ROOT}/TwilioSDK/Resources/disconnect.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_0.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_1.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_2.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_3.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_4.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_5.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_6.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_7.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_8.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_9.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_hash.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/dtmf_star.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/incoming.wav",
-				"${PODS_ROOT}/TwilioSDK/Resources/outgoing.wav",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/disconnect.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_0.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_1.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_2.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_3.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_4.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_5.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_6.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_7.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_8.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_9.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_hash.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dtmf_star.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/incoming.wav",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/outgoing.wav",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */ = {
@@ -883,6 +787,7 @@
 				28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */,
 				28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */,
 				28597078220282CE00EB83CE /* VerifyAPI.swift in Sources */,
+				287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */,
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,

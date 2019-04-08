@@ -147,7 +147,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
 
 class PhotoController: UIViewController {
     
-    let imageView = UIImageView(image: #imageLiteral(resourceName: "IMG_0184"))
+    let imageView = UIImageView(image: #imageLiteral(resourceName: "upload_image_icon"))
     
     init(imageUrl: String) {
         if let url = URL(string: imageUrl) {
