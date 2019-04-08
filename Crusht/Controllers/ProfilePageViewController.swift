@@ -267,10 +267,9 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         setupLayout()
         view.addSubview(animationView)
         animationView.fillSuperview()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
             self.animationView.removeFromSuperview()
         }
-        
         
         
     }
