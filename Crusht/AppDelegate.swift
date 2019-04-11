@@ -160,7 +160,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         print(userInfo)
         
         // Change this to your preferred presentation option
-        completionHandler([])
+        completionHandler([.alert, .badge, .sound])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -174,7 +174,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // Print full message.
         print(userInfo)
-        
+        self.window?.rootViewController = MessageController()
+       
         completionHandler()
     }
 }

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class BioCell: UITableViewCell, UITextViewDelegate {
     
  // let textView = BioTextView()

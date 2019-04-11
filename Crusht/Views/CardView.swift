@@ -105,11 +105,19 @@ class CardView: UIView {
     }
     
     fileprivate let infoButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "infoButton").withRenderingMode(.alwaysOriginal), for: .normal)
+            let button = UIButton(type: .system)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 40)
+            button.setTitle("👤", for: .normal)
+            button.backgroundColor = .white
+            button.heightAnchor.constraint(equalToConstant: 50)
+            button.widthAnchor.constraint(equalToConstant: 50)
+            button.layer.cornerRadius = 25
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(presentUserDetailsPage), for: .touchUpInside)
-        return button
-    }()
+            
+            return button
+        }()
+    
     
     @objc fileprivate func presentUserDetailsPage() {
         //present is missing so we need to do other shit

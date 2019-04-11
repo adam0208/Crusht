@@ -54,7 +54,9 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let hasFavorited = contact.hasFavorited
         twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         
-        phoneID = contact.contact.phoneNumbers.first?.value.stringValue ?? ""
+        let phoneString = contact.contact.phoneNumbers.first?.value.stringValue ?? ""
+        
+        phoneID = phoneString
         
         cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
         
@@ -144,7 +146,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         }
     }
     
-
+    var phoneFinal = String()
     var showIndexPaths = false
     
     func saveSwipeToFireStore(didLike: Int) {
@@ -160,16 +162,25 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
         
         print(phoneNoDash)
+        
+        if phoneNoDash.count < 11 {
+            phoneFinal = "+1\(phoneNoDash)"
+        }
+        else {
+            phoneFinal = phoneNoDash
+        }
+        
+        print(phoneFinal)
 
         //LOT OF TRIMMING AND STRIPPING
         
-        let cardUID = phoneNoDash
+        let cardUID = phoneFinal
         
         let twilioPhoneData: [String: Any] = ["phoneToInvite": phoneNoDash]
         
         let documentData = [cardUID: didLike]
         
-        Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phoneNoDash).getDocuments { (snapshot, err) in
+        Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phoneFinal).getDocuments { (snapshot, err) in
             
             if let err = err {
                 print("Major fuck up", err)

@@ -158,6 +158,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         }
     }
     
+    var indexSchoolNames = [String]()
+    
+    var indexSchoolDictionary = [String: [String]]()
+    
+    var indexSchoolTitles = String()
+    
+    
     
     var schoolUserDictionary = [String: User]()
     
@@ -167,15 +174,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
         let age = user?.age ?? 25
         
-        let lowestAge = age - 4
-        
-        let highestAge = age + 4
-        
         navigationItem.title = school
         
         print(school)
         
-        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school)
+        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").start(at: ["A"])
         
         query.getDocuments { (snapshot, err) in
             if let err = err {
@@ -196,21 +199,34 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 let minAge = crush.age > ((self.user?.age)! - 5)
                 
                 if isNotCurrentUser && minAge && maxAge {
+                    
+                    self.indexSchoolNames.append(String(crush.name!.prefix(1)))
+                    for indexSchoolName in self.indexSchoolNames {
+                        let nameKey = String(crush.name!.prefix(1))
+                        if var nameValues = self.indexSchoolDictionary[nameKey] {
+                            nameValues.append(indexSchoolName)
+                            self.indexSchoolDictionary[nameKey] = nameValues
+                        }
+                        else {
+                            self.indexSchoolDictionary[nameKey] = [indexSchoolName]
+                        }
+                    }
+                    
                 
                 self.schoolArray.append(crush)
                     
+                    
+                    
                 }
                 
-                print(self.schoolArray)
+               
                 //                let crushStuff = User(dictionary: userDictionary)
                 //                if let crushPartnerId = crushStuff.crushPartnerId() {
                 //                    self.schoolUserDictionary[crushPartnerId] = user
                 //                    self.users = Array(self.schoolUserDictionary.values)
                 //                }
                 
-                self.schoolArray.sorted(by: { (crush1, crush2) -> Bool in
-                    return crush1.name > crush2.name
-                })
+             
                 
             })
             
@@ -226,6 +242,21 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return indexSchoolNames[section]
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // 1
+        return indexSchoolNames.count
+    }
+    
+
+    
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return indexSchoolNames
+    }
+
     
     
     func hasTappedCrush(cell: UITableViewCell) {
@@ -459,7 +490,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             if isFiltering() {
                 return users.count
             }
-        return schoolArray.count
+        
+        let nameKey = indexSchoolNames[section]
+        if let nameValues = indexSchoolDictionary[nameKey] {
+            return nameValues.count
+        }
+        
+       return 0
+        
+        
     }
     
 //    var hasFavorited = Bool()

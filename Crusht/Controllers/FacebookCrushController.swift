@@ -83,7 +83,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                         let dict = data[i] as! NSDictionary
                         let temp = dict.value(forKey: "id") as! String
                         print("lililililiilli", temp)
-                        Firestore.firestore().collection("users").whereField("fbid", isEqualTo: temp).getDocuments(completion: { (snapshot, err) in
+                        Firestore.firestore().collection("users").whereField("fbid", isEqualTo: temp).order(by: "Full Name").start(at: ["A"]).getDocuments(completion: { (snapshot, err) in
                             if let err = err {
                                 print("failed getting fb friends", err)
                             }
@@ -92,12 +92,6 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                                 let crush = User(dictionary: userDictionary)
                                 
                                 self.fbArray.append(crush)
-                                
-                           
-                                
-                                self.fbArray.sorted(by: { (crush1, crush2) -> Bool in
-                                    return crush1.name > crush2.name
-                                })
                                 
                             })
                             

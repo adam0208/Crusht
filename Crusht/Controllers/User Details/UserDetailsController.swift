@@ -95,11 +95,20 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     
     let dismissButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "infoButton").withRenderingMode(.alwaysOriginal), for: .normal)
+ 
+            let button = UIButton(type: .system)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 40)
+            button.setTitle("👈", for: .normal)
+            button.backgroundColor = .white
+            button.heightAnchor.constraint(equalToConstant: 50)
+            button.widthAnchor.constraint(equalToConstant: 50)
+            button.layer.cornerRadius = 25
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
-        return button
-    }()
+            
+            return button
+        }()
+    
     
 //    lazy var dislikeButton = self.createButton(image: #imageLiteral(resourceName: "dismiss_circle"), selector: #selector(handleDislike))
 //    lazy var superLikeButton = self.createButton(image: #imageLiteral(resourceName: "super_like_circle"), selector: #selector(handleDislike))

@@ -232,7 +232,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         
         
-        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: radiusInt!)
+        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 1)
                 
 //        radiusQuery.observe(.documentEntered, with: { (key, location) in
 //            print("The document with documentID '\(self.user?.uid ?? "fuck")' entered the search area and is at location '\(userCenter)'")
@@ -247,41 +247,74 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
 //            
 //        }
 //
-        radiusQuery.observeReady {
-              print("All initial data has been loaded and events have been fired!")
-        }
-        
-            Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
-                if let err = err {
-                    print("failed to fetch user", err)
-                    self.hud.textLabel.text = "Failed To Fetch user"
-                    self.hud.show(in: self.view)
-                    self.hud.dismiss(afterDelay: 2)
-                    return
+        radiusQuery.geoFirestore.getCollectionReference().whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch user", err)
+                self.hud.textLabel.text = "Failed To Fetch user"
+                self.hud.show(in: self.view)
+                self.hud.dismiss(afterDelay: 2)
+                return
+            }
+            
+            
+            var previousCardView: CardView?
+            
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                //                    radiusQuery.observe(.documentEntered) { (key, location) in
+                //                        geoFirestore.getCollectionReference()
+                let userDictionary = documentSnapshot.data()
+                let user = User(dictionary: userDictionary)
+                // if user.uid != Auth.auth().currentUser?.uid {
+                let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
+                if isNotCurrentUser && hasNotSwipedBefore  {
+                    let cardView = self.setupCardFromUser(user: user)
+                    
+                    previousCardView?.nextCardView = cardView
+                    previousCardView = cardView
+                    
+                    if self.topCardView == nil {
+                        self.topCardView = cardView
+                    }
                 }
                 
+        
+        
+//        radiusQuery.observeReady {
+//              print("All initial data has been loaded and events have been fired!")
+//        }
+//
+//            Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
+//                if let err = err {
+//                    print("failed to fetch user", err)
+//                    self.hud.textLabel.text = "Failed To Fetch user"
+//                    self.hud.show(in: self.view)
+//                    self.hud.dismiss(afterDelay: 2)
+//                    return
+//                }
+//
+//
+//                var previousCardView: CardView?
+//
+//                snapshot?.documents.forEach({ (documentSnapshot) in
+////                    radiusQuery.observe(.documentEntered) { (key, location) in
+////                        geoFirestore.getCollectionReference()
+//                    let userDictionary = documentSnapshot.data()
+//                    let user = User(dictionary: userDictionary)
+//                    // if user.uid != Auth.auth().currentUser?.uid {
+//                    let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+//                    let hasNotSwipedBefore = self.swipes[user.uid!] == nil
+//                    if isNotCurrentUser && hasNotSwipedBefore  {
+//                        let cardView = self.setupCardFromUser(user: user)
+//
+//                        previousCardView?.nextCardView = cardView
+//                        previousCardView = cardView
+//
+//                        if self.topCardView == nil {
+//                            self.topCardView = cardView
+//                        }
+//                    }
                 
-                var previousCardView: CardView?
-                
-                snapshot?.documents.forEach({ (documentSnapshot) in
-//                    radiusQuery.observe(.documentEntered) { (key, location) in
-//                        geoFirestore.getCollectionReference()
-                    let userDictionary = documentSnapshot.data()
-                    let user = User(dictionary: userDictionary)
-                    // if user.uid != Auth.auth().currentUser?.uid {
-                    let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-                    let hasNotSwipedBefore = self.swipes[user.uid!] == nil
-                    if isNotCurrentUser && hasNotSwipedBefore  {
-                        let cardView = self.setupCardFromUser(user: user)
-                       
-                        previousCardView?.nextCardView = cardView
-                        previousCardView = cardView
-                        
-                        if self.topCardView == nil {
-                            self.topCardView = cardView
-                        }
-                    }
-                    
         
                     
                     
@@ -431,8 +464,30 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 
                 let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
                 ]
+                    
+                    
+                    
+                    let otherDocData:  [String: Any] = ["uid": user.uid ?? "", "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
+                    ]
                 //this is for message controller
-                Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                    
+                    
+        Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
+                        if let err = err {
+                            print(err)
+                        }
+                        
+                        
+                        if (snapshot?.isEmpty)! {
+                            Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                            
+                            Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                            
+                            //print(user.name ?? "Hey champ!")
+                        }
+                        
+                    })
+                    
                 self.presentMatchView(cardUID: cardUID)
                 })
             }
@@ -453,6 +508,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         saveSwipeToFireStore(didLike: 0)
         performSwipeAnimation(translation: -700, angle: -15)
     }
+    
+    let refreshLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.textAlignment = .center
+        label.text = "Hit ♻️ to load more crushes in your area!"
+        label.numberOfLines = 0
+        return label
+    }()
     
     @objc fileprivate func handleMessageButtonTapped() {
         let profileController = ProfilePageViewController()
@@ -538,6 +602,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         view.backgroundColor = .white
         
+        
+        view.addSubview(refreshLabel)
+        
+        refreshLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+        
         cardDeckView.layer.cornerRadius = 40
         cardDeckView.clipsToBounds = true
         
@@ -551,6 +620,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
         
         overallStackView.bringSubviewToFront(cardDeckView)
+        
+        
+        
     }
     
     @objc fileprivate func switchValueDidChange() {

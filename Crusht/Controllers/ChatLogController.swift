@@ -136,7 +136,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         textView.delegate = self
         textView.isEditable = true
         
-        textView.font = UIFont.systemFont(ofSize: 20)
+        textView.font = UIFont.systemFont(ofSize: 16)
         textView.adjustsFontForContentSizeCategory = true
         func adjustUITextViewHeight(arg : UITextView)
         {
@@ -330,7 +330,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 //        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
 //        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
-        self.inputTextField.anchor(top: containerView.topAnchor, leading: uploadImageView.trailingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 90))
+        self.inputTextField.anchor(top: containerView.topAnchor, leading: uploadImageView.trailingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 0, right: 90))
     
         sendButton.anchor(top: nil, leading: self.inputTextField.trailingAnchor, bottom: nil, trailing: containerView.trailingAnchor)
         

@@ -98,10 +98,23 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     let animationView = AnimationView()
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                hud.textLabel.text = "Please enable location services"
+                hud.show(in: view)
+            case .authorizedAlways, .authorizedWhenInUse:
+                let locationViewController = LocationMatchViewController()
+                let navigationController = UINavigationController(rootViewController: locationViewController)
+                present(navigationController, animated: true)
+            }
+        } else {
+            hud.textLabel.text = "Please enable location services"
+            hud.show(in: view)
+        }
 
-        let locationViewController = LocationMatchViewController()
-        let navigationController = UINavigationController(rootViewController: locationViewController)
-        present(navigationController, animated: true)
+       
         
     }
     
@@ -305,6 +318,12 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             
+            if self.user?.name == nil {
+                let loginController = LoginViewController()
+                loginController.delegate = self
+                let navController = UINavigationController(rootViewController: loginController)
+                self.present(navController, animated: true)
+            }
             
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
