@@ -25,6 +25,8 @@ class ContactsCell: UITableViewCell {
             starButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
             //starButton.tintColor = .red
             starButton.addTarget(self, action: #selector(handleMarkAsFavorite), for: .touchUpInside)
+        
+            starButton.tintColor = .red
             
             accessoryView = starButton
         }

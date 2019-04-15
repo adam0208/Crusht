@@ -2301,14 +2301,14 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
     @objc fileprivate func handleRegister() {
         self.handleTapDismiss()
         print("Register our User in Firebase Auth")
-        let profilePageViewController = ProfilePageViewController()
+        let genderController = GenderController()
         registrationViewModel.age = self.calcAge(birthday: ageTextField.text!)
         registrationViewModel.performRegistration { [weak self] (err) in
             if let err = err {
                 self?.showHUDWithError(error: err)
                 return
             }
-            self?.present(profilePageViewController, animated: true)
+            self?.present(genderController, animated: true)
         }
         
     }
@@ -2419,10 +2419,13 @@ class EnterMorePhoneInfoViewController: UIViewController, UIPickerViewDelegate, 
     
     fileprivate func setupTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
+        
     }
     
     @objc fileprivate func handleTapDismiss() {
+        donedatePicker() //make sure date is saved
         self.view.endEditing(true) // dismisses keyboard
+        
     }
     
     fileprivate func setupNotificationObservers() {

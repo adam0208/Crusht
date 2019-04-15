@@ -41,7 +41,7 @@ class TransitionCrushesController: UIViewController {
     let privacyText: UILabel = {
         let label = UILabel()
         
-        label.text = "If one of your contacts doesn't have the app, an annonomous message will be sent to their device informing them that \"someone\" has a crush on them."
+        label.text = "If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
         label.font = UIFont.systemFont(ofSize: 24, weight: .light)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true

@@ -81,23 +81,36 @@ class MatchView: UIView {
         return imageView
     }()
     
-     let sendMessageButton: UIButton = {
-        let button = SendMessageButton(type: .system)
-        button.setTitle("SEND MESSAGE", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
-      
-        return button
+//     let sendMessageButton: UIButton = {
+//        let button = SendMessageButton(type: .system)
+//        button.setTitle("SEND MESSAGE", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+//
+//        return button
+//    }()
+//
+//    fileprivate let keepSwipingButton: UIButton = {
+//        let button = KeepSwipingButton(type: .system)
+//        button.setTitle("Keep Swiping", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+//        button.addTarget(self, action: #selector(handleTapDismiss), for: .touchUpInside)
+//        return button
+//    }()
+    
+    fileprivate let whatToDoNextLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Go to your messages 💬 to start the conversatoin! "
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25)
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        return label
     }()
     
-    fileprivate let keepSwipingButton: UIButton = {
-        let button = KeepSwipingButton(type: .system)
-        button.setTitle("Keep Swiping", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
-        button.addTarget(self, action: #selector(handleTapDismiss), for: .touchUpInside)
-        return button
-    }()
     
  
     
@@ -120,9 +133,9 @@ class MatchView: UIView {
         
         cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
         
-        sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
-        keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
-        
+        whatToDoNextLabel.transform = CGAffineTransform(translationX: -500, y: 0)
+//        keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
+//
         // keyframe animations for segmented animation
         
         UIView.animateKeyframes(withDuration: 1.3, delay: 0, options: .calculationModeCubic, animations: {
@@ -145,8 +158,8 @@ class MatchView: UIView {
         }
         
         UIView.animate(withDuration: 0.75, delay: 0.6 * 1.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
-            self.sendMessageButton.transform = .identity
-            self.keepSwipingButton.transform = .identity
+            self.whatToDoNextLabel.transform = .identity
+//            self.keepSwipingButton.transform = .identity
         })
     }
     
@@ -155,8 +168,9 @@ class MatchView: UIView {
         descriptionLabel,
         currentUserImageView,
         cardUserImageView,
-        sendMessageButton,
-        self.keepSwipingButton,
+        whatToDoNextLabel
+       // sendMessageButton,
+        //self.keepSwipingButton,
         ]
     
     fileprivate func setupLayout() {
@@ -188,9 +202,11 @@ class MatchView: UIView {
         cardUserImageView.layer.cornerRadius = imageWidth / 2
         cardUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
-        sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 60))
+        whatToDoNextLabel.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48))
         
-        keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, leading: sendMessageButton.leadingAnchor, bottom: nil, trailing: sendMessageButton.trailingAnchor, padding: .init(top: 16, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 60))
+//        sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 60))
+//
+//        keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, leading: sendMessageButton.leadingAnchor, bottom: nil, trailing: sendMessageButton.trailingAnchor, padding: .init(top: 16, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 60))
     }
     
     let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))

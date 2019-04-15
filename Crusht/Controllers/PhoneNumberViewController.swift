@@ -27,6 +27,20 @@ class PhoneNumberText: UITextField {
 
 class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryPickerDelegate {
 
+    
+    let label: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Enter Phone Number"
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        
+        label.textColor = .black
+        return label
+    }()
+    
     let phoneNumberTextField: UITextField = {
         let tf = PhoneNumberText()
         tf.keyboardType = UIKeyboardType.phonePad
@@ -61,7 +75,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         button.setTitle("Get Verification Code", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -86,6 +100,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         horizontalStack.axis = .horizontal
         horizontalStack.spacing = 11
         
+        view.addSubview(label)
         
         let stack = UIStackView(arrangedSubviews: [horizontalStack, sendButton])
         view.addSubview(stack)
@@ -93,7 +108,9 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         
         stack.axis = .vertical
         
-        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/3.5, left: 30, bottom: view.bounds.height/2.2, right: 30))
+          label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+        
+        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         
         stack.spacing = 20

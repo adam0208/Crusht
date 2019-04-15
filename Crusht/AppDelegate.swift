@@ -11,6 +11,8 @@ import Firebase
 import FacebookCore
 import UserNotifications
 import CoreLocation
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,12 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+        UIApplication.shared.applicationIconBadgeNumber = 0
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         FirebaseApp.configure()
         
         Messaging.messaging().delegate = self
+        
+        Fabric.sharedSDK().debug = true
         
         InstanceID.instanceID().instanceID { (result, error) in
             if let error = error {
@@ -62,9 +66,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = profController
 
         }
-        //window?.rootViewController = PhoneNumberViewController()
-       //window?.rootViewController = EnterMorePhoneInfoViewController()
-        
+       // window?.rootViewController = PhoneNumberViewController()
+     //  window?.rootViewController = EnterMorePhoneInfoViewController()
+    //window?.rootViewController = FacebookPhoneController()
+     //   window?.rootViewController = EnterNameController()
         return true
     }
     
@@ -174,9 +179,20 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // Print full message.
         print(userInfo)
-        self.window?.rootViewController = MessageController()
+      
        
         completionHandler()
+        let actionIdentifier = response.actionIdentifier
+        switch actionIdentifier {
+        case UNNotificationDismissActionIdentifier: // Notification was dismissed by user
+            
+            completionHandler()
+        case UNNotificationDefaultActionIdentifier: // App was opened from notification
+            self.window?.rootViewController = MessageController()
+            completionHandler()
+        default:
+            completionHandler()
+        }
     }
 }
 // [END ios_10_message_handling]

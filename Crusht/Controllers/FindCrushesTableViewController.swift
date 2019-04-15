@@ -49,50 +49,31 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
         let contact = twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row]
-        print(contact)
+      
         
-        let hasFavorited = contact.hasFavorited
-        twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+//        let hasFavorited = contact.hasFavorited
+//        twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         
         let phoneString = contact.contact.phoneNumbers.first?.value.stringValue ?? ""
         
         phoneID = phoneString
         
-        cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+//        cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
         
-        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
+        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1) {
             
-            handleLike()
+            handleLike(cell: cell)
         }
         else {
-            handleDislike()
+            print("fuck me")
+            handleDislike(cell: cell)
         }
     }
-//    func sendMessageToNewUser() {
-//
-//        var swiftRequest = SwiftRequest();
-//
-//        var data = [
-//            "To" : "+15555555555",
-//            "From" : "+15555556666",
-//            "Body" : "Hello World"
-//        ];
-//
-//        swiftRequest.post("https://api.twilio.com/2010-04-01/Accounts/[YOUR_ACCOUNT_SID]/Messages", auth: ["username" : "[YOUR_ACCOUNT_SID]", "password" : "YOUR_AUTH_TOKEN"]
-//            data: data,
-//            callback: {err, response, body in
-//                if err == nil {
-//                    println("Success: \(response)")
-//                } else {
-//                    println("Error: \(err)")
-//                }
-//        });
-//    }
-//
+
     var phoneID: String?
 
     var twoDimensionalArray = [ExpandableNames]()
-    var filteredContanct = [ExpandableNames]()
+    lazy var filteredContanct = [ExpandableNames]()
 
     fileprivate func fetchContacts() {
         print("Attempting to fetch contacts today..")
@@ -111,6 +92,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
                 let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
 
+                request.sortOrder = CNContactSortOrder.givenName
+
                 do {
 
                     var favoritableContacts = [FavoritableContact]()
@@ -122,13 +105,17 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                         print(contact.phoneNumbers.first?.value.stringValue ?? "")
 
                         favoritableContacts.append(FavoritableContact(contact: contact, hasFavorited: false))
-
+                        
+                        
+//
 //                        self.filteredContanct = ["\(contact.givenName) \(contact.familyName)"]
                         //                        favoritableContacts.append(FavoritableContact(name: contact.givenName + " " + contact.familyName, hasFavorited: false))
                     })
 
                     let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
                     self.twoDimensionalArray = [names]
+                    
+                    
                     
                     DispatchQueue.main.async(execute: {
                         self.tableView.reloadData()
@@ -311,11 +298,259 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                         Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
                     }
                 })
-                self.presentMatchView(cardUID: cardUID)
+                self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
                 
             })
         }
        
+    }
+    
+    @objc func handleSend(cardUID: String, cardName: String) {
+        let properties = ["text": "We matched! This is an automated message."]
+        sendAutoMessage(properties as [String : AnyObject], cardUID: cardUID, cardNAME: cardName)
+    }
+    
+    fileprivate func sendAutoMessage(_ properties: [String: AnyObject], cardUID: String, cardNAME: String) {
+        
+        let toId = cardUID
+        //let toDevice = user?.deviceID!
+        let fromId = Auth.auth().currentUser!.uid
+        
+        let toName = cardNAME
+        
+        
+        let timestamp = Int(Date().timeIntervalSince1970)
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        //flip to id and from id to fix message controller query glitch
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({otherValues[$0] = $1})
+        
+        
+        //let ref = Firestore.firestore().collection("messages")
+        
+        
+        print("about to send new message")
+        //SOLUTION TO CURRENT ISSUE
+        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            print("HAHHAHAAHAHAAAHAAHAH")
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            
+            if (snapshot?.isEmpty)! {
+                print("SENDING NEW MESSAGE")
+                Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                    if let err = err {
+                        print("error sending message", err)
+                        return
+                    }
+                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
+                    
+                    Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                        print("TITITITITITITITIITITIT")
+                        if let err = err {
+                            print("Error making individual convo", err)
+                            return
+                        }
+                        
+                        snapshot?.documents.forEach({ (documentSnapshot) in
+                            
+                            let document = documentSnapshot
+                            if document.exists {
+                                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                                
+                                //need to update the message collum for other user
+                                //just flip toID and Fromi
+                                
+                                
+                            }
+                            else{
+                                print("DOC DOESN't exist yet")
+                            }
+                        })
+                    })
+                }
+            }
+                
+            else {
+                
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let document = documentSnapshot
+                    if document.exists {
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        
+                        
+                        
+                        //message row update fix
+                        
+                        //sort a not to update from id stuff
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
+                        
+                        //flip it
+                        
+                        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                            print("TITITITITITITITIITITIT")
+                            if let err = err {
+                                print("Error making individual convo", err)
+                                return
+                            }
+                            
+                            snapshot?.documents.forEach({ (documentSnapshot) in
+                                
+                                let document = documentSnapshot
+                                if document.exists {
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
+                                    
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
+                                    
+                                    
+                                }
+                                
+                            })
+                        })
+                        
+                    }
+                    
+                })
+            }
+        })
+        
+        self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
+        
+    }
+    
+    fileprivate func sendAutoMessageTWO(_ properties: [String: AnyObject], cardNAME: String, fromId: String, toId: String, toName: String) {
+        
+        let toId = toId
+        //let toDevice = user?.deviceID!
+        let fromId = fromId
+        
+        let toName = toName
+        
+        //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
+        //            if let err = err {
+        //                print(err)
+        //            }
+        //            let userFromNameDictionary = snapshot?.data()
+        //            let userFromName = User(dictionary: userFromNameDictionary!)
+        //            self.fromName = userFromName.name ?? "loser"
+        //            print(userFromName.name ?? "hi ho yo")
+        //        }
+        //
+        //        print(fromName, "Fuck you bro")
+        
+        let timestamp = Int(Date().timeIntervalSince1970)
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        //flip to id and from id to fix message controller query glitch
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({otherValues[$0] = $1})
+        
+        
+        //let ref = Firestore.firestore().collection("messages")
+        
+        
+        print("about to send new message")
+        //SOLUTION TO CURRENT ISSUE
+        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            print("HAHHAHAAHAHAAAHAAHAH")
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            
+            if (snapshot?.isEmpty)! {
+                print("SENDING NEW MESSAGE")
+                Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                    if let err = err {
+                        print("error sending message", err)
+                        return
+                    }
+                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
+                    
+                    Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                        print("TITITITITITITITIITITIT")
+                        if let err = err {
+                            print("Error making individual convo", err)
+                            return
+                        }
+                        
+                        snapshot?.documents.forEach({ (documentSnapshot) in
+                            
+                            let document = documentSnapshot
+                            if document.exists {
+                                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                                
+                                //need to update the message collum for other user
+                                //just flip toID and Fromi
+                                
+                                
+                            }
+                            else{
+                                print("DOC DOESN't exist yet")
+                            }
+                        })
+                    })
+                }
+            }
+                
+            else {
+                
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let document = documentSnapshot
+                    if document.exists {
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        
+                        
+                        
+                        //message row update fix
+                        
+                        //sort a not to update from id stuff
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
+                        
+                        //flip it
+                        
+                        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                            print("TITITITITITITITIITITIT")
+                            if let err = err {
+                                print("Error making individual convo", err)
+                                return
+                            }
+                            
+                            snapshot?.documents.forEach({ (documentSnapshot) in
+                                
+                                let document = documentSnapshot
+                                if document.exists {
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
+                                    
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
+                                    
+                                    
+                                }
+                                
+                            })
+                        })
+                        
+                    }
+                    
+                })
+            }
+        })
+        
+        self.presentMatchView(cardUID: fromId)
+        
     }
     
     var crushScoreID = String()
@@ -324,7 +559,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-        matchView.sendMessageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
+    
         self.navigationController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
@@ -361,15 +596,21 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
      
     }
     
-    func handleLike() {
+    func handleLike(cell: UITableViewCell) {
         
         saveSwipeToFireStore(didLike: 1)
         addCrushScore()
         
+        cell.accessoryView?.tintColor = .red
+        
     }
     
-   func handleDislike() {
-    saveSwipeToFireStore(didLike: 0)
+    func handleDislike(cell: UITableViewCell) {
+        
+        saveSwipeToFireStore(didLike: 0)
+        
+        cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        
     }
     
     fileprivate var crushScore: CrushScore?
@@ -532,12 +773,22 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
         let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
         let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        var phoneCellFinal = String()
+        
+        if phoneNoDash.count < 11 {
+            phoneCellFinal = "+1\(phoneNoDash)"
+        }
+        else {
+            phoneCellFinal = phoneNoDash
+        }
+        
+        let hasLiked = swipes[phoneCellFinal] as? Int == 1
         
         
-        let hasLiked = swipes[phoneNoDash] as? Int == 1
         
         if hasLiked{
             cell.accessoryView?.tintColor = .red
+            
         }
         else {
             cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
@@ -575,11 +826,14 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         //let favoritableContact = twoDimensionalArray[IndexPath.section].names[IndexPath.row]
         
-        filteredContanct = twoDimensionalArray.filter({( user : ExpandableNames) -> Bool in
-//            var favoritableContacts = [FavoritableContact]()
-//            let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
-//            self.twoDimensionalArray = [names]
-            return user.names.description.lowercased().contains(searchText.lowercased())
+        filteredContanct = twoDimensionalArray.filter({( user : ExpandableNames ) -> Bool in
+            //            var favoritableContacts = [FavoritableContact]()
+            //            let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
+            //            self.twoDimensionalArray = [names]
+             user.names.contains(where: { (contact) -> Bool in
+                return contact.contact.givenName.lowercased().contains(searchText.lowercased())
+                
+            })
         })
         
         DispatchQueue.main.async(execute: {

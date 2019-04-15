@@ -29,6 +29,19 @@ class VerifyViewController: UIViewController {
     
     var phoneNumber: String!
     
+    let label: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Enter Code"
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        
+        label.textColor = .black
+        return label
+    }()
+    
     let verificationCodeText: UITextField = {
         let tf = VerifyNumberText()
         tf.keyboardType = UIKeyboardType.phonePad
@@ -47,7 +60,7 @@ class VerifyViewController: UIViewController {
         button.setTitle("Verify", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
 //        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
 //        button.widthAnchor.constraint(equalToConstant: 100)
@@ -69,7 +82,10 @@ class VerifyViewController: UIViewController {
         
         stack.axis = .vertical
         
-        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/3.5, left: view.bounds.width/6, bottom: view.bounds.height/2.2, right: view.bounds.width/6))
+        view.addSubview(label)
+          label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+        
+         stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: view.bounds.height/9, bottom: view.bounds.height/2.2, right: view.bounds.height/9))
         
         
         stack.spacing = 20
@@ -91,12 +107,23 @@ class VerifyViewController: UIViewController {
                     ["Full Name": "",
                      "uid": uid,
                     "PhoneNumber": self.phoneNumber ?? "",
-                    "School": "",
                     "Age": "",
-                     "Bio": "",
-                     "minSeekingAge": 18,
-                     "maxSeekingAge": 50,
-                     "ImageUrl1": ""
+        
+                        "ImageUrl1": "",
+                        "ImageUrl2": "",
+                        "ImageUrl3": "",
+                       
+                        "Birthday": "",
+                        "School": "",
+                        "Bio": "",
+                        "minSeekingAge": 18,
+                        "maxSeekingAge": 40,
+                        "maxDistance": 5,
+                        "email": "",
+                        "fbid": "",
+                        "deviceID": Messaging.messaging().fcmToken ?? "",
+                        "Gender-Preference": "",
+                        "User-Gender": ""
                      ]
                 
                 Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: self.phoneNumber ?? "").getDocuments(completion: { (snapshot, err) in
@@ -105,8 +132,9 @@ class VerifyViewController: UIViewController {
                     }
                     if (snapshot?.isEmpty)! {
                         Firestore.firestore().collection("users").document(uid).setData(docData)
-                        let enterPhoneInfo = EnterMorePhoneInfoViewController()
-                        self.present(enterPhoneInfo, animated: true)
+                        let enterName = EnterNameController()
+                        enterName.phone = self.phoneNumber ?? ""
+                        self.present(enterName, animated: true)
                     }
                     else {
                         let profileController = ProfilePageViewController()

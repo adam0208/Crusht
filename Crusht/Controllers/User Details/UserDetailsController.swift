@@ -45,25 +45,25 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
                 guard let dictionary = snapshot?.data() else {return}
                 self.crushScore = CrushScore(dictionary: dictionary)
                 
-                if (self.crushScore?.crushScore ?? 0) > 10 && (self.crushScore?.crushScore ?? 0) <= 50 {
-                    self.crushScoreLabel.text = "😊😎"
+                if (self.crushScore?.crushScore ?? 0) > 4 && (self.crushScore?.crushScore ?? 0) <= 50 {
+                    self.crushScoreLabel.text = "Crusht Score: 😊😎"
                 }
                 else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
-                    self.crushScoreLabel.text = "😊😎😍"
+                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍"
                 }
                 else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
-                    self.crushScoreLabel.text = "😊😎😍🔥"
+                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍🔥"
                 }
                 else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
-                    self.crushScoreLabel.text = "😊😎😍🔥❤️"
+                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍🔥❤️"
                 }
                 else if (self.crushScore?.crushScore ?? 0) > 400 {
-                    self.crushScoreLabel.text = "😊😎😍🔥❤️👀"
+                    self.crushScoreLabel.text = " Crusht Score:😊😎😍🔥❤️👀"
                 }
                 
             }
             else {
-                self.crushScoreLabel.text = "😊"
+                self.crushScoreLabel.text = " Crusht Score: 😊"
             }
         }
         
@@ -165,7 +165,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
 
     fileprivate func setupLayout() {
         view.backgroundColor = .white
-        
+        self.setLabelText()
         let swipingView = swipingPhotosController.view!
         
         scrollView.addSubview(swipingView)
@@ -180,14 +180,14 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         scrollView.fillSuperview()
         
         scrollView.addSubview(dismissButton)
-        dismissButton.anchor(top: swipingView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 16, bottom: 16, right: 16), size: .init(width: 50, height: 50))
-        
-        scrollView.addSubview(bioLabel)
+        dismissButton.anchor(top: swipingView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: -25, left: 16, bottom: 16, right: 16), size: .init(width: 50, height: 50))
+           scrollView.addSubview(crushScoreLabel)
         bioLabel.text = cardViewModel.bio
-        bioLabel.anchor(top: infoLabel.bottomAnchor, leading: infoLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
-        scrollView.addSubview(crushScoreLabel)
-        crushScoreLabel.anchor(top: bioLabel.bottomAnchor, leading: bioLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
-        self.setLabelText()
+        crushScoreLabel.anchor(top: infoLabel.bottomAnchor, leading: infoLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+        scrollView.addSubview(bioLabel)
+
+        bioLabel.anchor(top: crushScoreLabel.bottomAnchor, leading: crushScoreLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+       
     }
     
     fileprivate let extraSwipingHeight: CGFloat = 100
@@ -209,11 +209,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         setupLayout()
         
         setupVisualBlurEffectView()
-        
         
     }
     

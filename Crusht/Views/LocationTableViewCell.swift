@@ -9,7 +9,7 @@
 import UIKit
 
 class LocationTableViewCell: UITableViewCell {
-
+    
     let minSlider: UISlider = {
         let slider = UISlider()
         slider.tintColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
@@ -51,11 +51,11 @@ class LocationTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let overallStackView = UIStackView(arrangedSubviews: [
-            UIStackView(arrangedSubviews: [minLabel, minSlider]),
+            UIView(),
             UIStackView(arrangedSubviews: [maxLabel, maxSlider]),
             ])
         overallStackView.axis = .vertical
-        overallStackView.spacing = 16
+        overallStackView.spacing = 5
         addSubview(overallStackView)
         overallStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
         overallStackView.fillSuperview()

@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import UserNotifications
+import CountryPicker
 
 class FBPhoneNumberText: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -24,7 +25,7 @@ class FBPhoneNumberText: UITextField {
     }
 }
 
-class FacebookPhoneController: UIViewController {
+class FacebookPhoneController: UIViewController, UITextFieldDelegate, CountryPickerDelegate {
     
     var name: String?
     
@@ -32,21 +33,25 @@ class FacebookPhoneController: UIViewController {
 
     let FBgreetingLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15, weight: .heavy)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.text = "We need your phone number to match you with your contacts"
         return label
     }()
     
-    let countryCodeField: UITextField = {
+    let countryCodeTF: UITextField = {
         let tf = FBPhoneNumberText()
         tf.keyboardType = UIKeyboardType.phonePad
-        tf.placeholder = "+1"
+        
+        tf.text = "🇺🇸"
+        
         tf.backgroundColor = .white
-        tf.layer.cornerRadius = 22
-        tf.font = UIFont.systemFont(ofSize: 30)
+        tf.layer.cornerRadius = 15
+        tf.font = UIFont.systemFont(ofSize: 25)
+        tf.widthAnchor.constraint(equalToConstant: 80).isActive = true
         tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
         
         return tf
     }()
@@ -54,11 +59,12 @@ class FacebookPhoneController: UIViewController {
     let phoneNumberTextField: UITextField = {
         let tf = FBPhoneNumberText()
         tf.keyboardType = UIKeyboardType.phonePad
-        tf.placeholder = "+19177449835"
+        tf.placeholder = "3138886434"
         tf.backgroundColor = .white
-        tf.layer.cornerRadius = 22
-        tf.font = UIFont.systemFont(ofSize: 30)
+        tf.layer.cornerRadius = 15
+        tf.font = UIFont.systemFont(ofSize: 25)
         tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
         
         return tf
     }()
@@ -68,9 +74,10 @@ class FacebookPhoneController: UIViewController {
         button.setTitle("Get Verification Code", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         
         button.layer.cornerRadius = 22
         
@@ -78,8 +85,12 @@ class FacebookPhoneController: UIViewController {
         return button
     }()
     
+       var picker = CountryPicker()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        countryCodeTF.inputView = picker
         
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -91,17 +102,42 @@ class FacebookPhoneController: UIViewController {
         
         setupGradientLayer()
         
-        let stack = UIStackView(arrangedSubviews: [FBgreetingLabel, countryCodeField, phoneNumberTextField, sendButton])
+        let horizontalStack = UIStackView(arrangedSubviews: [countryCodeTF, phoneNumberTextField])
+        
+        horizontalStack.axis = .horizontal
+        horizontalStack.spacing = 11
+        
+        
+        let stack = UIStackView(arrangedSubviews: [FBgreetingLabel, horizontalStack, sendButton])
         view.addSubview(stack)
+        
         
         stack.axis = .vertical
         
-        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/3.5, left: 30, bottom: view.bounds.height/2.2, right: 30))
+        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         
         stack.spacing = 20
         
+  
         
+        let locale = Locale.current
+        let code = (locale as NSLocale).object(forKey: NSLocale.Key.countryCode) as! String?
+        //init Picker
+        picker.displayOnlyCountriesWithCodes = ["US", "DK", "SE", "NO", "DE"] //display only
+        picker.exeptCountriesWithCodes = ["RU"] //exept country
+        let theme = CountryViewTheme(countryCodeTextColor: .white, countryNameTextColor: .white, rowBackgroundColor: .clear, showFlagsBorder: false)        //optional for UIPickerView theme changes
+        picker.theme = theme //optional for UIPickerView theme changes
+        picker.countryPickerDelegate = self
+        picker.showPhoneNumbers = true
+        picker.setCountry(code!)
+        
+        
+    }
+    
+    func countryPhoneCodePicker(_ picker: CountryPicker, didSelectCountryWithName name: String, countryCode: String, phoneCode: String, flag: UIImage) {
+        //pick up anythink
+        countryCodeTF.text = phoneCode
     }
     
   @objc func dismissKeyboard() {
@@ -112,7 +148,7 @@ class FacebookPhoneController: UIViewController {
      @objc fileprivate func sendVerificationCode() {
         print("button hit !")
         if let phoneNumber = phoneNumberTextField.text,
-            let countryCode = countryCodeField.text {
+            let countryCode = countryCodeTF.text {
             VerifyAPI.sendVerificationCode(countryCode, phoneNumber)
             let checkVerification = CheckVerificationViewController()
             checkVerification.countryCode = countryCode

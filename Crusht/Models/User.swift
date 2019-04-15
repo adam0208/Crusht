@@ -44,6 +44,10 @@ struct User: ProducesCardViewModel {
     
     var birthday: String?
     
+    var sexPref: String?
+    
+    var gender: String?
+    
     
     
     init(dictionary: [String: Any]) {
@@ -72,6 +76,8 @@ struct User: ProducesCardViewModel {
         self.maxDistance = dictionary["maxDistance"] as? Int
         self.email = dictionary["email"] as? String ?? ""
         self.verified = dictionary["verified"] as? String ?? ""
+        self.sexPref = dictionary["Gender-Preference"] as? String ?? ""
+        self.gender = dictionary["User-Gender"] as? String ?? ""
         //self.age = calcAge(birthday: self.birthday!)
     }
 

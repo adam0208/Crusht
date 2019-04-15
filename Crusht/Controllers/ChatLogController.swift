@@ -443,6 +443,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             }
             
             if let selectedImage = selectedImageFromPicker {
+                self.inputTextField.text = nil
                 uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
                     self.sendMessageWithImageUrl(imageUrl, image: selectedImage)
                 })
@@ -666,6 +667,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     fileprivate func sendMessageWithImageUrl(_ imageUrl: String, image: UIImage) {
         let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": image.size.width as AnyObject, "imageHeight": image.size.height as AnyObject]
+        inputTextField.text = nil
         sendMessageWithProperties(properties)
     }
     

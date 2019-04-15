@@ -103,6 +103,13 @@
 		28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */; };
 		28F54071224C163F00EC5062 /* BioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54070224C163F00EC5062 /* BioCell.swift */; };
 		28F54073224C23C600EC5062 /* BioTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54072224C23C600EC5062 /* BioTextView.swift */; };
+		28FD7D0C2261AFBB00B79496 /* GenderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D0B2261AFBB00B79496 /* GenderController.swift */; };
+		28FD7D0E2261BA8900B79496 /* YourSexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D0D2261BA8900B79496 /* YourSexController.swift */; };
+		28FD7D1022641FB100B79496 /* EnterNameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D0F22641FB100B79496 /* EnterNameController.swift */; };
+		28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D112264238A00B79496 /* BirthdayController.swift */; };
+		28FD7D14226425D800B79496 /* EnterSchoolController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D13226425D800B79496 /* EnterSchoolController.swift */; };
+		28FD7D162264282B00B79496 /* BioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D152264282B00B79496 /* BioController.swift */; };
+		28FD7D1822642D4700B79496 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D1722642D4700B79496 /* PhotoController.swift */; };
 		28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE2D72216672000896198 /* FacebookCrushCell.swift */; };
 		93EA35963A0441CD6DC3A04D /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */; };
 		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
@@ -230,6 +237,13 @@
 		28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "itsamatch@2x copy.png"; sourceTree = "<group>"; };
 		28F54070224C163F00EC5062 /* BioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioCell.swift; sourceTree = "<group>"; };
 		28F54072224C23C600EC5062 /* BioTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioTextView.swift; sourceTree = "<group>"; };
+		28FD7D0B2261AFBB00B79496 /* GenderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderController.swift; sourceTree = "<group>"; };
+		28FD7D0D2261BA8900B79496 /* YourSexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourSexController.swift; sourceTree = "<group>"; };
+		28FD7D0F22641FB100B79496 /* EnterNameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameController.swift; sourceTree = "<group>"; };
+		28FD7D112264238A00B79496 /* BirthdayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayController.swift; sourceTree = "<group>"; };
+		28FD7D13226425D800B79496 /* EnterSchoolController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterSchoolController.swift; sourceTree = "<group>"; };
+		28FD7D152264282B00B79496 /* BioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioController.swift; sourceTree = "<group>"; };
+		28FD7D1722642D4700B79496 /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		28FDE2D72216672000896198 /* FacebookCrushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushCell.swift; sourceTree = "<group>"; };
 		36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -434,6 +448,13 @@
 				2883A987224E8FE200300CD4 /* SlackCrushController.swift */,
 				2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */,
 				28C06E0A22593CE3004F0C1E /* MessageReportController.swift */,
+				28FD7D0F22641FB100B79496 /* EnterNameController.swift */,
+				28FD7D112264238A00B79496 /* BirthdayController.swift */,
+				28FD7D13226425D800B79496 /* EnterSchoolController.swift */,
+				28FD7D152264282B00B79496 /* BioController.swift */,
+				28FD7D0D2261BA8900B79496 /* YourSexController.swift */,
+				28FD7D0B2261AFBB00B79496 /* GenderController.swift */,
+				28FD7D1722642D4700B79496 /* PhotoController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -505,6 +526,7 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				135C14FC3E7469E297AF6393 /* [CP] Embed Pods Frameworks */,
+				28FD7D192264488900B79496 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -668,6 +690,7 @@
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -689,6 +712,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -724,6 +748,23 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		28FD7D192264488900B79496 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -796,8 +837,11 @@
 				28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */,
 				2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
+				28FD7D1022641FB100B79496 /* EnterNameController.swift in Sources */,
 				28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
+				28FD7D14226425D800B79496 /* EnterSchoolController.swift in Sources */,
+				28FD7D162264282B00B79496 /* BioController.swift in Sources */,
 				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
 				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
 				28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */,
@@ -811,6 +855,7 @@
 				283816FD21B89FDD00B3E4FD /* ProfPageMiddleView.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
 				2859708022037A3700EB83CE /* SchoolUserDetailsController.swift in Sources */,
+				28FD7D1822642D4700B79496 /* PhotoController.swift in Sources */,
 				28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */,
 				28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */,
 				28C06E0B22593CE3004F0C1E /* MessageReportController.swift in Sources */,
@@ -828,10 +873,12 @@
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
 				28F54073224C23C600EC5062 /* BioTextView.swift in Sources */,
+				28FD7D0C2261AFBB00B79496 /* GenderController.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
 				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
 				283816FB21B89F8C00B3E4FD /* ProfPageBottomStackView.swift in Sources */,
 				28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */,
+				28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */,
 				2838171E21B8C90100B3E4FD /* Extension.swift in Sources */,
 				28BE624B21BDB76A00EAFFE2 /* LoginViewModel.swift in Sources */,
 				28908D8821C0AB2C00391A39 /* ExpandableNames.swift in Sources */,
@@ -844,6 +891,7 @@
 				28857CC521B98C6B00A654A0 /* ProfPageMidButtonView.swift in Sources */,
 				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
 				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,
+				28FD7D0E2261BA8900B79496 /* YourSexController.swift in Sources */,
 				28CFC6B321C5B30600387129 /* NewMessageController.swift in Sources */,
 				28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */,
 			);

@@ -15,7 +15,8 @@ var bindableIsRegistering = Bindable<Bool>()
 var bindableImage = Bindable<UIImage>()
 var bindableIsFormValid = Bindable<Bool>()
 
-
+    var gender = String()
+    var sexYouLike = String()
 var fullName: String? {
     didSet {
         checkFormValidity()
@@ -113,7 +114,8 @@ var school: String?
                 "fbid": fbid ?? "",
                 "email": email ?? "",
             "ImageUrl1": imageUrl,
-            "verified": "0"
+            "Gender-Preference": sexYouLike,
+            "User-Gender": gender
         ]
         //let userAge = ["Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in

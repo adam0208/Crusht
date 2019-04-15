@@ -488,10 +488,259 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         
                     })
                     
-                self.presentMatchView(cardUID: cardUID)
+                    self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
+                    
                 })
             }
         }
+        
+    }
+    
+    @objc func handleSend(cardUID: String, cardName: String) {
+        let properties = ["text": "We matched! This is an automated message."]
+        sendAutoMessage(properties as [String : AnyObject], cardUID: cardUID, cardNAME: cardName)
+    }
+    
+    fileprivate func sendAutoMessage(_ properties: [String: AnyObject], cardUID: String, cardNAME: String) {
+        
+        let toId = cardUID
+        //let toDevice = user?.deviceID!
+        let fromId = Auth.auth().currentUser!.uid
+        
+        let toName = cardNAME
+        
+        
+        let timestamp = Int(Date().timeIntervalSince1970)
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        //flip to id and from id to fix message controller query glitch
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({otherValues[$0] = $1})
+        
+        
+        //let ref = Firestore.firestore().collection("messages")
+        
+        
+        print("about to send new message")
+        //SOLUTION TO CURRENT ISSUE
+        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            print("HAHHAHAAHAHAAAHAAHAH")
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            
+            if (snapshot?.isEmpty)! {
+                print("SENDING NEW MESSAGE")
+                Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                    if let err = err {
+                        print("error sending message", err)
+                        return
+                    }
+                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
+                    
+                    Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                        print("TITITITITITITITIITITIT")
+                        if let err = err {
+                            print("Error making individual convo", err)
+                            return
+                        }
+                        
+                        snapshot?.documents.forEach({ (documentSnapshot) in
+                            
+                            let document = documentSnapshot
+                            if document.exists {
+                                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                                
+                                //need to update the message collum for other user
+                                //just flip toID and Fromi
+                                
+                                
+                            }
+                            else{
+                                print("DOC DOESN't exist yet")
+                            }
+                        })
+                    })
+                }
+            }
+                
+            else {
+                
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let document = documentSnapshot
+                    if document.exists {
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        
+                        
+                        
+                        //message row update fix
+                        
+                        //sort a not to update from id stuff
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
+                        
+                        //flip it
+                        
+                        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                            print("TITITITITITITITIITITIT")
+                            if let err = err {
+                                print("Error making individual convo", err)
+                                return
+                            }
+                            
+                            snapshot?.documents.forEach({ (documentSnapshot) in
+                                
+                                let document = documentSnapshot
+                                if document.exists {
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
+                                    
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
+                                    
+                                    
+                                }
+                                
+                            })
+                        })
+                        
+                    }
+                    
+                })
+            }
+        })
+        
+        self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
+        
+    }
+    
+    fileprivate func sendAutoMessageTWO(_ properties: [String: AnyObject], cardNAME: String, fromId: String, toId: String, toName: String) {
+        
+        let toId = toId
+        //let toDevice = user?.deviceID!
+        let fromId = fromId
+        
+        let toName = toName
+        
+        //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
+        //            if let err = err {
+        //                print(err)
+        //            }
+        //            let userFromNameDictionary = snapshot?.data()
+        //            let userFromName = User(dictionary: userFromNameDictionary!)
+        //            self.fromName = userFromName.name ?? "loser"
+        //            print(userFromName.name ?? "hi ho yo")
+        //        }
+        //
+        //        print(fromName, "Fuck you bro")
+        
+        let timestamp = Int(Date().timeIntervalSince1970)
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        //flip to id and from id to fix message controller query glitch
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({otherValues[$0] = $1})
+        
+        
+        //let ref = Firestore.firestore().collection("messages")
+        
+        
+        print("about to send new message")
+        //SOLUTION TO CURRENT ISSUE
+        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            print("HAHHAHAAHAHAAAHAAHAH")
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            
+            if (snapshot?.isEmpty)! {
+                print("SENDING NEW MESSAGE")
+                Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                    if let err = err {
+                        print("error sending message", err)
+                        return
+                    }
+                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
+                    
+                    Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                        print("TITITITITITITITIITITIT")
+                        if let err = err {
+                            print("Error making individual convo", err)
+                            return
+                        }
+                        
+                        snapshot?.documents.forEach({ (documentSnapshot) in
+                            
+                            let document = documentSnapshot
+                            if document.exists {
+                                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                                
+                                //need to update the message collum for other user
+                                //just flip toID and Fromi
+                                
+                                
+                            }
+                            else{
+                                print("DOC DOESN't exist yet")
+                            }
+                        })
+                    })
+                }
+            }
+                
+            else {
+                
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let document = documentSnapshot
+                    if document.exists {
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        
+                        
+                        
+                        //message row update fix
+                        
+                        //sort a not to update from id stuff
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
+                        
+                        //flip it
+                        
+                        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                            print("TITITITITITITITIITITIT")
+                            if let err = err {
+                                print("Error making individual convo", err)
+                                return
+                            }
+                            
+                            snapshot?.documents.forEach({ (documentSnapshot) in
+                                
+                                let document = documentSnapshot
+                                if document.exists {
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
+                                    
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
+                                    
+                                    
+                                }
+                                
+                            })
+                        })
+                        
+                    }
+                    
+                })
+            }
+        })
+        
+        self.presentMatchView(cardUID: fromId)
         
     }
     
@@ -499,7 +748,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-        matchView.sendMessageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
+      
         view.addSubview(matchView)
         matchView.fillSuperview()
     }

@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import FacebookCore
 import JGProgressHUD
+import FacebookLogin
+import FBSDKLoginKit
 
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -36,6 +38,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     
+    let hud = JGProgressHUD(style: .dark)
+    
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
@@ -48,6 +52,10 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
             self.user = User(dictionary: dictionary)
             
             print(self.user?.phoneNumber ?? "Fuck you")
+            if self.user?.fbid == nil {
+                self.handleBack()
+            }
+           
             
             self.fetchFacebookUser()
         }
@@ -60,12 +68,29 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     var socialID: String?
     
     fileprivate func fetchFacebookUser() {
+        Firestore.firestore().collection("users").whereField("fbid", isEqualTo: 133347531139653).order(by: "Full Name").start(at: ["A"]).getDocuments(completion: { (snapshot, err) in
+            if let err = err {
+                print("failed getting fb friends", err)
+            }
+            print("working?")
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let crush = User(dictionary: userDictionary)
+                
+                self.fbArray.append(crush)
+                print(self.fbArray, "we made it")
+                print("working")
+                
+            })
+            
+        })
         print("starting fb")
         let req = GraphRequest(graphPath: "me/friends", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
         req.start({ (connection, result) in
             switch result {
             case .failed(let error):
                 print(error)
+                self.loginFB()
                 print("no fb for you")
             case .success(let graphResponse):
                 print("Success doing this fb shit")
@@ -75,15 +100,18 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                     //let photoUrl = photoData!["url"] as? String
                     
                     let responseDictionaryFriends = graphResponse.dictionaryValue
+                    print(responseDictionaryFriends!, "mother fuck")
                     let data: NSArray = responseDictionaryFriends!["data"] as! NSArray
+                    print(data, "hi")
                     
                     print("jajajajajjajajajajja", data)
                     
                     for i in  0..<data.count {
+                        
                         let dict = data[i] as! NSDictionary
                         let temp = dict.value(forKey: "id") as! String
                         print("lililililiilli", temp)
-                        Firestore.firestore().collection("users").whereField("fbid", isEqualTo: temp).order(by: "Full Name").start(at: ["A"]).getDocuments(completion: { (snapshot, err) in
+                        Firestore.firestore().collection("users").whereField("fbid", isEqualTo: 133347531139653).order(by: "Full Name").start(at: ["A"]).getDocuments(completion: { (snapshot, err) in
                             if let err = err {
                                 print("failed getting fb friends", err)
                             }
@@ -92,12 +120,13 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                                 let crush = User(dictionary: userDictionary)
                                 
                                 self.fbArray.append(crush)
+                                print(self.fbArray, "we made it")
                                 
                             })
                             
                         })
                     }
-                    
+          
                     
                     self.fetchSwipes()
                     
@@ -107,6 +136,75 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
          
             
         })
+    }
+    //log in to fb to sinc?
+    fileprivate func loginFB() {
+        let loginManager = LoginManager()
+        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
+            switch loginResult {
+            case .failed(let error):
+                print("cccccccccccccccccccccccccccccccccccccc",error)
+            case .cancelled:
+                print("User cancelled login.")
+            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
+                print("Logged in!")
+                self.fetchFBid()
+            }
+        }
+    }
+    var FBID = String()
+    fileprivate func fetchFBid() {
+        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+        req.start({ (connection, result) in
+            switch result {
+            case .failed(let error):
+                print(error)
+            case .success(let graphResponse):
+                if let responseDictionary = graphResponse.dictionaryValue {
+                    print(responseDictionary)
+                    
+                    let socialIdFB = responseDictionary["id"] as? String
+                    print(socialIdFB!)
+                    
+                    self.handleSaveFBID()
+                        }
+                    }
+                })
+            }
+    
+   fileprivate func handleSaveFBID() {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return}
+        let docData: [String: Any] = [
+            "uid": uid,
+            "Full Name": user?.name ?? "",
+            "ImageUrl1": user?.imageUrl1 ?? "",
+            "ImageUrl2": user?.imageUrl2 ?? "",
+            "ImageUrl3": user?.imageUrl3 ?? "",
+            "Age": user?.age ?? 23,
+            "Birthday": user?.birthday ?? "",
+            "School": user?.school ?? "",
+            "Bio": user?.bio ?? "",
+            "minSeekingAge": user?.minSeekingAge ?? 18,
+            "maxSeekingAge": user?.maxSeekingAge ?? 50,
+            "minDistance": user?.minDistance ?? 1,
+            "maxDistance": user?.maxDistance ?? 5,
+            "email": user?.email ?? "",
+            "fbid": FBID,
+            "PhoneNumber": user?.phoneNumber ?? "",
+            "deviceID": Messaging.messaging().fcmToken ?? ""
+        ]
+        
+        Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
+            in
+            //hud.dismiss()
+            if let err = err {
+                print("Failed to retrieve user settings", err)
+                return
+            }
+            let fbControllerReboot = FacebookCrushController()
+            self.present(fbControllerReboot, animated: true)
+        }
     }
     
 //    fileprivate func getFBFriends() {
@@ -225,7 +323,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     }
     
     fileprivate var user: User?
-    let hud = JGProgressHUD(style: .dark)
+    
     
     fileprivate var fbArray = [User]()
     
@@ -420,7 +518,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                     }
                 })
                 
-                self.presentMatchView(cardUID: cardUID)
+                self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
                 
             })
         }
@@ -448,12 +546,260 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         }
     }
     
+    @objc func handleSend(cardUID: String, cardName: String) {
+        let properties = ["text": "We matched! This is an automated message."]
+        sendAutoMessage(properties as [String : AnyObject], cardUID: cardUID, cardNAME: cardName)
+    }
+    
+    fileprivate func sendAutoMessage(_ properties: [String: AnyObject], cardUID: String, cardNAME: String) {
+        
+        let toId = cardUID
+        //let toDevice = user?.deviceID!
+        let fromId = Auth.auth().currentUser!.uid
+        
+        let toName = cardNAME
+        
+        
+        let timestamp = Int(Date().timeIntervalSince1970)
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        //flip to id and from id to fix message controller query glitch
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({otherValues[$0] = $1})
+        
+        
+        //let ref = Firestore.firestore().collection("messages")
+        
+        
+        print("about to send new message")
+        //SOLUTION TO CURRENT ISSUE
+        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            print("HAHHAHAAHAHAAAHAAHAH")
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            
+            if (snapshot?.isEmpty)! {
+                print("SENDING NEW MESSAGE")
+                Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                    if let err = err {
+                        print("error sending message", err)
+                        return
+                    }
+                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
+                    
+                    Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                        print("TITITITITITITITIITITIT")
+                        if let err = err {
+                            print("Error making individual convo", err)
+                            return
+                        }
+                        
+                        snapshot?.documents.forEach({ (documentSnapshot) in
+                            
+                            let document = documentSnapshot
+                            if document.exists {
+                                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                                
+                                //need to update the message collum for other user
+                                //just flip toID and Fromi
+                                
+                                
+                            }
+                            else{
+                                print("DOC DOESN't exist yet")
+                            }
+                        })
+                    })
+                }
+            }
+                
+            else {
+                
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let document = documentSnapshot
+                    if document.exists {
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        
+                        
+                        
+                        //message row update fix
+                        
+                        //sort a not to update from id stuff
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
+                        
+                        //flip it
+                        
+                        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                            print("TITITITITITITITIITITIT")
+                            if let err = err {
+                                print("Error making individual convo", err)
+                                return
+                            }
+                            
+                            snapshot?.documents.forEach({ (documentSnapshot) in
+                                
+                                let document = documentSnapshot
+                                if document.exists {
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
+                                    
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
+                                    
+                                    
+                                }
+                                
+                            })
+                        })
+                        
+                    }
+                    
+                })
+            }
+        })
+        
+        self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
+        
+    }
+    
+    fileprivate func sendAutoMessageTWO(_ properties: [String: AnyObject], cardNAME: String, fromId: String, toId: String, toName: String) {
+        
+        let toId = toId
+        //let toDevice = user?.deviceID!
+        let fromId = fromId
+        
+        let toName = toName
+        
+        //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
+        //            if let err = err {
+        //                print(err)
+        //            }
+        //            let userFromNameDictionary = snapshot?.data()
+        //            let userFromName = User(dictionary: userFromNameDictionary!)
+        //            self.fromName = userFromName.name ?? "loser"
+        //            print(userFromName.name ?? "hi ho yo")
+        //        }
+        //
+        //        print(fromName, "Fuck you bro")
+        
+        let timestamp = Int(Date().timeIntervalSince1970)
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        //flip to id and from id to fix message controller query glitch
+        var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        properties.forEach({otherValues[$0] = $1})
+        
+        
+        //let ref = Firestore.firestore().collection("messages")
+        
+        
+        print("about to send new message")
+        //SOLUTION TO CURRENT ISSUE
+        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            print("HAHHAHAAHAHAAAHAAHAH")
+            if let err = err {
+                print("Error making individual convo", err)
+                return
+            }
+            
+            if (snapshot?.isEmpty)! {
+                print("SENDING NEW MESSAGE")
+                Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
+                    if let err = err {
+                        print("error sending message", err)
+                        return
+                    }
+                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
+                    
+                    Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+                        print("TITITITITITITITIITITIT")
+                        if let err = err {
+                            print("Error making individual convo", err)
+                            return
+                        }
+                        
+                        snapshot?.documents.forEach({ (documentSnapshot) in
+                            
+                            let document = documentSnapshot
+                            if document.exists {
+                                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                                
+                                //need to update the message collum for other user
+                                //just flip toID and Fromi
+                                
+                                
+                            }
+                            else{
+                                print("DOC DOESN't exist yet")
+                            }
+                        })
+                    })
+                }
+            }
+                
+            else {
+                
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let document = documentSnapshot
+                    if document.exists {
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        
+                        
+                        
+                        //message row update fix
+                        
+                        //sort a not to update from id stuff
+                        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
+                        
+                        //flip it
+                        
+                        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                            print("TITITITITITITITIITITIT")
+                            if let err = err {
+                                print("Error making individual convo", err)
+                                return
+                            }
+                            
+                            snapshot?.documents.forEach({ (documentSnapshot) in
+                                
+                                let document = documentSnapshot
+                                if document.exists {
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
+                                    
+                                    Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
+                                    
+                                    
+                                }
+                                
+                            })
+                        })
+                        
+                    }
+                    
+                })
+            }
+        })
+        
+        self.presentMatchView(cardUID: fromId)
+        
+    }
+    
     
     func presentMatchView(cardUID: String) {
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-        matchView.sendMessageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
+ 
         self.navigationController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()

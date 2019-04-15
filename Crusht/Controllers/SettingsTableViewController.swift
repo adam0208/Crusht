@@ -245,13 +245,13 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
         else if indexPath.section == 6 {
             let locationRangeCell = LocationTableViewCell(style: .default, reuseIdentifier: nil)
-            locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
+        //    locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
             locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
             
-            locationRangeCell.minLabel.text = " Min Km: \(user?.minDistance ?? 1)"
-            locationRangeCell.maxLabel.text = " Max Km: \(user?.maxDistance ?? 50)"
+         //   locationRangeCell.minLabel.text = " Min Km: \(user?.minDistance ?? 1)"
+            locationRangeCell.maxLabel.text = " Miles: \(user?.maxDistance ?? 50)"
             
-            locationRangeCell.minSlider.value = Float(user?.minDistance ?? 1)
+            //locationRangeCell.minSlider.value = Float(user?.minDistance ?? 1)
             locationRangeCell.maxSlider.value = Float(user?.maxDistance ?? 50)
             
     
@@ -359,14 +359,13 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     fileprivate func evaluateMinMaxDistance() {
         guard let locationRangeCell = tableView.cellForRow(at: [6, 0]) as? LocationTableViewCell else { return }
-        let minValue = Int(locationRangeCell.minSlider.value)
+        //let minValue = Int(locationRangeCell.minSlider.value)
         var maxValue = Int(locationRangeCell.maxSlider.value)
-        maxValue = max(minValue, maxValue)
+        maxValue = max(maxValue, 1)
         locationRangeCell.maxSlider.value = Float(maxValue)
-        locationRangeCell.minLabel.text = "Min \(minValue)"
+        //locationRangeCell.minLabel.text = "Min \(minValue)"
         locationRangeCell.maxLabel.text = "Max \(maxValue)"
         
-        user?.minDistance = minValue
         user?.maxDistance = maxValue
     }
     
@@ -416,12 +415,13 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "Bio": user?.bio ?? "",
             "minSeekingAge": user?.minSeekingAge ?? 18,
             "maxSeekingAge": user?.maxSeekingAge ?? 50,
-            "minDistance": user?.minDistance ?? 1,
-            "maxDistance": user?.maxDistance ?? 5,
+            "maxDistance": user?.maxDistance ?? 3,
             "email": user?.email ?? "",
             "fbid": user?.fbid ?? "",
             "PhoneNumber": user?.phoneNumber ?? "",
-            "deviceID": Messaging.messaging().fcmToken ?? ""
+            "deviceID": Messaging.messaging().fcmToken ?? "",
+            "Gender-Preference": user?.sexPref ?? "",
+            "User-Gender": user?.gender ?? ""
             ]
         
   //      let hud = JGProgressHUD(style: .dark)
