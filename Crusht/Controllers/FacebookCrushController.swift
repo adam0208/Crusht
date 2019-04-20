@@ -67,51 +67,35 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     var photoUrl: String?
     var socialID: String?
     
+    var isRightSex = Bool()
+    
     fileprivate func fetchFacebookUser() {
-        Firestore.firestore().collection("users").whereField("fbid", isEqualTo: 133347531139653).order(by: "Full Name").start(at: ["A"]).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
-                print("failed getting fb friends", err)
-            }
-            print("working?")
-            snapshot?.documents.forEach({ (documentSnapshot) in
-                let userDictionary = documentSnapshot.data()
-                let crush = User(dictionary: userDictionary)
-                
-                self.fbArray.append(crush)
-                print(self.fbArray, "we made it")
-                print("working")
-                
-            })
-            
-        })
         print("starting fb")
         let req = GraphRequest(graphPath: "me/friends", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
         req.start({ (connection, result) in
             switch result {
             case .failed(let error):
                 print(error)
-                self.loginFB()
                 print("no fb for you")
             case .success(let graphResponse):
                 print("Success doing this fb shit")
+            
                 if let responseDictionary = graphResponse.dictionaryValue {
                     print(responseDictionary)
                     //let photoData = pictureUrlFB!["data"] as? [String:Any]
                     //let photoUrl = photoData!["url"] as? String
-                    
+
                     let responseDictionaryFriends = graphResponse.dictionaryValue
-                    print(responseDictionaryFriends!, "mother fuck")
                     let data: NSArray = responseDictionaryFriends!["data"] as! NSArray
-                    print(data, "hi")
+                
                     
                     print("jajajajajjajajajajja", data)
                     
+                    
                     for i in  0..<data.count {
-                        
                         let dict = data[i] as! NSDictionary
                         let temp = dict.value(forKey: "id") as! String
-                        print("lililililiilli", temp)
-                        Firestore.firestore().collection("users").whereField("fbid", isEqualTo: 133347531139653).order(by: "Full Name").start(at: ["A"]).getDocuments(completion: { (snapshot, err) in
+                        Firestore.firestore().collection("users").whereField("fbid", arrayContains: temp).getDocuments(completion: { (snapshot, err) in
                             if let err = err {
                                 print("failed getting fb friends", err)
                             }
@@ -119,93 +103,56 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                                 let userDictionary = documentSnapshot.data()
                                 let crush = User(dictionary: userDictionary)
                                 
+                                let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+                                
+                                let sexPref = self.user?.sexPref
+                                
+                                
+                                
+                                if sexPref == "Humans With Vaginas" {
+                                    self.isRightSex = crush.gender == "I Have a Vagina"
+                                }
+                                else if sexPref == "Humans With Penises" {
+                                    self.isRightSex = crush.gender == "I have a Penis"
+                                }
+                                else {
+                                    self.isRightSex = crush.age > 17
+                                }
+                                
+                                if isNotCurrentUser && self.isRightSex {
+                                
                                 self.fbArray.append(crush)
-                                print(self.fbArray, "we made it")
+                                
+                                
+                                }
+                                //                let crushStuff = User(dictionary: userDictionary)
+                                //                if let crushPartnerId = crushStuff.crushPartnerId() {
+                                //                    self.schoolUserDictionary[crushPartnerId] = user
+                                //                    self.users = Array(self.schoolUserDictionary.values)
+                                //                }
+                                
+                                self.fbArray.sorted(by: { (crush1, crush2) -> Bool in
+                                    return crush1.name > crush2.name
+                                })
+                                
+                            })
+                            DispatchQueue.main.async(execute: {
+                                self.tableView.reloadData()
                                 
                             })
                             
                         })
                     }
-          
-                    
-                    self.fetchSwipes()
                     
                     
                 }
             }
-         
+            
             
         })
     }
     //log in to fb to sinc?
-    fileprivate func loginFB() {
-        let loginManager = LoginManager()
-        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
-            switch loginResult {
-            case .failed(let error):
-                print("cccccccccccccccccccccccccccccccccccccc",error)
-            case .cancelled:
-                print("User cancelled login.")
-            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
-                print("Logged in!")
-                self.fetchFBid()
-            }
-        }
-    }
-    var FBID = String()
-    fileprivate func fetchFBid() {
-        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
-        req.start({ (connection, result) in
-            switch result {
-            case .failed(let error):
-                print(error)
-            case .success(let graphResponse):
-                if let responseDictionary = graphResponse.dictionaryValue {
-                    print(responseDictionary)
-                    
-                    let socialIdFB = responseDictionary["id"] as? String
-                    print(socialIdFB!)
-                    
-                    self.handleSaveFBID()
-                        }
-                    }
-                })
-            }
-    
-   fileprivate func handleSaveFBID() {
-        
-        guard let uid = Auth.auth().currentUser?.uid else { return}
-        let docData: [String: Any] = [
-            "uid": uid,
-            "Full Name": user?.name ?? "",
-            "ImageUrl1": user?.imageUrl1 ?? "",
-            "ImageUrl2": user?.imageUrl2 ?? "",
-            "ImageUrl3": user?.imageUrl3 ?? "",
-            "Age": user?.age ?? 23,
-            "Birthday": user?.birthday ?? "",
-            "School": user?.school ?? "",
-            "Bio": user?.bio ?? "",
-            "minSeekingAge": user?.minSeekingAge ?? 18,
-            "maxSeekingAge": user?.maxSeekingAge ?? 50,
-            "minDistance": user?.minDistance ?? 1,
-            "maxDistance": user?.maxDistance ?? 5,
-            "email": user?.email ?? "",
-            "fbid": FBID,
-            "PhoneNumber": user?.phoneNumber ?? "",
-            "deviceID": Messaging.messaging().fcmToken ?? ""
-        ]
-        
-        Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
-            in
-            //hud.dismiss()
-            if let err = err {
-                print("Failed to retrieve user settings", err)
-                return
-            }
-            let fbControllerReboot = FacebookCrushController()
-            self.present(fbControllerReboot, animated: true)
-        }
-    }
+   
     
 //    fileprivate func getFBFriends() {
 //
@@ -897,7 +844,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
             let userDetailsController = UserDetailsController()
             //userDetailsController.view.backgroundColor = .purple
             userDetailsController.cardViewModel = user.toCardViewModel()
-            self.present(userDetailsController, animated: true)
+           self.navigationController?.pushViewController(userDetailsController, animated: true)
             
         })
     }

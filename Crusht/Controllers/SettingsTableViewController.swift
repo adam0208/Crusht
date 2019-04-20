@@ -97,6 +97,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         //tableView.backgroundColor = UIColor.clear
         //tableView.tableFooterView?.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         tableView.keyboardDismissMode = .interactive
+        let bioCell = BioCell()
+        bioCell.textView.delegate = self
         //view.bringSubviewToFront(tableView)
         //tableView.fillSuperview()
         //setupGradientLayer()
@@ -189,7 +191,12 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         case 4:
              headerLabel.text = ""
         case 5:
+            headerLabel.text = ""
+        case 6:
+            headerLabel.text = ""
+        case 7:
             headerLabel.text = "Match by Locantion prefrences"
+    
         default:
             headerLabel.text = ""
         }
@@ -205,11 +212,11 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
       
             
-        else if section == 5 {
+        else if section == 7 {
             return 45
         }
             
-        else if section == 7 || section == 8 {
+        else if section == 9 || section == 10 {
             return 20
         }
         else {
@@ -218,7 +225,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 9
+        return 11
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -230,7 +237,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         
 
         
-        if indexPath.section == 5 {
+        if indexPath.section == 7 {
             let ageRangeCell = AgeRangeTableViewCell(style: .default, reuseIdentifier: nil)
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinChanged), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChanged), for: .valueChanged)
@@ -240,10 +247,11 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             
             ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? 18)
             ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? 50)
-            
+            ageRangeCell.layer.cornerRadius = 22
+            ageRangeCell.layer.masksToBounds = true
             return ageRangeCell
         }
-        else if indexPath.section == 6 {
+        else if indexPath.section == 8 {
             let locationRangeCell = LocationTableViewCell(style: .default, reuseIdentifier: nil)
         //    locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
             locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
@@ -254,10 +262,12 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             //locationRangeCell.minSlider.value = Float(user?.minDistance ?? 1)
             locationRangeCell.maxSlider.value = Float(user?.maxDistance ?? 50)
             
+            locationRangeCell.layer.cornerRadius = 16
+            locationRangeCell.layer.masksToBounds = true
     
             return locationRangeCell
         }
-        else if indexPath.section == 7 {
+        else if indexPath.section == 9 {
             
             let fbCell = FbConnectCell(style: .default, reuseIdentifier: nil)
             
@@ -265,7 +275,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
            
         }
         
-        else if indexPath.section == 8 {
+        else if indexPath.section == 10 {
             let logoutCell = LogoutBttnCell(style: .default, reuseIdentifier: nil)
             
             logoutCell.logOutBttn.addTarget(self, action: #selector(handleLogOut), for: .touchUpInside)
@@ -279,14 +289,21 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             cell.textField.placeholder = "Name"
             cell.textField.text = user?.name
             cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
         case 2 :
             cell.textField.placeholder = "School"
             cell.textField.text = user?.school
             cell.textField.addTarget(self, action: #selector(handleSchoolChange), for: .editingChanged)
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
         case 3:
             cell.textField.placeholder = "Age"
             let age = calcAge(birthday: (user?.birthday ?? "10-31-1995"))
             cell.textField.text = String(age)
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
+            
             
             //cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
         case 4:
@@ -294,29 +311,39 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             bioCell.textView.font = UIFont.systemFont(ofSize: 16)
             bioCell.textView.text = user?.bio
             bioCell.textView.delegate = self
-            if bioCell.textView.text == "" {
-                bioCell.textView.text = "Bio"
-            }
-            func textViewDidChange(textView: UITextView) {
-                handleBioChange(textView: bioCell.textView)
-            }
+             
+            textViewDidChange(bioCell.textView)
             
-            
+            bioCell.layer.cornerRadius = 22
+            bioCell.layer.masksToBounds = true
             return bioCell
 //            cell.textField.placeholder = "Bio"
 //            cell.textField.text = user?.bio
 //
 //            cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
+         
+        case 5:
+            cell.textField.placeholder = "Sex"
+            cell.textField.text = user?.gender
+            cell.textField.addTarget(self, action: #selector(handleGenderChange), for: .editingChanged)
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
+            
         default:
-            cell.textField.placeholder = "Phone Number"
-            cell.textField.text = user?.phoneNumber
+            cell.textField.placeholder = "Sex Preference"
+            cell.textField.text = user?.sexPref
+            cell.textField.addTarget(self, action: #selector(handleSexPrefChange), for: .editingChanged)
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
             
         }
         
-  
-
-        
         return cell
+    }
+    
+    public func textViewDidChange(_ textView: UITextView){
+       user?.bio = textView.text
+        
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -345,26 +372,26 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     
     fileprivate func evaluateMinMax() {
-        guard let ageRangeCell = tableView.cellForRow(at: [5, 0]) as? AgeRangeTableViewCell else { return }
+        guard let ageRangeCell = tableView.cellForRow(at: [7, 0]) as? AgeRangeTableViewCell else { return }
         let minValue = Int(ageRangeCell.minSlider.value)
         var maxValue = Int(ageRangeCell.maxSlider.value)
         maxValue = max(minValue, maxValue)
         ageRangeCell.maxSlider.value = Float(maxValue)
-        ageRangeCell.minLabel.text = "Min \(minValue)"
-        ageRangeCell.maxLabel.text = "Max \(maxValue)"
+        ageRangeCell.minLabel.text = "Min Age \(minValue)"
+        ageRangeCell.maxLabel.text = "Max Age \(maxValue)"
         
         user?.minSeekingAge = minValue
         user?.maxSeekingAge = maxValue
     }
     
     fileprivate func evaluateMinMaxDistance() {
-        guard let locationRangeCell = tableView.cellForRow(at: [6, 0]) as? LocationTableViewCell else { return }
+        guard let locationRangeCell = tableView.cellForRow(at: [8, 0]) as? LocationTableViewCell else { return }
         //let minValue = Int(locationRangeCell.minSlider.value)
         var maxValue = Int(locationRangeCell.maxSlider.value)
         maxValue = max(maxValue, 1)
         locationRangeCell.maxSlider.value = Float(maxValue)
         //locationRangeCell.minLabel.text = "Min \(minValue)"
-        locationRangeCell.maxLabel.text = "Max \(maxValue)"
+        locationRangeCell.maxLabel.text = " Miles \(maxValue)"
         
         user?.maxDistance = maxValue
     }
@@ -380,7 +407,16 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     @objc fileprivate func handleBioChange(textView: UITextView) {
         self.user?.bio = textView.text
+       
         
+    }
+    
+    @objc fileprivate func handleSexPrefChange(textField: UITextField) {
+        self.user?.sexPref = textField.text
+    }
+    
+    @objc fileprivate func handleGenderChange(textField: UITextField) {
+        self.user?.gender = textField.text
     }
     
 //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -391,7 +427,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
 //    }
     
     fileprivate func setUpNavItems() {
-        navigationItem.title = "Settings"
+        navigationItem.title = "Edit Profile"
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         
@@ -494,7 +530,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 7 || indexPath.section == 8 {
+        if indexPath.section == 9 || indexPath.section == 10 {
             cell.backgroundColor = UIColor.clear
         }
         else {

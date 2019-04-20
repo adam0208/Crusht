@@ -58,7 +58,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
                     self.crushScoreLabel.text = "Crusht Score: 😊😎😍🔥❤️"
                 }
                 else if (self.crushScore?.crushScore ?? 0) > 400 {
-                    self.crushScoreLabel.text = " Crusht Score:😊😎😍🔥❤️👀"
+                    self.crushScoreLabel.text = " Crusht Score: 😊😎😍🔥❤️👀"
                 }
                 
             }
@@ -74,7 +74,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     let infoLabel: UILabel = {
         let label = UILabel()
-        label.text = "HI im a loser hahahahh hahahha"
+        label.text = ""
         label.numberOfLines = 0
         return label
     }()
@@ -108,6 +108,21 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
             
             return button
         }()
+    
+    let reportBttn: UIButton = {
+        
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 40)
+        button.setTitle("👮‍♀️", for: .normal)
+        button.backgroundColor = .white
+        button.heightAnchor.constraint(equalToConstant: 50)
+        button.widthAnchor.constraint(equalToConstant: 50)
+        button.layer.cornerRadius = 25
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
+        
+        return button
+    }()
     
     
 //    lazy var dislikeButton = self.createButton(image: #imageLiteral(resourceName: "dismiss_circle"), selector: #selector(handleDislike))
@@ -154,6 +169,24 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         self.dismiss(animated: true)
     }
     
+    @objc fileprivate func handleReport() {
+        
+        
+        let reportController = ReportControllerViewController()
+        reportController.reportUID = cardViewModel.uid
+        reportController.uid = Auth.auth().currentUser!.uid
+        reportController.reportName = cardViewModel.attributedString.string
+        reportController.reportPhoneNumebr = cardViewModel.phone
+        
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = "👈"
+        navigationItem.backBarButtonItem = myBackButton
+        
+        
+        //let navigatoinController = UINavigationController(rootViewController: reportController)
+        navigationController?.pushViewController(reportController, animated: true)
+    }
+    
 //    fileprivate func setupBottomControls() {
 //        let stackView = UIStackView(arrangedSubviews: [disLikeBttn, UIView(), likeBttn])
 //        stackView.distribution = .fillEqually
@@ -181,6 +214,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         
         scrollView.addSubview(dismissButton)
         dismissButton.anchor(top: swipingView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: -25, left: 16, bottom: 16, right: 16), size: .init(width: 50, height: 50))
+        
+        scrollView.addSubview(reportBttn)
+        reportBttn.anchor(top: swipingView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 16, bottom: 16, right: 16), size: .init(width: 50, height: 50))
            scrollView.addSubview(crushScoreLabel)
         bioLabel.text = cardViewModel.bio
         crushScoreLabel.anchor(top: infoLabel.bottomAnchor, leading: infoLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
@@ -208,7 +244,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationController?.navigationBar.isHidden = true
         setupLayout()
         
         setupVisualBlurEffectView()

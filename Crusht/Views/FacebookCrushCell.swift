@@ -74,8 +74,8 @@ class FacebookCrushCell: UITableViewCell {
     
     
     fileprivate func setupNameAndProfileImageFB() {
-        print("starting fb")
-        let req = GraphRequest(graphPath: "me/friends", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+       
+        let req = GraphRequest(graphPath: "me/friends", parameters: ["fields": "email,first_name,last_name,picture,id"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
         req.start({ (connection, result) in
             switch result {
             case .failed(let error):

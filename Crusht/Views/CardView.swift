@@ -148,15 +148,15 @@ class CardView: UIView {
         
         setUpGradientLayer()
         
+        addSubview(infoButton)
+        infoButton.anchor(top: nil, leading: nil, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 20, right: 5) , size: .init(width: 50, height: 50))
+        
         addSubview(infoLabel)
         
-        infoLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
+        infoLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: infoButton.leadingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
         
         infoLabel.textColor = .white
         infoLabel.numberOfLines = 0
-        
-        addSubview(infoButton)
-        infoButton.anchor(top: nil, leading: nil, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 20, right: 20) , size: .init(width: 50, height: 50))
     }
     
     fileprivate let barsStackView = UIStackView()

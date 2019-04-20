@@ -15,16 +15,17 @@ class BioController: UIViewController {
         let tf = ReportTextView()
         tf.font = UIFont.systemFont(ofSize: 20)
         tf.adjustsFontForContentSizeCategory = true
-        tf.text = "Bio"
+        tf.text = ""
         tf.backgroundColor = .white
-        
+        tf.layer.cornerRadius = 14
+        tf.clipsToBounds = true
         return tf
     }()
     
     let label: UILabel = {
         let label = UILabel()
         
-        label.text = "Enter Your Bio"
+        label.text = "Enter Your Bio Below"
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -36,7 +37,7 @@ class BioController: UIViewController {
     
     let doneButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Done", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
@@ -55,7 +56,7 @@ class BioController: UIViewController {
     
     @objc fileprivate func handleDone() {
         if bioTF.text == "" {
-            hud.textLabel.text = "Please enter your name"
+            hud.textLabel.text = "Please enter your bio"
             hud.show(in: view)
             hud.dismiss(afterDelay: 2)
             return
@@ -99,7 +100,7 @@ class BioController: UIViewController {
         
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/2.2, right: 30))
+        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 10, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         stack.spacing = 20
         

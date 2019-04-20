@@ -39,10 +39,10 @@ class EnterPhotoController: UIViewController {
         //button.imageView?.contentMode = .scaleAspectFit
         //button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         button.backgroundColor = .white
-        button.setBackgroundImage(#imageLiteral(resourceName: "upload_image_icon"), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "CrushtLogoLiam"), for: .normal)
         
         button.setTitleColor(.black, for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 300).isActive = true
         button.widthAnchor.constraint(equalToConstant: 140).isActive = true
         button.imageView?.contentMode = .scaleAspectFill
         //button.imageView?.adjustsImageSizeForAccessibilityContentSizeCategory = true
@@ -69,7 +69,7 @@ class EnterPhotoController: UIViewController {
     
     let doneButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Done", for: .normal)
+        button.setTitle("Register", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
@@ -99,7 +99,7 @@ class EnterPhotoController: UIViewController {
        
         setupGradientLayer()
         
-        let stack = UIStackView(arrangedSubviews: [label, selectPhotoButton, doneButton])
+        let stack = UIStackView(arrangedSubviews: [selectPhotoButton, doneButton])
         view.addSubview(stack)
         
         stack.axis = .vertical
@@ -108,7 +108,7 @@ class EnterPhotoController: UIViewController {
         
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/9, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/4, right: 30))
+        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/5, right: 30))
         
         stack.spacing = 15
         

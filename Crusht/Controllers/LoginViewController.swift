@@ -27,7 +27,7 @@ class LoginViewController: UIViewController {
     let Text: UILabel = {
         let label = UILabel()
      
-        label.text = "Wanna"
+        label.text = "Wanna Find Out If a Crush is Mutual?"
         label.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
         label.textAlignment = .center
         label.textColor = .black
@@ -248,9 +248,9 @@ class LoginViewController: UIViewController {
 //            let FBphoneController = FacebookPhoneController()
 //
 //            self.present(FBphoneController, animated: true)
-            let FBPhoneController = FacebookPhoneController()
-            FBPhoneController.fbid = self.socialID ?? ""
-            self.present(FBPhoneController, animated: true)
+            let nameController = EnterNameController()
+            nameController.phone = "+18123234456"
+            self.present(nameController, animated: true)
         }
     }
     
@@ -291,9 +291,7 @@ class LoginViewController: UIViewController {
         let logoImage = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/2, height: UIScreen.main.bounds.size.height/3))
         logoImage.image = #imageLiteral(resourceName: "CrushtLogoLiam")
         logoImage.contentMode = .scaleAspectFit
-        
-        let width = self.view.bounds.width
-        let height = self.view.bounds.height
+    
         
         view.addSubview(Text)
         
@@ -301,12 +299,11 @@ class LoginViewController: UIViewController {
         overallStackView.axis = .vertical
         view.addSubview(overallStackView)
         
-                overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
-                overallStackView.isLayoutMarginsRelativeArrangement = true
-                overallStackView.layoutMargins = .init(top: -40, left: 30, bottom: 80, right: 30)
-                overallStackView.spacing = 10
-       
-//        Text.anchor(top: overallStackView.bottomAnchor, leading: nil, bottom: nil, trailing: nil)
+        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+        overallStackView.isLayoutMarginsRelativeArrangement = true
+        overallStackView.layoutMargins = .init(top: -40, left: 30, bottom: 80, right: 30)
+        overallStackView.spacing = 10
+        
        
     }
     

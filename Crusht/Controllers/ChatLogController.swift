@@ -182,7 +182,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.hideKeyboard()
        listenForMessages()
         
         //navigationController?.title.
@@ -193,7 +193,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
-        collectionView?.keyboardDismissMode = .interactive
+        collectionView?.keyboardDismissMode = .onDrag
+        
+       
      
 //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleback))
         navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "👮‍♀️", style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(title: "👤  ", style: .plain, target: self, action: #selector(goToProfile))]
@@ -238,13 +240,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let userDetailsController = UserDetailsController()
     
         userDetailsController.cardViewModel = user!.toCardViewModel()
-        self.present(userDetailsController, animated: true)
+        navigationController?.pushViewController(userDetailsController, animated: true)
     
     }
     
     @objc fileprivate func handleReport() {
         let reportController = MessageReportController()
-        reportController.reportEmail = user?.email ?? ""
+        reportController.reportPhoneNumebr = user?.phoneNumber ?? ""
         reportController.reportUID = user?.uid ?? ""
         reportController.reportName = user?.name ?? ""
         reportController.uid = Auth.auth().currentUser!.uid
@@ -530,7 +532,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         })
     }
   
-    
+    fileprivate func handleTapDismiss() {
+        self.view.endEditing(true) // dismisses keyboard
+    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
@@ -563,7 +567,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         cell.playButton.isHidden = message.videoUrl == nil
         
-        inputTextField.becomeFirstResponder()
+        
         
         return cell
     }
@@ -627,38 +631,36 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): UIFont.systemFont(ofSize: 16)]), context: nil)
     }
-    
-    lazy var openTableButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Open Table", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = #colorLiteral(red: 0.9399780631, green: 0, blue: 0.2794805765, alpha: 1)
-        button.setTitleColor(.white, for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
-        button.layer.cornerRadius = 16
-        button.addTarget(self, action: #selector(handleOpenTableTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var stubHubButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("StubHub", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-        button.setTitleColor(.orange, for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
-        button.layer.cornerRadius = 16
-        button.addTarget(self, action: #selector(handleStubTapped), for: .touchUpInside)
-        return button
-        
-
-    }()
+//
+//    lazy var openTableButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle("Open Table", for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+//        button.backgroundColor = #colorLiteral(red: 0.9399780631, green: 0, blue: 0.2794805765, alpha: 1)
+//        button.setTitleColor(.white, for: .normal)
+//        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
+//        button.layer.cornerRadius = 16
+//        button.addTarget(self, action: #selector(handleOpenTableTapped), for: .touchUpInside)
+//        return button
+//    }()
+//
+//    lazy var stubHubButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle("StubHub", for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+//        button.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+//        button.setTitleColor(.orange, for: .normal)
+//        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
+//        button.layer.cornerRadius = 16
+//        button.addTarget(self, action: #selector(handleStubTapped), for: .touchUpInside)
+//        return button
+//
+//
+//    }()
     
     var containerViewBottomAnchor: NSLayoutConstraint?
-
-    
     
     @objc func handleSend() {
         let properties = ["text": inputTextField.text!]
@@ -820,7 +822,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     //my custom zooming logic
     func performZoomInForStartingImageView(_ startingImageView: UIImageView) {
-        
+    
+        dismissKeyboard()
         self.startingImageView = startingImageView
         self.startingImageView?.isHidden = true
         
@@ -844,6 +847,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 
                 self.blackBackgroundView?.alpha = 1
                 self.inputContainerView.alpha = 0
+               // self.collectionView.keyboardDismissMode = .interactive
                 
                 let height = self.startingFrame!.height / self.startingFrame!.width * keyWindow.frame.width
                 
@@ -853,6 +857,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 
             }, completion: { (completed) in
                 // do nothing
+                
             })
             
         }
@@ -898,5 +903,23 @@ fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [Stri
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
     return input.rawValue
+}
+
+extension ChatLogController
+{
+    func hideKeyboard()
+    {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(ChatLogController.dismissKeyboard))
+        
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard()
+    {
+        view.endEditing(true)
+    }
 }
 

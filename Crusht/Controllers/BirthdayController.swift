@@ -78,7 +78,7 @@ class BirthdayController: UIViewController {
     
     let doneBttn: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Done", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
@@ -98,18 +98,25 @@ class BirthdayController: UIViewController {
     let hud = JGProgressHUD(style: .dark)
     
     @objc fileprivate func handleDone() {
+        let bday = ageTextField.text?.replacingOccurrences(of: "/", with: "-")
+        
+        birthday = bday ?? "10-30-1999"
+        age = calcAge(birthday: birthday)
         if ageTextField.text == "" {
             hud.textLabel.text = "Please enter your b-day"
             hud.show(in: view)
             hud.dismiss(afterDelay: 2)
             return
         }
+        else if age < 18 {
+            hud.textLabel.text = "Must be 18 or older to join"
+            hud.show(in: view)
+            hud.dismiss(afterDelay: 2)
+            return
+        }
         else {
-            let bday = ageTextField.text?.replacingOccurrences(of: "/", with: "-")
-
-            birthday = bday ?? "10-30-1999"
+          
            
-            age = calcAge(birthday: birthday)
             let enterSchoolController = EnterSchoolController()
             enterSchoolController.name = name
             enterSchoolController.birthday = birthday

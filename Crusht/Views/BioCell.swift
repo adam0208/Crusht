@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BioCell: UITableViewCell, UITextViewDelegate {
+class BioCell: UITableViewCell {
     
  // let textView = BioTextView()
     
@@ -23,7 +23,6 @@ class BioCell: UITableViewCell, UITextViewDelegate {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
        
         addSubview(textView)
-        textView.delegate = self
         //        layoutMargins = UIEdgeInsets.zero // remove table cell separator margin
         //        contentView.layoutMargins.left = 20 // set up left margin to 20
         //        contentView.layoutMargins.right = 20

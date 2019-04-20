@@ -17,6 +17,10 @@ class ReportControllerViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+    }
   
     
     var reports: Reports?
@@ -25,17 +29,30 @@ class ReportControllerViewController: UIViewController {
     
     var reportName = String()
     
-    var reportEmail = String()
+    var reportPhone = String()
     
     var reportPhoneNumebr = String()
     
     //this is the id of the person who is making the accusation
     var uid = String()
     
+    let reportLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.text = "Please tell us why you are reporting this user. We take these accusations seriously."
+        label.numberOfLines = 0
+        return label
+    }()
+    
     let textView: UITextView = {
         let tv = ReportTextView()
-        tv.font = UIFont.systemFont(ofSize: 25)
-         tv.textColor = .lightGray
+        tv.font = UIFont.systemFont(ofSize: 18)
+         tv.textColor = .black
+        tv.layer.cornerRadius = 18
+        tv.clipsToBounds = true
+        
         tv.adjustsFontForContentSizeCategory = true
         return tv
     }()
@@ -62,7 +79,7 @@ class ReportControllerViewController: UIViewController {
 //        navigationItem.backBarButtonItem = myBackButton
 //    }
 
- lazy var stackView = UIStackView(arrangedSubviews: [textView, reportBttn])
+ lazy var stackView = UIStackView(arrangedSubviews: [reportLabel, textView, reportBttn])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,17 +87,16 @@ class ReportControllerViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         setupNotificationObservers()
         setupTapGesture()
-        navigationItem.title = "Report User"
+        navigationItem.title = "Report \(reportName)"
         setupGradientLayer()
-        textView.text = "Please tell us why you are reporting this user. We take these accusations seriously."
-        textView.textColor = UIColor.lightGray
+        
        
         view.addSubview(stackView)
         stackView.axis = .vertical
         
-        stackView.spacing = 16
+        stackView.spacing = 14
         
-        stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.frame.height/4, left: 20, bottom: view.frame.height/1.3, right: 20))
+            stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 70, left: 20, bottom: 250, right: 20))
         
     }
     
@@ -88,7 +104,7 @@ class ReportControllerViewController: UIViewController {
         
         let docData: [String: Any] = ["uid": reportUID,
                                       "offender-name": reportName,
-                                      "email": reportEmail,
+                                      "phone": reportPhoneNumebr,
                                       "text": textView.text,
                                       "reporter-uid": uid,
                                       "number-of-reports": 1
@@ -113,7 +129,7 @@ class ReportControllerViewController: UIViewController {
                     self.reports = Reports(dictionary: data)
                     let newDocData: [String: Any] = [ "uid": self.reportUID,
                                                       "offender-name": self.reportName,
-                                                      "email": self.reportEmail,
+                                                      "phone": self.reportPhoneNumebr,
                                                       "text": self.textView.text,
                                                       "reporter-uid": self.uid,
                                                      "number-of-reports": (self.reports?.reportNumber)! + 1
@@ -191,20 +207,9 @@ class ReportTextView: UITextView, UITextViewDelegate {
     }
     
     override var intrinsicContentSize: CGSize {
-        return .init(width: 0, height: 100)
+        return .init(width: 0, height: 180)
     }
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
-        }
-    }
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Placeholder"
-            textView.textColor = UIColor.lightGray
-        }
-    }
+   
     
     
     

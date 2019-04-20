@@ -101,15 +101,18 @@ class ChatMessageCell: UICollectionViewCell {
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         
+        
         return imageView
     }()
     
     @objc func handleZoomTap(_ tapGesture: UITapGestureRecognizer) {
+        self.chatLogController?.hideKeyboard()
         if message?.videoUrl != nil {
             return
         }
         
         if let imageView = tapGesture.view as? UIImageView {
+            endEditing(true)
             //PRO Tip: don't perform a lot of custom logic inside of a view class
             self.chatLogController?.performZoomInForStartingImageView(imageView)
         }

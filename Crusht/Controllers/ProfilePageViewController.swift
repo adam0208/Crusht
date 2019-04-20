@@ -82,7 +82,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
                     if (diff.type == .added) {
                     }
                     if (diff.type == .modified) {
-                        self.topStackView.messageButton.addSubview(self.messageBadge)
+                        self.messageBadge.isHidden = false
                         
                     }
                     if (diff.type == .removed) {
@@ -104,6 +104,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             case .notDetermined, .restricted, .denied:
                 hud.textLabel.text = "Please enable location services"
                 hud.show(in: view)
+                hud.dismiss(afterDelay: 2)
             case .authorizedAlways, .authorizedWhenInUse:
                 let locationViewController = LocationMatchViewController()
                 let navigationController = UINavigationController(rootViewController: locationViewController)
@@ -112,6 +113,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         } else {
             hud.textLabel.text = "Please enable location services"
             hud.show(in: view)
+            hud.dismiss(afterDelay: 2)
         }
 
        
@@ -122,12 +124,6 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         let transController = TransitionCrushesController()
         let navigationController = UINavigationController(rootViewController: transController)
         present(navigationController, animated: true)
-    }
-    
-    @objc func handleSelectPhoto () {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        present(imagePickerController, animated: true)
     }
     
     @objc func handleSettings() {
@@ -276,6 +272,8 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         profPicView.selectPhotoButton.addTarget(self, action: #selector(goToProfile), for: .touchUpInside)
 //        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
+        topStackView.messageButton.addSubview(messageBadge)
+        messageBadge.isHidden = true
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         setupLayout()
         view.addSubview(animationView)
@@ -290,7 +288,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     @objc fileprivate func goToProfile() {
         //handleSave()
         let userDetailsController = UserDetailsController()
-        
+        userDetailsController.reportBttn.isHidden = true
         userDetailsController.cardViewModel = user?.toCardViewModel()
         self.present(userDetailsController, animated: true)
     }
@@ -307,7 +305,10 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     fileprivate func fetchCurrentUser() {
        
-
+        if messageBadge.isHidden == false {
+            handleMessages()
+        }
+        
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
@@ -318,11 +319,9 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             
-            if self.user?.name == nil {
-                let loginController = LoginViewController()
-                loginController.delegate = self
-                let navController = UINavigationController(rootViewController: loginController)
-                self.present(navController, animated: true)
+            if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+                self.present(namecontroller, animated: true)
             }
             
             let geoFirestoreRef = Firestore.firestore().collection("users")

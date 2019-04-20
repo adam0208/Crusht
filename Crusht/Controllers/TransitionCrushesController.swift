@@ -9,22 +9,26 @@
 import UIKit
 import Firebase
 import JGProgressHUD
+import FacebookCore
+import FacebookLogin
 
 class TransitionCrushesController: UIViewController {
     
-//    var user: User?
+    var user: User?
 //
-//    fileprivate func fetchCurrentUser() {
-//        guard let uid = Auth.auth().currentUser?.uid else {return}
-//        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-//            if let err = err {
-//                print(err)
-//                return
-//            }
-//            guard let dictionary = snapshot?.data() else {return}
-//            self.user = User(dictionary: dictionary)
-//        }
-//    }
+    fileprivate func fetchCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+        }
+    }
+    
+    
     
     let Text: UILabel = {
         let label = UILabel()
@@ -145,11 +149,83 @@ class TransitionCrushesController: UIViewController {
         navigationController?.pushViewController(schoolController, animated: true)
     }
     
+      let fbcontroller = FacebookCrushController()
+    
     @objc fileprivate func handleFacebook() {
-        
-        let fbcontroller = FacebookCrushController()
+    
+        if user?.fbid == "" {
+            loginFB()
+        }
+        else {
         navigationController?.pushViewController(fbcontroller, animated: true)
+        }
+    }
+    
+    fileprivate func loginFB() {
+        let loginManager = LoginManager()
+        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
+            switch loginResult {
+            case .failed(let error):
+                print("cccccccccccccccccccccccccccccccccccccc",error)
+            case .cancelled:
+                print("User cancelled login.")
+            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
+                print("Logged in!")
+                self.fetchFBid()
+            }
+        }
+    }
+    var FBID = String()
+    fileprivate func fetchFBid() {
+        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+        req.start({ (connection, result) in
+            switch result {
+            case .failed(let error):
+                print(error)
+            case .success(let graphResponse):
+                if let responseDictionary = graphResponse.dictionaryValue {
+                    print(responseDictionary)
+                    
+                    let socialIdFB = responseDictionary["id"] as? String
+                    print(socialIdFB!)
+                    
+                    self.handleSaveFBID()
+                }
+            }
+        })
+    }
+    
+    fileprivate func handleSaveFBID() {
         
+        guard let uid = Auth.auth().currentUser?.uid else { return}
+        let docData: [String: Any] = [
+            "uid": uid,
+            "Full Name": user?.name ?? "",
+            "ImageUrl1": user?.imageUrl1 ?? "",
+            "ImageUrl2": user?.imageUrl2 ?? "",
+            "ImageUrl3": user?.imageUrl3 ?? "",
+            "Age": user?.age ?? 23,
+            "Birthday": user?.birthday ?? "",
+            "School": user?.school ?? "",
+            "Bio": user?.bio ?? "",
+            "minSeekingAge": user?.minSeekingAge ?? 18,
+            "maxSeekingAge": user?.maxSeekingAge ?? 50,
+            "maxDistance": user?.maxDistance ?? 5,
+            "email": user?.email ?? "",
+            "fbid": FBID,
+            "PhoneNumber": user?.phoneNumber ?? "",
+            "deviceID": Messaging.messaging().fcmToken ?? ""
+        ]
+        
+        Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
+            in
+            //hud.dismiss()
+            if let err = err {
+                print("Failed to retrieve user settings", err)
+                return
+            }
+            self.navigationController?.pushViewController(self.fbcontroller, animated: true)
+        }
     }
     
     @objc fileprivate func handleBack() {

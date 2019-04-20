@@ -104,8 +104,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
        
       
                                                                     
-        topStackView.switchView.isUserInteractionEnabled = true
-       
+        //topStackView.switchView.isUserInteractionEnabled = false
+        
         
         bottomStackView.likeBttn.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomStackView.reportButton.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
@@ -114,7 +114,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         view.backgroundColor = .white
         fetchCurrentUser()
         //fetchUsersFromFirestore()
-        //fetchUsersOnLoad()
         fetchUsersOnLoad()
         
         
@@ -132,6 +131,10 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     fileprivate var user: User?
     
+    var sexPref = String()
+    
+    var userAge = Int()
+    
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
@@ -142,7 +145,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-            
+            self.sexPref = self.user?.sexPref ?? ""
+            self.userAge = self.user?.age ?? 20
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
             
@@ -155,7 +159,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             }
             
             self.fetchSwipes()
-            //self.fetchUsersFromFirestore()
         }
     }
     
@@ -174,8 +177,10 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
             // self.fetchUsersFromFirestore()
-            self.fetchUsersOnLoad()
+            self.fetchPhoneSwipes()
+            
         }
+        
     }
     
     @objc func handleHomeBttnTapped() {
@@ -194,8 +199,31 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         }
     }
     
+    var phoneSwipes = [String: Int]()
+    
+    fileprivate func fetchPhoneSwipes() {
+        let phoneID = user?.phoneNumber ?? ""
+        
+        Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch swipe info", err)
+                return
+            }
+            print("Swipes", snapshot?.data() ?? "")
+            guard let data = snapshot?.data() as? [String: Int] else {return}
+            self.phoneSwipes = data
+            //do fetchusers on load instead
+          
+           // self.fetchUsersFromFirestore()
+        self.fetchUsersOnLoad()
+            
+        }
+    }
+    
     var lastFetchedUser: User?
     let hud = JGProgressHUD(style: .dark)
+    
+    var radiusInt = Double()
     
     func fetchUsersFromFirestore() {
         
@@ -205,34 +233,34 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
 //
 //        else {
         
+        
         hud.textLabel.text = "Fetching Users, hold tight :)"
         hud.show(in: view)
         hud.dismiss(afterDelay: 1)
         
         
-        var radiusInt: Double?
         
         let minAge = user?.minSeekingAge ?? 18
         let maxAge = user?.maxSeekingAge ?? 50
         
         //put distance stuff here
         
-        if (user?.maxDistance ?? 10) < 10 {
-            radiusInt = 1
-        }
-        else {
-            radiusInt = 5
-        }
+        radiusInt = Double(user?.maxDistance ?? 10)
+        
+        print(radiusInt, "69")
         
         let geoFirestoreRef = Firestore.firestore().collection("users")
         let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+    
         
         
         let userCenter = CLLocation(latitude: userLat, longitude: userLong)
         
+       
         
+        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: radiusInt)
         
-        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 1)
+     
                 
 //        radiusQuery.observe(.documentEntered, with: { (key, location) in
 //            print("The document with documentID '\(self.user?.uid ?? "fuck")' entered the search area and is at location '\(userCenter)'")
@@ -242,83 +270,72 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         //order(by: "uid").start(after: [lastFetchedUser?.uid ?? ""]).limit(to: 2)
         topCardView = nil
         //geoFirestore.do
+        
+      
 
-//        radiusQuery.observe(.documentEntered) { (key, location) in
-//            
-//        }
-//
-        radiusQuery.geoFirestore.getCollectionReference().whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
-            if let err = err {
-                print("failed to fetch user", err)
-                self.hud.textLabel.text = "Failed To Fetch user"
-                self.hud.show(in: self.view)
-                self.hud.dismiss(afterDelay: 2)
-                return
-            }
-            
-            
-            var previousCardView: CardView?
-            
-            snapshot?.documents.forEach({ (documentSnapshot) in
-                //                    radiusQuery.observe(.documentEntered) { (key, location) in
-                //                        geoFirestore.getCollectionReference()
-                let userDictionary = documentSnapshot.data()
-                let user = User(dictionary: userDictionary)
-                // if user.uid != Auth.auth().currentUser?.uid {
-                let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
-                if isNotCurrentUser && hasNotSwipedBefore  {
-                    let cardView = self.setupCardFromUser(user: user)
-                    
-                    previousCardView?.nextCardView = cardView
-                    previousCardView = cardView
-                    
-                    if self.topCardView == nil {
-                        self.topCardView = cardView
+        radiusQuery.observe(.documentEntered) { (key, location) in
+             if let key = key, let loc = location {
+                
+               print(key, "hhhhh")
+               
+                Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
+                    if let err = err {
+                        print("failed to fetch user", err)
+                        self.hud.textLabel.text = "Failed To Fetch user"
+                        self.hud.show(in: self.view)
+                        self.hud.dismiss(afterDelay: 2)
+                        return
                     }
+                    
+                    
+                    var previousCardView: CardView?
+                    
+                   
+                    
+                    snapshot?.documents.forEach({ (documentSnapshot) in
+                        //                    radiusQuery.observe(.documentEntered) { (key, location) in
+                        //                        geoFirestore.getCollectionReference()
+                        
+                        
+                        
+                        let userDictionary = documentSnapshot.data()
+                        let user = User(dictionary: userDictionary)
+                        // if user.uid != Auth.auth().currentUser?.uid {
+                        let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+                        let hasNotSwipedBefore = self.swipes[user.uid!] == nil
+                        let hasNotSwipedPhoneBefore = self.phoneSwipes[user.phoneNumber!] == nil
+                        
+                        let isInRadius = user.uid == key
+                        
+                        let isEnabled = user.g != "7zzzzzzzzz"
+                        
+                        
+                        if self.sexPref == "Humans With Vaginas" {
+                            self.isRightSex = user.gender == "I Have a Vagina"
+                        }
+                        else if self.sexPref == "Humans With Penises" {
+                            self.isRightSex = user.gender == "I have a Penis"
+                        }
+                        else {
+                            self.isRightSex = user.age ?? 18 > 17
+                        }
+                        
+                        
+                        if isNotCurrentUser && hasNotSwipedBefore && hasNotSwipedPhoneBefore && isInRadius && isEnabled && self.isRightSex {
+                            let cardView = self.setupCardFromUser(user: user)
+                            
+                            previousCardView?.nextCardView = cardView
+                            previousCardView = cardView
+                            
+                            if self.topCardView == nil {
+                                self.topCardView = cardView
+                            }
+                        }
+                
+            })
+        }
+        
                 }
-                
-        
-        
-//        radiusQuery.observeReady {
-//              print("All initial data has been loaded and events have been fired!")
-//        }
-//
-//            Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
-//                if let err = err {
-//                    print("failed to fetch user", err)
-//                    self.hud.textLabel.text = "Failed To Fetch user"
-//                    self.hud.show(in: self.view)
-//                    self.hud.dismiss(afterDelay: 2)
-//                    return
-//                }
-//
-//
-//                var previousCardView: CardView?
-//
-//                snapshot?.documents.forEach({ (documentSnapshot) in
-////                    radiusQuery.observe(.documentEntered) { (key, location) in
-////                        geoFirestore.getCollectionReference()
-//                    let userDictionary = documentSnapshot.data()
-//                    let user = User(dictionary: userDictionary)
-//                    // if user.uid != Auth.auth().currentUser?.uid {
-//                    let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-//                    let hasNotSwipedBefore = self.swipes[user.uid!] == nil
-//                    if isNotCurrentUser && hasNotSwipedBefore  {
-//                        let cardView = self.setupCardFromUser(user: user)
-//
-//                        previousCardView?.nextCardView = cardView
-//                        previousCardView = cardView
-//
-//                        if self.topCardView == nil {
-//                            self.topCardView = cardView
-//                        }
-//                    }
-                
-        
-                    
-                    
-                })
         }
     }
     
@@ -332,7 +349,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         //}
     @objc fileprivate func handleReport() {
         let reportController = ReportControllerViewController()
-        reportController.reportEmail = topCardView?.cardViewModel.email ?? "1"
+        reportController.reportPhoneNumebr = topCardView?.cardViewModel.phone ?? "1"
         reportController.reportUID = topCardView?.cardViewModel.uid ?? "1"
         reportController.reportName = topCardView?.cardViewModel.attributedString.string ?? ""
         reportController.uid = Auth.auth().currentUser!.uid
@@ -345,6 +362,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         navigationController?.pushViewController(reportController, animated: true)
     }
 
+    
+    var isRightSex = Bool()
     
     fileprivate func fetchSchoolUsersOnly() {
         Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").getDocuments { (snapshot, err) in
@@ -366,7 +385,25 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 // if user.uid != Auth.auth().currentUser?.uid {
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                 let hasNotSwipedBefore = self.swipes[user.uid!] == nil
-                if isNotCurrentUser && hasNotSwipedBefore  {
+                
+                let hasNotSwipedPhoneBefore = self.phoneSwipes[user.phoneNumber!] == nil
+                
+                let maxAge = user.age ?? 20 < (self.userAge + 5)
+                
+                let minAge = user.age ?? 20 > (self.userAge - 5)
+                
+                if self.sexPref == "Humans With Vaginas" {
+                    self.isRightSex = user.gender == "I Have a Vagina"
+                }
+                else if self.sexPref == "Humans With Penises" {
+                    self.isRightSex = user.gender == "I have a Penis"
+                }
+                else {
+                    self.isRightSex = user.age ?? 18 > 17
+                }
+                
+                
+                if isNotCurrentUser && hasNotSwipedBefore && hasNotSwipedPhoneBefore && minAge && maxAge && self.isRightSex {
                     let cardView = self.setupCardFromUser(user: user)
                     
                     previousCardView?.nextCardView = cardView
@@ -824,7 +861,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let userDetailsController = UserDetailsController()
         //userDetailsController.view.backgroundColor = .purple
         userDetailsController.cardViewModel = cardViewModel
-        present(userDetailsController, animated: true)
+        navigationController?.pushViewController(userDetailsController, animated: true)
     }
     
     @objc fileprivate func handleRefresh() {

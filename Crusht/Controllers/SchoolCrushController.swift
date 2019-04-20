@@ -158,42 +158,29 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         }
     }
     
-    var indexSchoolNames = [String]()
+//    var indexSchoolNames = [String]()
+//
+//    var indexSchoolDictionary = [String: [String]]()
+//
+//    var indexSchoolTitles = String()
     
-    var indexSchoolDictionary = [String: [String]]()
     
-    var indexSchoolTitles = String()
-    
-    
+    var isRightSex = Bool()
     
     var schoolUserDictionary = [String: User]()
     
-    var genderVariable = String()
-    
     fileprivate func fetchSchool() {
-        
-        
-        
-        if user?.sexPref == "Humans With Penises" {
-            genderVariable = "I Have a Penis"
-        }
-        else if user?.sexPref == "Humans With Vaginas"{
-            genderVariable = "I Have a Vagina"
-        }
-        else {
-            genderVariable = "I Have a Vagina"
-        }
-        
-        
-        //chagne logic where gender variable is just the where field firebase thing
-        
-        let school = user?.school ?? "Your School"
+         let school = user?.school ?? "Your School"
+     
         
         navigationItem.title = school
         
-        print(school)
+  
+           let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").start(at: ["A"])
         
-        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").start(at: ["A"])
+        //chagne logic where gender variable is just the where field firebase thing
+        
+        
         
         query.getDocuments { (snapshot, err) in
             if let err = err {
@@ -206,27 +193,47 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
-                let crush = User(dictionary: userDictionary)
+                var crush = User(dictionary: userDictionary)
                 let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+                
+                let sexPref = self.user?.sexPref
+                
+             
+                
+                if sexPref == "Humans With Vaginas" {
+                     self.isRightSex = crush.gender == "I Have a Vagina"
+                }
+                else if sexPref == "Humans With Penises" {
+                    self.isRightSex = crush.gender == "I have a Penis"
+                }
+                else {
+                    self.isRightSex = crush.school == self.user?.school
+                }
+                
+                
                 
                 let maxAge = crush.age < ((self.user?.age)! + 5)
                 
                 let minAge = crush.age > ((self.user?.age)! - 5)
                 
-                if isNotCurrentUser && minAge && maxAge {
+                if isNotCurrentUser && minAge && maxAge && self.isRightSex {
                     
-                    self.indexSchoolNames.append(String(crush.name!.prefix(1)))
-                    for indexSchoolName in self.indexSchoolNames {
-                        let nameKey = String(crush.name!.prefix(1))
-                        if var nameValues = self.indexSchoolDictionary[nameKey] {
-                            nameValues.append(indexSchoolName)
-                            self.indexSchoolDictionary[nameKey] = nameValues
-                        }
-                        else {
-                            self.indexSchoolDictionary[nameKey] = [indexSchoolName]
-                        }
-                    }
+//                    self.indexSchoolNames.append(String(crush.name!.prefix(1)))
+//                    for indexSchoolName in self.indexSchoolNames {
+//
+//                        let nameKey = String(crush.name!.prefix(1))
+//                        if var nameValues = self.indexSchoolDictionary[nameKey] {
+//                            nameValues.append(indexSchoolName)
+//                            self.indexSchoolDictionary[nameKey] = nameValues
+//                        }
+//                        else {
+//                            self.indexSchoolDictionary[nameKey] = [indexSchoolName]
+//                        }
+//                    }
                     
+                    
+//                self.indexSchoolNames = [String](self.indexSchoolDictionary.keys)
+//                self.indexSchoolNames = self.indexSchoolNames.sorted()
                 
                 self.schoolArray.append(crush)
                     
@@ -241,7 +248,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 //                    self.users = Array(self.schoolUserDictionary.values)
                 //                }
                 
-             
+                
                 
             })
             
@@ -257,20 +264,20 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return indexSchoolNames[section]
-    }
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return indexSchoolNames[section]
+//    }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // 1
-        return indexSchoolNames.count
-    }
-    
-
-    
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return indexSchoolNames
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // 1
+//        return indexSchoolNames.count
+//    }
+//
+//
+//
+//    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//        return indexSchoolNames
+//    }
 
     
     
@@ -759,17 +766,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 return users.count
             }
         
-        let nameKey = indexSchoolNames[section]
-        if let nameValues = indexSchoolDictionary[nameKey] {
-            return nameValues.count
-        }
-        
-       return 0
-        
-        
+        return schoolArray.count
+
     }
     
-//    var hasFavorited = Bool()
     let cellId = "cellId"
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -778,13 +778,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         cellL.link = self
         
         if isFiltering() {
-          let crush = users[indexPath.row]
+            let crush = users[indexPath.row]
             cellL.textLabel?.text = crush.name
             if let profileImageUrl = crush.imageUrl1 {
                 cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
             }
         } else {
-        let crush = schoolArray[indexPath.row]
+            let crush = schoolArray[indexPath.row]
             cellL.textLabel?.text = crush.name
             if let profileImageUrl = crush.imageUrl1 {
                 cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
@@ -833,7 +833,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             let userDetailsController = UserDetailsController()
 
             userDetailsController.cardViewModel = user.toCardViewModel()
-            self.present(userDetailsController, animated: true)
+            self.navigationController?.pushViewController(userDetailsController, animated: true)
+       
             
         })
     }

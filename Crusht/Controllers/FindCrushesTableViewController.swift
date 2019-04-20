@@ -564,15 +564,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
     }
-    
-    @objc fileprivate func handleMessageButtonTapped() {
-        let profileController = ProfilePageViewController()
-        present(profileController, animated: true)
-        let messageController = MessageController()
-        let navController = UINavigationController(rootViewController: messageController)
-        present(navController, animated: true)
-    }
-    
+        
     var swipes = [String: Int]()
     
     fileprivate func fetchSwipes() {
@@ -660,49 +652,49 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
     }
     
-    @objc func handleShowIndexPath() {
-        
-        print("Attemping reload animation of indexPaths...")
-        
-        // build all the indexPaths we want to reload
-        var indexPathsToReload = [IndexPath]()
-        
-        for section in twoDimensionalArray.indices {
-            for row in twoDimensionalArray[section].names.indices {
-                print(section, row)
-                let indexPath = IndexPath(row: row, section: section)
-                indexPathsToReload.append(indexPath)
-            }
-        }
-        
-        //        for index in twoDimensionalArray[0].indices {
-        //            let indexPath = IndexPath(row: index, section: 0)
-        //            indexPathsToReload.append(indexPath)
-        //        }
-        
-        showIndexPaths = !showIndexPaths
-        
-        let animationStyle = showIndexPaths ? UITableView.RowAnimation.right : .left
-        
-        tableView.reloadRows(at: indexPathsToReload, with: animationStyle)
-    }
+//    @objc func handleShowIndexPath() {
+//
+//        print("Attemping reload animation of indexPaths...")
+//
+//        // build all the indexPaths we want to reload
+//        var indexPathsToReload = [IndexPath]()
+//
+//        for section in twoDimensionalArray.indices {
+//            for row in twoDimensionalArray[section].names.indices {
+//                print(section, row)
+//                let indexPath = IndexPath(row: row, section: section)
+//                indexPathsToReload.append(indexPath)
+//            }
+//        }
+//
+//        //        for index in twoDimensionalArray[0].indices {
+//        //            let indexPath = IndexPath(row: index, section: 0)
+//        //            indexPathsToReload.append(indexPath)
+//        //        }
+//
+//        showIndexPaths = !showIndexPaths
+//
+//        let animationStyle = showIndexPaths ? UITableView.RowAnimation.right : .left
+//
+//        tableView.reloadRows(at: indexPathsToReload, with: animationStyle)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(searchController.searchBar)
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Contacts"
-        navigationItem.searchController = self.searchController
+//        view.addSubview(searchController.searchBar)
+//        // Setup the Search Controller
+//        searchController.searchResultsUpdater = self
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        searchController.searchBar.placeholder = "Search Contacts"
+//        navigationItem.searchController = self.searchController
         definesPresentationContext = true
         navigationController?.isNavigationBarHidden = false
         
         // Setup the Scope Bar
         //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
-        self.searchController.searchBar.delegate = self
-        self.navigationItem.hidesSearchBarWhenScrolling = false
+//        self.searchController.searchBar.delegate = self
+//        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         fetchContacts()
         fetchCurrentUser()
@@ -743,9 +735,9 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isFiltering() {
-            return filteredContanct.count
-        }
+//        if isFiltering() {
+//            return filteredContanct.count
+//        }
         
         return twoDimensionalArray[section].names.count
     }
@@ -759,103 +751,123 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         cell.link = self
         
-        let favoritableContact = twoDimensionalArray[indexPath.section].names[indexPath.row]
-        
-        cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        
-        cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
         
         
-        let phoneString = favoritableContact.contact.phoneNumbers.first?.value.stringValue ?? ""
+//        if isFiltering() {
+//            let favoritableContact = filteredContanct[indexPath.section].names[indexPath.row]
+//            cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
+//            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+//
+//            cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
+//
+//            let phoneString = favoritableContact.contact.phoneNumbers.first?.value.stringValue ?? ""
+//
+//            let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+//            let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+//            let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+//            let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+//            var phoneCellFinal = String()
+//
+//            if phoneNoDash.count < 11 {
+//                phoneCellFinal = "+1\(phoneNoDash)"
+//            }
+//            else {
+//                phoneCellFinal = phoneNoDash
+//            }
+//
+//            let hasLiked = swipes[phoneCellFinal] as? Int == 1
+//
+//
+//
+//            if hasLiked{
+//                cell.accessoryView?.tintColor = .red
+//
+//            }
+//            else {
+//                cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+//            }
         
-        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
-        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
-        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
-        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
-        var phoneCellFinal = String()
-        
-        if phoneNoDash.count < 11 {
-            phoneCellFinal = "+1\(phoneNoDash)"
-        }
-        else {
-            phoneCellFinal = phoneNoDash
-        }
-        
-        let hasLiked = swipes[phoneCellFinal] as? Int == 1
-        
-        
-        
-        if hasLiked{
-            cell.accessoryView?.tintColor = .red
             
-        }
-        else {
-            cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
-        }
         
-        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
-        
-        if isFiltering() {
-            let favoritableContact = filteredContanct[indexPath.section].names[indexPath.row]
-            cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
-            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-            
-            cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
-          
-        } else {
             let favoritableContact = twoDimensionalArray[indexPath.section].names[indexPath.row]
             cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
             
             cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
-        }
-        
-       
+            
+            let phoneString = favoritableContact.contact.phoneNumbers.first?.value.stringValue ?? ""
+            
+            let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+            let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+            let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+            let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+            var phoneCellFinal = String()
+            
+            if phoneNoDash.count < 11 {
+                phoneCellFinal = "+1\(phoneNoDash)"
+            }
+            else {
+                phoneCellFinal = phoneNoDash
+            }
+            
+            let hasLiked = swipes[phoneCellFinal] as? Int == 1
+            
+            
+            
+            if hasLiked{
+                cell.accessoryView?.tintColor = .red
+                
+            }
+            else {
+                cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+            }
+    
+        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+
         return cell
     }
     
-    let searchController = UISearchController(searchResultsController: nil)
+//    let searchController = UISearchController(searchResultsController: nil)
     
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return searchController.searchBar.text?.isEmpty ?? true
-        
-    }
+//    func searchBarIsEmpty() -> Bool {
+//        // Returns true if the text is empty or nil
+//        return searchController.searchBar.text?.isEmpty ?? true
+//
+//    }
     
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        //let favoritableContact = twoDimensionalArray[IndexPath.section].names[IndexPath.row]
-        
-        filteredContanct = twoDimensionalArray.filter({( user : ExpandableNames ) -> Bool in
-            //            var favoritableContacts = [FavoritableContact]()
-            //            let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
-            //            self.twoDimensionalArray = [names]
-             user.names.contains(where: { (contact) -> Bool in
-                return contact.contact.givenName.lowercased().contains(searchText.lowercased())
-                
-            })
-        })
-        
-        DispatchQueue.main.async(execute: {
-            self.tableView.reloadData()
-            
-        })
-    }
-    
-    func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
-    }
-    
+//    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+//        //let favoritableContact = twoDimensionalArray[IndexPath.section].names[IndexPath.row]
+//
+//        filteredContanct = twoDimensionalArray.filter({( user : ExpandableNames ) -> Bool in
+//            //            var favoritableContacts = [FavoritableContact]()
+//            //            let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
+//            //            self.twoDimensionalArray = [names]
+//             user.names.contains(where: { (contact) -> Bool in
+//                return contact.contact.givenName.lowercased().contains(searchText.lowercased())
+//
+//            })
+//        })
+//
+//        DispatchQueue.main.async(execute: {
+//            self.tableView.reloadData()
+//
+//        })
+//    }
+//
+//    func isFiltering() -> Bool {
+//        return searchController.isActive && !searchBarIsEmpty()
+//    }
+//
  }
 
 
-extension FindCrushesTableViewController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResults(for searchController: UISearchController) {
-        
-        filterContentForSearchText(searchController.searchBar.text!)
-    }
-}
-    
+//extension FindCrushesTableViewController: UISearchResultsUpdating {
+//    // MARK: - UISearchResultsUpdating Delegate
+//    func updateSearchResults(for searchController: UISearchController) {
+//
+//        filterContentForSearchText(searchController.searchBar.text!)
+//    }
+//}
+
     
 

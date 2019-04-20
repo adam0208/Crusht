@@ -17,17 +17,29 @@ class MessageReportController: UIViewController {
     
     var reportName = String()
     
-    var reportEmail = String()
+    var reportPhone = String()
     
     var reportPhoneNumebr = String()
     
     //this is the id of the person who is making the accusation
     var uid = String()
     
+    let reportLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.text = "Please tell us why you are reporting this user. We take these accusations seriously."
+        label.numberOfLines = 0
+        return label
+    }()
+    
     let textView: UITextView = {
         let tv = ReportTextView()
-        tv.font = UIFont.systemFont(ofSize: 25)
-        tv.textColor = .lightGray
+        tv.font = UIFont.systemFont(ofSize: 18)
+        tv.textColor = .black
+        tv.layer.cornerRadius = 18
+        tv.clipsToBounds = true
         tv.adjustsFontForContentSizeCategory = true
         return tv
     }()
@@ -54,7 +66,7 @@ class MessageReportController: UIViewController {
     //        navigationItem.backBarButtonItem = myBackButton
     //    }
     
-    lazy var stackView = UIStackView(arrangedSubviews: [textView, reportBttn])
+    lazy var stackView = UIStackView(arrangedSubviews: [reportLabel, textView, reportBttn])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,17 +74,16 @@ class MessageReportController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         setupNotificationObservers()
         setupTapGesture()
-        navigationItem.title = "Report User"
+        navigationItem.title = "Report \(reportName)"
         setupGradientLayer()
-        textView.text = "Please tell us why you are reporting this user. We take these accusations seriously."
-        textView.textColor = UIColor.lightGray
+ 
         
         view.addSubview(stackView)
         stackView.axis = .vertical
         
-        stackView.spacing = 16
+        stackView.spacing = 14
         
-        stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 100, left: 20, bottom: 400, right: 20))
+        stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 70, left: 20, bottom: 250, right: 20))
         
     }
     
@@ -80,7 +91,7 @@ class MessageReportController: UIViewController {
         
         let docData: [String: Any] = ["uid": reportUID,
                                       "offender-name": reportName,
-                                      "email": reportEmail,
+                                      "phone": reportPhoneNumebr,
                                       "text": textView.text,
                                       "reporter-uid": uid,
                                       "number-of-reports": 1
@@ -105,7 +116,7 @@ class MessageReportController: UIViewController {
                     self.reports = Reports(dictionary: data)
                     let newDocData: [String: Any] = [ "uid": self.reportUID,
                                                       "offender-name": self.reportName,
-                                                      "email": self.reportEmail,
+                                                      "phone": self.reportPhoneNumebr,
                                                       "text": self.textView.text,
                                                       "reporter-uid": self.uid,
                                                       "number-of-reports": (self.reports?.reportNumber)! + 1
