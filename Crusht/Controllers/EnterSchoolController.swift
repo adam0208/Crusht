@@ -2159,7 +2159,7 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }()
     
     var age = Int()
-    var phone = String()
+  var phone: String!
     
     let hud = JGProgressHUD(style: .dark)
     

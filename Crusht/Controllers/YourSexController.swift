@@ -28,7 +28,7 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     
     let yourSexField: UITextField = {
         let tf = YourSexTextField()
-        tf.keyboardType = UIKeyboardType.phonePad
+      
         tf.placeholder = "Select"
         tf.backgroundColor = .white
         tf.layer.cornerRadius = 15
@@ -87,7 +87,7 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     }
     var genderPicker = UIPickerView()
     
-    let myPickerData = [String](arrayLiteral: " ", "I Have a Penis", "I Have a Vagina")
+    let myPickerData = [String](arrayLiteral: " ", "He/Him/His", "She/Her/Hers", "They/Them/Their")
     
     var user: User?
     var name = String()
@@ -95,7 +95,7 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     var bio = String()
     var school = String()
     var age = Int()
-    var phone = String()
+    var phone: String!
     var gender = String()
     
     

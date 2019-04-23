@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import JGProgressHUD
+import UserNotifications
 import SDWebImage
 
 extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -89,9 +90,17 @@ class EnterPhotoController: UIViewController {
     lazy var selectPhotoButtonHeightAnchor = selectPhotoButton.heightAnchor.constraint(equalToConstant: 275)
     
     @objc func handleSelectPhoto() {
+        let alert = UIAlertController(title: "Access your photos", message: "Can Crusht open your photos so you can select a profile picture?", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Yes", style: .default){(UIAlertAction) in
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
-        present(imagePickerController, animated: true)
+        self.present(imagePickerController, animated: true)
+        }
+        let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        alert.addAction(action)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+        return
     }
 
     override func viewDidLoad() {
@@ -141,12 +150,14 @@ class EnterPhotoController: UIViewController {
         hud.dismiss(afterDelay: 3)
     }
     
-    var phone = String()
+    var phone: String!
     var gender = String()
     var sexYouLike = String()
     
     
      fileprivate func handleRegister() {
+        print(phone, "lalalalal")
+        
         registrationViewModel.age = age
         registrationViewModel.birthday = birthday
         registrationViewModel.fullName = name

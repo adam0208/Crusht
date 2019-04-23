@@ -128,7 +128,7 @@ class BirthdayController: UIViewController {
     }
     
     var user: User?
-    var phone = String()
+    var phone: String!
     var name = String()
       var birthday = String()
     var age = Int()

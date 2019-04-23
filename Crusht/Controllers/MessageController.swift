@@ -62,8 +62,6 @@ class MessageController: UITableViewController, UISearchBarDelegate {
       //  let image = UIImage(named: "new_message_icon")?.withRenderingMode(.alwaysOriginal)
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "💑", style: .plain, target: self, action: #selector(handleNewMessage))
-        
         navigationItem.title = "Messages"
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)

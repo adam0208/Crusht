@@ -20,6 +20,8 @@ struct User: ProducesCardViewModel {
     var bio: String?
     var phoneNumber: String?
     
+    var currentVenue: String?
+    
     var crushScore: Int?
     
     var g: String?
@@ -49,7 +51,7 @@ struct User: ProducesCardViewModel {
     
     var gender: String?
     
-    
+    var timeLastJoined: NSNumber?
     
     init(dictionary: [String: Any]) {
         //initialize our user stuff
@@ -80,6 +82,10 @@ struct User: ProducesCardViewModel {
         self.sexPref = dictionary["Gender-Preference"] as? String ?? ""
         self.gender = dictionary["User-Gender"] as? String ?? ""
         self.g = dictionary["g"] as? String ?? ""
+        
+        self.currentVenue = dictionary["CurrentVenue"] as? String ?? ""
+        
+        self.timeLastJoined = dictionary["TimeLastJoined"] as? NSNumber
         //self.age = calcAge(birthday: self.birthday!)
     }
 

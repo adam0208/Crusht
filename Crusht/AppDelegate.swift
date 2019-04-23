@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        // window?.rootViewController = PhoneNumberViewController()
      //  window?.rootViewController = EnterMorePhoneInfoViewController()
     //window?.rootViewController = FacebookPhoneController()
-     //   window?.rootViewController = EnterNameController()
+   //     window?.rootViewController = BarsTableView()
         return true
     }
     

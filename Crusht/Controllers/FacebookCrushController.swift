@@ -38,6 +38,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     let hud = JGProgressHUD(style: .dark)
     
     fileprivate func fetchCurrentUser() {
@@ -109,11 +115,11 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                                 
                                 
                                 
-                                if sexPref == "Humans With Vaginas" {
-                                    self.isRightSex = crush.gender == "I Have a Vagina"
+                                if sexPref == "She/Her/Hers" {
+                                    self.isRightSex = crush.gender == "She/Her/Hers" || crush.gender == "They/Them/Their"
                                 }
-                                else if sexPref == "Humans With Penises" {
-                                    self.isRightSex = crush.gender == "I have a Penis"
+                                else if sexPref == "He/Him/His" {
+                                    self.isRightSex = crush.gender == "He/Him/His" || crush.gender == "They/Them/Their"
                                 }
                                 else {
                                     self.isRightSex = crush.age > 17
@@ -235,7 +241,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
 //        navigationItem.leftBarButtonItem?.title = "👈"
          navigationController?.isNavigationBarHidden = false
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         
         navigationItem.title = "Facebook Friends"
         
@@ -269,7 +275,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
         tableView.reloadData()
     }
     
-    fileprivate var user: User?
+     var user: User?
     
     
     fileprivate var fbArray = [User]()

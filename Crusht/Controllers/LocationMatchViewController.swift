@@ -129,38 +129,37 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     var userLat = Double()
     var userLong = Double()
     
-    fileprivate var user: User?
+     var user: User?
     
     var sexPref = String()
     
     var userAge = Int()
     
     fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            
-            guard let dictionary = snapshot?.data() else {return}
-            self.user = User(dictionary: dictionary)
+//        guard let uid = Auth.auth().currentUser?.uid else {return}
+//        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+//            if let err = err {
+//                print(err)
+//                return
+//            }
+        
+           
             self.sexPref = self.user?.sexPref ?? ""
             self.userAge = self.user?.age ?? 20
-            let geoFirestoreRef = Firestore.firestore().collection("users")
-            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-            
-            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
-                if (error != nil) {
-                    print("An error occured", error!)
-                } else {
-                    print("Saved location successfully!")
-                }
-            }
-            
+//            let geoFirestoreRef = Firestore.firestore().collection("users")
+//            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+//
+//            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+//                if (error != nil) {
+//                    print("An error occured", error!)
+//                } else {
+//                    print("Saved location successfully!")
+//                }
+//            }
+        
             self.fetchSwipes()
         }
-    }
+//}
     
     var swipes = [String: Int]()
     
@@ -271,14 +270,14 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         topCardView = nil
         //geoFirestore.do
         
-      
+      print(userLat, "fuckfuckfuck")
 
         radiusQuery.observe(.documentEntered) { (key, location) in
              if let key = key, let loc = location {
                 
                print(key, "hhhhh")
                
-                Firestore.firestore().collection("users").whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
+                Firestore.firestore().collection("users").whereField("uid", isEqualTo: key).whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
                     if let err = err {
                         print("failed to fetch user", err)
                         self.hud.textLabel.text = "Failed To Fetch user"
@@ -290,6 +289,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     
                     var previousCardView: CardView?
                     
+                    print(snapshot, "haha")
                    
                     
                     snapshot?.documents.forEach({ (documentSnapshot) in
@@ -310,11 +310,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         let isEnabled = user.g != "7zzzzzzzzz"
                         
                         
-                        if self.sexPref == "Humans With Vaginas" {
-                            self.isRightSex = user.gender == "I Have a Vagina"
+                        if self.sexPref == "She/Her/Hers" {
+                            self.isRightSex = user.gender == "She/Her/Hers" || user.gender == "They/Them/Their"
                         }
-                        else if self.sexPref == "Humans With Penises" {
-                            self.isRightSex = user.gender == "I have a Penis"
+                        else if self.sexPref == "He/Him/His" {
+                            self.isRightSex = user.gender == "He/Him/His" || user.gender == "They/Them/Their"
                         }
                         else {
                             self.isRightSex = user.age ?? 18 > 17
@@ -392,11 +392,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 
                 let minAge = user.age ?? 20 > (self.userAge - 5)
                 
-                if self.sexPref == "Humans With Vaginas" {
-                    self.isRightSex = user.gender == "I Have a Vagina"
+                if self.sexPref == "She/Her/Hers" {
+                    self.isRightSex = user.gender == "She/Her/Hers" || user.gender == "They/Them/Their"
                 }
-                else if self.sexPref == "Humans With Penises" {
-                    self.isRightSex = user.gender == "I have a Penis"
+                else if self.sexPref == "He/Him/His" {
+                    self.isRightSex = user.gender == "He/Him/His" || user.gender == "They/Them/Their"
                 }
                 else {
                     self.isRightSex = user.age ?? 18 > 17

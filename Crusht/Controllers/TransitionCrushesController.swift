@@ -11,24 +11,18 @@ import Firebase
 import JGProgressHUD
 import FacebookCore
 import FacebookLogin
+import CoreLocation
+import Contacts
 
-class TransitionCrushesController: UIViewController {
+class TransitionCrushesController: UIViewController, CLLocationManagerDelegate {
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
     var user: User?
 //
-    fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            guard let dictionary = snapshot?.data() else {return}
-            self.user = User(dictionary: dictionary)
-        }
-    }
-    
-    
     
     let Text: UILabel = {
         let label = UILabel()
@@ -88,6 +82,24 @@ class TransitionCrushesController: UIViewController {
         return button
     }()
     
+    let findCrushesThroughVenue: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Venues Near You", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 0.7448918819, green: 0, blue: 0.7210326791, alpha: 1)
+        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 100)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        
+        
+        button.layer.cornerRadius = 22
+        
+        button.addTarget(self, action: #selector(handleVenue), for: .touchUpInside)
+        return button
+    }()
+    
+    
     let findCrushesThroughFacebook: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Facebook Friends", for: .normal)
@@ -117,20 +129,47 @@ class TransitionCrushesController: UIViewController {
 
         return button
     }()
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        userLat = locValue.latitude
+        userLong = locValue.longitude
+    
+    }
+    
+    var userLat = Double()
+    var userLong = Double()
+    
+     let locationManager = CLLocationManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+            
+            print(locationManager.location?.coordinate.latitude as Any)
+            print(locationManager.location?.coordinate.latitude as Any)
+            print("We have your location!")
+        }
+        
         //fetchCurrentUser()
         setupGradientLayer()
         navigationController?.isNavigationBarHidden = true
-        let stack = UIStackView(arrangedSubviews: [Text, findCrushesThroughContacts,findCrushesThroughSchool,findCrushesThroughFacebook, privacyText])
+        let stack = UIStackView(arrangedSubviews: [Text, findCrushesThroughContacts,findCrushesThroughSchool,findCrushesThroughFacebook,findCrushesThroughVenue, privacyText])
         view.addSubview(stack)
         view.addSubview(backButton)
         
         stack.axis = .vertical
         
-        let padding = view.bounds.height/5
+        let padding = view.bounds.height/7
         
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: padding, left: 30, bottom: padding, right: 30))
         
@@ -138,15 +177,97 @@ class TransitionCrushesController: UIViewController {
         
         backButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: -20, left: 20, bottom: 0, right: 0))
     }
+  
+    private func showSettingsAlert() {
+        let alert = UIAlertController(title: "Enable Contacts", message: "Crusht requires access to Contacts to proceed. We use your contacts to help you find your match. WE DON'T STORE YOUR CONTACTS IN OUR DATABASE. Would you like to open settings and grant permission to contacts?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+            
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            return
+        })
+        present(alert, animated: true)
+    }
+    
+    private func showSettingsAlert2() {
+        let alert = UIAlertController(title: "Enable Location", message: "Crusht would like to use your location to match you with nearby users.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+            
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            return
+        })
+        present(alert, animated: true)
+    }
     
     @objc fileprivate func handleContacts() {
-        let contactsController = FindCrushesTableViewController()
-        navigationController?.pushViewController(contactsController, animated: true)
+        let store = CNContactStore()
+        switch CNContactStore.authorizationStatus(for: .contacts) {
+            
+        case .authorized:
+            let contactsController = FindCrushesTableViewController()
+            let myBackButton = UIBarButtonItem()
+            contactsController.user = user
+            
+            myBackButton.title = "👈"
+            navigationItem.backBarButtonItem = myBackButton
+            navigationController?.pushViewController(contactsController, animated: true)
+        case .denied:
+            showSettingsAlert()
+        case .restricted, .notDetermined:
+            store.requestAccess(for: .contacts) { granted, error in
+                if granted {
+                    let contactsController = FindCrushesTableViewController()
+                    let myBackButton = UIBarButtonItem()
+                    contactsController.user = self.user
+                    
+                    myBackButton.title = "👈"
+                   self.navigationItem.backBarButtonItem = myBackButton
+                    self.navigationController?.pushViewController(contactsController, animated: true)
+                } else {
+                    DispatchQueue.main.async {
+                        self.showSettingsAlert()
+                    }
+                }
+            }
+        }
+      
     }
     
     @objc fileprivate func handleSchool() {
         let schoolController = SchoolCrushController()
+        schoolController.user = user
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = "👈"
+        navigationItem.backBarButtonItem = myBackButton
         navigationController?.pushViewController(schoolController, animated: true)
+    }
+    
+    let hud = JGProgressHUD(style: .dark)
+    
+    @objc fileprivate func handleVenue() {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                showSettingsAlert2()
+            case .authorizedAlways, .authorizedWhenInUse:
+                let venueControlla = BarsTableView()
+                venueControlla.user = user
+              venueControlla.userLat = userLat
+                venueControlla.userLong = userLong
+                let myBackButton = UIBarButtonItem()
+                myBackButton.title = "👈"
+                navigationItem.backBarButtonItem = myBackButton
+                navigationItem.title = "Select to Check Venue"
+                navigationController?.pushViewController(venueControlla, animated: true)
+            }
+        } else {
+            self.showSettingsAlert2()
+        }
+
     }
     
       let fbcontroller = FacebookCrushController()
@@ -157,6 +278,10 @@ class TransitionCrushesController: UIViewController {
             loginFB()
         }
         else {
+            let myBackButton = UIBarButtonItem()
+            myBackButton.title = "👈"
+            fbcontroller.user = user
+            navigationItem.backBarButtonItem = myBackButton
         navigationController?.pushViewController(fbcontroller, animated: true)
         }
     }
@@ -188,6 +313,8 @@ class TransitionCrushesController: UIViewController {
                     
                     let socialIdFB = responseDictionary["id"] as? String
                     print(socialIdFB!)
+                    
+                    self.FBID = socialIdFB!
                     
                     self.handleSaveFBID()
                 }
@@ -224,6 +351,7 @@ class TransitionCrushesController: UIViewController {
                 print("Failed to retrieve user settings", err)
                 return
             }
+            self.fbcontroller.user = self.user
             self.navigationController?.pushViewController(self.fbcontroller, animated: true)
         }
     }

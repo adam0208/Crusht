@@ -28,7 +28,7 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     
     let genderTextField: UITextField = {
         let tf = GenderTextField()
-        tf.keyboardType = UIKeyboardType.phonePad
+      
         tf.placeholder = "Select"
         tf.backgroundColor = .white
         tf.layer.cornerRadius = 15
@@ -87,14 +87,13 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     }
     var genderPicker = UIPickerView()
     
-    let myPickerData = [String](arrayLiteral: " ", "Humans With Penises", "Humans With Vaginas", "All Humans")
+    let myPickerData = [String](arrayLiteral: " ", "He/Him/His", "She/Her/Hers", "All Humans")
     
     var user: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        
         genderPicker.delegate = self
         
         setupGradientLayer()
@@ -121,7 +120,7 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     var bio = String()
     var school = String()
     var age = Int()
-    var phone = String()
+    var phone: String!
     var gender = String()
     var sexYouLike = String()
     

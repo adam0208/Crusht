@@ -13,30 +13,26 @@ import JGProgressHUD
 
 
 class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate {
-    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
 
     let cellId = "cellId123123"
     
     var users = [User]()
     
-    fileprivate var user: User?
+     var user: User?
     
     fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            
-            guard let dictionary = snapshot?.data() else {return}
-            self.user = User(dictionary: dictionary)
+    
             print(self.user?.phoneNumber ?? "Fuck you")
             self.fetchSwipes()
             self.tableView.reloadData()
             
         }
-    }
+    
     
 
     // you should use Custom Delegation properly instead
@@ -704,7 +700,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         navigationItem.title = "Contacts"
 //        navigationItem.leftItemsSupplementBackButton = true
 //        navigationItem.leftBarButtonItem?.title = "👈"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         //UINavigationItem.setLeftBarButton(back)
         tableView.register(ContactsCell.self, forCellReuseIdentifier: cellId)
         //tableView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
@@ -751,7 +747,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         cell.link = self
         
-        
+        cell.selectionStyle = .none
         
 //        if isFiltering() {
 //            let favoritableContact = filteredContanct[indexPath.section].names[indexPath.row]
@@ -819,7 +815,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 
             }
             else {
-                cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+                cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
             }
     
         //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)

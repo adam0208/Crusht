@@ -89,7 +89,7 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
     }
     
     var user: User?
-    var phone = String()
+    var phone: String!
     
     var name = String()
     

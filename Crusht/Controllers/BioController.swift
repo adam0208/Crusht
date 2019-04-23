@@ -84,7 +84,7 @@ class BioController: UIViewController {
     var bio = String()
     var school = String()
     var age = Int()
-    var phone = String()
+   var phone: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -10,12 +10,14 @@ import UIKit
 import Firebase
 import JGProgressHUD
 import SDWebImage
+import FacebookCore
+import FacebookLogin
 
 protocol SettingsControllerDelegate {
     func didSaveSettings()
 }
 
-class CustomImagePickerController: UIImagePickerController {
+class CustomImagePickerController: UIImagePickerController  {
     var imageBttn: UIButton?
 }
 
@@ -74,6 +76,23 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
     }
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return myPickerData.count
+    }
+    
+    func pickerView( _ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return myPickerData[row]
+    }
+    
+   
+    var genderPicker = UIPickerView()
+    
+    let myPickerData = [String](arrayLiteral: " ", "He/Him/His", "She/Her/Hers", "All Humans")
+    
 
     
     
@@ -112,22 +131,14 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     var user: User?
     
     fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            print(snapshot?.data())
-            guard let dictionary = snapshot?.data() else {return}
-            self.user = User(dictionary: dictionary)
+    
             self.loadUserPhotos()
             
             self.tableView.reloadData()
             
         }
         
-    }
+    
     
     fileprivate func loadUserPhotos() {
         
@@ -270,7 +281,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         else if indexPath.section == 9 {
             
             let fbCell = FbConnectCell(style: .default, reuseIdentifier: nil)
-            
+            fbCell.FBLoginBttn.addTarget(self, action: #selector(loginFB), for: .touchUpInside)
             return fbCell
            
         }
@@ -324,6 +335,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
          
         case 5:
             cell.textField.placeholder = "Sex"
+                cell.isUserInteractionEnabled = false
             cell.textField.text = user?.gender
             cell.textField.addTarget(self, action: #selector(handleGenderChange), for: .editingChanged)
             cell.layer.cornerRadius = 16
@@ -331,6 +343,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             
         default:
             cell.textField.placeholder = "Sex Preference"
+            cell.isUserInteractionEnabled = false
             cell.textField.text = user?.sexPref
             cell.textField.addTarget(self, action: #selector(handleSexPrefChange), for: .editingChanged)
             cell.layer.cornerRadius = 16
@@ -457,7 +470,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "PhoneNumber": user?.phoneNumber ?? "",
             "deviceID": Messaging.messaging().fcmToken ?? "",
             "Gender-Preference": user?.sexPref ?? "",
-            "User-Gender": user?.gender ?? ""
+            "User-Gender": user?.gender ?? "",
+            "CurrentVenue": user?.currentVenue ?? ""
             ]
         
   //      let hud = JGProgressHUD(style: .dark)
@@ -528,6 +542,42 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         self.tableView.backgroundView = backgroundView
 
     }
+    
+   @objc fileprivate func loginFB() {
+        let loginManager = LoginManager()
+        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
+            switch loginResult {
+            case .failed(let error):
+                print("cccccccccccccccccccccccccccccccccccccc",error)
+            case .cancelled:
+                print("User cancelled login.")
+            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
+                print("Logged in!")
+                self.fetchFBid()
+            }
+        }
+    }
+   
+    fileprivate func fetchFBid() {
+        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+        req.start({ (connection, result) in
+            switch result {
+            case .failed(let error):
+                print(error)
+            case .success(let graphResponse):
+                if let responseDictionary = graphResponse.dictionaryValue {
+                    print(responseDictionary)
+                    
+                    let socialIdFB = responseDictionary["id"] as? String
+                    print(socialIdFB!)
+                    
+                    self.user?.fbid = socialIdFB!
+                    
+                }
+            }
+        })
+    }
+    
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.section == 9 || indexPath.section == 10 {

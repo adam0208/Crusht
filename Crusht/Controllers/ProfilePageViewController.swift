@@ -102,26 +102,36 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
-                hud.textLabel.text = "Please enable location services"
-                hud.show(in: view)
-                hud.dismiss(afterDelay: 2)
+                 showSettingsAlert2() 
             case .authorizedAlways, .authorizedWhenInUse:
                 let locationViewController = LocationMatchViewController()
+                locationViewController.user = user
                 let navigationController = UINavigationController(rootViewController: locationViewController)
                 present(navigationController, animated: true)
             }
         } else {
-            hud.textLabel.text = "Please enable location services"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+           showSettingsAlert2()
         }
 
        
         
     }
     
+    private func showSettingsAlert2() {
+        let alert = UIAlertController(title: "Enable Location", message: "Crusht would like to use your location to match you with nearby users.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+            
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            return
+        })
+        present(alert, animated: true)
+    }
+    
     @objc fileprivate func handleFindCrushesTapped() {
         let transController = TransitionCrushesController()
+        transController.user = user
         let navigationController = UINavigationController(rootViewController: transController)
         present(navigationController, animated: true)
     }
@@ -129,16 +139,12 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     @objc func handleSettings() {
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
+        settingsController.user = user
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true)
         
     }
     
-    @objc func handleSeniorFive() {
-        let seniorController = SeniorFiveTableViewController()
-        navigationController?.pushViewController(seniorController, animated: true)
-        
-    }
     
     @objc func handleMessages() {
         let messageController = MessageController()
@@ -304,10 +310,6 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     var userLong = Double()
     
     fileprivate func fetchCurrentUser() {
-       
-        if messageBadge.isHidden == false {
-            handleMessages()
-        }
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
@@ -321,6 +323,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             
             if self.user?.name == "" {
                 let namecontroller = EnterNameController()
+                namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
             }
             

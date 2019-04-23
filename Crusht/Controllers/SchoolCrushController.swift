@@ -34,11 +34,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 class SchoolCrushController: UITableViewController, UISearchBarDelegate {
-    
+  
     
 //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
 
-    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
     fileprivate var crushScore: CrushScore?
     
     fileprivate func addCrushScore() {
@@ -95,7 +99,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
 //        navigationItem.leftBarButtonItem?.title = "👈"
          navigationController?.isNavigationBarHidden = false
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         
@@ -118,7 +122,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
       
     }
     
-    fileprivate var user: User?
+     var user: User?
     let hud = JGProgressHUD(style: .dark)
     
     var schoolArray = [User]()
@@ -200,11 +204,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 
              
                 
-                if sexPref == "Humans With Vaginas" {
-                     self.isRightSex = crush.gender == "I Have a Vagina"
+                if sexPref == "She/Her/Hers" {
+                     self.isRightSex = crush.gender == "She/Her/Hers" || crush.gender == "They/Them/Their"
                 }
-                else if sexPref == "Humans With Penises" {
-                    self.isRightSex = crush.gender == "I have a Penis"
+                else if sexPref == "He/Him/His" {
+                    self.isRightSex = crush.gender == "He/Him/His" || crush.gender == "They/Them/Their"
                 }
                 else {
                     self.isRightSex = crush.school == self.user?.school

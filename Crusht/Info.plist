@@ -49,11 +49,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSContactsUsageDescription</key>
-	<string>We needs your contacts to match you with your Crush!</string>
+	<string>We need to import your contacts so you can match with your crushes in your contacts list. We do not store your contact information.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Crusht would like to use your location</string>
+	<string>Crusht would like to use your location to match you with nearby users.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Crusht want to keep using your location</string>
+	<string>Crusht want to keep using your location to optimize the match-making process.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
