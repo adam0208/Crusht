@@ -115,7 +115,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         //view.backgroundColor = .blue
         //tableView.backgroundColor = UIColor.clear
         //tableView.tableFooterView?.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-        tableView.keyboardDismissMode = .interactive
+        tableView.keyboardDismissMode = .onDrag
         let bioCell = BioCell()
         bioCell.textView.delegate = self
         //view.bringSubviewToFront(tableView)
@@ -131,7 +131,18 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     var user: User?
     
     fileprivate func fetchCurrentUser() {
-    
+            
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+                if let err = err {
+                    print(err)
+                    return
+                }
+                //print(snapshot?.data())
+                guard let dictionary = snapshot?.data() else {return}
+                self.user = User(dictionary: dictionary)
+            }
+            
             self.loadUserPhotos()
             
             self.tableView.reloadData()
@@ -160,6 +171,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                     self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
                 }
         }
+         self.tableView.reloadData()
     }
     
     
@@ -312,6 +324,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             cell.textField.placeholder = "Age"
             let age = calcAge(birthday: (user?.birthday ?? "10-31-1995"))
             cell.textField.text = String(age)
+                 cell.isUserInteractionEnabled = false
             cell.layer.cornerRadius = 16
             cell.layer.masksToBounds = true
             

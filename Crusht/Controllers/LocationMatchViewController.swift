@@ -101,11 +101,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         bottomStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         setupLayout()
      
-       
-      
                                                                     
         //topStackView.switchView.isUserInteractionEnabled = false
-        
         
         bottomStackView.likeBttn.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomStackView.reportButton.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
@@ -136,30 +133,30 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     var userAge = Int()
     
     fileprivate func fetchCurrentUser() {
-//        guard let uid = Auth.auth().currentUser?.uid else {return}
-//        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-//            if let err = err {
-//                print(err)
-//                return
-//            }
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
         
            
             self.sexPref = self.user?.sexPref ?? ""
             self.userAge = self.user?.age ?? 20
-//            let geoFirestoreRef = Firestore.firestore().collection("users")
-//            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-//
-//            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
-//                if (error != nil) {
-//                    print("An error occured", error!)
-//                } else {
-//                    print("Saved location successfully!")
-//                }
-//            }
+            let geoFirestoreRef = Firestore.firestore().collection("users")
+            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+
+            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                if (error != nil) {
+                    print("An error occured", error!)
+                } else {
+                    print("Saved location successfully!")
+                }
+            }
         
             self.fetchSwipes()
         }
-//}
+    }
     
     var swipes = [String: Int]()
     

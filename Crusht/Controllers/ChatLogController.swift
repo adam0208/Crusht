@@ -5,7 +5,6 @@
 //  Created by William Kelly on 12/15/18.
 //  Copyright © 2018 William Kelly. All rights reserved.
 //
-
 import UIKit
 import Firebase
 import MobileCoreServices
@@ -50,7 +49,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         }
     }
     
-     var messages = [Message]()
+    var messages = [Message]()
     
     var fromName: String?
     
@@ -65,7 +64,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
                 
-            Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
+                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         if let err = err {
                             print("FAILLLLLLLLL", err)
@@ -103,37 +102,37 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 return
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
-        Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
-                snapshot?.documents.forEach({ (documentSnapshot) in
-                    if let err = err {
-                        print("FAILLLLLLLLL", err)
+                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
+                    snapshot?.documents.forEach({ (documentSnapshot) in
+                        if let err = err {
+                            print("FAILLLLLLLLL", err)
                         }
-                let userDictionary = documentSnapshot.data()
-                let message = Message(dictionary: userDictionary)
-                if message.chatPartnerId() == self.user?.uid {
-                self.messages.append(message)
-                self.messages.sort(by: { (message1, message2) -> Bool in
-                return message1.timestamp?.int32Value < message2.timestamp?.int32Value
-                    })
+                        let userDictionary = documentSnapshot.data()
+                        let message = Message(dictionary: userDictionary)
+                        if message.chatPartnerId() == self.user?.uid {
+                            self.messages.append(message)
+                            self.messages.sort(by: { (message1, message2) -> Bool in
+                                return message1.timestamp?.int32Value < message2.timestamp?.int32Value
+                            })
+                            
+                            DispatchQueue.main.async(execute: {
+                                self.collectionView?.reloadData()
                                 
-                    DispatchQueue.main.async(execute: {
-                        self.collectionView?.reloadData()
-                                    
-                                    //scroll to the last index
-                        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                        self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                                //scroll to the last index
+                                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                            })
+                            
+                            
+                            
+                        }
                     })
-                    
-                    
-                    
-                    }
-                })
                     
                 })
             })
         })
     }
- 
+    
     lazy var inputTextField: UITextView = {
         let textView = UITextView()
         textView.text = ""
@@ -151,9 +150,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         }
         func textViewDidBeginEditing(_ textView: UITextView) {
             
-        textView.text = nil
-        
-        
+            textView.text = nil
+            
+            
             
         }
         return textView
@@ -184,14 +183,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
-       listenForMessages()
+        listenForMessages()
+        
+       
         
         //navigationController?.title.
-                
+        
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
         //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
@@ -200,53 +201,52 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         collectionView?.keyboardDismissMode = .onDrag
         
-       
-     
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleback))
+      //  inputAccessoryView?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleback))
         navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "👮‍♀️", style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(title: "👤  ", style: .plain, target: self, action: #selector(goToProfile))]
-//        navigationItem.leftItemsSupplementBackButton = true
-//        navigationItem.leftBarButtonItem?.title = "👈"
+        //        navigationItem.leftItemsSupplementBackButton = true
+        //        navigationItem.leftBarButtonItem?.title = "👈"
         
         setupKeyboardObservers()
-//
-//        let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
-//        buttonStackView.axis = .horizontal
-//        view.addSubview(buttonStackView)
-//
-//        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        buttonStackView.leftAnchor.constraint(equalTo: inputAccessoryView!.leftAnchor).isActive = true
-//        //buttonStackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-//        buttonStackView.widthAnchor.constraint(equalTo: inputAccessoryView!.widthAnchor).isActive = true
-//        buttonStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        buttonStackView.bottomAnchor.constraint(equalTo: inputAccessoryView!.topAnchor).isActive = true
-//        //        buttonStackView.isLayoutMarginsRelativeArrangement = true
-//        //        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
-
+        //
+        //        let buttonStackView = UIStackView(arrangedSubviews: [stubHubButton, UIView(), UIView(), openTableButton])
+        //        buttonStackView.axis = .horizontal
+        //        view.addSubview(buttonStackView)
+        //
+        //        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        //
+        //        buttonStackView.leftAnchor.constraint(equalTo: inputAccessoryView!.leftAnchor).isActive = true
+        //        //buttonStackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        //        buttonStackView.widthAnchor.constraint(equalTo: inputAccessoryView!.widthAnchor).isActive = true
+        //        buttonStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        //        buttonStackView.bottomAnchor.constraint(equalTo: inputAccessoryView!.topAnchor).isActive = true
+        //        //        buttonStackView.isLayoutMarginsRelativeArrangement = true
+        //        //        buttonStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
         
         collectionView.bringSubviewToFront(inputContainerView)
         
-//        DispatchQueue.main.async {
-//            // timer needs a runloop?
-//            self.timer = Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(self.listenForMessages(_:)), userInfo: nil, repeats: false)
-//        }
+        //        DispatchQueue.main.async {
+        //            // timer needs a runloop?
+        //            self.timer = Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(self.listenForMessages(_:)), userInfo: nil, repeats: false)
+        //        }
         
-//        Timer.scheduledTimer(timeInterval: 1.1,
-//                             target: self,
-//                             selector: #selector(self.listenForMessages(_:)),
-//                             userInfo: nil,
-//                             repeats: true)
-    
+        //        Timer.scheduledTimer(timeInterval: 1.1,
+        //                             target: self,
+        //                             selector: #selector(self.listenForMessages(_:)),
+        //                             userInfo: nil,
+        //                             repeats: true)
+        
     }
     
     @objc fileprivate func goToProfile() {
-    
+        
         
         let userDetailsController = UserDetailsController()
-    
+        
         userDetailsController.cardViewModel = user!.toCardViewModel()
         navigationController?.pushViewController(userDetailsController, animated: true)
-    
+        
     }
     
     @objc fileprivate func handleReport() {
@@ -259,7 +259,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let myBackButton = UIBarButtonItem()
         myBackButton.title = "👈"
         navigationItem.backBarButtonItem = myBackButton
-         navigationController?.pushViewController(reportController, animated: true)
+        navigationController?.pushViewController(reportController, animated: true)
     }
     
     @objc func handleReloadTable() {
@@ -268,23 +268,23 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         observeMoreMessages()
         
         
-
-//            DispatchQueue.main.async(execute: {
-//                self.collectionView?.reloadData()
-//
-//                //scroll to the last index
-//                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-//                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-//            })
+        
+        //            DispatchQueue.main.async(execute: {
+        //                self.collectionView?.reloadData()
+        //
+        //                //scroll to the last index
+        //                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+        //                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        //            })
     }
-
+    
     
     @objc func handleback() {
-      self.dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     @objc fileprivate func handleStubTapped() {
-     
+        
         if let url = URL(string: "https://www.stubhub.com"),
             UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:])
@@ -304,7 +304,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
         containerView.backgroundColor = UIColor.white
-//        containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        //        containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         let uploadImageView = UIImageView()
         uploadImageView.isUserInteractionEnabled = true
@@ -332,13 +332,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         containerView.addSubview(self.inputTextField)
         //x,y,w,h
-//        self.inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
-//        self.inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-//        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-//        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        //        self.inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
+        //        self.inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        //        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
+        //        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
         self.inputTextField.anchor(top: containerView.topAnchor, leading: uploadImageView.trailingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 0, right: 90))
-    
+        
         sendButton.anchor(top: nil, leading: self.inputTextField.trailingAnchor, bottom: nil, trailing: containerView.trailingAnchor)
         
         let separatorLineView = UIView()
@@ -351,165 +351,159 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-
-
+        
+        
         return containerView
         
     }()
     
-        @objc func handleUploadTap() {
-            let imagePickerController = UIImagePickerController()
-            
-            imagePickerController.allowsEditing = true
-            imagePickerController.delegate = self
-            imagePickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-            
-            present(imagePickerController, animated: true, completion: nil)
+    @objc func handleUploadTap() {
+        let imagePickerController = UIImagePickerController()
+        
+        imagePickerController.allowsEditing = true
+        imagePickerController.delegate = self
+        imagePickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+        
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        
+        
+        if let videoUrl = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as? URL {
+            //we selected a video
+            handleVideoSelectedForUrl(videoUrl)
+        } else {
+            //we selected an image
+            handleImageSelectedForInfo(info as [String : AnyObject])
         }
         
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            // Local variable inserted by Swift 4.2 migrator.
-            let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-            
-            
-            if let videoUrl = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as? URL {
-                //we selected a video
-                handleVideoSelectedForUrl(videoUrl)
-            } else {
-                //we selected an image
-                handleImageSelectedForInfo(info as [String : AnyObject])
+        dismiss(animated: true, completion: nil)
+    }
+    
+    fileprivate func handleVideoSelectedForUrl(_ url: URL) {
+        let filename = UUID().uuidString + ".mov"
+        let ref = Storage.storage().reference().child("message_movies").child(filename)
+        let uploadTask = ref.putFile(from: url, metadata: nil, completion: { (_, err) in
+            if let err = err {
+                print("Failed to upload movie:", err)
+                return
             }
             
-            dismiss(animated: true, completion: nil)
-        }
-        
-        fileprivate func handleVideoSelectedForUrl(_ url: URL) {
-            let filename = UUID().uuidString + ".mov"
-            let ref = Storage.storage().reference().child("message_movies").child(filename)
-            let uploadTask = ref.putFile(from: url, metadata: nil, completion: { (_, err) in
+            ref.downloadURL(completion: { (downloadUrl, err) in
                 if let err = err {
-                    print("Failed to upload movie:", err)
+                    print("Failed to get download url:", err)
                     return
                 }
                 
-                ref.downloadURL(completion: { (downloadUrl, err) in
-                    if let err = err {
-                        print("Failed to get download url:", err)
-                        return
-                    }
+                guard let downloadUrl = downloadUrl else { return }
+                
+                if let thumbnailImage = self.thumbnailImageForFileUrl(url) {
                     
-                    guard let downloadUrl = downloadUrl else { return }
-                    
-                    if let thumbnailImage = self.thumbnailImageForFileUrl(url) {
+                    self.uploadToFirebaseStorageUsingImage(thumbnailImage, completion: { (imageUrl) in
+                        let properties: [String: Any] = ["imageUrl": imageUrl, "imageWidth": thumbnailImage.size.width, "imageHeight": thumbnailImage.size.height, "videoUrl": downloadUrl.absoluteString]
+                        self.sendMessageWithProperties(properties as [String : AnyObject])
                         
-                        self.uploadToFirebaseStorageUsingImage(thumbnailImage, completion: { (imageUrl) in
-                            let properties: [String: Any] = ["imageUrl": imageUrl, "imageWidth": thumbnailImage.size.width, "imageHeight": thumbnailImage.size.height, "videoUrl": downloadUrl.absoluteString]
-                            self.sendMessageWithProperties(properties as [String : AnyObject])
-                            
-                        })
-                    }
-                    
-                })
-            })
-            
-            uploadTask.observe(.progress) { (snapshot) in
-                if let completedUnitCount = snapshot.progress?.completedUnitCount {
-                    self.navigationItem.title = String(completedUnitCount)
-                }
-            }
-            
-            uploadTask.observe(.success) { (snapshot) in
-                self.navigationItem.title = self.user?.name
-            }
-        }
-        
-        fileprivate func thumbnailImageForFileUrl(_ fileUrl: URL) -> UIImage? {
-            let asset = AVAsset(url: fileUrl)
-            let imageGenerator = AVAssetImageGenerator(asset: asset)
-            
-            do {
-                
-                let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
-                return UIImage(cgImage: thumbnailCGImage)
-                
-            } catch let err {
-                print(err)
-            }
-            
-            return nil
-        }
-        
-        fileprivate func handleImageSelectedForInfo(_ info: [String: AnyObject]) {
-            var selectedImageFromPicker: UIImage?
-            
-            if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-                selectedImageFromPicker = editedImage
-            } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-                
-                selectedImageFromPicker = originalImage
-            }
-            
-            if let selectedImage = selectedImageFromPicker {
-                self.inputTextField.text = nil
-                uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
-                    self.sendMessageWithImageUrl(imageUrl, image: selectedImage)
-                })
-            }
-        }
-        
-        fileprivate func uploadToFirebaseStorageUsingImage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
-            let imageName = UUID().uuidString
-            let ref = Storage.storage().reference().child("message_images").child(imageName)
-            
-            if let uploadData = image.jpegData(compressionQuality: 0.2) {
-                ref.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                    
-                    if error != nil {
-                        print("Failed to upload image:", error!)
-                        return
-                    }
-                    
-                    ref.downloadURL(completion: { (url, err) in
-                        if let err = err {
-                            print(err)
-                            return
-                        }
-                        
-                        //                    self.sendMessageWithImageUrl(url?.absoluteString ?? "", image: image)
-                        completion(url?.absoluteString ?? "")
                     })
-                    
-                })
+                }
+                
+            })
+        })
+        
+        uploadTask.observe(.progress) { (snapshot) in
+            if let completedUnitCount = snapshot.progress?.completedUnitCount {
+                self.navigationItem.title = String(completedUnitCount)
             }
         }
         
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            dismiss(animated: true, completion: nil)
+        uploadTask.observe(.success) { (snapshot) in
+            self.navigationItem.title = self.user?.name
         }
-
-
+    }
+    
+    fileprivate func thumbnailImageForFileUrl(_ fileUrl: URL) -> UIImage? {
+        let asset = AVAsset(url: fileUrl)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        
+        do {
+            
+            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
+            return UIImage(cgImage: thumbnailCGImage)
+            
+        } catch let err {
+            print(err)
+        }
+        
+        return nil
+    }
+    
+    fileprivate func handleImageSelectedForInfo(_ info: [String: AnyObject]) {
+        var selectedImageFromPicker: UIImage?
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            selectedImageFromPicker = editedImage
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            self.inputTextField.text = nil
+            uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
+                self.sendMessageWithImageUrl(imageUrl, image: selectedImage)
+            })
+        }
+    }
+    
+    fileprivate func uploadToFirebaseStorageUsingImage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
+        let imageName = UUID().uuidString
+        let ref = Storage.storage().reference().child("message_images").child(imageName)
+        
+        if let uploadData = image.jpegData(compressionQuality: 0.2) {
+            ref.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print("Failed to upload image:", error!)
+                    return
+                }
+                
+                ref.downloadURL(completion: { (url, err) in
+                    if let err = err {
+                        print(err)
+                        return
+                    }
+                    
+                    //                    self.sendMessageWithImageUrl(url?.absoluteString ?? "", image: image)
+                    completion(url?.absoluteString ?? "")
+                })
+                
+            })
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     
     override var inputAccessoryView: UIView? {
         get {
             return inputContainerView
-            
+
         }
     }
-    
+
     override var canBecomeFirstResponder : Bool {
         return true
     }
     
     func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-    }
-    
-    @objc func handleKeyboardDidShow() {
-        if messages.count > 0 {
-            let indexPath = IndexPath(item: messages.count - 1, section: 0)
-            collectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -536,7 +530,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             self.view.layoutIfNeeded()
         })
     }
-  
+    
+    
     fileprivate func handleTapDismiss() {
         self.view.endEditing(true) // dismisses keyboard
     }
@@ -636,34 +631,34 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): UIFont.systemFont(ofSize: 16)]), context: nil)
     }
-//
-//    lazy var openTableButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("Open Table", for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-//        button.backgroundColor = #colorLiteral(red: 0.9399780631, green: 0, blue: 0.2794805765, alpha: 1)
-//        button.setTitleColor(.white, for: .normal)
-//        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
-//        button.layer.cornerRadius = 16
-//        button.addTarget(self, action: #selector(handleOpenTableTapped), for: .touchUpInside)
-//        return button
-//    }()
-//
-//    lazy var stubHubButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("StubHub", for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-//        button.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-//        button.setTitleColor(.orange, for: .normal)
-//        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
-//        button.layer.cornerRadius = 16
-//        button.addTarget(self, action: #selector(handleStubTapped), for: .touchUpInside)
-//        return button
-//
-//
-//    }()
+    //
+    //    lazy var openTableButton: UIButton = {
+    //        let button = UIButton(type: .system)
+    //        button.setTitle("Open Table", for: .normal)
+    //        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+    //        button.backgroundColor = #colorLiteral(red: 0.9399780631, green: 0, blue: 0.2794805765, alpha: 1)
+    //        button.setTitleColor(.white, for: .normal)
+    //        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    //        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
+    //        button.layer.cornerRadius = 16
+    //        button.addTarget(self, action: #selector(handleOpenTableTapped), for: .touchUpInside)
+    //        return button
+    //    }()
+    //
+    //    lazy var stubHubButton: UIButton = {
+    //        let button = UIButton(type: .system)
+    //        button.setTitle("StubHub", for: .normal)
+    //        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+    //        button.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+    //        button.setTitleColor(.orange, for: .normal)
+    //        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    //        button.widthAnchor.constraint(equalToConstant: 100) .isActive = true
+    //        button.layer.cornerRadius = 16
+    //        button.addTarget(self, action: #selector(handleStubTapped), for: .touchUpInside)
+    //        return button
+    //
+    //
+    //    }()
     
     var containerViewBottomAnchor: NSLayoutConstraint?
     
@@ -689,17 +684,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         let toName = user?.name ?? ""
         
-//        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
-//            if let err = err {
-//                print(err)
-//            }
-//            let userFromNameDictionary = snapshot?.data()
-//            let userFromName = User(dictionary: userFromNameDictionary!)
-//            self.fromName = userFromName.name ?? "loser"
-//            print(userFromName.name ?? "hi ho yo")
-//        }
-//
-//        print(fromName, "Fuck you bro")
+        //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
+        //            if let err = err {
+        //                print(err)
+        //            }
+        //            let userFromNameDictionary = snapshot?.data()
+        //            let userFromName = User(dictionary: userFromNameDictionary!)
+        //            self.fromName = userFromName.name ?? "loser"
+        //            print(userFromName.name ?? "hi ho yo")
+        //        }
+        //
+        //        print(fromName, "Fuck you bro")
         
         let timestamp = Int(Date().timeIntervalSince1970)
         var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": self.fromName as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
@@ -747,14 +742,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                             let document = documentSnapshot
                             if document.exists {
                                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
-                               
+                                
                                 //need to update the message collum for other user
                                 //just flip toID and Fromid
                                 
                                 self.messages.removeAll()
                                 self.observeMoreMessages()
                                 self.observeMessages()
-                        
+                                
                                 
                             }
                             else{
@@ -773,7 +768,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                     if document.exists {
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
                         
-                       //message row update fix
+                        //message row update fix
                         
                         //sort a not to update from id stuff
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
@@ -805,7 +800,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         })
         
         //cloud messaging stuff
-
         
         messages.removeAll()
         
@@ -827,7 +821,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     //my custom zooming logic
     func performZoomInForStartingImageView(_ startingImageView: UIImageView) {
-    
+        
         dismissKeyboard()
         self.startingImageView = startingImageView
         self.startingImageView?.isHidden = true
@@ -852,7 +846,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 
                 self.blackBackgroundView?.alpha = 1
                 self.inputContainerView.alpha = 0
-               // self.collectionView.keyboardDismissMode = .interactive
+                // self.collectionView.keyboardDismissMode = .interactive
                 
                 let height = self.startingFrame!.height / self.startingFrame!.width * keyWindow.frame.width
                 
@@ -886,7 +880,65 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             })
         }
     }
-
+    
+    func setupInputComponents() {
+        let containerView = UIView()
+        containerView.backgroundColor = UIColor.white
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(containerView)
+        
+        
+        //x,y,w,h
+        containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        containerViewBottomAnchor = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        containerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        let uploadImageView = UIImageView()
+        uploadImageView.isUserInteractionEnabled = true
+        uploadImageView.image = UIImage(named: "upload_image_icon")
+        uploadImageView.translatesAutoresizingMaskIntoConstraints = false
+        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
+        containerView.addSubview(uploadImageView)
+        //x,y,w,h
+        uploadImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        uploadImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        uploadImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        uploadImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        let sendButton = UIButton(type: .system)
+        sendButton.setTitle("Send", for: UIControl.State())
+        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        containerView.addSubview(sendButton)
+        //x,y,w,h
+        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
+        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        
+        containerView.addSubview(inputTextField)
+        //x,y,w,h
+        inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
+        inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
+        inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        
+        let separatorLineView = UIView()
+        separatorLineView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        separatorLineView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(separatorLineView)
+        //x,y,w,h
+        separatorLineView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
+        separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        
+    }
+    
 }
 
 // Helper function inserted by Swift 4.2 migrator.
@@ -927,4 +979,3 @@ extension ChatLogController
         view.endEditing(true)
     }
 }
-

@@ -56,12 +56,11 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
 //        cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
         
-        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1) {
+        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
             
             handleLike(cell: cell)
         }
         else {
-            print("fuck me")
             handleDislike(cell: cell)
         }
     }
@@ -588,8 +587,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         saveSwipeToFireStore(didLike: 1)
         addCrushScore()
-        
         cell.accessoryView?.tintColor = .red
+        
         
     }
     
@@ -597,7 +596,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         saveSwipeToFireStore(didLike: 0)
         
-        cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+         cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
         
     }
     
@@ -806,21 +805,21 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 phoneCellFinal = phoneNoDash
             }
             
-            let hasLiked = swipes[phoneCellFinal] as? Int == 1
+        
+        
+          let hasLiked = swipes[phoneCellFinal] as? Int == 1
+        
+        if hasLiked {
+            cell.accessoryView?.tintColor = .red
             
-            
-            
-            if hasLiked{
-                cell.accessoryView?.tintColor = .red
-                
-            }
-            else {
-                cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-            }
+        }
+        else{
+            cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        }
+        return cell
     
         //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
 
-        return cell
     }
     
 //    let searchController = UISearchController(searchResultsController: nil)

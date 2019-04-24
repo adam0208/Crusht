@@ -21,14 +21,14 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     var user: User?
-   
+    
     var barArray = [Venue]()
     
-     let locationManager = CLLocationManager()
-
+    let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-       navigationController?.isNavigationBarHidden = false
+        navigationController?.isNavigationBarHidden = false
         tableView.register(VenueCell.self, forCellReuseIdentifier: cellId)
         navigationItem.title = "Select to Check Venue"
         
@@ -45,7 +45,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         
         // For use in foreground
         self.locationManager.requestWhenInUseAuthorization()
-       
+        
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
@@ -70,12 +70,12 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     var userLong = Double()
     
     fileprivate func fetchCurrentUser() {
+        
+        
+        self.fetchBars()
+    }
     
-            
-            self.fetchBars()
-        }
     
-
     // MARK: - Table view data source
     
     let hud = JGProgressHUD(style: .dark)
@@ -85,16 +85,16 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         hud.textLabel.text = "Fetching bars, hold tight :)"
         hud.show(in: view)
         hud.dismiss(afterDelay: 1)
-
+        
         let geoFirestoreRef = Firestore.firestore().collection("venues")
         let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-
+        
         let userCenter = CLLocation(latitude: userLat, longitude: userLong)
-
+        
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 20)
         
         print("hahahaaha")
-
+        
         print(userLat, "Fuck")
         
         radiusQuery.observe(.documentEntered) { (key, location) in
@@ -106,7 +106,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                     }
                     
                     print(key, "hagaha")
-                  
+                    
                     if (snapshot?.isEmpty)! {
                         self.hud.textLabel.text = "No bars listed in your area"
                         self.hud.show(in: self.view)
@@ -125,15 +125,15 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                         
                     })
                 })
-        
+                
             }
-   
+            
         }
     }
-
-
     
-     let cellId = "cellId"
+    
+    
+    let cellId = "cellId"
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! VenueCell
@@ -161,8 +161,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         //            cellL.starButton.tintColor = .gray
         //        }
         
-      
-    
+        
+        
         return cell
     }
     
@@ -189,7 +189,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         let age = calcAge.year
         return age!
     }
- 
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
@@ -220,7 +220,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         
         tableView.reloadData()
     }
-
+    
     
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -237,5 +237,3 @@ extension BarsTableView: UISearchResultsUpdating {
         filterContentForSearchText(searchController.searchBar.text!)
     }
 }
-
-

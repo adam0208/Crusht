@@ -63,9 +63,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Auth.auth().currentUser == nil {
             window?.rootViewController = LoginViewController()
         } else {
-        window?.rootViewController = profController
+        window?.rootViewController = CustomTabBarController()
 
         }
+        
+        UITabBarItem.appearance()
+            .setTitleTextAttributes(
+                [NSAttributedString.Key.font: UIFont(name: "Didot", size: 30)!],
+                for: .normal)
+
        // window?.rootViewController = PhoneNumberViewController()
      //  window?.rootViewController = EnterMorePhoneInfoViewController()
     //window?.rootViewController = FacebookPhoneController()

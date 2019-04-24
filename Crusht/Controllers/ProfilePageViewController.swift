@@ -269,11 +269,8 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
         profPicView.layer.cornerRadius = 100
 
-        profPicView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         topStackView.homeButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
 
-        profPicView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
-        profPicView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
 
         profPicView.selectPhotoButton.addTarget(self, action: #selector(goToProfile), for: .touchUpInside)
 //        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
@@ -362,7 +359,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     fileprivate func setupLayout () {
         
-        let overallStackView = UIStackView(arrangedSubviews: [topStackView, profPicView, bottomStackView])
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, profPicView])
         view.addSubview(overallStackView)
         
         overallStackView.axis = .vertical
@@ -371,7 +368,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         overallStackView.isLayoutMarginsRelativeArrangement = true
-        overallStackView.layoutMargins = .init(top: 0, left: 0, bottom: 0, right: 0)
+        overallStackView.layoutMargins = .init(top: 0, left: 0, bottom: 15, right: 0)
     }
     
 

@@ -119,17 +119,6 @@ class TransitionCrushesController: UIViewController, CLLocationManagerDelegate {
         return button
     }()
     
-    let backButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("👈", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 50, weight: .heavy)
-        button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-
-
-        return button
-    }()
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         print("locations = \(locValue.latitude) \(locValue.longitude)")
@@ -165,17 +154,17 @@ class TransitionCrushesController: UIViewController, CLLocationManagerDelegate {
         navigationController?.isNavigationBarHidden = true
         let stack = UIStackView(arrangedSubviews: [Text, findCrushesThroughContacts,findCrushesThroughSchool,findCrushesThroughFacebook,findCrushesThroughVenue, privacyText])
         view.addSubview(stack)
-        view.addSubview(backButton)
+     
         
         stack.axis = .vertical
         
-        let padding = view.bounds.height/7
+        let padding = view.bounds.height/9
         
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: padding, left: 30, bottom: padding, right: 30))
         
         stack.spacing = 20
         
-        backButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: -20, left: 20, bottom: 0, right: 0))
+       
     }
   
     private func showSettingsAlert() {
@@ -354,10 +343,6 @@ class TransitionCrushesController: UIViewController, CLLocationManagerDelegate {
             self.fbcontroller.user = self.user
             self.navigationController?.pushViewController(self.fbcontroller, animated: true)
         }
-    }
-    
-    @objc fileprivate func handleBack() {
-      self.dismiss(animated: true)
     }
 
     let gradientLayer = CAGradientLayer()

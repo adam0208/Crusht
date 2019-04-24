@@ -364,6 +364,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         chatLogController.user = user
         chatLogController.fromName = navigationItem.title
         let myBackButton = UIBarButtonItem()
+        
         myBackButton.title = "👈"
         navigationItem.backBarButtonItem = myBackButton
         navigationController?.pushViewController(chatLogController, animated: true)
