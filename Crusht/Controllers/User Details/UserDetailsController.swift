@@ -11,7 +11,15 @@ import Firebase
 
 class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
-    //maybe create a viewmodel for user details?
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+           navigationController?.isNavigationBarHidden = false
+    }
     
     var cardViewModel: CardViewModel! {
         didSet {
@@ -166,7 +174,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
 //    }
     
     @objc fileprivate func handleDismiss() {
-        self.dismiss(animated: true)
+        navigationController?.isNavigationBarHidden = false
+       navigationController?.popToRootViewController(animated: true)
     }
     
     @objc fileprivate func handleReport() {
@@ -244,7 +253,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = true
+    
         setupLayout()
         
         setupVisualBlurEffectView()

@@ -24,11 +24,11 @@ class LoginViewController: UIViewController {
     
     var delegate: LoginControllerDelegate?
 
-    let Text: UILabel = {
+    let text: UILabel = {
         let label = UILabel()
      
-        label.text = "Wanna Find Out If a Crush is Mutual?"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        label.text = "Boop His Nose to Log In!"
+        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
         label.textColor = .black
         label.numberOfLines = 0
@@ -39,229 +39,219 @@ class LoginViewController: UIViewController {
   
 
     
-    let LoginBttn: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Log in with Email", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 100)
-        
-        button.layer.cornerRadius = 22
-        
-        button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
-        return button
-    }()
-
-    
-    
-    let FBLoginBttn: UIButton = {
-        
-        let button = UIButton(type: .system)
-        button.setTitle("Log in with Facebook", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 100)
-        button.layer.cornerRadius = 22
-        button.addTarget(self, action: #selector(loginButtonClicked), for: .touchUpInside)
-        return button
-    }()
-    
-   
-    
-    let phoneLoginBttn: UIButton = {
-        
-        let button = UIButton(type: .system)
-        button.setTitle("Log in with Phone", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 100)
-        button.layer.cornerRadius = 22
-        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-        return button
-    }()
+//    let LoginBttn: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle("Log in with Email", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+//        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+//        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+//        button.widthAnchor.constraint(equalToConstant: 100)
+//
+//        button.layer.cornerRadius = 22
+//
+//        button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
+//        return button
+//    }()
+//
+//
+//
+//    let FBLoginBttn: UIButton = {
+//
+//        let button = UIButton(type: .system)
+//        button.setTitle("Log in with Facebook", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+//        button.titleLabel?.adjustsFontSizeToFitWidth = true
+//        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+//        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+//        button.widthAnchor.constraint(equalToConstant: 100)
+//        button.layer.cornerRadius = 22
+//        button.addTarget(self, action: #selector(loginButtonClicked), for: .touchUpInside)
+//        return button
+//    }()
+//
+//
+//
+//    let phoneLoginBttn: UIButton = {
+//
+//        let button = UIButton(type: .system)
+//        button.setTitle("Log in with Phone", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+//        button.titleLabel?.adjustsFontSizeToFitWidth = true
+//        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+//        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+//        button.widthAnchor.constraint(equalToConstant: 100)
+//        button.layer.cornerRadius = 22
+//        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+//        return button
+//    }()
     
     @objc func handleLogin () {
         let phoneNumberViewController = PhoneNumberViewController()
         //navigationController?.pushViewController(phoneNumberViewController, animated: true)
         present(phoneNumberViewController, animated: true)
 }
-    let registrationViewModel = RegistrationViewModel()
-    let registeringHUD = JGProgressHUD(style: .dark)
+//    let registrationViewModel = RegistrationViewModel()
+//    let registeringHUD = JGProgressHUD(style: .dark)
+//
+//    @objc fileprivate func handleRegister() {
+//        print("Register our User in Firebase Auth")
+//        let profilePageViewController = ProfilePageViewController()
+//        registrationViewModel.performRegistration { [weak self] (err) in
+//            if let err = err {
+//                self?.showHUDWithError(error: err)
+//                return
+//            }
+//            self?.present(profilePageViewController, animated: true)
+//        }
+//    }
     
-    @objc fileprivate func handleRegister() {
-        print("Register our User in Firebase Auth")
-        let profilePageViewController = ProfilePageViewController()
-        registrationViewModel.performRegistration { [weak self] (err) in
-            if let err = err {
-                self?.showHUDWithError(error: err)
-                return
-            }
-            self?.present(profilePageViewController, animated: true)
-        }
-    }
+//    @objc func loginButtonClicked() {
+//        let loginManager = LoginManager()
+//        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
+//            switch loginResult {
+//            case .failed(let error):
+//                print("cccccccccccccccccccccccccccccccccccccc",error)
+//            case .cancelled:
+//                print("User cancelled login.")
+//            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
+//                print("Logged in!")
+//                self.performRegistration()
+//            }
+//
+//        }
+//    }
+//
+//
+////    fileprivate func performRegistration() {
+////
+////        let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+//        Auth.auth().signInAndRetrieveData(with: credential) { (user, err) in
+//            if let err = err {
+//                print("There was an error bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", err)
+//
+//                return
+//            }
+//
+//            print("Succesfully authenticated with Firebase.")
+//            self.fetchFacebookUser()
+//        }
+//    }
     
-    @objc func loginButtonClicked() {
-        let loginManager = LoginManager()
-        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
-            switch loginResult {
-            case .failed(let error):
-                print("cccccccccccccccccccccccccccccccccccccc",error)
-            case .cancelled:
-                print("User cancelled login.")
-            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
-                print("Logged in!")
-                self.performRegistration()
-            }
-            
-        }
-    }
-    
-    
-    fileprivate func performRegistration() {
-        
-        let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-        Auth.auth().signInAndRetrieveData(with: credential) { (user, err) in
-            if let err = err {
-                print("There was an error bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", err)
-                
-                return
-            }
-            
-            print("Succesfully authenticated with Firebase.")
-            self.fetchFacebookUser()
-        }
-    }
-    
-    fileprivate func goToProfilePage() {
-        let profController = ProfilePageViewController()
-        present(profController, animated: true)
-    }
-    
-    fileprivate func fetchFacebookUser() {
-        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
-        req.start({ (connection, result) in
-            switch result {
-            case .failed(let error):
-                print(error)
-            case .success(let graphResponse):
-                if let responseDictionary = graphResponse.dictionaryValue {
-                    print(responseDictionary)
-                    let firstNameFB = responseDictionary["first_name"] as? String
-                    let lastNameFB = responseDictionary["last_name"] as? String
-                    let socialIdFB = responseDictionary["id"] as? String
-                    let genderFB = responseDictionary["gender"] as? String
-                    let emailFB = responseDictionary["email"] as? String
-                    let pictureUrlFB = responseDictionary["picture"] as? [String:Any]
-                    let photoData = pictureUrlFB!["data"] as? [String:Any]
-                    let photoUrl = photoData!["url"] as? String
-                    
-                    print(firstNameFB ?? "", lastNameFB ?? "", socialIdFB ?? "", genderFB ?? "", photoUrl ?? "")
-                    
-                    self.fullName = "\(firstNameFB ?? "") \(lastNameFB ?? "")"
-                    self.photoUrl = photoUrl
-                    self.socialID = socialIdFB
-                    self.email = emailFB
 
-                }
-            }
-            Firestore.firestore().collection("users").whereField("email", isEqualTo: self.email ?? "").getDocuments(completion: { (snapshot, err) in
-                if let err = err {
-                    print(err)
-                }
-                if (snapshot?.isEmpty)! {
-                    self.saveInfoToFirestore()
-                }
-                else {
-                    let profileController = ProfilePageViewController()
-                    self.present(profileController, animated: true)
-                }
-            })
-            
-        })
-    }
     
-    fileprivate func saveImageToFirebase() {
-        
-        let filename = UUID().uuidString
-        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-        let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
-        ref.putData(imageData, metadata: nil, completion: {(_, err) in
-            if let err = err {
-                print(err)
-                return 
-            }
-            print("finished Uploading image")
-            ref.downloadURL(completion: { (url, err) in
-                if let err = err {
-                    print(err)
-                    return
-                }
-                self.bindableIsRegistering.value = false
-                print("Download url of our image is:", url?.absoluteString ?? "")
-                
-                let imageUrl = url?.absoluteString ?? ""
-                self.saveInfoToFirestore()
-            })
-        })
-    }
+//    fileprivate func fetchFacebookUser() {
+//        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+//        req.start({ (connection, result) in
+//            switch result {
+//            case .failed(let error):
+//                print(error)
+//            case .success(let graphResponse):
+//                if let responseDictionary = graphResponse.dictionaryValue {
+//                    print(responseDictionary)
+//                    let firstNameFB = responseDictionary["first_name"] as? String
+//                    let lastNameFB = responseDictionary["last_name"] as? String
+//                    let socialIdFB = responseDictionary["id"] as? String
+//                    let genderFB = responseDictionary["gender"] as? String
+//                    let emailFB = responseDictionary["email"] as? String
+//                    let pictureUrlFB = responseDictionary["picture"] as? [String:Any]
+//                    let photoData = pictureUrlFB!["data"] as? [String:Any]
+//                    let photoUrl = photoData!["url"] as? String
+//
+//                    print(firstNameFB ?? "", lastNameFB ?? "", socialIdFB ?? "", genderFB ?? "", photoUrl ?? "")
+//
+//                    self.fullName = "\(firstNameFB ?? "") \(lastNameFB ?? "")"
+//                    self.photoUrl = photoUrl
+//                    self.socialID = socialIdFB
+//                    self.email = emailFB
+//
+//                }
+//            }
+//            Firestore.firestore().collection("users").whereField("email", isEqualTo: self.email ?? "").getDocuments(completion: { (snapshot, err) in
+//                if let err = err {
+//                    print(err)
+//                }
+//                if (snapshot?.isEmpty)! {
+//                    self.saveInfoToFirestore()
+//                }
+//                else {
+//                    let profileController = ProfilePageViewController()
+//                    self.present(profileController, animated: true)
+//                }
+//            })
+//
+//        })
+//    }
     
+//    fileprivate func saveImageToFirebase() {
+//
+//        let filename = UUID().uuidString
+//        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+//        let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+//        ref.putData(imageData, metadata: nil, completion: {(_, err) in
+//            if let err = err {
+//                print(err)
+//                return
+//            }
+//            print("finished Uploading image")
+//            ref.downloadURL(completion: { (url, err) in
+//                if let err = err {
+//                    print(err)
+//                    return
+//                }
+//                self.bindableIsRegistering.value = false
+//                print("Download url of our image is:", url?.absoluteString ?? "")
+//
+//                let imageUrl = url?.absoluteString ?? ""
+//                self.saveInfoToFirestore()
+//            })
+//        })
+//    }
+//
     //maybe add the completion shit
     
     
     //Need to save image to storage somehow
     
-    var fullName: String?
-    var school: String?
-    var age: Int?
-    var photoUrl: String?
-    var socialID: String?
-    var email: String?
+//    var fullName: String?
+//    var school: String?
+//    var age: Int?
+//    var photoUrl: String?
+//    var socialID: String?
+//    var email: String?
     
-    fileprivate func saveInfoToFirestore() {
-        let uid = Auth.auth().currentUser?.uid ?? ""
-        let docData: [String: Any] =
-            ["Full Name": fullName ?? "",
-             "uid": uid,
-             "School": school ?? "",
-             "Age": age ?? 18,
-             "Bio": "",
-             "minSeekingAge": 18,
-             "maxSeekingAge": 50,
-             "email": email ?? "",
-             "fbid": socialID ?? "",
-             "ImageUrl1": photoUrl!]
-        //let userAge = ["Age": age]
-        Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
-            
-            if let err = err {
-                print("there was an err",err)
-                return
-            }
-//            let FBphoneController = FacebookPhoneController()
+//    fileprivate func saveInfoToFirestore() {
+//        let uid = Auth.auth().currentUser?.uid ?? ""
+//        let docData: [String: Any] =
+//            ["Full Name": fullName ?? "",
+//             "uid": uid,
+//             "School": school ?? "",
+//             "Age": age ?? 18,
+//             "Bio": "",
+//             "minSeekingAge": 18,
+//             "maxSeekingAge": 50,
+//             "email": email ?? "",
+//             "fbid": socialID ?? "",
+//             "ImageUrl1": photoUrl!]
+//        //let userAge = ["Age": age]
+//        Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
 //
-//            self.present(FBphoneController, animated: true)
-            let nameController = EnterNameController()
-            nameController.phone = "+18123234456"
-            self.present(nameController, animated: true)
-        }
-    }
+//            if let err = err {
+//                print("there was an err",err)
+//                return
+//            }
+////            let FBphoneController = FacebookPhoneController()
+////
+////            self.present(FBphoneController, animated: true)
+//            let nameController = EnterNameController()
+//            nameController.phone = "+18123234456"
+//            self.present(nameController, animated: true)
+//        }
+//    }
     
-        fileprivate func showHUDWithError(error: Error) {
-            registeringHUD.dismiss()
-            let hud = JGProgressHUD(style: .dark)
-            hud.textLabel.text = "Failed registration"
-            hud.detailTextLabel.text = error.localizedDescription
-            hud.show(in: self.view)
-            hud.dismiss(afterDelay: 3)
-        }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -271,39 +261,30 @@ class LoginViewController: UIViewController {
         setupLayout()
     }
     
-    let goToRegisterBttn: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Not a user, Register", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
-        button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
-        return button
-    }()
-    
-    @objc fileprivate func handleGoToLogin() {
-        let loginController = LoginController()
-        navigationController?.pushViewController(loginController, animated: true)
-        
-    }
+    let tap = UITapGestureRecognizer()
     
     fileprivate func setupLayout () {
         navigationController?.isNavigationBarHidden = true
         
-        let logoImage = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/2, height: UIScreen.main.bounds.size.height/3))
+        let logoImage = UIImageView()
+        
         logoImage.image = #imageLiteral(resourceName: "CrushtLogoLiam")
         logoImage.contentMode = .scaleAspectFit
+        
+        tap.addTarget(self, action: #selector(handleLogin))
+        logoImage.addGestureRecognizer(tap)
+        logoImage.isUserInteractionEnabled = true
     
+        view.addSubview(logoImage)
         
-        view.addSubview(Text)
+        logoImage.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 60, left: 0, bottom: 0, right: 0))
         
-        let overallStackView = UIStackView(arrangedSubviews: [logoImage, Text, phoneLoginBttn, UIView(), FBLoginBttn])
-        overallStackView.axis = .vertical
-        view.addSubview(overallStackView)
+            view.addSubview(text)
         
-        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
-        overallStackView.isLayoutMarginsRelativeArrangement = true
-        overallStackView.layoutMargins = .init(top: -40, left: 30, bottom: 80, right: 30)
-        overallStackView.spacing = 10
+        text.anchor(top: logoImage.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 14, left: 40, bottom: 0, right: 40))
+       
         
+        view.bringSubviewToFront(text)
        
     }
     

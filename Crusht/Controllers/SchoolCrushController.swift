@@ -5,7 +5,6 @@
 //  Created by William Kelly on 1/9/19.
 //  Copyright © 2019 William Kelly. All rights reserved.
 //
-
 import UIKit
 import Firebase
 import JGProgressHUD
@@ -36,13 +35,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 class SchoolCrushController: UITableViewController, UISearchBarDelegate {
   
     
-//    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
-
-    override func viewWillDisappear(_ animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = true
-    }
+    //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
+  
     fileprivate var crushScore: CrushScore?
     
     fileprivate func addCrushScore() {
@@ -88,18 +82,18 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         }
         
     }
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let cellId = "cellId"
-                
+        
         fetchCurrentUser()
-//        navigationItem.leftItemsSupplementBackButton = true
-//        navigationItem.leftBarButtonItem?.title = "👈"
-         navigationController?.isNavigationBarHidden = false
+        //        navigationItem.leftItemsSupplementBackButton = true
+        //        navigationItem.leftBarButtonItem?.title = "👈"
+      
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+                navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         
@@ -110,7 +104,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         searchController.searchBar.placeholder = "Search School"
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
-      
+        
         
         // Setup the Scope Bar
         //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
@@ -118,11 +112,22 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         self.navigationItem.hidesSearchBarWhenScrolling = false
         
         // Setup the search footer
-       // tableView.tableFooterView = searchFooter
-      
+        // tableView.tableFooterView = searchFooter
+        
+        
+        for viewController in tabBarController?.viewControllers ?? [] {
+            if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
+                let _ = rootVC.view
+            } else {
+                let _ = viewController.view
+            }
+        }
+        
     }
     
-     var user: User?
+    
+    
+    var user: User?
     let hud = JGProgressHUD(style: .dark)
     
     var schoolArray = [User]()
@@ -162,11 +167,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         }
     }
     
-//    var indexSchoolNames = [String]()
-//
-//    var indexSchoolDictionary = [String: [String]]()
-//
-//    var indexSchoolTitles = String()
+    //    var indexSchoolNames = [String]()
+    //
+    //    var indexSchoolDictionary = [String: [String]]()
+    //
+    //    var indexSchoolTitles = String()
     
     
     var isRightSex = Bool()
@@ -174,13 +179,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
     var schoolUserDictionary = [String: User]()
     
     fileprivate func fetchSchool() {
-         let school = user?.school ?? "Your School"
-     
+        let school = user?.school ?? "Your School"
+        
         
         navigationItem.title = school
         
-  
-           let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").start(at: ["A"])
+        
+        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").start(at: ["A"])
         
         //chagne logic where gender variable is just the where field firebase thing
         
@@ -202,10 +207,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 
                 let sexPref = self.user?.sexPref
                 
-             
+                
                 
                 if sexPref == "She/Her/Hers" {
-                     self.isRightSex = crush.gender == "She/Her/Hers" || crush.gender == "They/Them/Their"
+                    self.isRightSex = crush.gender == "She/Her/Hers" || crush.gender == "They/Them/Their"
                 }
                 else if sexPref == "He/Him/His" {
                     self.isRightSex = crush.gender == "He/Him/His" || crush.gender == "They/Them/Their"
@@ -222,30 +227,30 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 
                 if isNotCurrentUser && minAge && maxAge && self.isRightSex {
                     
-//                    self.indexSchoolNames.append(String(crush.name!.prefix(1)))
-//                    for indexSchoolName in self.indexSchoolNames {
-//
-//                        let nameKey = String(crush.name!.prefix(1))
-//                        if var nameValues = self.indexSchoolDictionary[nameKey] {
-//                            nameValues.append(indexSchoolName)
-//                            self.indexSchoolDictionary[nameKey] = nameValues
-//                        }
-//                        else {
-//                            self.indexSchoolDictionary[nameKey] = [indexSchoolName]
-//                        }
-//                    }
+                    //                    self.indexSchoolNames.append(String(crush.name!.prefix(1)))
+                    //                    for indexSchoolName in self.indexSchoolNames {
+                    //
+                    //                        let nameKey = String(crush.name!.prefix(1))
+                    //                        if var nameValues = self.indexSchoolDictionary[nameKey] {
+                    //                            nameValues.append(indexSchoolName)
+                    //                            self.indexSchoolDictionary[nameKey] = nameValues
+                    //                        }
+                    //                        else {
+                    //                            self.indexSchoolDictionary[nameKey] = [indexSchoolName]
+                    //                        }
+                    //                    }
                     
                     
-//                self.indexSchoolNames = [String](self.indexSchoolDictionary.keys)
-//                self.indexSchoolNames = self.indexSchoolNames.sorted()
-                
-                self.schoolArray.append(crush)
+                    //                self.indexSchoolNames = [String](self.indexSchoolDictionary.keys)
+                    //                self.indexSchoolNames = self.indexSchoolNames.sorted()
+                    
+                    self.schoolArray.append(crush)
                     
                     
                     
                 }
                 
-               
+                
                 //                let crushStuff = User(dictionary: userDictionary)
                 //                if let crushPartnerId = crushStuff.crushPartnerId() {
                 //                    self.schoolUserDictionary[crushPartnerId] = user
@@ -263,26 +268,25 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             })
             
             self.fetchSwipes()
-
+            
         }
         
     }
     
-//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return indexSchoolNames[section]
-//    }
+    //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    //        return indexSchoolNames[section]
+    //    }
     
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // 1
-//        return indexSchoolNames.count
-//    }
-//
-//
-//
-//    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return indexSchoolNames
-//    }
-
+    //    override func numberOfSections(in tableView: UITableView) -> Int {
+    //        // 1
+    //        return indexSchoolNames.count
+    //    }
+    //
+    //
+    //
+    //    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    //        return indexSchoolNames
+    //    }
     
     
     func hasTappedCrush(cell: UITableViewCell) {
@@ -309,8 +313,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         //cell.tintColor = .red
         
         if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
-        
-        handleLike(cell: cell)
+            
+            handleLike(cell: cell)
         }
         else {
             handleDislike(cell: cell)
@@ -419,45 +423,45 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                     let secondUser = User(dictionary: secondUserDictionary!)
                     let otherDocData: [String: Any] = ["uid": uid, "Full Name": secondUser.name ?? "", "School": secondUser.school ?? "", "ImageUrl1": secondUser.imageUrl1!, "matchName": user.name ?? ""
                     ]
-                
-                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!, "matchName": secondUser.name ?? ""
-                ]
-             
-               //this is for message controller
-                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
-                    if let err = err {
-                        print(err)
-                    }
                     
+                    let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!, "matchName": secondUser.name ?? ""
+                    ]
                     
-                    if (snapshot?.isEmpty)! {
-                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                    //this is for message controller
+                    Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
+                        if let err = err {
+                            print(err)
+                        }
                         
                         
+                        if (snapshot?.isEmpty)! {
+                            Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                            
+                            
                             Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
-                        
-                         self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
-                    
-                        
+                            
+                            self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
+                            
+                            
                         }
                         
                     })
                     
                 })
-            
-    
-//                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
-//                    if let err = err {
-//                        print(err)
-//                    }
-//
-//                    if (snapshot?.isEmpty)! {
-//                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
-//                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
-//                    }
-//                })
                 
-               
+                
+                //                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
+                //                    if let err = err {
+                //                        print(err)
+                //                    }
+                //
+                //                    if (snapshot?.isEmpty)! {
+                //                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
+                //                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                //                    }
+                //                })
+                
+                
                 
                 
                 
@@ -501,7 +505,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         let fromId = Auth.auth().currentUser!.uid
         
         let toName = cardNAME
-
+        
         
         let timestamp = Int(Date().timeIntervalSince1970)
         var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
@@ -596,7 +600,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                                     
                                     
                                 }
-                               
+                                
                             })
                         })
                         
@@ -741,7 +745,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-    
+        
         self.navigationController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
@@ -761,17 +765,17 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
     //    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60.0
+        return 65.0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-            if isFiltering() {
-                return users.count
-            }
+        if isFiltering() {
+            return users.count
+        }
         
         return schoolArray.count
-
+        
     }
     
     let cellId = "cellId"
@@ -794,14 +798,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
             }
         }
-     
+    
         
-//        if hasFavorited == true {
-//        cellL.starButton.tintColor = .red
-//        }
-//        else {
-//            cellL.starButton.tintColor = .gray
-//        }
+        
+        //        if hasFavorited == true {
+        //        cellL.starButton.tintColor = .red
+        //        }
+        //        else {
+        //            cellL.starButton.tintColor = .gray
+        //        }
         
         let crush = schoolArray[indexPath.row]
         
@@ -812,33 +817,33 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             hasFavorited = true
         }
         else{
-        cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+            cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
         }
         return cellL
     }
     
-     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let crush = schoolArray[indexPath.row]
         
         guard let profUID = crush.uid else {
             return
         }
-//
-//        let userDetailsController = UserDetailsController()
-//        //userDetailsController.view.backgroundColor = .purple
-//        userDetailsController.cardViewModel =
-//        present(userDetailsController, animated: true)
+        //
+        //        let userDetailsController = UserDetailsController()
+        //        //userDetailsController.view.backgroundColor = .purple
+        //        userDetailsController.cardViewModel =
+        //        present(userDetailsController, animated: true)
         Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
             guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
             
             var user = User(dictionary: dictionary)
             user.uid = profUID
             let userDetailsController = UserDetailsController()
-
+            
             userDetailsController.cardViewModel = user.toCardViewModel()
             self.navigationController?.pushViewController(userDetailsController, animated: true)
-       
+            
             
         })
     }
@@ -860,7 +865,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
         cell.accessoryView?.tintColor = .red
         
-      
+        
         
     }
     
@@ -868,7 +873,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
         saveSwipeToFireStore(didLike: 0)
         
-     cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
         
     }
     
@@ -893,7 +898,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
 extension SchoolCrushController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
-       
-       filterContentForSearchText(searchController.searchBar.text!)
+        
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }

@@ -5,7 +5,6 @@
 //  Created by William Kelly on 12/5/18.
 //  Copyright © 2018 William Kelly. All rights reserved.
 //
-
 import UIKit
 import Firebase
 import SDWebImage
@@ -102,7 +101,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
-                 showSettingsAlert2() 
+                showSettingsAlert2()
             case .authorizedAlways, .authorizedWhenInUse:
                 let locationViewController = LocationMatchViewController()
                 locationViewController.user = user
@@ -110,10 +109,10 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
                 present(navigationController, animated: true)
             }
         } else {
-           showSettingsAlert2()
+            showSettingsAlert2()
         }
-
-       
+        
+        
         
     }
     
@@ -130,10 +129,9 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     }
     
     @objc fileprivate func handleFindCrushesTapped() {
-        let transController = TransitionCrushesController()
-        transController.user = user
-        let navigationController = UINavigationController(rootViewController: transController)
-        present(navigationController, animated: true)
+        let tabController = CustomTabBarController()
+        
+        present(tabController, animated: true)
     }
     
     @objc func handleSettings() {
@@ -151,7 +149,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         messageBadge.removeFromSuperview()
         let navController = UINavigationController(rootViewController: messageController)
         present(navController, animated: true)
-     //navigationController?.pushViewController(messageController, animated: true)
+        //navigationController?.pushViewController(messageController, animated: true)
         
     }
     
@@ -186,10 +184,15 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         fetchCurrentUser()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("HomeController did appear")
-
+        
         // you want to kick the user out when they log out
         if Auth.auth().currentUser == nil {
             let loginController = LoginViewController()
@@ -217,7 +220,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
                 self.crushScore = CrushScore(dictionary: dictionary)
                 print(self.crushScore?.crushScore ?? 0)
                 if (self.crushScore?.crushScore ?? 0) > 10 && (self.crushScore?.crushScore ?? 0) <= 50 {
-                self.profPicView.greetingLabel.text = "You're on 🔥"
+                    self.profPicView.greetingLabel.text = "You're on 🔥"
                 }
                 else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
                     self.profPicView.greetingLabel.text = "You Must be Cute 😍"
@@ -231,7 +234,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
                 else if (self.crushScore?.crushScore ?? 0) > 400 {
                     self.profPicView.greetingLabel.text = "Add Dating as a Skill on Your Resume"
                 }
-
+                
             }
             else {
                 self.profPicView.greetingLabel.text = "Hey Good Lookin' 😊"
@@ -241,13 +244,13 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     }
     
     let locationManager = CLLocationManager()
-   
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
         listenForMessages()
-//        listenforMatches()
+        //        listenforMatches()
         self.locationManager.requestAlwaysAuthorization()
         
         // For use in foreground
@@ -257,7 +260,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
-         
+            
             print(locationManager.location?.coordinate.latitude as Any)
             print(locationManager.location?.coordinate.latitude as Any)
             print("We have your location!")
@@ -268,12 +271,15 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         setLabelText()
         
         profPicView.layer.cornerRadius = 100
-
+        
+        profPicView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         topStackView.homeButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-
-
+        
+        profPicView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
+        profPicView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
+        
         profPicView.selectPhotoButton.addTarget(self, action: #selector(goToProfile), for: .touchUpInside)
-//        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
+        //        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         topStackView.messageButton.addSubview(messageBadge)
         messageBadge.isHidden = true
@@ -290,7 +296,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     @objc fileprivate func goToProfile() {
         //handleSave()
-        let userDetailsController = UserDetailsController()
+        let userDetailsController = DetailsPOPVIEWController()
         userDetailsController.reportBttn.isHidden = true
         userDetailsController.cardViewModel = user?.toCardViewModel()
         self.present(userDetailsController, animated: true)
@@ -326,7 +332,7 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
             
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-
+            
             geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
                 if (error != nil) {
                     print("An error occured", error!)
@@ -353,13 +359,13 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
             self.profPicView.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
-       
+        
         //self.user?.imageUrl1
     }
     
     fileprivate func setupLayout () {
         
-        let overallStackView = UIStackView(arrangedSubviews: [topStackView, profPicView])
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, profPicView, bottomStackView])
         view.addSubview(overallStackView)
         
         overallStackView.axis = .vertical
@@ -368,9 +374,9 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         overallStackView.isLayoutMarginsRelativeArrangement = true
-        overallStackView.layoutMargins = .init(top: 0, left: 0, bottom: 15, right: 0)
+        overallStackView.layoutMargins = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-
+    
     
 }

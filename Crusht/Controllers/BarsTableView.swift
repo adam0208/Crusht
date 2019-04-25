@@ -14,10 +14,9 @@ import CoreLocation
 
 class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate {
     
-    override func viewWillDisappear(_ animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     var user: User?
@@ -26,8 +25,14 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     
     let locationManager = CLLocationManager()
     
+    @objc fileprivate func handleBack() {
+        dismiss(animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+
         navigationController?.isNavigationBarHidden = false
         tableView.register(VenueCell.self, forCellReuseIdentifier: cellId)
         navigationItem.title = "Select to Check Venue"
@@ -69,10 +74,22 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     var userLat = Double()
     var userLong = Double()
     
+   
+        
     fileprivate func fetchCurrentUser() {
-        
-        
-        self.fetchBars()
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+                if let err = err {
+                    print(err)
+                    return
+                }
+                
+                guard let dictionary = snapshot?.data() else {return}
+                self.user = User(dictionary: dictionary)
+                
+                print(self.user?.phoneNumber ?? "Fuck you")
+                self.fetchBars()
+        }
     }
     
     
@@ -191,7 +208,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60.0
+        return 65.0
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

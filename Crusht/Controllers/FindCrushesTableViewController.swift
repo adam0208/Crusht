@@ -13,10 +13,9 @@ import JGProgressHUD
 
 
 class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate {
-    override func viewWillDisappear(_ animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
 
     let cellId = "cellId123123"
@@ -26,12 +25,21 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
      var user: User?
     
     fileprivate func fetchCurrentUser() {
-    
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
             print(self.user?.phoneNumber ?? "Fuck you")
             self.fetchSwipes()
             self.tableView.reloadData()
             
         }
+    }
     
     
 
@@ -685,7 +693,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //        navigationItem.searchController = self.searchController
         definesPresentationContext = true
         navigationController?.isNavigationBarHidden = false
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+
         // Setup the Scope Bar
         //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
 //        self.searchController.searchBar.delegate = self
@@ -720,7 +729,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60.0
+        return 65.0
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

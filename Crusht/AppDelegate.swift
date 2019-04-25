@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Auth.auth().currentUser == nil {
             window?.rootViewController = LoginViewController()
         } else {
-        window?.rootViewController = CustomTabBarController()
+        window?.rootViewController = profController
 
         }
         

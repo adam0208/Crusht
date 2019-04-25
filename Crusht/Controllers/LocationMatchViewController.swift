@@ -139,7 +139,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 print(err)
                 return
             }
-        
+            let dictionary = snapshot?.data()
+            self.user = User(dictionary: dictionary!)
            
             self.sexPref = self.user?.sexPref ?? ""
             self.userAge = self.user?.age ?? 20

@@ -49,6 +49,11 @@ class MessageController: UITableViewController, UISearchBarDelegate {
     
     //ADD COLLECTION CALLED USER MESSAGE OR SOMETING TO DOCUMENT SO ONLY GET ONE MESSAGE
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchUserAndSetupNavBarTitle()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let cellId = "cellId"
@@ -67,7 +72,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 
         
-        fetchUserAndSetupNavBarTitle()
+        
         
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: true)
         
@@ -364,7 +369,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         chatLogController.user = user
         chatLogController.fromName = navigationItem.title
         let myBackButton = UIBarButtonItem()
-        
+        tabBarController?.tabBar.isHidden = true
         myBackButton.title = "👈"
         navigationItem.backBarButtonItem = myBackButton
         navigationController?.pushViewController(chatLogController, animated: true)

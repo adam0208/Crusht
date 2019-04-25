@@ -93,7 +93,12 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     let myPickerData = [String](arrayLiteral: " ", "He/Him/His", "She/Her/Hers", "All Humans")
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+        fetchCurrentUser()
+        self.tableView.reloadData()
+    }
     
     
     func createBttn(selector: Selector) -> UIButton {
@@ -497,11 +502,15 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 print("Failed to retrieve user settings", err)
                 return
             }
-            self.dismiss(animated: true, completion: {
-                print("Dismissal Complete")
-                self.delegate?.didSaveSettings()
+            for viewController in self.tabBarController?.viewControllers ?? [] {
+                if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
+                    let _ = rootVC.view
+                } else {
+                    let _ = viewController.view
+                }
+            }
             
-            })
+        
         }
     }
     

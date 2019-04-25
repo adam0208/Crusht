@@ -13,6 +13,8 @@
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
 		28148F3721D6C1540016BD22 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 28148F3621D6C1530016BD22 /* play.png */; };
+		282B2E592271813600BAB159 /* DetailsPOPVIEWController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */; };
+		282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */ = {isa = PBXBuildFile; fileRef = 282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */; };
 		28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */; };
 		28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */; };
 		283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C621B8925C00B3E4FD /* AppDelegate.swift */; };
@@ -147,6 +149,8 @@
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		28148F3621D6C1530016BD22 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPOPVIEWController.swift; sourceTree = "<group>"; };
+		282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CrushtLogoLiam69!.png"; sourceTree = "<group>"; };
 		28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewCell.swift; sourceTree = "<group>"; };
 		28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSeniorFivePostTableViewController.swift; sourceTree = "<group>"; };
 		283816C321B8925C00B3E4FD /* Crusht.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crusht.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -336,6 +340,7 @@
 				283816CD21B8925F00B3E4FD /* Assets.xcassets */,
 				28148F3621D6C1530016BD22 /* play.png */,
 				28F148852249725E00E5FB39 /* CrushtLogoLiam.png */,
+				282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */,
 				28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */,
 				28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */,
 				28CFC6AE21C56BAB00387129 /* heart2crusht.png */,
@@ -508,6 +513,7 @@
 				28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */,
 				286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */,
 				2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */,
+				282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */,
 			);
 			path = "User Details";
 			sourceTree = "<group>";
@@ -654,6 +660,7 @@
 				28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */,
 				28857CC821B98F9300A654A0 /* top_left_profile@2x.png in Resources */,
 				28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */,
+				282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */,
 				28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */,
 				28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */,
 				28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */,
@@ -916,6 +923,7 @@
 				28C30338226C1887002FB145 /* UsersInBarCell.swift in Sources */,
 				2838170321B8A0A700B3E4FD /* CardView.swift in Sources */,
 				283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */,
+				282B2E592271813600BAB159 /* DetailsPOPVIEWController.swift in Sources */,
 				28857CC521B98C6B00A654A0 /* ProfPageMidButtonView.swift in Sources */,
 				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
 				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,
