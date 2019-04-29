@@ -12,6 +12,29 @@
 		280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */; };
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
+		280F67A22274219E00C1F2C4 /* ReportButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A12274219E00C1F2C4 /* ReportButtonCrusht.png */; };
+		280F67A42274241A00C1F2C4 /* Recycle button.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A32274241A00C1F2C4 /* Recycle button.png */; };
+		280F67A62274294200C1F2C4 /* icons8-back-filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A52274294200C1F2C4 /* icons8-back-filled-50.png */; };
+		280F67A822742BDF00C1F2C4 /* icons8-mortarboard-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A722742BDF00C1F2C4 /* icons8-mortarboard-30.png */; };
+		280F67AA22742CBF00C1F2C4 /* icons8-phone-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A922742CBF00C1F2C4 /* icons8-phone-30.png */; };
+		280F67AC22742DF000C1F2C4 /* icons8-guinness-beer-filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67AB22742DF000C1F2C4 /* icons8-guinness-beer-filled-50.png */; };
+		280F67AE22742F8C00C1F2C4 /* icons8-bar-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67AD22742F8C00C1F2C4 /* icons8-bar-30.png */; };
+		280F67B02274345C00C1F2C4 /* icons8-back-filled-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67AF2274345C00C1F2C4 /* icons8-back-filled-30.png */; };
+		280F67B22274354300C1F2C4 /* icons8-back-filled-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67B12274354300C1F2C4 /* icons8-back-filled-30-2.png */; };
+		280F67B4227439DA00C1F2C4 /* icons8-male-user-filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67B3227439DA00C1F2C4 /* icons8-male-user-filled-50.png */; };
+		280F67B622743E4500C1F2C4 /* icons8-communication-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67B522743E4500C1F2C4 /* icons8-communication-60.png */; };
+		280F67B82274415600C1F2C4 /* icons8-male-user-filled-50-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67B72274415600C1F2C4 /* icons8-male-user-filled-50-2.png */; };
+		280F67BA2274DF9100C1F2C4 /* icons8-refresh-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67B92274DF9100C1F2C4 /* icons8-refresh-30.png */; };
+		280F67BC2274E1D700C1F2C4 /* icons8-box-important-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67BB2274E1D600C1F2C4 /* icons8-box-important-30.png */; };
+		280F67BE2274E21700C1F2C4 /* icons8-love-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67BD2274E21600C1F2C4 /* icons8-love-30.png */; };
+		280F67C02274E26500C1F2C4 /* icons8-cancel-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67BF2274E26500C1F2C4 /* icons8-cancel-30.png */; };
+		280F67C22274E63C00C1F2C4 /* icons8-mortarboard-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67C12274E63C00C1F2C4 /* icons8-mortarboard-30-2.png */; };
+		280F67C42274E66B00C1F2C4 /* icons8-phone-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67C32274E66B00C1F2C4 /* icons8-phone-30-2.png */; };
+		280F67C62274E6E000C1F2C4 /* icons8-bar-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67C52274E6E000C1F2C4 /* icons8-bar-30-2.png */; };
+		281282DF2273ED4800CA324E /* LikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282DE2273ED4800CA324E /* LikeButtonCrusht.png */; };
+		281282E12273ED5000CA324E /* DislikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */; };
+		281282E32273EF0D00CA324E /* SettingsIconCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E22273EF0D00CA324E /* SettingsIconCrusht.png */; };
+		281282E52273EF1500CA324E /* Messages Crusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E42273EF1500CA324E /* Messages Crusht.png */; };
 		28148F3721D6C1540016BD22 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 28148F3621D6C1530016BD22 /* play.png */; };
 		282B2E592271813600BAB159 /* DetailsPOPVIEWController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */; };
 		282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */ = {isa = PBXBuildFile; fileRef = 282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */; };
@@ -112,6 +135,11 @@
 		28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */; };
 		28F54071224C163F00EC5062 /* BioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54070224C163F00EC5062 /* BioCell.swift */; };
 		28F54073224C23C600EC5062 /* BioTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54072224C23C600EC5062 /* BioTextView.swift */; };
+		28F67BA52276381B00EDFDFF /* icons8-settings-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F67BA42276381A00EDFDFF /* icons8-settings-30-2.png */; };
+		28F67BA72276382100EDFDFF /* icons8-swipe-right-gesture-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F67BA62276382100EDFDFF /* icons8-swipe-right-gesture-30.png */; };
+		28F67BA92276382E00EDFDFF /* icons8-communication-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F67BA82276382E00EDFDFF /* icons8-communication-30.png */; };
+		28F67BAB22766D1F00EDFDFF /* icons8-exclamation-mark-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F67BAA22766D1F00EDFDFF /* icons8-exclamation-mark-30.png */; };
+		28F67BAD22766D8C00EDFDFF /* icons8-user-male-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F67BAC22766D8C00EDFDFF /* icons8-user-male-30.png */; };
 		28FD7D0C2261AFBB00B79496 /* GenderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D0B2261AFBB00B79496 /* GenderController.swift */; };
 		28FD7D0E2261BA8900B79496 /* YourSexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D0D2261BA8900B79496 /* YourSexController.swift */; };
 		28FD7D1022641FB100B79496 /* EnterNameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D0F22641FB100B79496 /* EnterNameController.swift */; };
@@ -148,6 +176,29 @@
 		280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SeniorFiveIcon.png; sourceTree = "<group>"; };
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		280F67A12274219E00C1F2C4 /* ReportButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ReportButtonCrusht.png; sourceTree = "<group>"; };
+		280F67A32274241A00C1F2C4 /* Recycle button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Recycle button.png"; sourceTree = "<group>"; };
+		280F67A52274294200C1F2C4 /* icons8-back-filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-back-filled-50.png"; sourceTree = "<group>"; };
+		280F67A722742BDF00C1F2C4 /* icons8-mortarboard-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-mortarboard-30.png"; sourceTree = "<group>"; };
+		280F67A922742CBF00C1F2C4 /* icons8-phone-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-phone-30.png"; sourceTree = "<group>"; };
+		280F67AB22742DF000C1F2C4 /* icons8-guinness-beer-filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-guinness-beer-filled-50.png"; sourceTree = "<group>"; };
+		280F67AD22742F8C00C1F2C4 /* icons8-bar-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-bar-30.png"; sourceTree = "<group>"; };
+		280F67AF2274345C00C1F2C4 /* icons8-back-filled-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-back-filled-30.png"; sourceTree = "<group>"; };
+		280F67B12274354300C1F2C4 /* icons8-back-filled-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-back-filled-30-2.png"; sourceTree = "<group>"; };
+		280F67B3227439DA00C1F2C4 /* icons8-male-user-filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-male-user-filled-50.png"; sourceTree = "<group>"; };
+		280F67B522743E4500C1F2C4 /* icons8-communication-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-communication-60.png"; sourceTree = "<group>"; };
+		280F67B72274415600C1F2C4 /* icons8-male-user-filled-50-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-male-user-filled-50-2.png"; sourceTree = "<group>"; };
+		280F67B92274DF9100C1F2C4 /* icons8-refresh-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-refresh-30.png"; sourceTree = "<group>"; };
+		280F67BB2274E1D600C1F2C4 /* icons8-box-important-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-box-important-30.png"; sourceTree = "<group>"; };
+		280F67BD2274E21600C1F2C4 /* icons8-love-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-love-30.png"; sourceTree = "<group>"; };
+		280F67BF2274E26500C1F2C4 /* icons8-cancel-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-cancel-30.png"; sourceTree = "<group>"; };
+		280F67C12274E63C00C1F2C4 /* icons8-mortarboard-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-mortarboard-30-2.png"; sourceTree = "<group>"; };
+		280F67C32274E66B00C1F2C4 /* icons8-phone-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-phone-30-2.png"; sourceTree = "<group>"; };
+		280F67C52274E6E000C1F2C4 /* icons8-bar-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-bar-30-2.png"; sourceTree = "<group>"; };
+		281282DE2273ED4800CA324E /* LikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LikeButtonCrusht.png; sourceTree = "<group>"; };
+		281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DislikeButtonCrusht.png; sourceTree = "<group>"; };
+		281282E22273EF0D00CA324E /* SettingsIconCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SettingsIconCrusht.png; path = ../../SettingsIconCrusht.png; sourceTree = "<group>"; };
+		281282E42273EF1500CA324E /* Messages Crusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Messages Crusht.png"; path = "../../Messages Crusht.png"; sourceTree = "<group>"; };
 		28148F3621D6C1530016BD22 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPOPVIEWController.swift; sourceTree = "<group>"; };
 		282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CrushtLogoLiam69!.png"; sourceTree = "<group>"; };
@@ -255,6 +306,11 @@
 		28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "itsamatch@2x copy.png"; sourceTree = "<group>"; };
 		28F54070224C163F00EC5062 /* BioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioCell.swift; sourceTree = "<group>"; };
 		28F54072224C23C600EC5062 /* BioTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioTextView.swift; sourceTree = "<group>"; };
+		28F67BA42276381A00EDFDFF /* icons8-settings-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-settings-30-2.png"; sourceTree = "<group>"; };
+		28F67BA62276382100EDFDFF /* icons8-swipe-right-gesture-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-swipe-right-gesture-30.png"; sourceTree = "<group>"; };
+		28F67BA82276382E00EDFDFF /* icons8-communication-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-communication-30.png"; sourceTree = "<group>"; };
+		28F67BAA22766D1F00EDFDFF /* icons8-exclamation-mark-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-exclamation-mark-30.png"; sourceTree = "<group>"; };
+		28F67BAC22766D8C00EDFDFF /* icons8-user-male-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-user-male-30.png"; sourceTree = "<group>"; };
 		28FD7D0B2261AFBB00B79496 /* GenderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderController.swift; sourceTree = "<group>"; };
 		28FD7D0D2261BA8900B79496 /* YourSexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourSexController.swift; sourceTree = "<group>"; };
 		28FD7D0F22641FB100B79496 /* EnterNameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameController.swift; sourceTree = "<group>"; };
@@ -338,6 +394,28 @@
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
 				283816CD21B8925F00B3E4FD /* Assets.xcassets */,
+				28F67BAC22766D8C00EDFDFF /* icons8-user-male-30.png */,
+				28F67BAA22766D1F00EDFDFF /* icons8-exclamation-mark-30.png */,
+				28F67BA82276382E00EDFDFF /* icons8-communication-30.png */,
+				28F67BA42276381A00EDFDFF /* icons8-settings-30-2.png */,
+				28F67BA62276382100EDFDFF /* icons8-swipe-right-gesture-30.png */,
+				280F67C52274E6E000C1F2C4 /* icons8-bar-30-2.png */,
+				280F67C32274E66B00C1F2C4 /* icons8-phone-30-2.png */,
+				280F67C12274E63C00C1F2C4 /* icons8-mortarboard-30-2.png */,
+				280F67BF2274E26500C1F2C4 /* icons8-cancel-30.png */,
+				280F67BD2274E21600C1F2C4 /* icons8-love-30.png */,
+				280F67BB2274E1D600C1F2C4 /* icons8-box-important-30.png */,
+				280F67B92274DF9100C1F2C4 /* icons8-refresh-30.png */,
+				280F67B72274415600C1F2C4 /* icons8-male-user-filled-50-2.png */,
+				280F67B522743E4500C1F2C4 /* icons8-communication-60.png */,
+				280F67B3227439DA00C1F2C4 /* icons8-male-user-filled-50.png */,
+				280F67B12274354300C1F2C4 /* icons8-back-filled-30-2.png */,
+				280F67AF2274345C00C1F2C4 /* icons8-back-filled-30.png */,
+				280F67AB22742DF000C1F2C4 /* icons8-guinness-beer-filled-50.png */,
+				280F67AD22742F8C00C1F2C4 /* icons8-bar-30.png */,
+				280F67A922742CBF00C1F2C4 /* icons8-phone-30.png */,
+				280F67A722742BDF00C1F2C4 /* icons8-mortarboard-30.png */,
+				280F67A52274294200C1F2C4 /* icons8-back-filled-50.png */,
 				28148F3621D6C1530016BD22 /* play.png */,
 				28F148852249725E00E5FB39 /* CrushtLogoLiam.png */,
 				282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */,
@@ -354,12 +432,18 @@
 				280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */,
 				28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */,
 				28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */,
+				280F67A32274241A00C1F2C4 /* Recycle button.png */,
 				28857C9421B8D1D500A654A0 /* FaveBttn2.png */,
 				28857C5A21B8D1D100A654A0 /* IMG_0184.png */,
+				281282E42273EF1500CA324E /* Messages Crusht.png */,
 				28857CC621B98F9200A654A0 /* top_left_profile@2x.png */,
+				281282E22273EF0D00CA324E /* SettingsIconCrusht.png */,
 				28857CC721B98F9200A654A0 /* top_right_messages@2x.png */,
 				28857C6421B8D1D200A654A0 /* NoProfileImage.png */,
 				28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */,
+				281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */,
+				280F67A12274219E00C1F2C4 /* ReportButtonCrusht.png */,
+				281282DE2273ED4800CA324E /* LikeButtonCrusht.png */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
 				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
 				28A1B6512218D68C00666155 /* TODO.swift */,
@@ -657,30 +741,58 @@
 			files = (
 				28857CBF21B8D1D500A654A0 /* FaveBttn2.png in Resources */,
 				28857CC321B8D1D600A654A0 /* CrushTLogoIcon.png in Resources */,
+				280F67C42274E66B00C1F2C4 /* icons8-phone-30-2.png in Resources */,
+				281282E12273ED5000CA324E /* DislikeButtonCrusht.png in Resources */,
 				28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */,
+				280F67AA22742CBF00C1F2C4 /* icons8-phone-30.png in Resources */,
 				28857CC821B98F9300A654A0 /* top_left_profile@2x.png in Resources */,
 				28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */,
 				282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */,
 				28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */,
+				280F67A42274241A00C1F2C4 /* Recycle button.png in Resources */,
+				280F67C02274E26500C1F2C4 /* icons8-cancel-30.png in Resources */,
+				280F67B82274415600C1F2C4 /* icons8-male-user-filled-50-2.png in Resources */,
 				28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */,
+				280F67B02274345C00C1F2C4 /* icons8-back-filled-30.png in Resources */,
 				28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */,
+				281282DF2273ED4800CA324E /* LikeButtonCrusht.png in Resources */,
 				28BE624E21BDDBDE00EAFFE2 /* infoButton.png in Resources */,
+				280F67C62274E6E000C1F2C4 /* icons8-bar-30-2.png in Resources */,
 				28F148862249725E00E5FB39 /* CrushtLogoLiam.png in Resources */,
 				28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */,
+				280F67AC22742DF000C1F2C4 /* icons8-guinness-beer-filled-50.png in Resources */,
+				280F67C22274E63C00C1F2C4 /* icons8-mortarboard-30-2.png in Resources */,
 				28CFC6B121C56D3500387129 /* heartIcon3Crusht.png in Resources */,
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
+				280F67B4227439DA00C1F2C4 /* icons8-male-user-filled-50.png in Resources */,
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
 				28908D8621C0A99A00391A39 /* MessagesIconCrusht.png in Resources */,
+				28F67BAB22766D1F00EDFDFF /* icons8-exclamation-mark-30.png in Resources */,
 				28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */,
+				280F67B22274354300C1F2C4 /* icons8-back-filled-30-2.png in Resources */,
+				280F67A822742BDF00C1F2C4 /* icons8-mortarboard-30.png in Resources */,
 				28908D8221C0A41600391A39 /* CrushtLogoPinkBackground.png in Resources */,
+				280F67A62274294200C1F2C4 /* icons8-back-filled-50.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
+				28F67BA52276381B00EDFDFF /* icons8-settings-30-2.png in Resources */,
+				280F67AE22742F8C00C1F2C4 /* icons8-bar-30.png in Resources */,
 				28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */,
 				280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */,
+				281282E32273EF0D00CA324E /* SettingsIconCrusht.png in Resources */,
 				28148F3721D6C1540016BD22 /* play.png in Resources */,
+				280F67BC2274E1D700C1F2C4 /* icons8-box-important-30.png in Resources */,
 				28CFC6AF21C56BAB00387129 /* heart2crusht.png in Resources */,
+				280F67A22274219E00C1F2C4 /* ReportButtonCrusht.png in Resources */,
 				28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */,
 				28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */,
+				28F67BA92276382E00EDFDFF /* icons8-communication-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
+				281282E52273EF1500CA324E /* Messages Crusht.png in Resources */,
+				28F67BA72276382100EDFDFF /* icons8-swipe-right-gesture-30.png in Resources */,
+				28F67BAD22766D8C00EDFDFF /* icons8-user-male-30.png in Resources */,
+				280F67B622743E4500C1F2C4 /* icons8-communication-60.png in Resources */,
+				280F67BE2274E21700C1F2C4 /* icons8-love-30.png in Resources */,
+				280F67BA2274DF9100C1F2C4 /* icons8-refresh-30.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

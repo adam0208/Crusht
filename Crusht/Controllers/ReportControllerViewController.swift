@@ -41,6 +41,7 @@ class ReportControllerViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
+         label.textColor = .white
         label.text = "Please tell us why you are reporting this user. We take these accusations seriously."
         label.numberOfLines = 0
         return label
@@ -89,7 +90,8 @@ class ReportControllerViewController: UIViewController {
         setupTapGesture()
         navigationItem.title = "Report \(reportName)"
         setupGradientLayer()
-        
+        navigationController?.navigationBar.prefersLargeTitles = false
+
        
         view.addSubview(stackView)
         stackView.axis = .vertical
@@ -151,8 +153,8 @@ class ReportControllerViewController: UIViewController {
     
     fileprivate func setupGradientLayer() {
         
-        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         // make sure to user cgColor
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]
@@ -199,6 +201,12 @@ class ReportControllerViewController: UIViewController {
 
 class ReportTextView: UITextView, UITextViewDelegate {
     
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        self.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5);
+        
+    }
+    
     func adjustUITextViewHeight(arg : UITextView)
     {
         arg.translatesAutoresizingMaskIntoConstraints = true
@@ -209,9 +217,11 @@ class ReportTextView: UITextView, UITextViewDelegate {
     override var intrinsicContentSize: CGSize {
         return .init(width: 0, height: 180)
     }
-   
     
-    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     
 }
 

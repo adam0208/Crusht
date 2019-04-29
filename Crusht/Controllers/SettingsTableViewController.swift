@@ -23,6 +23,12 @@ class CustomImagePickerController: UIImagePickerController  {
 
 class SettingsTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
     
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
     var delegate: SettingsControllerDelegate?
     
     lazy var image1Button = createBttn(selector: #selector(handleSelectPhoto))
@@ -91,7 +97,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
    
     var genderPicker = UIPickerView()
     
-    let myPickerData = [String](arrayLiteral: " ", "He/Him/His", "She/Her/Hers", "All Humans")
+    let myPickerData = [String](arrayLiteral: " ", "Male", "Female", "All Humans")
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -121,6 +127,11 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         //tableView.backgroundColor = UIColor.clear
         //tableView.tableFooterView?.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         tableView.keyboardDismissMode = .onDrag
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+
+     
         let bioCell = BioCell()
         bioCell.textView.delegate = self
         //view.bringSubviewToFront(tableView)
@@ -253,7 +264,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 11
+        return 14
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -298,7 +309,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         else if indexPath.section == 9 {
             
             let fbCell = FbConnectCell(style: .default, reuseIdentifier: nil)
-            fbCell.FBLoginBttn.addTarget(self, action: #selector(loginFB), for: .touchUpInside)
+            fbCell.FBLoginBttn.addTarget(self, action: #selector(handlePrivacy), for: .touchUpInside)
             return fbCell
            
         }
@@ -310,6 +321,20 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             
             return logoutCell
         }
+        
+        else if indexPath.section == 11 {
+            let privacyText = ContactsTextCell(style: .default, reuseIdentifier: nil)
+            return privacyText
+        }
+        else if indexPath.section == 12 {
+            let email = SupportCell(style: .default, reuseIdentifier: nil)
+            return email
+        }
+        else if indexPath.section == 13 {
+            let text = VersionNumber(style: .default, reuseIdentifier: nil)
+            return text
+        }
+        
     
         
         switch indexPath.section {
@@ -462,7 +487,11 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))
+        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))
+        
+        let profileButton = UIBarButtonItem(title: "Preview", style: .plain, target: self, action: #selector(goToProfile))
+        
+        navigationItem.rightBarButtonItems = [saveButton, profileButton]
         
     }
     let bioTextView = BioTextView()
@@ -489,7 +518,9 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "deviceID": Messaging.messaging().fcmToken ?? "",
             "Gender-Preference": user?.sexPref ?? "",
             "User-Gender": user?.gender ?? "",
-            "CurrentVenue": user?.currentVenue ?? ""
+            "CurrentVenue": user?.currentVenue ?? "",
+            "TimeLastJoined": user?.timeLastJoined ?? 100000
+
             ]
         
   //      let hud = JGProgressHUD(style: .dark)
@@ -502,15 +533,12 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 print("Failed to retrieve user settings", err)
                 return
             }
-            for viewController in self.tabBarController?.viewControllers ?? [] {
-                if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
-                    let _ = rootVC.view
-                } else {
-                    let _ = viewController.view
-                }
-            }
             
-        
+            self.dismiss(animated: true, completion: {
+                print("Dismissal Complete")
+                self.delegate?.didSaveSettings()
+                
+            })
         }
     }
     
@@ -552,8 +580,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     fileprivate func setupGradientLayer() {
         
-        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        let topColor = #colorLiteral(red: 0.9214469194, green: 0.9214469194, blue: 0.9214469194, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.801894486, green: 0.801894486, blue: 0.801894486, alpha: 1)
         // make sure to user cgColor
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]
@@ -565,19 +593,21 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
 
     }
     
-   @objc fileprivate func loginFB() {
-        let loginManager = LoginManager()
-        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
-            switch loginResult {
-            case .failed(let error):
-                print("cccccccccccccccccccccccccccccccccccccc",error)
-            case .cancelled:
-                print("User cancelled login.")
-            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
-                print("Logged in!")
-                self.fetchFBid()
-            }
+   @objc fileprivate func handlePrivacy() {
+    if let url = URL(string: "https://app.termly.io/document/privacy-policy/7b4441c3-63d0-4987-a99d-856e5053ea0c"),
+        UIApplication.shared.canOpenURL(url) {
+        UIApplication.shared.open(url, options: [:])
         }
+    }
+    
+    @objc fileprivate func goToProfile() {
+        //handleSave()
+        let userDetailsController = DetailsPOPVIEWController()
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = " "
+        navigationItem.backBarButtonItem = myBackButton
+        userDetailsController.cardViewModel = user?.toCardViewModel()
+        navigationController?.pushViewController(userDetailsController, animated: true)
     }
    
     fileprivate func fetchFBid() {
@@ -602,7 +632,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 9 || indexPath.section == 10 {
+        if indexPath.section == 9 || indexPath.section == 10 || indexPath.section == 11 || indexPath.section == 12 || indexPath.section == 13 {
             cell.backgroundColor = UIColor.clear
         }
         else {

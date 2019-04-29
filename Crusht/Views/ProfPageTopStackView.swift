@@ -10,7 +10,7 @@ import UIKit
 
 class ProfPageTopStackView: UIStackView {
 
-    let homeButton = UIButton(type: .system)
+    let homeButton = UIButton()
     let iconLogo = UIImageView(image: #imageLiteral(resourceName: "CrushtLogoLiam"))
     let messageButton = UIButton(type: .system)
     let restView = UIView()
@@ -19,23 +19,18 @@ class ProfPageTopStackView: UIStackView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        heightAnchor.constraint(equalToConstant: 60).isActive = true
+        heightAnchor.constraint(equalToConstant: 50).isActive = true
         distribution = .fillEqually
         spacing = 0
 
         //iconLogo.contentMode = .scaleAspectFill
-        //messageButton.setImage(#imageLiteral(resourceName: "top_right_messages").withRenderingMode(.alwaysOriginal), for: .normal)
-       // homeButton.setImage(#imageLiteral(resourceName: "top_left_profile").withRenderingMode(.alwaysOriginal), for: .normal)
+        messageButton.setImage(#imageLiteral(resourceName: "icons8-communication-60").withRenderingMode(.alwaysOriginal), for: .normal)
+        homeButton.setImage(#imageLiteral(resourceName: "SettingsIconCrusht-1").withRenderingMode(.alwaysOriginal), for: .normal)
+       homeButton.layer.cornerRadius = 30
+        homeButton.clipsToBounds = true
         
-        messageButton.titleLabel?.font = UIFont.systemFont(ofSize: 40)
-        messageButton.setTitle("💬", for: .normal)
-        messageButton.titleLabel?.adjustsFontForContentSizeCategory = true
-       
-        homeButton.titleLabel?.font = UIFont.systemFont(ofSize: 40)
-        homeButton.setTitle("👤", for: .normal)
-        homeButton.titleLabel?.adjustsFontForContentSizeCategory = true
         
-        [homeButton, moreView, iconLogo, evenMoreView, messageButton].forEach { (v) in
+        [homeButton, moreView, UIView(), UIView(), evenMoreView, messageButton].forEach { (v) in
             addArrangedSubview(v)
         }
         

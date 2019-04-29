@@ -10,12 +10,22 @@ import UIKit
 import Firebase
 import Contacts
 import JGProgressHUD
+import CoreLocation
 
 
-class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate {
+class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+    }
+    
+    func didSaveSettings() {
+        fetchCurrentUser()
+    }
+    
+    
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
     }
 
     let cellId = "cellId123123"
@@ -693,8 +703,17 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //        navigationItem.searchController = self.searchController
         definesPresentationContext = true
         navigationController?.isNavigationBarHidden = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
-
+        let messageButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-communication-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMessages))
+        let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
+        
+        navigationController?.navigationBar.addSubview(messageBadge)
+        messageBadge.anchor(top: navigationController?.navigationBar.topAnchor, leading: nil, bottom: navigationController?.navigationBar.bottomAnchor, trailing: navigationController?.navigationBar.trailingAnchor)
+        listenForMessages()
+        navigationItem.rightBarButtonItems = [messageButton, swipeButton]
+        messageBadge.isHidden = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         // Setup the Scope Bar
         //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
 //        self.searchController.searchBar.delegate = self
@@ -714,6 +733,94 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         //tableView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
         tableView.reloadData()
     }
+    
+    @objc func handleMessages() {
+        let messageController = MessageController()
+        messageBadge.removeFromSuperview()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
+        //navigationController?.pushViewController(messageController, animated: true)
+        
+    }
+    
+    let messageBadge: UILabel = {
+        let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
+        label.layer.borderColor = UIColor.clear.cgColor
+        label.layer.borderWidth = 2
+        label.layer.cornerRadius = label.bounds.size.height / 2
+        label.textAlignment = .center
+        label.layer.masksToBounds = true
+        label.font = UIFont.systemFont(ofSize: 10)
+        label.textColor = .white
+        label.backgroundColor = .red
+        label.text = "!"
+        return label
+    }()
+    
+    
+    fileprivate func listenForMessages() {
+        guard let toId = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
+            .addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                    }
+                    if (diff.type == .modified) {
+                        self.messageBadge.isHidden = false
+                        
+                    }
+                    if (diff.type == .removed) {
+                    }
+                }
+        }
+    }
+    
+    @objc func handleSettings() {
+        let settingsController = SettingsTableViewController()
+        settingsController.delegate = self
+        settingsController.user = user
+        let navController = UINavigationController(rootViewController: settingsController)
+        present(navController, animated: true)
+        
+    }
+    
+    @objc fileprivate func handleMatchByLocationBttnTapped() {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                showSettingsAlert2()
+            case .authorizedAlways, .authorizedWhenInUse:
+                let locationViewController = LocationMatchViewController()
+                locationViewController.user = user
+                let navigationController = UINavigationController(rootViewController: locationViewController)
+                present(navigationController, animated: true)
+            }
+        } else {
+            showSettingsAlert2()
+        }
+        
+        
+        
+    }
+    
+    
+    private func showSettingsAlert2() {
+        let alert = UIAlertController(title: "Enable Location", message: "Crusht would like to use your location to match you with nearby users.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+            
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            return
+        })
+        present(alert, animated: true)
+    }
+    
     
     let hud = JGProgressHUD(style: .dark)
 

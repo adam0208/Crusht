@@ -60,21 +60,21 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         
         navigationController?.isNavigationBarHidden = false
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-back-filled-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBack))
 //        navigationItem.leftItemsSupplementBackButton = true
 //        navigationItem.leftBarButtonItem?.title = "👈"
         
       //  let image = UIImage(named: "new_message_icon")?.withRenderingMode(.alwaysOriginal)
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
         
-        navigationItem.title = "Messages"
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 
+        navigationItem.title = "Messages"
         
-        
-        
-        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: true)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        searchController.searchBar.barStyle = .black
         
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
@@ -87,6 +87,9 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.searchController.searchBar.tintColor = .white
+       
+        
     }
     
     @objc fileprivate func handleBack() {
@@ -122,11 +125,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
                     })
                 }
                 
-                self.timer?.invalidate()
-                print("we just canceled our timer")
-                
-                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-                
+             
                 //changeHandler: nil)
             })
             
@@ -154,7 +153,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         }
     }
     
-    var timer: Timer?
+   
     
     @objc func handleReloadTable() {
         //this will crash because of background thread, so lets call this on dispatch_async main thread
@@ -302,7 +301,6 @@ class MessageController: UITableViewController, UISearchBarDelegate {
     Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
         
             if let dictionary = snapshot?.data() {
-                self.navigationItem.title = dictionary["Full Name"] as? String
 
                 let user = User(dictionary: dictionary)
                 self.setupNavBarWithUser(user)
@@ -319,49 +317,50 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         observeUserMessages()
         observeMessages()
         
-        let titleView = UIView()
-        titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        //        titleView.backgroundColor = UIColor.redColor()
-        
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        titleView.addSubview(containerView)
-        
-        let profileImageView = UIImageView()
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        profileImageView.contentMode = .scaleAspectFill
-        profileImageView.layer.cornerRadius = 20
-        profileImageView.clipsToBounds = true
-        if let profileImageUrl = user.imageUrl1 {
-            profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
-        }
-        
-        containerView.addSubview(profileImageView)
-        
-        //ios 9 constraint anchors
-        //need x,y,width,height anchors
-        profileImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        let nameLabel = UILabel()
-        
-        containerView.addSubview(nameLabel)
-        nameLabel.text = user.name
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        //need x,y,width,height anchors
-        nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
-        nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
-        nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        nameLabel.heightAnchor.constraint(equalTo: profileImageView.heightAnchor).isActive = true
-        
-        containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
-        containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
-        
-        self.navigationItem.titleView = titleView
-        
-        //        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
+
+//        let titleView = UIView()
+//        titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+//        //        titleView.backgroundColor = UIColor.redColor()
+//
+//        let containerView = UIView()
+//        containerView.translatesAutoresizingMaskIntoConstraints = false
+//        titleView.addSubview(containerView)
+//
+//        let profileImageView = UIImageView()
+//        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+//        profileImageView.contentMode = .scaleAspectFill
+//        profileImageView.layer.cornerRadius = 20
+//        profileImageView.clipsToBounds = true
+//        if let profileImageUrl = user.imageUrl1 {
+//            profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+//        }
+//
+//        containerView.addSubview(profileImageView)
+//
+//        //ios 9 constraint anchors
+//        //need x,y,width,height anchors
+//        profileImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+//        profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+//        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+//        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//
+//        let nameLabel = UILabel()
+//
+//        containerView.addSubview(nameLabel)
+//        nameLabel.text = user.name
+//        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+//        //need x,y,width,height anchors
+//        nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
+//        nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+//        nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
+//        nameLabel.heightAnchor.constraint(equalTo: profileImageView.heightAnchor).isActive = true
+//
+//        containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
+//        containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
+//
+//        self.navigationItem.titleView = titleView
+//
+//        //        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
     }
     
     func showChatControllerForUser(_ user: User) {
@@ -369,8 +368,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         chatLogController.user = user
         chatLogController.fromName = navigationItem.title
         let myBackButton = UIBarButtonItem()
-        tabBarController?.tabBar.isHidden = true
-        myBackButton.title = "👈"
+        myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton
         navigationController?.pushViewController(chatLogController, animated: true)
     }
@@ -391,5 +389,13 @@ extension MessageController: UISearchResultsUpdating {
     }
 }
 
-    
+//public extension UISearchBar {
+//
+//    public func setTextColor(color: UIColor) {
+//        let svs = subviews.flatMap { $0.subviews }
+//        guard let tf = (svs.filter { $0 is UITextField }).first as? UITextField else { return }
+//        tf.textColor = .white
+//    }
+//}
+
 

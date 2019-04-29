@@ -5,28 +5,26 @@
 //  Created by William Kelly on 12/6/18.
 //  Copyright © 2018 William Kelly. All rights reserved.
 //
-
 import UIKit
 import Firebase
 
 class RegistrationViewModel {
-
-var bindableIsRegistering = Bindable<Bool>()
-var bindableImage = Bindable<UIImage>()
-var bindableIsFormValid = Bindable<Bool>()
-
+    
+    var bindableIsRegistering = Bindable<Bool>()
+    var bindableImage = Bindable<UIImage>()
+    var bindableIsFormValid = Bindable<Bool>()
+    
     var gender = String()
     var sexYouLike = String()
-var fullName: String? {
-    didSet {
-        checkFormValidity()
+    var fullName: String? {
+        didSet {
+            checkFormValidity()
+        }
     }
-}
-var email: String? { didSet { checkFormValidity() } }
-var password: String? { didSet { checkFormValidity() } }
+    var email: String? { didSet { checkFormValidity() } }
+    var password: String? { didSet { checkFormValidity() } }
     
-var school: String?
-//{ didSet { checkFormValidity() } }
+    var school: String?
     
     var age: Int?
     
@@ -39,34 +37,11 @@ var school: String?
     var birthday: String?
     //{ didSet {checkFormValidity() }}
     
-   
-
+    
+    
     func performRegistration(completion: @escaping (Error?) -> ()) {
         
-//        guard let uid = Auth.auth().currentUser?.uid else {return}
-//
-//        bindableIsRegistering.value = true
-//
-//
-//
-//        let docData: [String: Any] =
-//            ["Full Name": "",
-//             "uid": uid,
-//
-//             "School": school ?? "",
-//             "Age": age,
-//             "Bio": ,
-//             "minSeekingAge": 18,
-//             "maxSeekingAge": 50,
-//             "ImageUrl1":
-//        ]
-//
-//        Firestore.firestore().collection("users").document(uid).setData(docData)
-//
-//            print("Successfully registered user:", res?.user.uid ?? "")
-        
-            self.saveImageToFirebase(completion: completion)
-            
+        self.saveImageToFirebase(completion: completion)
         
     }
     
@@ -97,7 +72,7 @@ var school: String?
     }
     
     let token = Messaging.messaging().fcmToken
-
+    
     fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()) {
         let uid = Auth.auth().currentUser?.uid ?? ""
         let docData: [String: Any] =
@@ -105,17 +80,17 @@ var school: String?
              "uid": uid,
              "Bio": bio ?? "",
              "School": school ?? "",
-            "Birthday": birthday ?? "10-31-1995",
-            "Age": age ?? 19,
-            "minSeekingAge": 18,
-                "maxSeekingAge": 50,
-                "PhoneNumber": phone,
-                "deviceID": token ?? "",
-                "fbid": fbid ?? "",
-                "email": email ?? "",
-            "ImageUrl1": imageUrl,
-            "Gender-Preference": sexYouLike,
-            "User-Gender": gender
+             "Birthday": birthday ?? "10-31-1995",
+             "Age": age ?? 19,
+             "minSeekingAge": 18,
+             "maxSeekingAge": 50,
+             "PhoneNumber": phone,
+             "deviceID": token ?? "",
+             "fbid": fbid ?? "",
+             "email": email ?? "",
+             "ImageUrl1": imageUrl,
+             "Gender-Preference": sexYouLike,
+             "User-Gender": gender
         ]
         //let userAge = ["Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
@@ -128,10 +103,10 @@ var school: String?
         }
     }
     
-     func checkFormValidity() {
+    func checkFormValidity() {
         let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && bindableImage.value != nil
         bindableIsFormValid.value = isFormValid
-    
+        
     }
     
     func calcAge(birthday: String) -> Int {
@@ -145,6 +120,4 @@ var school: String?
         return age!
     }
     
-    //check for age here!
-
 }

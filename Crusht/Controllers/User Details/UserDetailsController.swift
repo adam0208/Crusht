@@ -11,14 +11,14 @@ import Firebase
 
 class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.isNavigationBarHidden = false
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-           navigationController?.isNavigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
     }
     
     var cardViewModel: CardViewModel! {
@@ -105,33 +105,19 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     let dismissButton: UIButton = {
  
             let button = UIButton(type: .system)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 40)
-            button.setTitle("👈", for: .normal)
+            button.setBackgroundImage(#imageLiteral(resourceName: "icons8-back-filled-30").withRenderingMode(.alwaysOriginal), for: .normal)
             button.backgroundColor = .white
-            button.heightAnchor.constraint(equalToConstant: 50)
-            button.widthAnchor.constraint(equalToConstant: 50)
-            button.layer.cornerRadius = 25
+            button.heightAnchor.constraint(equalToConstant: 30)
+            button.widthAnchor.constraint(equalToConstant: 30)
+            button.layer.cornerRadius = 15
+        button.clipsToBounds = true
             button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
             
             return button
         }()
     
-    let reportBttn: UIButton = {
-        
-        let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 40)
-        button.setTitle("👮‍♀️", for: .normal)
-        button.backgroundColor = .white
-        button.heightAnchor.constraint(equalToConstant: 50)
-        button.widthAnchor.constraint(equalToConstant: 50)
-        button.layer.cornerRadius = 25
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
-        
-        return button
-    }()
-    
+
     
 //    lazy var dislikeButton = self.createButton(image: #imageLiteral(resourceName: "dismiss_circle"), selector: #selector(handleDislike))
 //    lazy var superLikeButton = self.createButton(image: #imageLiteral(resourceName: "super_like_circle"), selector: #selector(handleDislike))
@@ -188,7 +174,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         reportController.reportPhoneNumebr = cardViewModel.phone
         
         let myBackButton = UIBarButtonItem()
-        myBackButton.title = "👈"
+        myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton
         
         
@@ -209,29 +195,25 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         view.backgroundColor = .white
         self.setLabelText()
         let swipingView = swipingPhotosController.view!
-        
         scrollView.addSubview(swipingView)
-        
         swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
-        
+       
         scrollView.addSubview(infoLabel)
         infoLabel.anchor(top: swipingView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
-        
-        
+    
         view.addSubview(scrollView)
-        scrollView.fillSuperview()
-        
-        scrollView.addSubview(dismissButton)
-        dismissButton.anchor(top: swipingView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: -25, left: 16, bottom: 16, right: 16), size: .init(width: 50, height: 50))
-        
-        scrollView.addSubview(reportBttn)
-        reportBttn.anchor(top: swipingView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 16, bottom: 16, right: 16), size: .init(width: 50, height: 50))
+
+       
            scrollView.addSubview(crushScoreLabel)
         bioLabel.text = cardViewModel.bio
         crushScoreLabel.anchor(top: infoLabel.bottomAnchor, leading: infoLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
         scrollView.addSubview(bioLabel)
 
         bioLabel.anchor(top: crushScoreLabel.bottomAnchor, leading: crushScoreLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+        
+        
+        
+          scrollView.fillSuperview()
        
     }
     
@@ -253,7 +235,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        view.backgroundColor = .white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport))
         setupLayout()
         
         setupVisualBlurEffectView()

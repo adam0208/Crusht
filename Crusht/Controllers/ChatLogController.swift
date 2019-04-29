@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import MobileCoreServices
 import AVFoundation
+import SDWebImage
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -183,6 +184,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         super.viewDidLoad()
         self.hideKeyboard()
         listenForMessages()
+        navigationController?.navigationBar.prefersLargeTitles = false
+
         
         //navigationController?.title.
         
@@ -197,7 +200,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         
         //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleback))
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "👮‍♀️", style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(title: "👤  ", style: .plain, target: self, action: #selector(goToProfile))]
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-user-male-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(goToProfile))]
         //        navigationItem.leftItemsSupplementBackButton = true
         //        navigationItem.leftBarButtonItem?.title = "👈"
         
@@ -236,7 +239,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         
         let userDetailsController = UserDetailsController()
-        
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = " "
+        navigationItem.backBarButtonItem = myBackButton
         userDetailsController.cardViewModel = user!.toCardViewModel()
         navigationController?.pushViewController(userDetailsController, animated: true)
         
@@ -250,7 +255,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         reportController.uid = Auth.auth().currentUser!.uid
         
         let myBackButton = UIBarButtonItem()
-        myBackButton.title = "👈"
+        myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton
         navigationController?.pushViewController(reportController, animated: true)
     }
@@ -588,8 +593,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     }
     
     fileprivate func setupCell(_ cell: ChatMessageCell, message: Message) {
-        if let profileImageUrl = self.user?.imageUrl1 {
-            cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+        guard let imageUrl = self.user?.imageUrl1 else {return}
+        let url = URL(string: imageUrl)
+        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            cell.profileImageView.image = image
         }
         
         if message.fromId == Auth.auth().currentUser?.uid {

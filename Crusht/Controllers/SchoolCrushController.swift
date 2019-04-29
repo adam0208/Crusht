@@ -8,7 +8,8 @@
 import UIKit
 import Firebase
 import JGProgressHUD
-
+import CoreLocation
+import SDWebImage
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -32,9 +33,16 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class SchoolCrushController: UITableViewController, UISearchBarDelegate {
-  
+class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate {
     
+    func didSaveSettings() {
+        fetchCurrentUser()
+    }
+    
+  
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
+    }
     //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
   
     fileprivate var crushScore: CrushScore?
@@ -83,19 +91,32 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
     }
     
+    let animationView = AnimationView()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let cellId = "cellId"
+        
+    
         
         fetchCurrentUser()
         //        navigationItem.leftItemsSupplementBackButton = true
         //        navigationItem.leftBarButtonItem?.title = "👈"
       
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-                navigationItem.leftBarButtonItem = UIBarButtonItem(title: "👈", style: .plain, target: self, action: #selector(handleBack))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+        
+        let messageButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-communication-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMessages))
+        let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
+
+        navigationController?.navigationBar.addSubview(messageBadge)
+        messageBadge.anchor(top: navigationController?.navigationBar.topAnchor, leading: nil, bottom: navigationController?.navigationBar.bottomAnchor, trailing: navigationController?.navigationBar.trailingAnchor)
+        listenForMessages()
+        navigationItem.rightBarButtonItems = [messageButton, swipeButton]
         
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
@@ -104,17 +125,24 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         searchController.searchBar.placeholder = "Search School"
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
-        
+           
         
         // Setup the Scope Bar
         //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
-        
+        messageBadge.isHidden = true
         // Setup the search footer
         // tableView.tableFooterView = searchFooter
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        searchController.searchBar.barStyle = .black
         
-        
+        tabBarController?.view.addSubview(animationView)
+        animationView.fillSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
+            self.animationView.removeFromSuperview()
+        }
         for viewController in tabBarController?.viewControllers ?? [] {
             if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
                 let _ = rootVC.view
@@ -125,7 +153,92 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         
     }
     
+    @objc func handleMessages() {
+        let messageController = MessageController()
+        messageBadge.removeFromSuperview()
+        let navController = UINavigationController(rootViewController: messageController)
+        present(navController, animated: true)
+        //navigationController?.pushViewController(messageController, animated: true)
+        
+    }
     
+    let messageBadge: UILabel = {
+        let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
+        label.layer.borderColor = UIColor.clear.cgColor
+        label.layer.borderWidth = 2
+        label.layer.cornerRadius = label.bounds.size.height / 2
+        label.textAlignment = .center
+        label.layer.masksToBounds = true
+        label.font = UIFont.systemFont(ofSize: 10)
+        label.textColor = .white
+        label.backgroundColor = .red
+        label.text = "!"
+        return label
+    }()
+
+    
+    fileprivate func listenForMessages() {
+        guard let toId = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
+            .addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                    }
+                    if (diff.type == .modified) {
+                        self.messageBadge.isHidden = false
+                        
+                    }
+                    if (diff.type == .removed) {
+                    }
+                }
+        }
+    }
+    
+    @objc func handleSettings() {
+        let settingsController = SettingsTableViewController()
+        settingsController.delegate = self
+        settingsController.user = user
+        let navController = UINavigationController(rootViewController: settingsController)
+        present(navController, animated: true)
+        
+    }
+    
+    @objc fileprivate func handleMatchByLocationBttnTapped() {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                showSettingsAlert2()
+            case .authorizedAlways, .authorizedWhenInUse:
+                let locationViewController = LocationMatchViewController()
+                locationViewController.user = user
+                let navigationController = UINavigationController(rootViewController: locationViewController)
+                present(navigationController, animated: true)
+            }
+        } else {
+            showSettingsAlert2()
+        }
+        
+        
+        
+    }
+    
+    
+    private func showSettingsAlert2() {
+        let alert = UIAlertController(title: "Enable Location", message: "Crusht would like to use your location to match you with nearby users.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+            
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            return
+        })
+        present(alert, animated: true)
+    }
     
     var user: User?
     let hud = JGProgressHUD(style: .dark)
@@ -159,8 +272,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-            
-            print(self.user?.phoneNumber ?? "Fuck you")
+            if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+                namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
             
             //self.fetchSwipes()
             self.fetchSchool()
@@ -209,11 +325,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
                 
                 
                 
-                if sexPref == "She/Her/Hers" {
-                    self.isRightSex = crush.gender == "She/Her/Hers" || crush.gender == "They/Them/Their"
+                if sexPref == "Female" {
+                    self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
                 }
-                else if sexPref == "He/Him/His" {
-                    self.isRightSex = crush.gender == "He/Him/His" || crush.gender == "They/Them/Their"
+                else if sexPref == "Male" {
+                    self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
                 }
                 else {
                     self.isRightSex = crush.school == self.user?.school
@@ -788,17 +904,20 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
         if isFiltering() {
             let crush = users[indexPath.row]
             cellL.textLabel?.text = crush.name
-            if let profileImageUrl = crush.imageUrl1 {
-                cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            let imageUrl = crush.imageUrl1!
+            let url = URL(string: imageUrl)
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                cellL.profileImageView.image = image
             }
         } else {
             let crush = schoolArray[indexPath.row]
             cellL.textLabel?.text = crush.name
-            if let profileImageUrl = crush.imageUrl1 {
-                cellL.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            let imageUrl = crush.imageUrl1!
+            let url = URL(string: imageUrl)
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                cellL.profileImageView.image = image
             }
         }
-    
         
         
         //        if hasFavorited == true {
@@ -840,6 +959,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate {
             var user = User(dictionary: dictionary)
             user.uid = profUID
             let userDetailsController = UserDetailsController()
+            
+            let myBackButton = UIBarButtonItem()
+            myBackButton.title = " "
+           self.navigationItem.backBarButtonItem = myBackButton
             
             userDetailsController.cardViewModel = user.toCardViewModel()
             self.navigationController?.pushViewController(userDetailsController, animated: true)

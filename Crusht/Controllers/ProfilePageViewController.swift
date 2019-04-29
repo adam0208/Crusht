@@ -204,44 +204,44 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
     
     fileprivate var crushScore: CrushScore?
     
-    fileprivate func setLabelText() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-        
-        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else {return}
-                self.crushScore = CrushScore(dictionary: dictionary)
-                print(self.crushScore?.crushScore ?? 0)
-                if (self.crushScore?.crushScore ?? 0) > 10 && (self.crushScore?.crushScore ?? 0) <= 50 {
-                    self.profPicView.greetingLabel.text = "You're on 🔥"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
-                    self.profPicView.greetingLabel.text = "You Must be Cute 😍"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
-                    self.profPicView.greetingLabel.text = "Don't Get Too Cocky Now 😎"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
-                    self.profPicView.greetingLabel.text = "Wish I Were Like You 😤"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 400 {
-                    self.profPicView.greetingLabel.text = "Add Dating as a Skill on Your Resume"
-                }
-                
-            }
-            else {
-                self.profPicView.greetingLabel.text = "Hey Good Lookin' 😊"
-            }
-        }
-        
-    }
+//    fileprivate func setLabelText() {
+//        guard let uid = Auth.auth().currentUser?.uid else {
+//            return
+//        }
+//        
+//        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
+//            if let err = err {
+//                print(err)
+//                return
+//            }
+//            
+//            if snapshot?.exists == true {
+//                guard let dictionary = snapshot?.data() else {return}
+//                self.crushScore = CrushScore(dictionary: dictionary)
+//                print(self.crushScore?.crushScore ?? 0)
+//                if (self.crushScore?.crushScore ?? 0) > 10 && (self.crushScore?.crushScore ?? 0) <= 50 {
+//                    self.profPicView.greetingLabel.text = "You're on 🔥"
+//                }
+//                else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
+//                    self.profPicView.greetingLabel.text = "You Must be Cute 😍"
+//                }
+//                else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
+//                    self.profPicView.greetingLabel.text = "Don't Get Too Cocky Now 😎"
+//                }
+//                else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
+//                    self.profPicView.greetingLabel.text = "Wish I Were Like You 😤"
+//                }
+//                else if (self.crushScore?.crushScore ?? 0) > 400 {
+//                    self.profPicView.greetingLabel.text = "Add Dating as a Skill on Your Resume"
+//                }
+//                
+//            }
+//            else {
+//                self.profPicView.greetingLabel.text = "Hey Good Lookin' 😊"
+//            }
+//        }
+//        
+//    }
     
     let locationManager = CLLocationManager()
     
@@ -268,39 +268,29 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
         
         fetchCurrentUser()
-        setLabelText()
         
-        profPicView.layer.cornerRadius = 100
+        setupGradientLayer()
         
-        profPicView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+       // profPicView.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         topStackView.homeButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         
-        profPicView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
-        profPicView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
+        bottomStackView.matchByLocationBttm.addTarget(self, action: #selector(handleMatchByLocationBttnTapped), for: .touchUpInside)
+        bottomStackView.findCrushesBttn.addTarget(self, action: #selector(handleFindCrushesTapped), for: .touchUpInside)
         
-        profPicView.selectPhotoButton.addTarget(self, action: #selector(goToProfile), for: .touchUpInside)
         //        bottomStackView.seniorFive.addTarget(self, action: #selector(handleSeniorFive), for: .touchUpInside)
         topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         topStackView.messageButton.addSubview(messageBadge)
         messageBadge.isHidden = true
-        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         setupLayout()
         view.addSubview(animationView)
         animationView.fillSuperview()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
             self.animationView.removeFromSuperview()
         }
         
         
     }
     
-    @objc fileprivate func goToProfile() {
-        //handleSave()
-        let userDetailsController = DetailsPOPVIEWController()
-        userDetailsController.reportBttn.isHidden = true
-        userDetailsController.cardViewModel = user?.toCardViewModel()
-        self.present(userDetailsController, animated: true)
-    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
@@ -345,12 +335,6 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         }
     }
     
-    let tippyTop: UIView = {
-        let tT = UIView()
-        tT.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        tT.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        return tT
-    }()
     
     var user: User?
     
@@ -372,9 +356,29 @@ class ProfilePageViewController: UIViewController, SettingsControllerDelegate, L
         
         //overallStackView.spacing = 12
         
-        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
         overallStackView.isLayoutMarginsRelativeArrangement = true
         overallStackView.layoutMargins = .init(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    
+    let gradientLayer = CAGradientLayer()
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        gradientLayer.frame = view.bounds
+        
+    }
+    
+    fileprivate func setupGradientLayer() {
+        
+        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        // make sure to user cgColor
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        view.layer.addSublayer(gradientLayer)
+        gradientLayer.frame = view.bounds
     }
     
     

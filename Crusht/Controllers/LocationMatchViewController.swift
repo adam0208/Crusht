@@ -19,7 +19,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     override func viewWillDisappear(_ animated: Bool)
     {
         super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        refreshLabel.isHidden = true
+        navigationController?.isNavigationBarHidden = true
+        
     }
     
     fileprivate var crushScore: CrushScore?
@@ -80,8 +88,10 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        
         navigationController?.navigationBar.isHidden = true
-
+        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         self.locationManager.requestAlwaysAuthorization()
         
         // For use in foreground
@@ -111,7 +121,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         view.backgroundColor = .white
         fetchCurrentUser()
         //fetchUsersFromFirestore()
-        fetchUsersOnLoad()
+       // fetchUsersOnLoad()
         
         
     }
@@ -133,6 +143,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     var userAge = Int()
     
     fileprivate func fetchCurrentUser() {
+        hud.textLabel.text = "Fetching Users, hold tight :)"
+        hud.show(in: view)
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
@@ -212,7 +224,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             //do fetchusers on load instead
           
            // self.fetchUsersFromFirestore()
-        self.fetchUsersOnLoad()
+       self.fetchUsersOnLoad()
             
         }
     }
@@ -229,12 +241,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
 //        }
 //
 //        else {
-        
-        
-        hud.textLabel.text = "Fetching Users, hold tight :)"
-        hud.show(in: view)
-        hud.dismiss(afterDelay: 1)
-        
         
         
         let minAge = user?.minSeekingAge ?? 18
@@ -308,11 +314,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         let isEnabled = user.g != "7zzzzzzzzz"
                         
                         
-                        if self.sexPref == "She/Her/Hers" {
-                            self.isRightSex = user.gender == "She/Her/Hers" || user.gender == "They/Them/Their"
+                        if self.sexPref == "Female" {
+                            self.isRightSex = user.gender == "Female" || user.gender == "Other"
                         }
-                        else if self.sexPref == "He/Him/His" {
-                            self.isRightSex = user.gender == "He/Him/His" || user.gender == "They/Them/Their"
+                        else if self.sexPref == "Male" {
+                            self.isRightSex = user.gender == "Male" || user.gender == "Other"
                         }
                         else {
                             self.isRightSex = user.age ?? 18 > 17
@@ -325,16 +331,23 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                             previousCardView?.nextCardView = cardView
                             previousCardView = cardView
                             
+                         
+                            
                             if self.topCardView == nil {
                                 self.topCardView = cardView
                             }
+                            
                         }
+                        
                 
             })
         }
         
                 }
         }
+        hud.dismiss()
+           self.refreshLabel.isHidden = false
+        
     }
     
     var reportUID = String()
@@ -390,11 +403,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 
                 let minAge = user.age ?? 20 > (self.userAge - 5)
                 
-                if self.sexPref == "She/Her/Hers" {
-                    self.isRightSex = user.gender == "She/Her/Hers" || user.gender == "They/Them/Their"
+                if self.sexPref == "Female" {
+                    self.isRightSex = user.gender == "Female" || user.gender == "Other"
                 }
-                else if self.sexPref == "He/Him/His" {
-                    self.isRightSex = user.gender == "He/Him/His" || user.gender == "They/Them/Their"
+                else if self.sexPref == "Male" {
+                    self.isRightSex = user.gender == "Male" || user.gender == "Other"
                 }
                 else {
                     self.isRightSex = user.age ?? 18 > 17
@@ -797,6 +810,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
+        label.textColor = .white
         label.text = "Hit ♻️ to load more crushes in your area!"
         label.numberOfLines = 0
         return label
@@ -858,6 +872,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     func didTapMoreInfo(cardViewModel: CardViewModel) {
         let userDetailsController = UserDetailsController()
         //userDetailsController.view.backgroundColor = .purple
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = " "
+        self.navigationItem.backBarButtonItem = myBackButton
         userDetailsController.cardViewModel = cardViewModel
         navigationController?.pushViewController(userDetailsController, animated: true)
     }
@@ -900,6 +917,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         view.addSubview(overallStackView)
         
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+        overallStackView.spacing = 8
         overallStackView.isLayoutMarginsRelativeArrangement = true
         overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
         

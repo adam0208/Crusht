@@ -27,16 +27,38 @@ class ProfPageBottomStackView: UIStackView {
 //
 //    }()
     
-    
-    let copyrightLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .heavy)
-        label.textAlignment = .center
-        label.numberOfLines = 1
-        label.text = "©2019, Crusht LLC"
-        label.adjustsFontForContentSizeCategory = true
-        return label
+    let findCrushesBttn: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Peer Crushin'", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        button.setTitleColor(.white, for: .normal)
+        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 2.0
+        return button
     }()
+    
+    let matchByLocationBttm: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Location Cruhsin", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        button.setTitleColor(.white, for: .normal)
+        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 2.0
+  
+        
+        return button
+    }()
+    
+    
     
     
     override init(frame: CGRect) {
@@ -50,7 +72,7 @@ class ProfPageBottomStackView: UIStackView {
         heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         
-        [evenMoreView, restView, copyrightLabel].forEach { (v) in
+        [findCrushesBttn, matchByLocationBttm].forEach { (v) in
             addArrangedSubview(v)
         }
         

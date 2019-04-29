@@ -25,7 +25,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
-    fileprivate let barsStackView = UIStackView(arrangedSubviews: [])
+    let barsStackView = UIStackView(arrangedSubviews: [])
     fileprivate let deselectedBarColor = UIColor(white: 0, alpha: 0.1)
     
     fileprivate func setupBarViews() {
@@ -40,10 +40,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         barsStackView.distribution = .fillEqually
         //let paddingTop = UIApplication.shared.statusBarFrame.height + 8
         view.addSubview(barsStackView)
-        var paddingTop: CGFloat = 8
-        if !isCardViewMode {
-            paddingTop += UIApplication.shared.statusBarFrame.height + 8
-        }
+        let paddingTop: CGFloat = 8
         
         barsStackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: paddingTop, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
     }

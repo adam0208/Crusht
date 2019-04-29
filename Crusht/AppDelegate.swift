@@ -25,6 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.applicationIconBadgeNumber = 0
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
+        UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+       
+
+        
         FirebaseApp.configure()
         
         Messaging.messaging().delegate = self
@@ -63,14 +69,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Auth.auth().currentUser == nil {
             window?.rootViewController = LoginViewController()
         } else {
-        window?.rootViewController = profController
+        window?.rootViewController = CustomTabBarController()
 
         }
         
         UITabBarItem.appearance()
             .setTitleTextAttributes(
-                [NSAttributedString.Key.font: UIFont(name: "Didot", size: 30)!],
+                [NSAttributedString.Key.font: UIFont(name: "Didot", size: 12)!],
                 for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)], for: .selected)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+        UITabBar.appearance().tintColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
 
        // window?.rootViewController = PhoneNumberViewController()
      //  window?.rootViewController = EnterMorePhoneInfoViewController()

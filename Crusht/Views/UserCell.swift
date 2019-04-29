@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class UserCell: UITableViewCell {
 
@@ -59,8 +60,12 @@ class UserCell: UITableViewCell {
                     self.textLabel?.text = dictionary["Full Name"] as? String
                     
                     if let profileImageUrl = dictionary["ImageUrl1"] as? String {
-                        self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
-                    }
+                        let imageUrl = profileImageUrl
+                        let url = URL(string: imageUrl)
+                        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                            self.profileImageView.image = image
+                            }
+                        }
                     }
                 //                user.name = dictionary["name"]
             }

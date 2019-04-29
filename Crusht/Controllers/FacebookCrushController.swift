@@ -115,11 +115,11 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
                                 
                                 
                                 
-                                if sexPref == "She/Her/Hers" {
-                                    self.isRightSex = crush.gender == "She/Her/Hers" || crush.gender == "They/Them/Their"
+                                if sexPref == "Female" {
+                                    self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
                                 }
-                                else if sexPref == "He/Him/His" {
-                                    self.isRightSex = crush.gender == "He/Him/His" || crush.gender == "They/Them/Their"
+                                else if sexPref == "Male" {
+                                    self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
                                 }
                                 else {
                                     self.isRightSex = crush.age > 17

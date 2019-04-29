@@ -14,8 +14,8 @@ class AnimationView: UIView {
         super.draw(rect)
         
         let gradientLayer = CAGradientLayer()
-        let leftColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
-        let rightColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        let leftColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        let rightColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         gradientLayer.colors = [leftColor.cgColor, rightColor.cgColor]
         gradientLayer.locations = [0, 1]
         
@@ -25,26 +25,38 @@ class AnimationView: UIView {
         gradientLayer.frame = rect
     }
     
+     let logo = UIImageView(image: #imageLiteral(resourceName: "CrushtLogoLiam69!"))
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let logo = UIImageView(image: #imageLiteral(resourceName: "CrushtLogoLiam69!"))
+       
         logo.contentMode = .scaleAspectFit
         addSubview(logo)
         
         logo.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor)
         
-        backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        logo.transform = CGAffineTransform(translationX: 0, y: 0)
         
+       jumpButtonAnimation(sender: logo)
         
+    }
+    
+    func jumpButtonAnimation(sender: UIImageView) {
+        let animation = CABasicAnimation(keyPath: "transform.scale")
+        animation.toValue = NSNumber(value: 1.1)
+        animation.duration = 1
+        animation.repeatCount = 5
+        animation.autoreverses = true
+        sender.layer.add(animation, forKey: nil)
     }
     
     let gradientLayer = CAGradientLayer()
     
     fileprivate func setupGradientLayer() {
         
-        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         // make sure to user cgColor
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]

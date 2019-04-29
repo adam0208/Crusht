@@ -10,7 +10,7 @@ import UIKit
 
 class LocationMatchTopStackView: UIStackView {
 
-    let homeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+    let homeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
     
     let collegeOnlySwitch: UISwitch = {
         let button = UISwitch()
@@ -23,6 +23,7 @@ class LocationMatchTopStackView: UIStackView {
     let collegeLabel: UILabel = {
         let label = UILabel()
         label.text = "Only Your School  "
+        label.textColor = .white
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -38,9 +39,9 @@ class LocationMatchTopStackView: UIStackView {
         
     //    switchView.heightAnchor.constraint(equalToConstant: 60).isActive = true
 
-        heightAnchor.constraint(equalToConstant: 60).isActive = true
+        heightAnchor.constraint(equalToConstant: 50).isActive = true
         distribution = .fillEqually
-        backgroundColor = .white
+        
         
 //        let stackview = UIStackView(arrangedSubviews: [collegeLabel, collegeOnlySwitch])
 //        stackview.axis = .horizontal
@@ -52,11 +53,9 @@ class LocationMatchTopStackView: UIStackView {
         collegeLabel.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: collegeOnlySwitch.leadingAnchor)
         
         //iconLogo.backgroundColor = .white
-//        homeButton.setImage(#imageLiteral(resourceName: "ChrushtHomeIcon4").withRenderingMode(.alwaysOriginal), for: .normal)
+        homeButton.setImage(#imageLiteral(resourceName: "icons8-back-filled-30-2").withRenderingMode(.alwaysOriginal), for: .normal)
         //homeButton.backgroundColor = .white
-        homeButton.setTitle("👈", for: .normal)
-        homeButton.titleLabel?.font = UIFont.systemFont(ofSize: 50)
-        homeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+   
         
         addSubview(homeButton)
         homeButton.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil)

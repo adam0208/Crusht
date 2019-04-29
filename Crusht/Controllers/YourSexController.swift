@@ -46,8 +46,7 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
-        
-        label.textColor = .black
+         label.textColor = .white
         return label
     }()
     
@@ -87,7 +86,7 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     }
     var genderPicker = UIPickerView()
     
-    let myPickerData = [String](arrayLiteral: " ", "He/Him/His", "She/Her/Hers", "They/Them/Their")
+    let myPickerData = [String](arrayLiteral: " ", "Male", "Female", "Other")
     
     var user: User?
     var name = String()
@@ -157,8 +156,8 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     
     fileprivate func setupGradientLayer() {
         
-        let topColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0.8755432963, green: 0.4065410793, blue: 0, alpha: 1)
+        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         // make sure to user cgColor
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]
