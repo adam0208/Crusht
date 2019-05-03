@@ -63,7 +63,7 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
             }
            
             
-            self.fetchFacebookUser()
+            //self.fetchFacebookUser()
         }
     }
     
@@ -75,88 +75,88 @@ class FacebookCrushController: UITableViewController, UISearchBarDelegate {
     
     var isRightSex = Bool()
     
-    fileprivate func fetchFacebookUser() {
-        print("starting fb")
-        let req = GraphRequest(graphPath: "me/friends", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
-        req.start({ (connection, result) in
-            switch result {
-            case .failed(let error):
-                print(error)
-                print("no fb for you")
-            case .success(let graphResponse):
-                print("Success doing this fb shit")
-            
-                if let responseDictionary = graphResponse.dictionaryValue {
-                    print(responseDictionary)
-                    //let photoData = pictureUrlFB!["data"] as? [String:Any]
-                    //let photoUrl = photoData!["url"] as? String
-
-                    let responseDictionaryFriends = graphResponse.dictionaryValue
-                    let data: NSArray = responseDictionaryFriends!["data"] as! NSArray
-                
-                    
-                    print("jajajajajjajajajajja", data)
-                    
-                    
-                    for i in  0..<data.count {
-                        let dict = data[i] as! NSDictionary
-                        let temp = dict.value(forKey: "id") as! String
-                        Firestore.firestore().collection("users").whereField("fbid", arrayContains: temp).getDocuments(completion: { (snapshot, err) in
-                            if let err = err {
-                                print("failed getting fb friends", err)
-                            }
-                            snapshot?.documents.forEach({ (documentSnapshot) in
-                                let userDictionary = documentSnapshot.data()
-                                let crush = User(dictionary: userDictionary)
-                                
-                                let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
-                                
-                                let sexPref = self.user?.sexPref
-                                
-                                
-                                
-                                if sexPref == "Female" {
-                                    self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
-                                }
-                                else if sexPref == "Male" {
-                                    self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
-                                }
-                                else {
-                                    self.isRightSex = crush.age > 17
-                                }
-                                
-                                if isNotCurrentUser && self.isRightSex {
-                                
-                                self.fbArray.append(crush)
-                                
-                                
-                                }
-                                //                let crushStuff = User(dictionary: userDictionary)
-                                //                if let crushPartnerId = crushStuff.crushPartnerId() {
-                                //                    self.schoolUserDictionary[crushPartnerId] = user
-                                //                    self.users = Array(self.schoolUserDictionary.values)
-                                //                }
-                                
-                                self.fbArray.sorted(by: { (crush1, crush2) -> Bool in
-                                    return crush1.name > crush2.name
-                                })
-                                
-                            })
-                            DispatchQueue.main.async(execute: {
-                                self.tableView.reloadData()
-                                
-                            })
-                            
-                        })
-                    }
-                    
-                    
-                }
-            }
-            
-            
-        })
-    }
+//    fileprivate func fetchFacebookUser() {
+//        print("starting fb")
+//        let req = GraphRequest(graphPath: "me/friends", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+//        req.start({ (connection, result) in
+//            switch result {
+//            case .failed(let error):
+//                print(error)
+//                print("no fb for you")
+//            case .success(let graphResponse):
+//                print("Success doing this fb shit")
+//            
+//                if let responseDictionary = graphResponse.dictionaryValue {
+//                    print(responseDictionary)
+//                    //let photoData = pictureUrlFB!["data"] as? [String:Any]
+//                    //let photoUrl = photoData!["url"] as? String
+//
+//                    let responseDictionaryFriends = graphResponse.dictionaryValue
+//                    let data: NSArray = responseDictionaryFriends!["data"] as! NSArray
+//                
+//                    
+//                    print("jajajajajjajajajajja", data)
+//                    
+//                    
+//                    for i in  0..<data.count {
+//                        let dict = data[i] as! NSDictionary
+//                        let temp = dict.value(forKey: "id") as! String
+//                        Firestore.firestore().collection("users").whereField("fbid", arrayContains: temp).getDocuments(completion: { (snapshot, err) in
+//                            if let err = err {
+//                                print("failed getting fb friends", err)
+//                            }
+//                            snapshot?.documents.forEach({ (documentSnapshot) in
+//                                let userDictionary = documentSnapshot.data()
+//                                let crush = User(dictionary: userDictionary)
+//                                
+//                                let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+//                                
+//                                let sexPref = self.user?.sexPref
+//                                
+//                                
+//                                
+//                                if sexPref == "Female" {
+//                                    self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
+//                                }
+//                                else if sexPref == "Male" {
+//                                    self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
+//                                }
+//                                else {
+//                                    self.isRightSex = crush.age > 17
+//                                }
+//                                
+//                                if isNotCurrentUser && self.isRightSex {
+//                                
+//                                self.fbArray.append(crush)
+//                                
+//                                
+//                                }
+//                                //                let crushStuff = User(dictionary: userDictionary)
+//                                //                if let crushPartnerId = crushStuff.crushPartnerId() {
+//                                //                    self.schoolUserDictionary[crushPartnerId] = user
+//                                //                    self.users = Array(self.schoolUserDictionary.values)
+//                                //                }
+//                                
+//                                self.fbArray.sorted(by: { (crush1, crush2) -> Bool in
+//                                    return crush1.name > crush2.name
+//                                })
+//                                
+//                            })
+//                            DispatchQueue.main.async(execute: {
+//                                self.tableView.reloadData()
+//                                
+//                            })
+//                            
+//                        })
+//                    }
+//                    
+//                    
+//                }
+//            }
+//            
+//            
+//        })
+//    }
     //log in to fb to sinc?
    
     

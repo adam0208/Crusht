@@ -21,14 +21,16 @@ class CustomImagePickerController: UIImagePickerController  {
     var imageBttn: UIButton?
 }
 
-class SettingsTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
+class SettingsTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UIPickerViewDelegate, UITextFieldDelegate {
     
-    
+
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
     }
+  
+    
     var delegate: SettingsControllerDelegate?
     
     lazy var image1Button = createBttn(selector: #selector(handleSelectPhoto))
@@ -57,7 +59,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         let ref = Storage.storage().reference(withPath: "/images/\(filename)")
         guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
         ref.putData(uploadData, metadata: nil) { (nil, err) in
-            hud.dismiss()
+            
             if let err = err {
                 print("Failed to upload photo", err)
                 hud.dismiss()
@@ -78,34 +80,19 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 else {
                     self.user?.imageUrl3 = url?.absoluteString
                 }
+                hud.dismiss()
+                self.loadUserPhotos()
             })
         }
     }
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return myPickerData.count
-    }
-    
-    func pickerView( _ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return myPickerData[row]
-    }
-    
-   
-    var genderPicker = UIPickerView()
-    
-    let myPickerData = [String](arrayLiteral: " ", "Male", "Female", "All Humans")
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
-        fetchCurrentUser()
-        self.tableView.reloadData()
+
     }
-    
     
     func createBttn(selector: Selector) -> UIButton {
         let button = UIButton(type: .system)
@@ -118,11 +105,13 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         button.imageView?.contentMode = .scaleAspectFill
         return button
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupGradientLayer()
         setUpNavItems()
+        navigationController?.navigationBar.isTranslucent = false
         //view.backgroundColor = .blue
         //tableView.backgroundColor = UIColor.clear
         //tableView.tableFooterView?.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
@@ -131,14 +120,14 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
 
-     
         let bioCell = BioCell()
         bioCell.textView.delegate = self
+    
+
         //view.bringSubviewToFront(tableView)
         //tableView.fillSuperview()
-        //setupGradientLayer()
+        //setupGradientLayer
         fetchCurrentUser()
-        
         
     }
     
@@ -147,19 +136,18 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     var user: User?
     
     fileprivate func fetchCurrentUser() {
-            
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-                if let err = err {
-                    print(err)
-                    return
-                }
-                //print(snapshot?.data())
-                guard let dictionary = snapshot?.data() else {return}
-                self.user = User(dictionary: dictionary)
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
             }
-            
+            //print(snapshot?.data())
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
             self.loadUserPhotos()
+        }
             
             self.tableView.reloadData()
             
@@ -274,7 +262,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SettingsCells(style: .default, reuseIdentifier: nil)
         
-
+        
         
         if indexPath.section == 7 {
             let ageRangeCell = AgeRangeTableViewCell(style: .default, reuseIdentifier: nil)
@@ -292,10 +280,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
         else if indexPath.section == 8 {
             let locationRangeCell = LocationTableViewCell(style: .default, reuseIdentifier: nil)
-        //    locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
+            //    locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
             locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
             
-         //   locationRangeCell.minLabel.text = " Min Km: \(user?.minDistance ?? 1)"
+            //   locationRangeCell.minLabel.text = " Min Km: \(user?.minDistance ?? 1)"
             locationRangeCell.maxLabel.text = " Miles: \(user?.maxDistance ?? 50)"
             
             //locationRangeCell.minSlider.value = Float(user?.minDistance ?? 1)
@@ -303,7 +291,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             
             locationRangeCell.layer.cornerRadius = 16
             locationRangeCell.layer.masksToBounds = true
-    
+            
             return locationRangeCell
         }
         else if indexPath.section == 9 {
@@ -311,9 +299,9 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             let fbCell = FbConnectCell(style: .default, reuseIdentifier: nil)
             fbCell.FBLoginBttn.addTarget(self, action: #selector(handlePrivacy), for: .touchUpInside)
             return fbCell
-           
+            
         }
-        
+            
         else if indexPath.section == 10 {
             let logoutCell = LogoutBttnCell(style: .default, reuseIdentifier: nil)
             
@@ -321,7 +309,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             
             return logoutCell
         }
-        
+            
         else if indexPath.section == 11 {
             let privacyText = ContactsTextCell(style: .default, reuseIdentifier: nil)
             return privacyText
@@ -335,7 +323,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             return text
         }
         
-    
+        
         
         switch indexPath.section {
         case 1:
@@ -345,66 +333,80 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             cell.layer.cornerRadius = 16
             cell.layer.masksToBounds = true
         case 2 :
-            cell.textField.placeholder = "School"
-            cell.textField.text = user?.school
-            cell.textField.addTarget(self, action: #selector(handleSchoolChange), for: .editingChanged)
-            cell.layer.cornerRadius = 16
-            cell.layer.masksToBounds = true
+            let scell = SchoolCell(style: .default, reuseIdentifier: nil)
+            scell.textField.placeholder = "School"
+            scell.textField.text = user?.school
+            scell.settings = self
+            scell.textField.addTarget(self, action: #selector(handleSchoolChange), for: .editingChanged)
+            scell.layer.cornerRadius = 16
+            scell.layer.masksToBounds = true
+            return scell
         case 3:
             cell.textField.placeholder = "Age"
             let age = calcAge(birthday: (user?.birthday ?? "10-31-1995"))
             cell.textField.text = String(age)
-                 cell.isUserInteractionEnabled = false
+            cell.isUserInteractionEnabled = false
             cell.layer.cornerRadius = 16
             cell.layer.masksToBounds = true
             
             
-            //cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
+        //cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
         case 4:
             let bioCell = BioCell(style: .default, reuseIdentifier: nil)
             bioCell.textView.font = UIFont.systemFont(ofSize: 16)
             bioCell.textView.text = user?.bio
             bioCell.textView.delegate = self
-             
+            
             textViewDidChange(bioCell.textView)
             
             bioCell.layer.cornerRadius = 22
             bioCell.layer.masksToBounds = true
             return bioCell
-//            cell.textField.placeholder = "Bio"
-//            cell.textField.text = user?.bio
-//
-//            cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
-         
+            //            cell.textField.placeholder = "Bio"
+            //            cell.textField.text = user?.bio
+            //
+            //            cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
+            
         case 5:
-            cell.textField.placeholder = "Sex"
-                cell.isUserInteractionEnabled = false
-            cell.textField.text = user?.gender
-            cell.textField.addTarget(self, action: #selector(handleGenderChange), for: .editingChanged)
-            cell.layer.cornerRadius = 16
-            cell.layer.masksToBounds = true
+            let gcell = GenderCell(style: .default, reuseIdentifier: nil)
+            gcell.textField.placeholder = "Sex"
+            gcell.textField.text = user?.gender
+            gcell.textField.addTarget(self, action: #selector(handleGenderChange), for: .editingChanged)
+            gcell.settings = self
+            gcell.layer.cornerRadius = 16
+            gcell.layer.masksToBounds = true
+            return gcell
             
         default:
-            cell.textField.placeholder = "Sex Preference"
-            cell.isUserInteractionEnabled = false
-            cell.textField.text = user?.sexPref
-            cell.textField.addTarget(self, action: #selector(handleSexPrefChange), for: .editingChanged)
-            cell.layer.cornerRadius = 16
-            cell.layer.masksToBounds = true
-            
+            let prefCell = GenderPrefCell(style: .default, reuseIdentifier: nil)
+            prefCell.textField.placeholder = "Sex Preference"
+            prefCell.textField.text = user?.sexPref
+            prefCell.settings = self
+            prefCell.textField.addTarget(self, action: #selector(handleSexPrefChange), for: .editingChanged)
+            prefCell.layer.cornerRadius = 16
+            prefCell.layer.masksToBounds = true
+            return prefCell
         }
         
         return cell
     }
+
     
     public func textViewDidChange(_ textView: UITextView){
        user?.bio = textView.text
         
     }
+   
+    func sexPrefChange(texfield: UITextField) {
+        user?.sexPref = texfield.text
+    }
+    
+    
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return range.location < 200
     }
+    
     
     @objc fileprivate func handleMinChanged (slider: UISlider) {
        
@@ -458,7 +460,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     @objc fileprivate func handleSchoolChange(textField: UITextField) {
-        self.user?.school = textField.text
+        user?.sexPref = textField.text
+        
     }
     
     @objc fileprivate func handleBioChange(textView: UITextView) {
@@ -468,11 +471,13 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     @objc fileprivate func handleSexPrefChange(textField: UITextField) {
-        self.user?.sexPref = textField.text
+        //self.user?.sexPref = textField.text
+        
+            user?.sexPref = textField.text
     }
     
     @objc fileprivate func handleGenderChange(textField: UITextField) {
-        self.user?.gender = textField.text
+        user?.gender = textField.text
     }
     
 //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -483,7 +488,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
 //    }
     
     fileprivate func setUpNavItems() {
-        navigationItem.title = "Edit Profile"
+        navigationItem.title = "Settings"
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         
@@ -497,9 +502,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     let bioTextView = BioTextView()
     
     @objc fileprivate func handleSave() {
-        
+        var docData = [String: Any]()
         guard let uid = Auth.auth().currentUser?.uid else { return}
-        let docData: [String: Any] = [
+        if user?.imageUrl1 != "" && user?.imageUrl2 != "" && user?.imageUrl3 != "" {
+        docData = [
             "uid": uid,
             "Full Name": user?.name ?? "",
             "ImageUrl1": user?.imageUrl1 ?? "",
@@ -522,7 +528,53 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "TimeLastJoined": user?.timeLastJoined ?? 100000
 
             ]
-        
+        } else if user?.imageUrl1 != "" && user?.imageUrl2 != "" && user?.imageUrl3 == "" {
+            docData = [
+                "uid": uid,
+                "Full Name": user?.name ?? "",
+                "ImageUrl1": user?.imageUrl1 ?? "",
+                "ImageUrl2": user?.imageUrl2 ?? "",
+                "Age": calcAge(birthday: user?.birthday ?? "10-31-1995"),
+                "Birthday": user?.birthday ?? "",
+                "School": user?.school ?? "",
+                "Bio": user?.bio ?? "",
+                "minSeekingAge": user?.minSeekingAge ?? 18,
+                "maxSeekingAge": user?.maxSeekingAge ?? 50,
+                "maxDistance": user?.maxDistance ?? 3,
+                "email": user?.email ?? "",
+                "fbid": user?.fbid ?? "",
+                "PhoneNumber": user?.phoneNumber ?? "",
+                "deviceID": Messaging.messaging().fcmToken ?? "",
+                "Gender-Preference": user?.sexPref ?? "",
+                "User-Gender": user?.gender ?? "",
+                "CurrentVenue": user?.currentVenue ?? "",
+                "TimeLastJoined": user?.timeLastJoined ?? 100000
+                
+            ]
+        }
+        else if user?.imageUrl1 != "" && user?.imageUrl2 == "" && user?.imageUrl3 == "" {
+            docData = [
+                "uid": uid,
+                "Full Name": user?.name ?? "",
+                "ImageUrl1": user?.imageUrl1 ?? "",
+                "Age": calcAge(birthday: user?.birthday ?? "10-31-1995"),
+                "Birthday": user?.birthday ?? "",
+                "School": user?.school ?? "",
+                "Bio": user?.bio ?? "",
+                "minSeekingAge": user?.minSeekingAge ?? 18,
+                "maxSeekingAge": user?.maxSeekingAge ?? 50,
+                "maxDistance": user?.maxDistance ?? 3,
+                "email": user?.email ?? "",
+                "fbid": user?.fbid ?? "",
+                "PhoneNumber": user?.phoneNumber ?? "",
+                "deviceID": Messaging.messaging().fcmToken ?? "",
+                "Gender-Preference": user?.sexPref ?? "",
+                "User-Gender": user?.gender ?? "",
+                "CurrentVenue": user?.currentVenue ?? "",
+                "TimeLastJoined": user?.timeLastJoined ?? 100000
+                
+            ]
+        }
   //      let hud = JGProgressHUD(style: .dark)
 //        hud.textLabel.text = "Saving Changes"
 //        hud.show(in: view)
@@ -562,7 +614,6 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
             }
-            self.dismiss(animated: true)
             present(navController, animated: true)
         }
     
@@ -610,25 +661,25 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         navigationController?.pushViewController(userDetailsController, animated: true)
     }
    
-    fileprivate func fetchFBid() {
-        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
-        req.start({ (connection, result) in
-            switch result {
-            case .failed(let error):
-                print(error)
-            case .success(let graphResponse):
-                if let responseDictionary = graphResponse.dictionaryValue {
-                    print(responseDictionary)
-                    
-                    let socialIdFB = responseDictionary["id"] as? String
-                    print(socialIdFB!)
-                    
-                    self.user?.fbid = socialIdFB!
-                    
-                }
-            }
-        })
-    }
+//    fileprivate func fetchFBid() {
+//        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+//        req.start({ (connection, result) in
+//            switch result {
+//            case .failed(let error):
+//                print(error)
+//            case .success(let graphResponse):
+//                if let responseDictionary = graphResponse.dictionaryValue {
+//                    print(responseDictionary)
+//                    
+//                    let socialIdFB = responseDictionary["id"] as? String
+//                    print(socialIdFB!)
+//                    
+//                    self.user?.fbid = socialIdFB!
+//                    
+//                }
+//            }
+//        })
+//    }
     
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

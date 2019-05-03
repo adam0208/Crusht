@@ -119,9 +119,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         bottomStackView.disLikeBttn.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         topStackView.collegeOnlySwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
         view.backgroundColor = .white
-        fetchCurrentUser()
+        fetchCurrentUser(user: user!)
         //fetchUsersFromFirestore()
-       // fetchUsersOnLoad()
+        //fetchUsersOnLoad()
         
         
     }
@@ -142,34 +142,24 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     var userAge = Int()
     
-    fileprivate func fetchCurrentUser() {
-        hud.textLabel.text = "Fetching Users, hold tight :)"
-        hud.show(in: view)
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
+    fileprivate func fetchCurrentUser(user: User) {
+        
+        
+        
+        let geoFirestoreRef = Firestore.firestore().collection("users")
+        let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+        
+        geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: user.uid ?? (Auth.auth().currentUser?.uid)!) { (error) in
+            if (error != nil) {
+                print("An error occured", error!)
+            } else {
+                print("Saved location successfully!")
             }
-            let dictionary = snapshot?.data()
-            self.user = User(dictionary: dictionary!)
-           
-            self.sexPref = self.user?.sexPref ?? ""
-            self.userAge = self.user?.age ?? 20
-            let geoFirestoreRef = Firestore.firestore().collection("users")
-            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-
-            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
-                if (error != nil) {
-                    print("An error occured", error!)
-                } else {
-                    print("Saved location successfully!")
-                }
-            }
+        }
         
             self.fetchSwipes()
         }
-    }
+    
     
     var swipes = [String: Int]()
     
@@ -366,7 +356,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         reportController.uid = Auth.auth().currentUser!.uid
         
         let myBackButton = UIBarButtonItem()
-        myBackButton.title = "👈"
+        myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton
         
         //let navigatoinController = UINavigationController(rootViewController: reportController)
@@ -391,6 +381,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             var previousCardView: CardView?
             
             snapshot?.documents.forEach({ (documentSnapshot) in
+            
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
                 // if user.uid != Auth.auth().currentUser?.uid {
@@ -413,17 +404,21 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     self.isRightSex = user.age ?? 18 > 17
                 }
                 
-                
-                if isNotCurrentUser && hasNotSwipedBefore && hasNotSwipedPhoneBefore && minAge && maxAge && self.isRightSex {
+               
+                if isNotCurrentUser && hasNotSwipedBefore && hasNotSwipedPhoneBefore && self.isRightSex {
                     let cardView = self.setupCardFromUser(user: user)
                     
                     previousCardView?.nextCardView = cardView
                     previousCardView = cardView
                     
+                    
+                    
                     if self.topCardView == nil {
                         self.topCardView = cardView
                     }
+                    
                 }
+                
                 
             })
             
@@ -919,7 +914,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         overallStackView.spacing = 8
         overallStackView.isLayoutMarginsRelativeArrangement = true
-        overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
+        overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 8, right: 12)
         
         overallStackView.bringSubviewToFront(cardDeckView)
         
@@ -939,7 +934,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             
         }
     }
-    
-    
- 
+
 }
+

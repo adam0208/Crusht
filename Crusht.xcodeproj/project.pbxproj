@@ -33,8 +33,6 @@
 		280F67C62274E6E000C1F2C4 /* icons8-bar-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67C52274E6E000C1F2C4 /* icons8-bar-30-2.png */; };
 		281282DF2273ED4800CA324E /* LikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282DE2273ED4800CA324E /* LikeButtonCrusht.png */; };
 		281282E12273ED5000CA324E /* DislikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */; };
-		281282E32273EF0D00CA324E /* SettingsIconCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E22273EF0D00CA324E /* SettingsIconCrusht.png */; };
-		281282E52273EF1500CA324E /* Messages Crusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E42273EF1500CA324E /* Messages Crusht.png */; };
 		28148F3721D6C1540016BD22 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 28148F3621D6C1530016BD22 /* play.png */; };
 		282B2E592271813600BAB159 /* DetailsPOPVIEWController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */; };
 		282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */ = {isa = PBXBuildFile; fileRef = 282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */; };
@@ -197,8 +195,6 @@
 		280F67C52274E6E000C1F2C4 /* icons8-bar-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-bar-30-2.png"; sourceTree = "<group>"; };
 		281282DE2273ED4800CA324E /* LikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LikeButtonCrusht.png; sourceTree = "<group>"; };
 		281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DislikeButtonCrusht.png; sourceTree = "<group>"; };
-		281282E22273EF0D00CA324E /* SettingsIconCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SettingsIconCrusht.png; path = ../../SettingsIconCrusht.png; sourceTree = "<group>"; };
-		281282E42273EF1500CA324E /* Messages Crusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Messages Crusht.png"; path = "../../Messages Crusht.png"; sourceTree = "<group>"; };
 		28148F3621D6C1530016BD22 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPOPVIEWController.swift; sourceTree = "<group>"; };
 		282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CrushtLogoLiam69!.png"; sourceTree = "<group>"; };
@@ -435,9 +431,7 @@
 				280F67A32274241A00C1F2C4 /* Recycle button.png */,
 				28857C9421B8D1D500A654A0 /* FaveBttn2.png */,
 				28857C5A21B8D1D100A654A0 /* IMG_0184.png */,
-				281282E42273EF1500CA324E /* Messages Crusht.png */,
 				28857CC621B98F9200A654A0 /* top_left_profile@2x.png */,
-				281282E22273EF0D00CA324E /* SettingsIconCrusht.png */,
 				28857CC721B98F9200A654A0 /* top_right_messages@2x.png */,
 				28857C6421B8D1D200A654A0 /* NoProfileImage.png */,
 				28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */,
@@ -778,7 +772,6 @@
 				280F67AE22742F8C00C1F2C4 /* icons8-bar-30.png in Resources */,
 				28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */,
 				280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */,
-				281282E32273EF0D00CA324E /* SettingsIconCrusht.png in Resources */,
 				28148F3721D6C1540016BD22 /* play.png in Resources */,
 				280F67BC2274E1D700C1F2C4 /* icons8-box-important-30.png in Resources */,
 				28CFC6AF21C56BAB00387129 /* heart2crusht.png in Resources */,
@@ -787,7 +780,6 @@
 				28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */,
 				28F67BA92276382E00EDFDFF /* icons8-communication-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
-				281282E52273EF1500CA324E /* Messages Crusht.png in Resources */,
 				28F67BA72276382100EDFDFF /* icons8-swipe-right-gesture-30.png in Resources */,
 				28F67BAD22766D8C00EDFDFF /* icons8-user-male-30.png in Resources */,
 				280F67B622743E4500C1F2C4 /* icons8-communication-60.png in Resources */,
@@ -822,7 +814,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/CountryPickerSwift/CountryPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
@@ -844,7 +835,6 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountryPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",

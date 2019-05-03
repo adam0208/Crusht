@@ -11,12 +11,8 @@ import Firebase
 
 class VenueCell: UITableViewCell {
        
-     var venue: Venue? {
-        didSet {
-            setupNameAndProfileImage()
+     var venue: Venue?
     
-        }
-    }
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -47,33 +43,6 @@ class VenueCell: UITableViewCell {
         profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
     }
-    
-    fileprivate func setupNameAndProfileImage() {
-        //if let uid = ?.chatPartnerId() {
-        Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: "Mary Ann's").getDocuments { (snapshot, err) in
-            
-            if let err = err {
-                print("FAILLLLLLLLL", err)
-            }
-            
-            snapshot?.documents.forEach({ (documentSnapshot) in
-                if let dictionary = documentSnapshot.data() as [String: AnyObject]? {
-                    
-                    self.textLabel?.text = dictionary["Full Name"] as? String
-                    self.detailTextLabel?.text = dictionary["School"] as? String
-                    
-                    if let profileImageUrl = dictionary["ImageUrl1"] as? String {
-                        self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
-                    }
-                    
-                }
-                
-            })
-            
-        }
-        
-    }
-    
 
     
     required init?(coder aDecoder: NSCoder) {

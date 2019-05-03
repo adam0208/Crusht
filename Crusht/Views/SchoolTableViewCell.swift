@@ -12,13 +12,7 @@ import JGProgressHUD
 
 class SchoolTableViewCell: UITableViewCell {
     
-    var crush: User? {
-        didSet {
-            setupNameAndProfileImage()
-            
-            //detailTextLabel?.text = crush?.name
-        }
-    }
+    var crush: User?
 
     var link: SchoolCrushController?
     
@@ -75,33 +69,33 @@ class SchoolTableViewCell: UITableViewCell {
     
  
     
-    fileprivate func setupNameAndProfileImage() {
-           let school = user?.school ?? "I suck a lot"
-        //if let uid = ?.chatPartnerId() {
-            Firestore.firestore().collection("users").whereField("School", isEqualTo: school).getDocuments { (snapshot, err) in
-                
-                if let err = err {
-                    print("FAILLLLLLLLL", err)
-                }
-                
-                snapshot?.documents.forEach({ (documentSnapshot) in
-                    if let dictionary = documentSnapshot.data() as [String: AnyObject]? {
-                        
-                            self.textLabel?.text = dictionary["Full Name"] as? String
-                            self.detailTextLabel?.text = dictionary["School"] as? String
-                            
-                            if let profileImageUrl = dictionary["ImageUrl1"] as? String {
-                                self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
-                            }
-                        
-                        }
-
-                    })
-                
-            }
-            
-        }
-    
+//    fileprivate func setupNameAndProfileImage() {
+//           let school = user?.school ?? "I suck a lot"
+//        //if let uid = ?.chatPartnerId() {
+//            Firestore.firestore().collection("users").whereField("School", isEqualTo: school).getDocuments { (snapshot, err) in
+//                
+//                if let err = err {
+//                    print("FAILLLLLLLLL", err)
+//                }
+//                
+//                snapshot?.documents.forEach({ (documentSnapshot) in
+//                    if let dictionary = documentSnapshot.data() as [String: AnyObject]? {
+//                        
+//                            self.textLabel?.text = dictionary["Full Name"] as? String
+//                            self.detailTextLabel?.text = dictionary["School"] as? String
+//                            
+//                            if let profileImageUrl = dictionary["ImageUrl1"] as? String {
+//                                self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+//                            }
+//                        
+//                        }
+//
+//                    })
+//                
+//            }
+//            
+//        }
+//    
     
     @objc func handleTapped() {
         link?.hasTappedCrush(cell: self)

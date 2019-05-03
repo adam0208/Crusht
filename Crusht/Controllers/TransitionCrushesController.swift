@@ -264,7 +264,7 @@ class TransitionCrushesController: UIViewController, CLLocationManagerDelegate {
     @objc fileprivate func handleFacebook() {
     
         if user?.fbid == "" {
-            loginFB()
+           // loginFB()
         }
         else {
             let myBackButton = UIBarButtonItem()
@@ -275,42 +275,42 @@ class TransitionCrushesController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    fileprivate func loginFB() {
-        let loginManager = LoginManager()
-        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
-            switch loginResult {
-            case .failed(let error):
-                print("cccccccccccccccccccccccccccccccccccccc",error)
-            case .cancelled:
-                print("User cancelled login.")
-            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
-                print("Logged in!")
-                self.fetchFBid()
-            }
-        }
-    }
+//    fileprivate func loginFB() {
+//        let loginManager = LoginManager()
+//        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self)  { (loginResult) in
+//            switch loginResult {
+//            case .failed(let error):
+//                print("cccccccccccccccccccccccccccccccccccccc",error)
+//            case .cancelled:
+//                print("User cancelled login.")
+//            case .success(grantedPermissions: _, declinedPermissions: _, token: _):
+//                print("Logged in!")
+//                self.fetchFBid()
+//            }
+//        }
+//    }
     var FBID = String()
-    fileprivate func fetchFBid() {
-        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
-        req.start({ (connection, result) in
-            switch result {
-            case .failed(let error):
-                print(error)
-            case .success(let graphResponse):
-                if let responseDictionary = graphResponse.dictionaryValue {
-                    print(responseDictionary)
-                    
-                    let socialIdFB = responseDictionary["id"] as? String
-                    print(socialIdFB!)
-                    
-                    self.FBID = socialIdFB!
-                    
-                    self.handleSaveFBID()
-                }
-            }
-        })
-    }
-    
+//    fileprivate func fetchFBid() {
+//        let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+//        req.start({ (connection, result) in
+//            switch result {
+//            case .failed(let error):
+//                print(error)
+//            case .success(let graphResponse):
+//                if let responseDictionary = graphResponse.dictionaryValue {
+//                    print(responseDictionary)
+//                    
+//                    let socialIdFB = responseDictionary["id"] as? String
+//                    print(socialIdFB!)
+//                    
+//                    self.FBID = socialIdFB!
+//                    
+//                    self.handleSaveFBID()
+//                }
+//            }
+//        })
+//    }
+//    
     fileprivate func handleSaveFBID() {
         
         guard let uid = Auth.auth().currentUser?.uid else { return}

@@ -10,6 +10,7 @@ import Firebase
 import JGProgressHUD
 import CoreLocation
 import SDWebImage
+import GeoFire
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -33,9 +34,26 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate {
+class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+         navigationController?.navigationBar.prefersLargeTitles = true
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                showSettingsAlert2()
+            case .authorizedAlways, .authorizedWhenInUse:
+                print("location cool")
+            }
+        } else {
+            showSettingsAlert2()
+        }
+    }
     
     func didSaveSettings() {
+        schoolArray.removeAll()
         fetchCurrentUser()
     }
     
@@ -92,31 +110,35 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     let animationView = AnimationView()
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarIndex = tabBarController.selectedIndex
+        if tabBarIndex == 3 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
+        }
+    }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.delegate = self
         
         let cellId = "cellId"
-        
-    
         
         fetchCurrentUser()
         //        navigationItem.leftItemsSupplementBackButton = true
         //        navigationItem.leftBarButtonItem?.title = "👈"
-      
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         
-        let messageButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-communication-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMessages))
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
 
-        navigationController?.navigationBar.addSubview(messageBadge)
-        messageBadge.anchor(top: navigationController?.navigationBar.topAnchor, leading: nil, bottom: navigationController?.navigationBar.bottomAnchor, trailing: navigationController?.navigationBar.trailingAnchor)
+        
         listenForMessages()
-        navigationItem.rightBarButtonItems = [messageButton, swipeButton]
+        navigationItem.rightBarButtonItem = swipeButton
         
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
@@ -137,25 +159,24 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         searchController.searchBar.barStyle = .black
-        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         tabBarController?.view.addSubview(animationView)
         animationView.fillSuperview()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
             self.animationView.removeFromSuperview()
         }
-        for viewController in tabBarController?.viewControllers ?? [] {
-            if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
-                let _ = rootVC.view
-            } else {
-                let _ = viewController.view
-            }
-        }
+    
         
     }
+    
+    var sawMessage = Bool()
     
     @objc func handleMessages() {
         let messageController = MessageController()
         messageBadge.removeFromSuperview()
+        sawMessage = true
+        messageController.user = user
         let navController = UINavigationController(rootViewController: messageController)
         present(navController, animated: true)
         //navigationController?.pushViewController(messageController, animated: true)
@@ -189,7 +210,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                     if (diff.type == .added) {
                     }
                     if (diff.type == .modified) {
-                        self.messageBadge.isHidden = false
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                         
                     }
                     if (diff.type == .removed) {
@@ -201,7 +223,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     @objc func handleSettings() {
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
-        settingsController.user = user
+        
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true)
         
@@ -262,6 +284,17 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         tableView.reloadData()
     }
     
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        userLat = locValue.latitude
+        userLong = locValue.longitude
+    }
+    
+    var userLat = Double()
+    var userLong = Double()
+    
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
@@ -276,6 +309,18 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 let namecontroller = EnterNameController()
                 namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
+                return
+            }
+            
+            let geoFirestoreRef = Firestore.firestore().collection("users")
+            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+            
+            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                if (error != nil) {
+                    print("An error occured", error!)
+                } else {
+                    print("Saved location successfully!")
+                }
             }
             
             //self.fetchSwipes()
@@ -865,14 +910,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         self.navigationController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
-    }
-    
-    @objc fileprivate func handleMessageButtonTapped() {
-        let profileController = ProfilePageViewController()
-        present(profileController, animated: true)
-        let messageController = MessageController()
-        let navController = UINavigationController(rootViewController: messageController)
-        present(navController, animated: true)
     }
     
     // MARK: - Table view data source

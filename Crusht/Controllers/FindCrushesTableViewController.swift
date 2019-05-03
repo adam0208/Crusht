@@ -11,11 +11,17 @@ import Firebase
 import Contacts
 import JGProgressHUD
 import CoreLocation
+import GeoFire
 
 
-class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate {
+class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate, UITabBarControllerDelegate {
+    
+    let schoolController = SchoolCrushController()
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+
         tableView.reloadData()
     }
     
@@ -34,17 +40,42 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
      var user: User?
     
-    fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            
-            guard let dictionary = snapshot?.data() else {return}
-            self.user = User(dictionary: dictionary)
-            print(self.user?.phoneNumber ?? "Fuck you")
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+            print("locations = \(locValue.latitude) \(locValue.longitude)")
+            userLat = locValue.latitude
+            userLong = locValue.longitude
+        }
+        
+        var userLat = Double()
+        var userLong = Double()
+        
+        fileprivate func fetchCurrentUser() {
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+                if let err = err {
+                    print(err)
+                    return
+                }
+                
+                guard let dictionary = snapshot?.data() else {return}
+                self.user = User(dictionary: dictionary)
+                if self.user?.name == "" {
+                    let namecontroller = EnterNameController()
+                    namecontroller.phone = self.user?.phoneNumber ?? ""
+                    self.present(namecontroller, animated: true)
+                }
+                
+                let geoFirestoreRef = Firestore.firestore().collection("users")
+                let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+                
+                geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                    if (error != nil) {
+                        print("An error occured", error!)
+                    } else {
+                        print("Saved location successfully!")
+                    }
+                }
             self.fetchSwipes()
             self.tableView.reloadData()
             
@@ -176,7 +207,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         let cardUID = phoneFinal
         
-        let twilioPhoneData: [String: Any] = ["phoneToInvite": phoneNoDash]
+        let twilioPhoneData: [String: Any] = ["phoneToInvite": phoneFinal]
         
         let documentData = [cardUID: didLike]
         
@@ -692,8 +723,30 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //        tableView.reloadRows(at: indexPathsToReload, with: animationStyle)
 //    }
     
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarIndex = tabBarController.selectedIndex
+        if tabBarIndex == 3 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tabBarController?.delegate = self
+
+        
+        for viewController in tabBarController?.viewControllers ?? [] {
+            if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
+                let _ = rootVC.view
+            } else {
+                let _ = viewController.view
+            }
+        }
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
 //        view.addSubview(searchController.searchBar)
 //        // Setup the Search Controller
@@ -703,13 +756,12 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //        navigationItem.searchController = self.searchController
         definesPresentationContext = true
         navigationController?.isNavigationBarHidden = false
-        let messageButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-communication-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMessages))
+   
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
         
-        navigationController?.navigationBar.addSubview(messageBadge)
-        messageBadge.anchor(top: navigationController?.navigationBar.topAnchor, leading: nil, bottom: navigationController?.navigationBar.bottomAnchor, trailing: navigationController?.navigationBar.trailingAnchor)
+   
         listenForMessages()
-        navigationItem.rightBarButtonItems = [messageButton, swipeButton]
+        navigationItem.rightBarButtonItem = swipeButton
         messageBadge.isHidden = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
         navigationController?.navigationBar.isTranslucent = false
@@ -737,11 +789,13 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     @objc func handleMessages() {
         let messageController = MessageController()
         messageBadge.removeFromSuperview()
+        messageController.user = user
         let navController = UINavigationController(rootViewController: messageController)
         present(navController, animated: true)
         //navigationController?.pushViewController(messageController, animated: true)
         
     }
+    
     
     let messageBadge: UILabel = {
         let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
@@ -770,7 +824,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     if (diff.type == .added) {
                     }
                     if (diff.type == .modified) {
-                        self.messageBadge.isHidden = false
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                         
                     }
                     if (diff.type == .removed) {
@@ -779,10 +834,11 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         }
     }
     
+    
     @objc func handleSettings() {
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
-        settingsController.user = user
+        
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true)
         

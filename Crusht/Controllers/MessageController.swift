@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import CoreLocation
+import GeoFire
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -31,36 +33,134 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class MessageController: UITableViewController, UISearchBarDelegate {
+class MessageController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
     
-    let badge: UILabel = {
-    let label = UILabel(frame: CGRect(x: 10, y: -10, width: 20, height: 20))
-        label.layer.borderColor = UIColor.clear.cgColor
-    label.layer.borderWidth = 2
-    label.layer.cornerRadius = label.bounds.size.height / 2
-    label.textAlignment = .center
-    label.layer.masksToBounds = true
-    label.font = UIFont(name: "SanFranciscoText-Light", size: 13)
-    label.textColor = .white
-    label.backgroundColor = .red
-    label.text = "80"
-        return label
-    }()
+    func didSaveSettings() {
+        messages.removeAll()
+        fetchUserAndSetupNavBarTitle()
+    }
+    
+    
+    func didFinishLoggingIn() {
+        messages.removeAll()
+        fetchUserAndSetupNavBarTitle()
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarIndex = tabBarController.selectedIndex
+        if tabBarIndex == 3 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
+        }
+    }
     
     //ADD COLLECTION CALLED USER MESSAGE OR SOMETING TO DOCUMENT SO ONLY GET ONE MESSAGE
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        fetchUserAndSetupNavBarTitle()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
+        listenForMessages()
+    }
+    
+    var user: User?
+    
+    @objc func handleSettings() {
+        let settingsController = SettingsTableViewController()
+        settingsController.delegate = self
+        let navController = UINavigationController(rootViewController: settingsController)
+        present(navController, animated: true)
+        
+    }
+    
+    @objc fileprivate func handleMatchByLocationBttnTapped() {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                showSettingsAlert2()
+            case .authorizedAlways, .authorizedWhenInUse:
+                let locationViewController = LocationMatchViewController()
+                locationViewController.user = user
+                let navigationController = UINavigationController(rootViewController: locationViewController)
+                present(navigationController, animated: true)
+            }
+        } else {
+            showSettingsAlert2()
+        }
+        
+        
+        
+    }
+    
+    
+    private func showSettingsAlert2() {
+        let alert = UIAlertController(title: "Enable Location", message: "Crusht would like to use your location to match you with nearby users.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+            
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            return
+        })
+        present(alert, animated: true)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        userLat = locValue.latitude
+        userLong = locValue.longitude
+    }
+    
+    var userLat = Double()
+    var userLong = Double()
+    
+    fileprivate func fetchCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+                namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+                return
+            }
+            
+            let geoFirestoreRef = Firestore.firestore().collection("users")
+            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+            
+            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                if (error != nil) {
+                    print("An error occured", error!)
+                } else {
+                    print("Saved location successfully!")
+                }
+            }
+            
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let cellId = "cellId"
+        self.tabBarController?.delegate = self
+
+        fetchCurrentUser()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
+        
+         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
         
         navigationController?.isNavigationBarHidden = false
 
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-back-filled-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBack))
 //        navigationItem.leftItemsSupplementBackButton = true
 //        navigationItem.leftBarButtonItem?.title = "👈"
         
@@ -71,7 +171,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 
         navigationItem.title = "Messages"
-        
+        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         searchController.searchBar.barStyle = .black
@@ -84,7 +184,7 @@ class MessageController: UITableViewController, UISearchBarDelegate {
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
         
-        
+        fetchUserAndSetupNavBarTitle()
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.searchController.searchBar.tintColor = .white
@@ -144,6 +244,10 @@ class MessageController: UITableViewController, UISearchBarDelegate {
                     if (diff.type == .added) {
                     }
                     if (diff.type == .modified) {
+                        self.messages.removeAll()
+                        self.observeMessages()
+                        self.observeUserMessages()
+                        
                         self.handleReloadTable()
                         
                     }
@@ -304,10 +408,13 @@ class MessageController: UITableViewController, UISearchBarDelegate {
 
                 let user = User(dictionary: dictionary)
                 self.setupNavBarWithUser(user)
+                self.fromName = user.name ?? "Match"
             }
         }
         
     }
+    
+    var fromName = String()
     
     func setupNavBarWithUser(_ user: User) {
         messages.removeAll()
@@ -366,11 +473,9 @@ class MessageController: UITableViewController, UISearchBarDelegate {
     func showChatControllerForUser(_ user: User) {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
         chatLogController.user = user
-        chatLogController.fromName = navigationItem.title
-        let myBackButton = UIBarButtonItem()
-        myBackButton.title = " "
-        navigationItem.backBarButtonItem = myBackButton
-        navigationController?.pushViewController(chatLogController, animated: true)
+        chatLogController.fromName = fromName
+        let navigC = UINavigationController(rootViewController: chatLogController)
+       present(navigC, animated: true)
     }
     
     let searchController = UISearchController(searchResultsController: nil)

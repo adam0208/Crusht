@@ -16,10 +16,11 @@ class UserCell: UITableViewCell {
         didSet {
             setupNameAndProfileImage()
             
+            
+        
             detailTextLabel?.text = message?.text
-            
-       
-            
+                
+          
             if let seconds = message?.timestamp?.doubleValue {
             let timestampDate = Date(timeIntervalSince1970: seconds)
                 

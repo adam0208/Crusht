@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.applicationIconBadgeNumber = 0
-        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+      
         
         UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         UINavigationBar.appearance().tintColor = .white
@@ -64,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow()
         window?.makeKeyAndVisible()
-        let profController = ProfilePageViewController()
 
         if Auth.auth().currentUser == nil {
             window?.rootViewController = LoginViewController()
@@ -152,7 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

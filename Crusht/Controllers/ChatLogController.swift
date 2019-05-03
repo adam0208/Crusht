@@ -184,8 +184,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         super.viewDidLoad()
         self.hideKeyboard()
         listenForMessages()
+        navigationController?.navigationBar.isTranslucent = false
+
         navigationController?.navigationBar.prefersLargeTitles = false
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-back-filled-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleback))
         
         //navigationController?.title.
         
@@ -411,6 +414,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         })
         
         uploadTask.observe(.progress) { (snapshot) in
+
             if let completedUnitCount = snapshot.progress?.completedUnitCount {
                 self.navigationItem.title = String(completedUnitCount)
             }
@@ -510,9 +514,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         }
     }
     
+    let messageController = MessageController()
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -557,12 +562,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         
         setupCell(cell, message: message)
-        
+           if message.text != "Image" {
         if let text = message.text {
             //a text message
             cell.bubbleWidthAnchor?.constant = estimateFrameForText(text).width + 32
             cell.textView.isHidden = false
-        } else if message.imageUrl != nil {
+            }
+           } else if message.imageUrl != nil {
             //fall in here if its an image message
             cell.bubbleWidthAnchor?.constant = 200
             cell.textView.isHidden = true
@@ -581,9 +587,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         var height: CGFloat = 80
         
         let message = messages[indexPath.item]
+        if message.text != "Image" {
         if let text = message.text {
             height = estimateFrameForText(text).height + 20
-        } else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
+            }
+        }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
             
             height = CGFloat(imageHeight / imageWidth * 200)
             
@@ -617,16 +625,22 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
         }
-        
         if let messageImageUrl = message.imageUrl {
-            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageUrl)
+            if ( messageImageUrl == message.imageUrl && message.text == "Image") {
+            let url = URL(string: messageImageUrl)
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                cell.messageImageView.image = image
+                cell.textView.text = ""
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = UIColor.clear
-        } else {
+            }
+            }
+        }else {
             cell.messageImageView.isHidden = true
         }
     }
     
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
     }
@@ -673,7 +687,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     }
     
     fileprivate func sendMessageWithImageUrl(_ imageUrl: String, image: UIImage) {
-        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": image.size.width as AnyObject, "imageHeight": image.size.height as AnyObject]
+        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": image.size.width as AnyObject, "imageHeight": image.size.height as AnyObject, "text": "Image" as AnyObject]
         inputTextField.text = nil
         sendMessageWithProperties(properties)
     }
@@ -807,7 +821,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         //cloud messaging stuff
         
         messages.removeAll()
-        
         
         
     }

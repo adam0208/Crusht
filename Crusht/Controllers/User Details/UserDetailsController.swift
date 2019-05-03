@@ -212,8 +212,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         bioLabel.anchor(top: crushScoreLabel.bottomAnchor, leading: crushScoreLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
         
         
+        scrollView.fillSuperview()
         
-          scrollView.fillSuperview()
        
     }
     
@@ -236,6 +236,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.isTranslucent = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport))
         setupLayout()
         

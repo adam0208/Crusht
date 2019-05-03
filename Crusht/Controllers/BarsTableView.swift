@@ -13,10 +13,11 @@ import JGProgressHUD
 import CoreLocation
 import SDWebImage
 
-class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate {
+class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+         navigationController?.navigationBar.prefersLargeTitles = true
         tableView.reloadData()
     }
     
@@ -39,14 +40,25 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         dismiss(animated: true)
     }
     
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarIndex = tabBarController.selectedIndex
+        if tabBarIndex == 3 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        self.tabBarController?.delegate = self
+
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
 searchController.searchBar.barStyle = .black
         navigationController?.isNavigationBarHidden = false
         tableView.register(VenueCell.self, forCellReuseIdentifier: cellId)
-        navigationItem.title = "Select to Check Venue"
+        navigationItem.title = "Join Venues"
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         if CLLocationManager.locationServicesEnabled() {
@@ -62,9 +74,8 @@ searchController.searchBar.barStyle = .black
         
         // For use in foreground
         self.locationManager.requestWhenInUseAuthorization()
-        let messageButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-communication-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMessages))
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-        navigationItem.rightBarButtonItems = [messageButton, swipeButton]
+        navigationItem.rightBarButtonItem = swipeButton
 
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
@@ -73,8 +84,6 @@ searchController.searchBar.barStyle = .black
         searchController.searchBar.placeholder = "Search Venues Near You"
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
-        navigationController?.navigationBar.addSubview(messageBadge)
-        messageBadge.anchor(top: navigationController?.navigationBar.topAnchor, leading: nil, bottom: navigationController?.navigationBar.bottomAnchor, trailing: navigationController?.navigationBar.trailingAnchor)
         listenForMessages()
         messageBadge.isHidden = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
@@ -87,6 +96,7 @@ searchController.searchBar.barStyle = .black
     @objc func handleMessages() {
         let messageController = MessageController()
         messageBadge.removeFromSuperview()
+        messageController.user = user
         let navController = UINavigationController(rootViewController: messageController)
         present(navController, animated: true)
         //navigationController?.pushViewController(messageController, animated: true)
@@ -94,7 +104,7 @@ searchController.searchBar.barStyle = .black
     }
     
     let messageBadge: UILabel = {
-        let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
+        let label = UILabel(frame: CGRect(x: 5, y: 5, width: 10, height: 10))
         label.layer.borderColor = UIColor.clear.cgColor
         label.layer.borderWidth = 2
         label.layer.cornerRadius = label.bounds.size.height / 2
@@ -120,7 +130,8 @@ searchController.searchBar.barStyle = .black
                     if (diff.type == .added) {
                     }
                     if (diff.type == .modified) {
-                        self.messageBadge.isHidden = false
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                         
                     }
                     if (diff.type == .removed) {
@@ -132,7 +143,6 @@ searchController.searchBar.barStyle = .black
     @objc func handleSettings() {
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
-        settingsController.user = user
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true)
         
@@ -182,18 +192,32 @@ searchController.searchBar.barStyle = .black
     var userLat = Double()
     var userLong = Double()
     
-   
-        
     fileprivate func fetchCurrentUser() {
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-                if let err = err {
-                    print(err)
-                    return
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+                namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
+            
+            let geoFirestoreRef = Firestore.firestore().collection("users")
+            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+            
+            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                if (error != nil) {
+                    print("An error occured", error!)
+                } else {
+                    print("Saved location successfully!")
                 }
-                
-                guard let dictionary = snapshot?.data() else {return}
-                self.user = User(dictionary: dictionary)
+            }
                 
                 print(self.user?.phoneNumber ?? "Fuck you")
                 self.fetchBars()
@@ -224,7 +248,7 @@ searchController.searchBar.barStyle = .black
         
         radiusQuery.observe(.documentEntered) { (key, location) in
             if let key = key, let loc = location {
-                Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: key).getDocuments(completion: { (snapshot, err) in
+                Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: key).order(by: "name").start(at: ["1"]).getDocuments(completion: { (snapshot, err) in
                     if let err = err {
                         print(err)
                         return
@@ -262,8 +286,7 @@ searchController.searchBar.barStyle = .black
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! VenueCell
-        
-        
+        cell.selectionStyle = .none
         if isFiltering() {
             let venue = venues[indexPath.row]
             cell.textLabel?.text = venue.venueName
@@ -297,62 +320,79 @@ searchController.searchBar.barStyle = .black
     var venues = [Venue]()
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let venue = barArray[indexPath.row]
-        let alert = UIAlertController(title: "Join Bar?", message: "Join \(venue.venueName ?? "this bar") to see who's there?", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Join", style: .default){(UIAlertAction) in
             
-            self.handleJoin(barName: venue.venueName ?? "Venue")
-        }
-        let cancel = UIAlertAction(title: "Don't Join", style: .cancel, handler: nil)
-        alert.addAction(action)
-        alert.addAction(cancel)
-        self.present(alert, animated: true, completion: nil)
-        return
-      
+        self.handleJoin(barName: venue.venueName ?? "Venue")
+       
     }
     
     fileprivate func handleJoin(barName: String) {
         
         
+        
         let timestamp = Int(Date().timeIntervalSince1970)
         
-        if Int(truncating: user?.timeLastJoined ?? 1000000) < timestamp - 1800 {
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            let docData: [String: Any] = [
-                "uid": uid,
-                "Full Name": user?.name ?? "",
-                "ImageUrl1": user?.imageUrl1 ?? "",
-                "ImageUrl2": user?.imageUrl2 ?? "",
-                "ImageUrl3": user?.imageUrl3 ?? "",
-                "Age": calcAge(birthday: user?.birthday ?? "10-31-1995"),
-                "Birthday": user?.birthday ?? "",
-                "School": user?.school ?? "",
-                "Bio": user?.bio ?? "",
-                "minSeekingAge": user?.minSeekingAge ?? 18,
-                "maxSeekingAge": user?.maxSeekingAge ?? 50,
-                "maxDistance": user?.maxDistance ?? 3,
-                "email": user?.email ?? "",
-                "fbid": user?.fbid ?? "",
-                "PhoneNumber": user?.phoneNumber ?? "",
-                "deviceID": Messaging.messaging().fcmToken ?? "",
-                "Gender-Preference": user?.sexPref ?? "",
-                "User-Gender": user?.gender ?? "",
-                "CurrentVenue": barName,
-                "TimeLastJoined": timestamp
-            ]
-            Firestore.firestore().collection("users").document(uid).setData(docData)
-            
-            
+        if user?.currentVenue == barName {
             let userbarController = UsersInBarTableView()
             userbarController.barName = barName
-            userbarController.user = self.user
-            
+            userbarController.user = user
             let myBackButton = UIBarButtonItem()
             myBackButton.title = " "
             self.navigationItem.backBarButtonItem = myBackButton
             
             self.navigationController?.pushViewController(userbarController, animated: true)
-        } else {
+        }
+            
+            
+    
+        else if Int(truncating: user?.timeLastJoined ?? 5000) < timestamp - 3600 {
+            let alert = UIAlertController(title: "Join Bar?", message: "Join \(barName) to see who's there?", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Join", style: .default){(UIAlertAction) in
+                guard let uid = Auth.auth().currentUser?.uid else {return}
+                let docData: [String: Any] = [
+                    "uid": uid,
+                    "Full Name": self.user?.name ?? "",
+                    "ImageUrl1": self.user?.imageUrl1 ?? "",
+                    "ImageUrl2": self.user?.imageUrl2 ?? "",
+                    "ImageUrl3": self.user?.imageUrl3 ?? "",
+                    "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                    "Birthday": self.user?.birthday ?? "",
+                    "School": self.user?.school ?? "",
+                    "Bio": self.user?.bio ?? "",
+                    "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                    "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                    "maxDistance": self.user?.maxDistance ?? 3,
+                    "email": self.user?.email ?? "",
+                    "fbid": self.user?.fbid ?? "",
+                    "PhoneNumber": self.user?.phoneNumber ?? "",
+                    "deviceID": Messaging.messaging().fcmToken ?? "",
+                    "Gender-Preference": self.user?.sexPref ?? "",
+                    "User-Gender": self.user?.gender ?? "",
+                    "CurrentVenue": barName,
+                    "TimeLastJoined": timestamp
+                ]
+                Firestore.firestore().collection("users").document(uid).setData(docData)
+                
+                let userbarController = UsersInBarTableView()
+                userbarController.barName = barName
+                userbarController.user = self.user
+                
+                let myBackButton = UIBarButtonItem()
+                myBackButton.title = " "
+                self.navigationItem.backBarButtonItem = myBackButton
+                
+                self.navigationController?.pushViewController(userbarController, animated: true)
+            
+            }
+            let cancel = UIAlertAction(title: "Don't Join", style: .cancel, handler: nil)
+            alert.addAction(action)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        else {
             hud.textLabel.text = "You can only join one venue every half-hour"
             hud.show(in: view)
             hud.dismiss(afterDelay: 2)

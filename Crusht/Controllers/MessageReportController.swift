@@ -85,6 +85,7 @@ class MessageReportController: UIViewController {
         
         stackView.spacing = 14
         
+        
         stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 70, left: 20, bottom: 250, right: 20))
         
     }
