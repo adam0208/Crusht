@@ -730,7 +730,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         //let ref = Firestore.firestore().collection("messages")
         
-        
         print("about to send new message")
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
@@ -937,5 +936,20 @@ extension ChatLogController
     @objc func dismissKeyboard()
     {
         view.endEditing(true)
+    }
+}
+
+class CustomView: UIView {
+    
+    // this is needed so that the inputAccesoryView is properly sized from the auto layout constraints
+    // actual value is not important
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if #available(iOS 11.0, *) {
+            if let window = self.window {
+                self.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1.0).isActive = true
+            }
+        }
     }
 }

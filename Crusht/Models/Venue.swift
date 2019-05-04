@@ -19,11 +19,13 @@ class Venue: NSObject {
     var venueLat: String?
     var venueLong: String?
     
+    var name: String
     
     init(dictionary: [String: Any]) {
         self.venueName = dictionary["venueName"] as? String ?? ""
         self.venueCity = dictionary["venueCity"] as? String ?? ""
         self.venuePhotoUrl = dictionary["venuePhotoUrl"] as? String ?? ""
+        self.name = dictionary["name"] as? String ?? ""
       
         
     }

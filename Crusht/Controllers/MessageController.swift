@@ -58,9 +58,11 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        UIApplication.shared.applicationIconBadgeNumber = 0
         navigationController?.navigationBar.prefersLargeTitles = true
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
+        
         listenForMessages()
     }
     
@@ -91,7 +93,6 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         }
         
         
-        
     }
     
     
@@ -106,16 +107,6 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         })
         present(alert, animated: true)
     }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        print("locations = \(locValue.latitude) \(locValue.longitude)")
-        userLat = locValue.latitude
-        userLong = locValue.longitude
-    }
-    
-    var userLat = Double()
-    var userLong = Double()
     
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -133,18 +124,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
                 self.present(namecontroller, animated: true)
                 return
             }
-            
-            let geoFirestoreRef = Firestore.firestore().collection("users")
-            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-            
-            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
-                if (error != nil) {
-                    print("An error occured", error!)
-                } else {
-                    print("Saved location successfully!")
-                }
-            }
-            
+            self.fetchUserAndSetupNavBarTitle()
         }
     }
     
@@ -184,7 +164,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
         
-        fetchUserAndSetupNavBarTitle()
+       
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.searchController.searchBar.tintColor = .white
@@ -387,12 +367,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         })
     }
     
-    @objc func handleNewMessage() {
-        let newMessageController = NewMessageController()
-        newMessageController.messagesController = self
-        let navController = UINavigationController(rootViewController: newMessageController)
-        present(navController, animated: true, completion: nil)
-    }
+
     
     func fetchUserAndSetupNavBarTitle() {
         guard let uid = Auth.auth().currentUser?.uid else {

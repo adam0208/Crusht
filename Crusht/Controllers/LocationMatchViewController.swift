@@ -144,21 +144,29 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     fileprivate func fetchCurrentUser(user: User) {
         
-        
-        
-        let geoFirestoreRef = Firestore.firestore().collection("users")
-        let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-        
-        geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: user.uid ?? (Auth.auth().currentUser?.uid)!) { (error) in
-            if (error != nil) {
-                print("An error occured", error!)
-            } else {
-                print("Saved location successfully!")
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
             }
-        }
-        
+            
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            
+            let geoFirestoreRef = Firestore.firestore().collection("users")
+            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+            
+            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
+                if (error != nil) {
+                    print("An error occured", error!)
+                } else {
+                    print("Saved location successfully!")
+                }
+            }
             self.fetchSwipes()
         }
+    }
     
     
     var swipes = [String: Int]()
@@ -238,7 +246,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         //put distance stuff here
         
-        radiusInt = Double(user?.maxDistance ?? 10)
+        radiusInt = (Double(user?.maxDistance ?? 10)/1.609344)
         
         print(radiusInt, "69")
         
@@ -810,14 +818,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         label.numberOfLines = 0
         return label
     }()
-    
-    @objc fileprivate func handleMessageButtonTapped() {
-        let profileController = ProfilePageViewController()
-        present(profileController, animated: true)
-        let messageController = MessageController()
-        let navController = UINavigationController(rootViewController: messageController)
-        present(navController, animated: true)
-    }
     
     fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
         let duration = 0.5

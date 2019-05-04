@@ -80,7 +80,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 else {
                     self.user?.imageUrl3 = url?.absoluteString
                 }
-                hud.dismiss()
+                hud.dismiss(afterDelay: 1)
                 self.loadUserPhotos()
             })
         }
@@ -502,6 +502,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     let bioTextView = BioTextView()
     
     @objc fileprivate func handleSave() {
+              let hud = JGProgressHUD(style: .dark)
+                hud.textLabel.text = "Saving Changes"
+                hud.show(in: view)
+
         var docData = [String: Any]()
         guard let uid = Auth.auth().currentUser?.uid else { return}
         if user?.imageUrl1 != "" && user?.imageUrl2 != "" && user?.imageUrl3 != "" {
@@ -575,9 +579,6 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 
             ]
         }
-  //      let hud = JGProgressHUD(style: .dark)
-//        hud.textLabel.text = "Saving Changes"
-//        hud.show(in: view)
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
             in
             //hud.dismiss()
@@ -585,7 +586,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 print("Failed to retrieve user settings", err)
                 return
             }
-            
+            hud.dismiss()
             self.dismiss(animated: true, completion: {
                 print("Dismissal Complete")
                 self.delegate?.didSaveSettings()

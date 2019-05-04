@@ -45,7 +45,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         let uid = cardViewModel.uid
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
+                
                 return
             }
             

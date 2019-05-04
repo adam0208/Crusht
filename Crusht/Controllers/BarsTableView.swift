@@ -18,15 +18,30 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                showSettingsAlert2()
+            case .authorizedAlways, .authorizedWhenInUse:
+                print("locatoin cool")
+            }
+        } else {
+            showSettingsAlert2()
+        }
+        
+        barArray.removeAll()
+        fetchCurrentUser()
         tableView.reloadData()
     }
     
     func didSaveSettings() {
+        barArray.removeAll()
         fetchCurrentUser()
     }
     
     
     func didFinishLoggingIn() {
+         barArray.removeAll()
         fetchCurrentUser()
     }
     
@@ -132,7 +147,7 @@ searchController.searchBar.barStyle = .black
                     if (diff.type == .modified) {
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
-                        
+                        UIApplication.shared.applicationIconBadgeNumber = 1
                     }
                     if (diff.type == .removed) {
                     }
@@ -231,10 +246,6 @@ searchController.searchBar.barStyle = .black
     
     fileprivate func fetchBars () {
         
-        hud.textLabel.text = "Fetching bars, hold tight :)"
-        hud.show(in: view)
-        hud.dismiss(afterDelay: 1)
-        
         let geoFirestoreRef = Firestore.firestore().collection("venues")
         let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
         
@@ -248,7 +259,7 @@ searchController.searchBar.barStyle = .black
         
         radiusQuery.observe(.documentEntered) { (key, location) in
             if let key = key, let loc = location {
-                Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: key).order(by: "name").start(at: ["1"]).getDocuments(completion: { (snapshot, err) in
+                Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: key).order(by: "name").getDocuments(completion: { (snapshot, err) in
                     if let err = err {
                         print(err)
                         return
@@ -257,16 +268,19 @@ searchController.searchBar.barStyle = .black
                     print(key, "hagaha")
                     
                     if (snapshot?.isEmpty)! {
-                        self.hud.textLabel.text = "No bars listed in your area"
-                        self.hud.show(in: self.view)
-                        self.hud.dismiss(afterDelay: 2)
+                        
                         return
                     }
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         let barDictionary = documentSnapshot.data()
                         let bar = Venue(dictionary: barDictionary)
                         print(bar.venueName!)
+                        
                         self.barArray.append(bar)
+                        
+                        self.barArray.sort(by: { (Venue1, Venue2) -> Bool in
+                            return Venue1.venueName < Venue2.venueName
+                        })
                         
                     })
                     DispatchQueue.main.async(execute: {
@@ -346,7 +360,7 @@ searchController.searchBar.barStyle = .black
             
             
     
-        else if Int(truncating: user?.timeLastJoined ?? 5000) < timestamp - 3600 {
+        else if Int(truncating: user?.timeLastJoined ?? 5000) < timestamp - 1800 {
             let alert = UIAlertController(title: "Join Bar?", message: "Join \(barName) to see who's there?", preferredStyle: .alert)
             let action = UIAlertAction(title: "Join", style: .default){(UIAlertAction) in
                 guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -450,6 +464,28 @@ searchController.searchBar.barStyle = .black
         return searchController.isActive && !searchBarIsEmpty()
     }
     
+}
+
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 extension BarsTableView: UISearchResultsUpdating {

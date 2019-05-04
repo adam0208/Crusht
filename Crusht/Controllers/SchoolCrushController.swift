@@ -40,16 +40,9 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
-        if CLLocationManager.locationServicesEnabled() {
-            switch CLLocationManager.authorizationStatus() {
-            case .notDetermined, .restricted, .denied:
-                showSettingsAlert2()
-            case .authorizedAlways, .authorizedWhenInUse:
-                print("location cool")
-            }
-        } else {
-            showSettingsAlert2()
-        }
+  
+        schoolArray.removeAll()
+        fetchCurrentUser()
     }
     
     func didSaveSettings() {
@@ -59,6 +52,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     
   
     func didFinishLoggingIn() {
+        schoolArray.removeAll()
         fetchCurrentUser()
     }
     //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
@@ -212,7 +206,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                     if (diff.type == .modified) {
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
-                        
+                        UIApplication.shared.applicationIconBadgeNumber = 1
                     }
                     if (diff.type == .removed) {
                     }
@@ -285,15 +279,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        print("locations = \(locValue.latitude) \(locValue.longitude)")
-        userLat = locValue.latitude
-        userLong = locValue.longitude
-    }
-    
-    var userLat = Double()
-    var userLong = Double()
+ 
     
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -309,19 +295,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 let namecontroller = EnterNameController()
                 namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
-                return
             }
-            
-            let geoFirestoreRef = Firestore.firestore().collection("users")
-            let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-            
-            geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
-                if (error != nil) {
-                    print("An error occured", error!)
-                } else {
-                    print("Saved location successfully!")
-                }
-            }
+      
             
             //self.fetchSwipes()
             self.fetchSchool()
@@ -644,14 +619,34 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
             
+            self.fetchMoreSwipes()
             
+            
+        }
+    }
+    
+    var locationSwipes = [String: Int]()
+    
+    fileprivate func fetchMoreSwipes() {
+        guard let uid = Auth.auth().currentUser?.uid  else {
+            return
+        }
+        Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print("failed to fetch swipe info", err)
+                return
+            }
+            print("Swipes", snapshot?.data() ?? "")
+            guard let data = snapshot?.data() as? [String: Int] else {return}
+            self.locationSwipes = data
+            // self.fetchUsersFromFirestore()
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
                 
             })
             
-            
         }
+        
     }
     
     @objc func handleSend(cardUID: String, cardName: String) {
@@ -968,7 +963,9 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         let hasLiked = swipes[crush.phoneNumber ?? ""] as? Int == 1
         
-        if hasLiked {
+        let swipeLike = locationSwipes[crush.uid ?? ""] as? Int == 1
+        
+        if hasLiked || swipeLike{
             cellL.accessoryView?.tintColor = .red
             hasFavorited = true
         }

@@ -86,7 +86,6 @@ struct User: ProducesCardViewModel {
         self.currentVenue = dictionary["CurrentVenue"] as? String ?? ""
         
         self.timeLastJoined = dictionary["TimeLastJoined"] as? NSNumber
-        //self.age = calcAge(birthday: self.birthday!)
     }
 
 func toCardViewModel() -> CardViewModel {

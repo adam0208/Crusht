@@ -21,9 +21,42 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
-
+        handleContacts()
         tableView.reloadData()
     }
+    fileprivate func handleContacts() {
+                let store = CNContactStore()
+                switch CNContactStore.authorizationStatus(for: .contacts) {
+        
+                case .authorized:
+                    print("yay")
+                case .denied:
+                    showSettingsAlert()
+                case .restricted, .notDetermined:
+                    store.requestAccess(for: .contacts) { granted, error in
+                        if granted {
+                            self.fetchContacts()
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showSettingsAlert()
+                            }
+                        }
+                    }
+                }
+        
+            }
+    
+        private func showSettingsAlert() {
+            let alert = UIAlertController(title: "Enable Contacts", message: "Crusht requires access to Contacts to proceed. We use your contacts to help you find your match. WE DON'T STORE YOUR CONTACTS IN OUR DATABASE. Would you like to open settings and grant permission to contacts?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+    
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            })
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+                return
+            })
+            present(alert, animated: true)
+        }
     
     func didSaveSettings() {
         fetchCurrentUser()
@@ -39,16 +72,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     var users = [User]()
     
      var user: User?
-    
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-            print("locations = \(locValue.latitude) \(locValue.longitude)")
-            userLat = locValue.latitude
-            userLong = locValue.longitude
-        }
-        
-        var userLat = Double()
-        var userLong = Double()
         
         fileprivate func fetchCurrentUser() {
             guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -66,18 +89,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     self.present(namecontroller, animated: true)
                 }
                 
-                let geoFirestoreRef = Firestore.firestore().collection("users")
-                let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-                
-                geoFirestore.setLocation(location: CLLocation(latitude: self.userLat, longitude: self.userLong), forDocumentWithID: uid) { (error) in
-                    if (error != nil) {
-                        print("An error occured", error!)
-                    } else {
-                        print("Saved location successfully!")
-                    }
-                }
             self.fetchSwipes()
-            self.tableView.reloadData()
+       
             
         }
     }
@@ -159,7 +172,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
                     self.twoDimensionalArray = [names]
                     
-                    
+                    self.fetchCurrentUser()
                     
                     DispatchQueue.main.async(execute: {
                         self.tableView.reloadData()
@@ -772,7 +785,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         fetchContacts()
-        fetchCurrentUser()
+        
         
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))
         
@@ -826,6 +839,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     if (diff.type == .modified) {
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+                        UIApplication.shared.applicationIconBadgeNumber = 1
                         
                     }
                     if (diff.type == .removed) {
