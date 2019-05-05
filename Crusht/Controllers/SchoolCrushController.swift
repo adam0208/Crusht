@@ -129,10 +129,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-
+        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
         
         listenForMessages()
-        navigationItem.rightBarButtonItem = swipeButton
+        navigationItem.rightBarButtonItems = [swipeButton, infoButton]
         
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
@@ -163,6 +163,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     
         
     }
+    
+    @objc fileprivate func handleInfo() {
+        hud.textLabel.text = "Crush on your schoolmates!"
+        hud.show(in: navigationController!.view)
+        hud.dismiss(afterDelay: 2)
+    }
+    
     
     var sawMessage = Bool()
     
@@ -291,11 +298,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-            if self.user?.name == "" {
-                let namecontroller = EnterNameController()
-                namecontroller.phone = self.user?.phoneNumber ?? ""
-                self.present(namecontroller, animated: true)
-            }
+          
       
             
             //self.fetchSwipes()
@@ -901,8 +904,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-        
-        self.navigationController?.view.addSubview(matchView)
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+        UIApplication.shared.applicationIconBadgeNumber = 1
+        self.tabBarController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
     }

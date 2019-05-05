@@ -83,19 +83,121 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 
                 guard let dictionary = snapshot?.data() else {return}
                 self.user = User(dictionary: dictionary)
-                if self.user?.name == "" {
+                if self.user?.phoneNumber == ""{
+                    let loginController = LoginViewController()
+                    self.present(loginController, animated: true)
+                return
+                }
+                else if self.user?.name == "" {
                     let namecontroller = EnterNameController()
                     namecontroller.phone = self.user?.phoneNumber ?? ""
                     self.present(namecontroller, animated: true)
+                    return
                 }
                 
-            self.fetchSwipes()
-       
+                let timestamp = Int(Date().timeIntervalSince1970)
+                
+                if Int(truncating: self.user?.timeLastJoined ?? 5000) < timestamp - 64800 {
+                        
+                        var docData = [String: Any]()
+                        guard let uid = Auth.auth().currentUser?.uid else { return}
+                    if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 != "" {
+                            docData = [
+                                "uid": uid,
+                                "Full Name": self.user?.name ?? "",
+                                "ImageUrl1": self.user?.imageUrl1 ?? "",
+                                "ImageUrl2": self.user?.imageUrl2 ?? "",
+                                "ImageUrl3": self.user?.imageUrl3 ?? "",
+                                "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                                "Birthday": self.user?.birthday ?? "",
+                                "School": self.user?.school ?? "",
+                                "Bio": self.user?.bio ?? "",
+                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                                "maxDistance": self.user?.maxDistance ?? 3,
+                                "email": self.user?.email ?? "",
+                                "fbid": self.user?.fbid ?? "",
+                                "PhoneNumber": self.user?.phoneNumber ?? "",
+                                "deviceID": Messaging.messaging().fcmToken ?? "",
+                                "Gender-Preference": self.user?.sexPref ?? "",
+                                "User-Gender": self.user?.gender ?? "",
+                                "CurrentVenue": "",
+                                "TimeLastJoined": timestamp - 3600
+                                
+                            ]
+                        } else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 == "" {
+                            docData = [
+                                "uid": uid,
+                                "Full Name": self.user?.name ?? "",
+                                "ImageUrl1": self.user?.imageUrl1 ?? "",
+                                "ImageUrl2": self.user?.imageUrl2 ?? "",
+                                "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                                "Birthday": self.user?.birthday ?? "",
+                                "School": self.user?.school ?? "",
+                                "Bio": self.user?.bio ?? "",
+                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                                "maxDistance": self.user?.maxDistance ?? 3,
+                                "email": self.user?.email ?? "",
+                                "fbid": self.user?.fbid ?? "",
+                                "PhoneNumber": self.user?.phoneNumber ?? "",
+                                "deviceID": Messaging.messaging().fcmToken ?? "",
+                                "Gender-Preference": self.user?.sexPref ?? "",
+                                "User-Gender": self.user?.gender ?? "",
+                                "CurrentVenue": "",
+                                "TimeLastJoined": timestamp - 3600
+                                
+                            ]
+                        }
+                    else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 == "" && self.user?.imageUrl3 == "" {
+                            docData = [
+                                "uid": uid,
+                                "Full Name": self.user?.name ?? "",
+                                "ImageUrl1": self.user?.imageUrl1 ?? "",
+                                "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                                "Birthday": self.user?.birthday ?? "",
+                                "School": self.user?.school ?? "",
+                                "Bio": self.user?.bio ?? "",
+                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                                "maxDistance": self.user?.maxDistance ?? 3,
+                                "email": self.user?.email ?? "",
+                                "fbid": self.user?.fbid ?? "",
+                                "PhoneNumber": self.user?.phoneNumber ?? "",
+                                "deviceID": Messaging.messaging().fcmToken ?? "",
+                                "Gender-Preference": self.user?.sexPref ?? "",
+                                "User-Gender": self.user?.gender ?? "",
+                                "CurrentVenue": "",
+                                "TimeLastJoined": timestamp - 3600
+                                
+                            ]
+                        }
+                        Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
+                            in
+                            //hud.dismiss()
+                            if let err = err {
+                                print("Failed to retrieve user settings", err)
+                                return
+                            }
+                          
+                        }
             
-        }
+                }
+                
+                self.fetchSwipes()
     }
     
-    
+    func calcAge(birthday: String) -> Int {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "MM/dd/yyyy"
+        let birthdayDate = dateFormater.date(from: birthday)
+        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
+        let now = Date()
+        let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
+        let age = calcAge.year
+        return age!
+    }
+}
 
     // you should use Custom Delegation properly instead
     func someMethodIWantToCall(cell: UITableViewCell) {
@@ -616,8 +718,10 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-    
-        self.navigationController?.view.addSubview(matchView)
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+        UIApplication.shared.applicationIconBadgeNumber = 1
+        self.tabBarController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
     }
@@ -771,10 +875,10 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         navigationController?.isNavigationBarHidden = false
    
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
+        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
         
-   
         listenForMessages()
-        navigationItem.rightBarButtonItem = swipeButton
+        navigationItem.rightBarButtonItems = [swipeButton, infoButton]
         messageBadge.isHidden = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
         navigationController?.navigationBar.isTranslucent = false
@@ -797,6 +901,12 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         tableView.register(ContactsCell.self, forCellReuseIdentifier: cellId)
         //tableView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
         tableView.reloadData()
+    }
+    
+    @objc fileprivate func handleInfo() {
+        hud.textLabel.text = "Crush on your contacts!!"
+        hud.show(in: navigationController!.view)
+        hud.dismiss(afterDelay: 2)
     }
     
     @objc func handleMessages() {

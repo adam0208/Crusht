@@ -34,7 +34,7 @@ class MatchView: UIView {
                 guard let currentUserImageUrl = URL(string: self.currentUser.imageUrl1 ?? "") else { return }
                 
                 self.currentUserImageView.sd_setImage(with: currentUserImageUrl, completed: { (_, _, _, _) in
-                    self.setupAnimations()
+                    
                 })
                 
                 // setup the description label text correctly somewhere inside of here
@@ -77,7 +77,7 @@ class MatchView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.alpha = 0
+        imageView.alpha = 1
         return imageView
     }()
     
@@ -183,7 +183,7 @@ class MatchView: UIView {
         
         views.forEach { (v) in
             addSubview(v)
-            v.alpha = 0
+            v.alpha = 1
         }
         
         let imageWidth: CGFloat = 140

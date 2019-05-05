@@ -826,8 +826,10 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             let matchView = MatchView()
             matchView.cardUID = cardUID
             matchView.currentUser = self.user
-            
-            self.navigationController?.view.addSubview(matchView)
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+            UIApplication.shared.applicationIconBadgeNumber = 1
+            self.tabBarController?.view.addSubview(matchView)
             matchView.bringSubviewToFront(view)
             matchView.fillSuperview()
         }

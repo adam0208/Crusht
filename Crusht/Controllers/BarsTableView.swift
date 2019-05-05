@@ -90,7 +90,9 @@ searchController.searchBar.barStyle = .black
         // For use in foreground
         self.locationManager.requestWhenInUseAuthorization()
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-        navigationItem.rightBarButtonItem = swipeButton
+        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
+        
+        navigationItem.rightBarButtonItems = [swipeButton, infoButton]
 
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
@@ -106,6 +108,12 @@ searchController.searchBar.barStyle = .black
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
         fetchCurrentUser()
+    }
+    
+    @objc fileprivate func handleInfo() {
+        hud.textLabel.text = "Join your current venue to crush on the people there! This resets every 18 hours"
+        hud.show(in: navigationController!.view)
+        hud.dismiss(afterDelay: 3)
     }
     
     @objc func handleMessages() {
@@ -217,11 +225,7 @@ searchController.searchBar.barStyle = .black
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-            if self.user?.name == "" {
-                let namecontroller = EnterNameController()
-                namecontroller.phone = self.user?.phoneNumber ?? ""
-                self.present(namecontroller, animated: true)
-            }
+           
             
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
@@ -343,8 +347,6 @@ searchController.searchBar.barStyle = .black
     
     fileprivate func handleJoin(barName: String) {
         
-        
-        
         let timestamp = Int(Date().timeIntervalSince1970)
         
         if user?.currentVenue == barName {
@@ -357,7 +359,6 @@ searchController.searchBar.barStyle = .black
             
             self.navigationController?.pushViewController(userbarController, animated: true)
         }
-            
             
     
         else if Int(truncating: user?.timeLastJoined ?? 5000) < timestamp - 1800 {

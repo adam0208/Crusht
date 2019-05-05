@@ -62,7 +62,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         navigationController?.navigationBar.prefersLargeTitles = true
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
-        
+        fetchCurrentUser()
         listenForMessages()
     }
     
@@ -118,12 +118,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-            if self.user?.name == "" {
-                let namecontroller = EnterNameController()
-                namecontroller.phone = self.user?.phoneNumber ?? ""
-                self.present(namecontroller, animated: true)
-                return
-            }
+          
             self.fetchUserAndSetupNavBarTitle()
         }
     }
