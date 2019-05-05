@@ -52,6 +52,7 @@
 		2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */; };
 		2838170F21B8A26400B3E4FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170E21B8A26400B3E4FD /* User.swift */; };
 		2838171E21B8C90100B3E4FD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* Extension.swift */; };
+		283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FD3DA227E669000C7760F /* CustomTabBarController.swift */; };
 		2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */; };
 		2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A141224EE4C500A2CEB9 /* Reports.swift */; };
 		2857DF0A226BF9CE0072C952 /* BarsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2857DF09226BF9CE0072C952 /* BarsTableView.swift */; };
@@ -59,7 +60,6 @@
 		2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */; };
 		2859708022037A3700EB83CE /* SchoolUserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */; };
 		285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285A34A521BC7B920086CC95 /* SettingsCells.swift */; };
-		2863B7BA227004D0001427E6 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2863B7B9227004D0001427E6 /* CustomTabBarController.swift */; };
 		286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */; };
 		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
@@ -100,8 +100,6 @@
 		2895576B227E5D5A001EFD73 /* CrushtLogoLiam69!.png in Resources */ = {isa = PBXBuildFile; fileRef = 2895576A227E5D59001EFD73 /* CrushtLogoLiam69!.png */; };
 		2895576D227E62B5001EFD73 /* UsersInBarTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */; };
 		2895576F227E644F001EFD73 /* UserBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895576E227E644F001EFD73 /* UserBarCell.swift */; };
-		28955771227E64BA001EFD73 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28955770227E64BA001EFD73 /* CustomTabBarController.swift */; };
-		28A1B6522218D68C00666155 /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A1B6512218D68C00666155 /* TODO.swift */; };
 		28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */; };
 		28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */; };
 		28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */; };
@@ -220,6 +218,7 @@
 		2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
 		2838170E21B8A26400B3E4FD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2838171D21B8C90100B3E4FD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		283FD3DA227E669000C7760F /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportControllerViewController.swift; sourceTree = "<group>"; };
 		2850A141224EE4C500A2CEB9 /* Reports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reports.swift; sourceTree = "<group>"; };
 		2857DF09226BF9CE0072C952 /* BarsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarsTableView.swift; sourceTree = "<group>"; };
@@ -227,7 +226,6 @@
 		2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckVerificationViewController.swift; sourceTree = "<group>"; };
 		2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolUserDetailsController.swift; sourceTree = "<group>"; };
 		285A34A521BC7B920086CC95 /* SettingsCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCells.swift; sourceTree = "<group>"; };
-		2863B7B9227004D0001427E6 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
 		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
@@ -268,8 +266,6 @@
 		2895576A227E5D59001EFD73 /* CrushtLogoLiam69!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CrushtLogoLiam69!.png"; sourceTree = "<group>"; };
 		2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersInBarTableView.swift; sourceTree = "<group>"; };
 		2895576E227E644F001EFD73 /* UserBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBarCell.swift; sourceTree = "<group>"; };
-		28955770227E64BA001EFD73 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
-		28A1B6512218D68C00666155 /* TODO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutBttnCell.swift; sourceTree = "<group>"; };
 		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
@@ -380,7 +376,6 @@
 			isa = PBXGroup;
 			children = (
 				28F1121921F522A900A1CD73 /* Crusht.entitlements */,
-				2863B7B9227004D0001427E6 /* CustomTabBarController.swift */,
 				2838170D21B8A24B00B3E4FD /* Models */,
 				283816F721B8929100B3E4FD /* Controllers */,
 				283816F621B8927D00B3E4FD /* Extensions */,
@@ -450,8 +445,7 @@
 				281282DE2273ED4800CA324E /* LikeButtonCrusht.png */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
 				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
-				28A1B6512218D68C00666155 /* TODO.swift */,
-				28955770227E64BA001EFD73 /* CustomTabBarController.swift */,
+				283FD3DA227E669000C7760F /* CustomTabBarController.swift */,
 			);
 			path = Crusht;
 			sourceTree = "<group>";
@@ -956,6 +950,7 @@
 				287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */,
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
+				283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
 				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
 				28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */,
@@ -978,7 +973,6 @@
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */,
-				28A1B6522218D68C00666155 /* TODO.swift in Sources */,
 				2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
 				2859708022037A3700EB83CE /* SchoolUserDetailsController.swift in Sources */,
@@ -991,7 +985,6 @@
 				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,
 				28CFC6B521C5B3ED00387129 /* Messages.swift in Sources */,
 				28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */,
-				2863B7BA227004D0001427E6 /* CustomTabBarController.swift in Sources */,
 				280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */,
 				28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */,
 				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
@@ -1007,7 +1000,6 @@
 				28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */,
 				28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */,
 				2838171E21B8C90100B3E4FD /* Extension.swift in Sources */,
-				28955771227E64BA001EFD73 /* CustomTabBarController.swift in Sources */,
 				28908D8821C0AB2C00391A39 /* ExpandableNames.swift in Sources */,
 				2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */,
 				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,

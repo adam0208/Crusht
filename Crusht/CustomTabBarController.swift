@@ -9,5 +9,7 @@
 import UIkit
 
 class CustomTabBarController: UITabBarController {
-    
+    override func viewDidLoad() {
+        super.viewDidload(animated)
+    }
 }
