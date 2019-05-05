@@ -16,95 +16,78 @@
 
 #import "Firestore/Source/Core/FSTFirestoreClient.h"
 
-#include <chrono>  // NOLINT(build/c++11)
 #include <future>  // NOLINT(build/c++11)
 #include <memory>
 #include <utility>
 
 #import "FIRFirestoreErrors.h"
-#import "FIRFirestoreSettings.h"
 #import "Firestore/Source/API/FIRDocumentReference+Internal.h"
 #import "Firestore/Source/API/FIRDocumentSnapshot+Internal.h"
-#import "Firestore/Source/API/FIRFirestore+Internal.h"
 #import "Firestore/Source/API/FIRQuery+Internal.h"
 #import "Firestore/Source/API/FIRQuerySnapshot+Internal.h"
 #import "Firestore/Source/API/FIRSnapshotMetadata+Internal.h"
 #import "Firestore/Source/Core/FSTEventManager.h"
 #import "Firestore/Source/Core/FSTQuery.h"
 #import "Firestore/Source/Core/FSTSyncEngine.h"
+#import "Firestore/Source/Core/FSTTransaction.h"
 #import "Firestore/Source/Core/FSTView.h"
-#import "Firestore/Source/Local/FSTLRUGarbageCollector.h"
+#import "Firestore/Source/Local/FSTEagerGarbageCollector.h"
 #import "Firestore/Source/Local/FSTLevelDB.h"
 #import "Firestore/Source/Local/FSTLocalSerializer.h"
 #import "Firestore/Source/Local/FSTLocalStore.h"
 #import "Firestore/Source/Local/FSTMemoryPersistence.h"
+#import "Firestore/Source/Local/FSTNoOpGarbageCollector.h"
 #import "Firestore/Source/Model/FSTDocument.h"
+#import "Firestore/Source/Model/FSTDocumentSet.h"
+#import "Firestore/Source/Remote/FSTDatastore.h"
+#import "Firestore/Source/Remote/FSTRemoteStore.h"
 #import "Firestore/Source/Remote/FSTSerializerBeta.h"
 #import "Firestore/Source/Util/FSTClasses.h"
+#import "Firestore/Source/Util/FSTDispatchQueue.h"
 
 #include "Firestore/core/src/firebase/firestore/auth/credentials_provider.h"
 #include "Firestore/core/src/firebase/firestore/core/database_info.h"
 #include "Firestore/core/src/firebase/firestore/model/database_id.h"
-#include "Firestore/core/src/firebase/firestore/model/document_set.h"
-#include "Firestore/core/src/firebase/firestore/remote/datastore.h"
-#include "Firestore/core/src/firebase/firestore/remote/remote_store.h"
-#include "Firestore/core/src/firebase/firestore/util/async_queue.h"
 #include "Firestore/core/src/firebase/firestore/util/hard_assert.h"
 #include "Firestore/core/src/firebase/firestore/util/log.h"
-#include "Firestore/core/src/firebase/firestore/util/status.h"
-#include "Firestore/core/src/firebase/firestore/util/statusor.h"
 #include "Firestore/core/src/firebase/firestore/util/string_apple.h"
-#include "absl/memory/memory.h"
 
 namespace util = firebase::firestore::util;
-using firebase::firestore::FirestoreErrorCode;
-using firebase::firestore::api::DocumentReference;
-using firebase::firestore::api::DocumentSnapshot;
 using firebase::firestore::auth::CredentialsProvider;
 using firebase::firestore::auth::User;
 using firebase::firestore::core::DatabaseInfo;
-using firebase::firestore::core::ViewSnapshot;
-using firebase::firestore::local::LruParams;
 using firebase::firestore::model::DatabaseId;
 using firebase::firestore::model::DocumentKeySet;
-using firebase::firestore::model::DocumentMap;
-using firebase::firestore::model::MaybeDocumentMap;
-using firebase::firestore::model::OnlineState;
-using firebase::firestore::remote::Datastore;
-using firebase::firestore::remote::RemoteStore;
-using firebase::firestore::util::Path;
-using firebase::firestore::util::Status;
-using firebase::firestore::util::AsyncQueue;
-using firebase::firestore::util::DelayedOperation;
-using firebase::firestore::util::Executor;
-using firebase::firestore::util::Status;
-using firebase::firestore::util::StatusOr;
-using firebase::firestore::util::StatusOrCallback;
-using firebase::firestore::util::TimerId;
+
+using firebase::firestore::util::internal::Executor;
 
 NS_ASSUME_NONNULL_BEGIN
-
-/** How long we wait to try running LRU GC after SDK initialization. */
-static const std::chrono::milliseconds FSTLruGcInitialDelay = std::chrono::minutes(1);
-/** Minimum amount of time between GC checks, after the first one. */
-static const std::chrono::milliseconds FSTLruGcRegularDelay = std::chrono::minutes(5);
 
 @interface FSTFirestoreClient () {
   DatabaseInfo _databaseInfo;
 }
 
 - (instancetype)initWithDatabaseInfo:(const DatabaseInfo &)databaseInfo
-                            settings:(FIRFirestoreSettings *)settings
+                      usePersistence:(BOOL)usePersistence
                  credentialsProvider:
                      (CredentialsProvider *)credentialsProvider  // no passing ownership
                         userExecutor:(std::unique_ptr<Executor>)userExecutor
-                         workerQueue:(std::unique_ptr<AsyncQueue>)queue NS_DESIGNATED_INITIALIZER;
+                 workerDispatchQueue:(FSTDispatchQueue *)queue NS_DESIGNATED_INITIALIZER;
 
 @property(nonatomic, assign, readonly) const DatabaseInfo *databaseInfo;
 @property(nonatomic, strong, readonly) FSTEventManager *eventManager;
 @property(nonatomic, strong, readonly) id<FSTPersistence> persistence;
 @property(nonatomic, strong, readonly) FSTSyncEngine *syncEngine;
+@property(nonatomic, strong, readonly) FSTRemoteStore *remoteStore;
 @property(nonatomic, strong, readonly) FSTLocalStore *localStore;
+
+/**
+ * Dispatch queue responsible for all of our internal processing. When we get incoming work from
+ * the user (via public API) or the network (incoming GRPC messages), we should always dispatch
+ * onto this queue. This ensures our internal data structures are never accessed from multiple
+ * threads simultaneously.
+ */
+@property(nonatomic, strong, readonly) FSTDispatchQueue *workerDispatchQueue;
 
 // Does not own the CredentialsProvider instance.
 @property(nonatomic, assign, readonly) CredentialsProvider *credentialsProvider;
@@ -112,286 +95,256 @@ static const std::chrono::milliseconds FSTLruGcRegularDelay = std::chrono::minut
 @end
 
 @implementation FSTFirestoreClient {
-  /**
-   * Async queue responsible for all of our internal processing. When we get incoming work from
-   * the user (via public API) or the network (incoming gRPC messages), we should always dispatch
-   * onto this queue. This ensures our internal data structures are never accessed from multiple
-   * threads simultaneously.
-   */
-  std::unique_ptr<AsyncQueue> _workerQueue;
-
-  std::unique_ptr<RemoteStore> _remoteStore;
-
   std::unique_ptr<Executor> _userExecutor;
-  std::chrono::milliseconds _initialGcDelay;
-  std::chrono::milliseconds _regularGcDelay;
-  BOOL _gcHasRun;
-  _Nullable id<FSTLRUDelegate> _lruDelegate;
-  DelayedOperation _lruCallback;
 }
 
 - (Executor *)userExecutor {
   return _userExecutor.get();
 }
 
-- (AsyncQueue *)workerQueue {
-  return _workerQueue.get();
-}
-
 + (instancetype)clientWithDatabaseInfo:(const DatabaseInfo &)databaseInfo
-                              settings:(FIRFirestoreSettings *)settings
+                        usePersistence:(BOOL)usePersistence
                    credentialsProvider:
                        (CredentialsProvider *)credentialsProvider  // no passing ownership
                           userExecutor:(std::unique_ptr<Executor>)userExecutor
-                           workerQueue:(std::unique_ptr<AsyncQueue>)workerQueue {
+                   workerDispatchQueue:(FSTDispatchQueue *)workerDispatchQueue {
   return [[FSTFirestoreClient alloc] initWithDatabaseInfo:databaseInfo
-                                                 settings:settings
+                                           usePersistence:usePersistence
                                       credentialsProvider:credentialsProvider
                                              userExecutor:std::move(userExecutor)
-                                              workerQueue:std::move(workerQueue)];
+                                      workerDispatchQueue:workerDispatchQueue];
 }
 
 - (instancetype)initWithDatabaseInfo:(const DatabaseInfo &)databaseInfo
-                            settings:(FIRFirestoreSettings *)settings
+                      usePersistence:(BOOL)usePersistence
                  credentialsProvider:
                      (CredentialsProvider *)credentialsProvider  // no passing ownership
                         userExecutor:(std::unique_ptr<Executor>)userExecutor
-                         workerQueue:(std::unique_ptr<AsyncQueue>)workerQueue {
+                 workerDispatchQueue:(FSTDispatchQueue *)workerDispatchQueue {
   if (self = [super init]) {
     _databaseInfo = databaseInfo;
     _credentialsProvider = credentialsProvider;
     _userExecutor = std::move(userExecutor);
-    _workerQueue = std::move(workerQueue);
-    _gcHasRun = NO;
-    _initialGcDelay = FSTLruGcInitialDelay;
-    _regularGcDelay = FSTLruGcRegularDelay;
+    _workerDispatchQueue = workerDispatchQueue;
 
     auto userPromise = std::make_shared<std::promise<User>>();
-    bool initialized = false;
 
-    __weak __typeof__(self) weakSelf = self;
-    auto credentialChangeListener = [initialized, userPromise, weakSelf](User user) mutable {
-      __typeof__(self) strongSelf = weakSelf;
+    __weak typeof(self) weakSelf = self;
+    auto userChangeListener = [initialized = false, userPromise, weakSelf,
+                               workerDispatchQueue](User user) mutable {
+      typeof(self) strongSelf = weakSelf;
       if (!strongSelf) return;
 
       if (!initialized) {
         initialized = true;
         userPromise->set_value(user);
       } else {
-        strongSelf->_workerQueue->Enqueue(
-            [strongSelf, user] { [strongSelf credentialDidChangeWithUser:user]; });
+        [workerDispatchQueue dispatchAsync:^{
+          [strongSelf userDidChange:user];
+        }];
       }
     };
 
-    _credentialsProvider->SetCredentialChangeListener(credentialChangeListener);
+    _credentialsProvider->SetUserChangeListener(userChangeListener);
 
-    // Defer initialization until we get the current user from the credentialChangeListener. This is
+    // Defer initialization until we get the current user from the userChangeListener. This is
     // guaranteed to be synchronously dispatched onto our worker queue, so we will be initialized
     // before any subsequently queued work runs.
-    _workerQueue->Enqueue([self, userPromise, settings] {
+    [_workerDispatchQueue dispatchAsync:^{
       User user = userPromise->get_future().get();
-      [self initializeWithUser:user settings:settings];
-    });
+      [self initializeWithUser:user usePersistence:usePersistence];
+    }];
   }
   return self;
 }
 
-- (void)initializeWithUser:(const User &)user settings:(FIRFirestoreSettings *)settings {
+- (void)initializeWithUser:(const User &)user usePersistence:(BOOL)usePersistence {
   // Do all of our initialization on our own dispatch queue.
-  _workerQueue->VerifyIsCurrentQueue();
-  LOG_DEBUG("Initializing. Current user: %s", user.uid());
+  [self.workerDispatchQueue verifyIsCurrentQueue];
 
   // Note: The initialization work must all be synchronous (we can't dispatch more work) since
   // external write/listen operations could get queued to run before that subsequent work
   // completes.
-  if (settings.isPersistenceEnabled) {
-    Path dir = [FSTLevelDB storageDirectoryForDatabaseInfo:*self.databaseInfo
-                                        documentsDirectory:[FSTLevelDB documentsDirectory]];
+  id<FSTGarbageCollector> garbageCollector;
+  if (usePersistence) {
+    // TODO(http://b/33384523): For now we just disable garbage collection when persistence is
+    // enabled.
+    garbageCollector = [[FSTNoOpGarbageCollector alloc] init];
+
+    NSString *dir = [FSTLevelDB storageDirectoryForDatabaseInfo:*self.databaseInfo
+                                             documentsDirectory:[FSTLevelDB documentsDirectory]];
 
     FSTSerializerBeta *remoteSerializer =
         [[FSTSerializerBeta alloc] initWithDatabaseID:&self.databaseInfo->database_id()];
     FSTLocalSerializer *serializer =
         [[FSTLocalSerializer alloc] initWithRemoteSerializer:remoteSerializer];
-    FSTLevelDB *ldb;
-    Status levelDbStatus =
-        [FSTLevelDB dbWithDirectory:std::move(dir)
-                         serializer:serializer
-                          lruParams:LruParams::WithCacheSize(settings.cacheSizeBytes)
-                                ptr:&ldb];
-    if (!levelDbStatus.ok()) {
-      // If leveldb fails to start then just throw up our hands: the error is unrecoverable.
-      // There's nothing an end-user can do and nearly all failures indicate the developer is doing
-      // something grossly wrong so we should stop them cold in their tracks with a failure they
-      // can't ignore.
-      [NSException raise:NSInternalInconsistencyException
-                  format:@"Failed to open DB: %s", levelDbStatus.ToString().c_str()];
-    }
-    _lruDelegate = ldb.referenceDelegate;
-    _persistence = ldb;
-    [self scheduleLruGarbageCollection];
+
+    _persistence = [[FSTLevelDB alloc] initWithDirectory:dir serializer:serializer];
   } else {
-    _persistence = [FSTMemoryPersistence persistenceWithEagerGC];
+    garbageCollector = [[FSTEagerGarbageCollector alloc] init];
+    _persistence = [FSTMemoryPersistence persistence];
   }
 
-  _localStore = [[FSTLocalStore alloc] initWithPersistence:_persistence initialUser:user];
+  NSError *error;
+  if (![_persistence start:&error]) {
+    // If local storage fails to start then just throw up our hands: the error is unrecoverable.
+    // There's nothing an end-user can do and nearly all failures indicate the developer is doing
+    // something grossly wrong so we should stop them cold in their tracks with a failure they
+    // can't ignore.
+    [NSException raise:NSInternalInconsistencyException format:@"Failed to open DB: %@", error];
+  }
 
-  auto datastore =
-      std::make_shared<Datastore>(*self.databaseInfo, _workerQueue.get(), _credentialsProvider);
+  _localStore = [[FSTLocalStore alloc] initWithPersistence:_persistence
+                                          garbageCollector:garbageCollector
+                                               initialUser:user];
 
-  _remoteStore = absl::make_unique<RemoteStore>(
-      _localStore, std::move(datastore), _workerQueue.get(),
-      [self](OnlineState onlineState) { [self.syncEngine applyChangedOnlineState:onlineState]; });
+  FSTDatastore *datastore = [FSTDatastore datastoreWithDatabase:self.databaseInfo
+                                            workerDispatchQueue:self.workerDispatchQueue
+                                                    credentials:_credentialsProvider];
+
+  _remoteStore = [[FSTRemoteStore alloc] initWithLocalStore:_localStore
+                                                  datastore:datastore
+                                        workerDispatchQueue:self.workerDispatchQueue];
 
   _syncEngine = [[FSTSyncEngine alloc] initWithLocalStore:_localStore
-                                              remoteStore:_remoteStore.get()
+                                              remoteStore:_remoteStore
                                               initialUser:user];
 
   _eventManager = [FSTEventManager eventManagerWithSyncEngine:_syncEngine];
 
   // Setup wiring for remote store.
-  _remoteStore->set_sync_engine(_syncEngine);
+  _remoteStore.syncEngine = _syncEngine;
+
+  _remoteStore.onlineStateDelegate = self;
 
   // NOTE: RemoteStore depends on LocalStore (for persisting stream tokens, refilling mutation
   // queue, etc.) so must be started after LocalStore.
   [_localStore start];
-  _remoteStore->Start();
+  [_remoteStore start];
 }
 
-/**
- * Schedules a callback to try running LRU garbage collection. Reschedules itself after the GC has
- * run.
- */
-- (void)scheduleLruGarbageCollection {
-  std::chrono::milliseconds delay = _gcHasRun ? _regularGcDelay : _initialGcDelay;
-  _lruCallback = _workerQueue->EnqueueAfterDelay(delay, TimerId::GarbageCollectionDelay, [self]() {
-    [self->_localStore collectGarbage:self->_lruDelegate.gc];
-    self->_gcHasRun = YES;
-    [self scheduleLruGarbageCollection];
-  });
+- (void)userDidChange:(const User &)user {
+  [self.workerDispatchQueue verifyIsCurrentQueue];
+
+  LOG_DEBUG("User Changed: %s", user.uid());
+  [self.syncEngine userDidChange:user];
 }
 
-- (void)credentialDidChangeWithUser:(const User &)user {
-  _workerQueue->VerifyIsCurrentQueue();
-
-  LOG_DEBUG("Credential Changed. Current user: %s", user.uid());
-  [self.syncEngine credentialDidChangeWithUser:user];
+- (void)applyChangedOnlineState:(FSTOnlineState)onlineState {
+  [self.syncEngine applyChangedOnlineState:onlineState];
+  [self.eventManager applyChangedOnlineState:onlineState];
 }
 
 - (void)disableNetworkWithCompletion:(nullable FSTVoidErrorBlock)completion {
-  _workerQueue->Enqueue([self, completion] {
-    _remoteStore->DisableNetwork();
+  [self.workerDispatchQueue dispatchAsync:^{
+    [self.remoteStore disableNetwork];
     if (completion) {
       self->_userExecutor->Execute([=] { completion(nil); });
     }
-  });
+  }];
 }
 
 - (void)enableNetworkWithCompletion:(nullable FSTVoidErrorBlock)completion {
-  _workerQueue->Enqueue([self, completion] {
-    _remoteStore->EnableNetwork();
+  [self.workerDispatchQueue dispatchAsync:^{
+    [self.remoteStore enableNetwork];
     if (completion) {
       self->_userExecutor->Execute([=] { completion(nil); });
     }
-  });
+  }];
 }
 
 - (void)shutdownWithCompletion:(nullable FSTVoidErrorBlock)completion {
-  _workerQueue->Enqueue([self, completion] {
-    self->_credentialsProvider->SetCredentialChangeListener(nullptr);
+  [self.workerDispatchQueue dispatchAsync:^{
+    self->_credentialsProvider->SetUserChangeListener(nullptr);
 
-    // If we've scheduled LRU garbage collection, cancel it.
-    if (self->_lruCallback) {
-      self->_lruCallback.Cancel();
-    }
-    _remoteStore->Shutdown();
+    [self.remoteStore shutdown];
     [self.persistence shutdown];
     if (completion) {
       self->_userExecutor->Execute([=] { completion(nil); });
     }
-  });
+  }];
 }
 
-- (std::shared_ptr<QueryListener>)listenToQuery:(FSTQuery *)query
-                                        options:(ListenOptions)options
-                                       listener:(ViewSnapshot::SharedListener &&)listener {
-  auto query_listener = QueryListener::Create(query, std::move(options), std::move(listener));
+- (FSTQueryListener *)listenToQuery:(FSTQuery *)query
+                            options:(FSTListenOptions *)options
+                viewSnapshotHandler:(FSTViewSnapshotHandler)viewSnapshotHandler {
+  FSTQueryListener *listener = [[FSTQueryListener alloc] initWithQuery:query
+                                                               options:options
+                                                   viewSnapshotHandler:viewSnapshotHandler];
 
-  _workerQueue->Enqueue([self, query_listener] { [self.eventManager addListener:query_listener]; });
+  [self.workerDispatchQueue dispatchAsync:^{
+    [self.eventManager addListener:listener];
+  }];
 
-  return query_listener;
+  return listener;
 }
 
-- (void)removeListener:(const std::shared_ptr<QueryListener> &)listener {
-  _workerQueue->Enqueue([self, listener] { [self.eventManager removeListener:listener]; });
+- (void)removeListener:(FSTQueryListener *)listener {
+  [self.workerDispatchQueue dispatchAsync:^{
+    [self.eventManager removeListener:listener];
+  }];
 }
 
-- (void)getDocumentFromLocalCache:(const DocumentReference &)doc
-                       completion:(DocumentSnapshot::Listener &&)completion {
-  auto shared_completion = absl::ShareUniquePtr(std::move(completion));
-  _workerQueue->Enqueue([self, doc, shared_completion] {
-    FSTMaybeDocument *maybeDoc = [self.localStore readDocument:doc.key()];
-    StatusOr<DocumentSnapshot> maybe_snapshot;
-
-    if ([maybeDoc isKindOfClass:[FSTDocument class]]) {
-      FSTDocument *document = (FSTDocument *)maybeDoc;
-      maybe_snapshot = DocumentSnapshot{doc.firestore(), doc.key(), document,
-                                        /*from_cache=*/true,
-                                        /*has_pending_writes=*/document.hasLocalMutations};
-    } else if ([maybeDoc isKindOfClass:[FSTDeletedDocument class]]) {
-      maybe_snapshot = DocumentSnapshot{doc.firestore(), doc.key(), nil,
-                                        /*from_cache=*/true,
-                                        /*has_pending_writes=*/false};
+- (void)getDocumentFromLocalCache:(FIRDocumentReference *)doc
+                       completion:(void (^)(FIRDocumentSnapshot *_Nullable document,
+                                            NSError *_Nullable error))completion {
+  [self.workerDispatchQueue dispatchAsync:^{
+    FSTMaybeDocument *maybeDoc = [self.localStore readDocument:doc.key];
+    if (maybeDoc) {
+      completion([FIRDocumentSnapshot snapshotWithFirestore:doc.firestore
+                                                documentKey:doc.key
+                                                   document:(FSTDocument *)maybeDoc
+                                                  fromCache:YES],
+                 nil);
     } else {
-      maybe_snapshot = Status{FirestoreErrorCode::Unavailable,
-                              "Failed to get document from cache. (However, this document "
-                              "may exist on the server. Run again without setting source to "
-                              "FIRFirestoreSourceCache to attempt to retrieve the document "};
+      completion(nil,
+                 [NSError errorWithDomain:FIRFirestoreErrorDomain
+                                     code:FIRFirestoreErrorCodeUnavailable
+                                 userInfo:@{
+                                   NSLocalizedDescriptionKey :
+                                       @"Failed to get document from cache. (However, this "
+                                       @"document may exist on the server. Run again without "
+                                       @"setting source to FIRFirestoreSourceCache to attempt to "
+                                       @"retrieve the document from the server.)",
+                                 }]);
     }
-
-    if (shared_completion) {
-      self->_userExecutor->Execute([=] { shared_completion->OnEvent(std::move(maybe_snapshot)); });
-    }
-  });
+  }];
 }
 
 - (void)getDocumentsFromLocalCache:(FIRQuery *)query
                         completion:(void (^)(FIRQuerySnapshot *_Nullable query,
                                              NSError *_Nullable error))completion {
-  _workerQueue->Enqueue([self, query, completion] {
-    DocumentMap docs = [self.localStore executeQuery:query.query];
+  [self.workerDispatchQueue dispatchAsync:^{
+    FSTDocumentDictionary *docs = [self.localStore executeQuery:query.query];
 
     FSTView *view = [[FSTView alloc] initWithQuery:query.query remoteDocuments:DocumentKeySet{}];
-    FSTViewDocumentChanges *viewDocChanges =
-        [view computeChangesWithDocuments:docs.underlying_map()];
+    FSTViewDocumentChanges *viewDocChanges = [view computeChangesWithDocuments:docs];
     FSTViewChange *viewChange = [view applyChangesToDocuments:viewDocChanges];
     HARD_ASSERT(viewChange.limboChanges.count == 0,
                 "View returned limbo documents during local-only query execution.");
-    HARD_ASSERT(viewChange.snapshot.has_value(), "Expected a snapshot");
 
-    ViewSnapshot snapshot = std::move(viewChange.snapshot).value();
-    SnapshotMetadata metadata(snapshot.has_pending_writes(), snapshot.from_cache());
+    FSTViewSnapshot *snapshot = viewChange.snapshot;
+    FIRSnapshotMetadata *metadata =
+        [FIRSnapshotMetadata snapshotMetadataWithPendingWrites:snapshot.hasPendingWrites
+                                                     fromCache:snapshot.fromCache];
 
-    FIRQuerySnapshot *result = [[FIRQuerySnapshot alloc] initWithFirestore:query.firestore.wrapped
-                                                             originalQuery:query.query
-                                                                  snapshot:std::move(snapshot)
-                                                                  metadata:std::move(metadata)];
-
-    if (completion) {
-      self->_userExecutor->Execute([=] { completion(result, nil); });
-    }
-  });
+    completion([FIRQuerySnapshot snapshotWithFirestore:query.firestore
+                                         originalQuery:query.query
+                                              snapshot:snapshot
+                                              metadata:metadata],
+               nil);
+  }];
 }
 
-- (void)writeMutations:(std::vector<FSTMutation *> &&)mutations
+- (void)writeMutations:(NSArray<FSTMutation *> *)mutations
             completion:(nullable FSTVoidErrorBlock)completion {
-  // TODO(c++14): move `mutations` into lambda (C++14).
-  _workerQueue->Enqueue([self, mutations, completion]() mutable {
-    if (mutations.empty()) {
+  [self.workerDispatchQueue dispatchAsync:^{
+    if (mutations.count == 0) {
       if (completion) {
         self->_userExecutor->Execute([=] { completion(nil); });
       }
     } else {
-      [self.syncEngine writeMutations:std::move(mutations)
+      [self.syncEngine writeMutations:mutations
                            completion:^(NSError *error) {
                              // Dispatch the result back onto the user dispatch queue.
                              if (completion) {
@@ -399,16 +352,16 @@ static const std::chrono::milliseconds FSTLruGcRegularDelay = std::chrono::minut
                              }
                            }];
     }
-  });
+  }];
 };
 
 - (void)transactionWithRetries:(int)retries
                    updateBlock:(FSTTransactionBlock)updateBlock
                     completion:(FSTVoidIDErrorBlock)completion {
-  _workerQueue->Enqueue([self, retries, updateBlock, completion] {
+  [self.workerDispatchQueue dispatchAsync:^{
     [self.syncEngine
         transactionWithRetries:retries
-                   workerQueue:_workerQueue.get()
+           workerDispatchQueue:self.workerDispatchQueue
                    updateBlock:updateBlock
                     completion:^(id _Nullable result, NSError *_Nullable error) {
                       // Dispatch the result back onto the user dispatch queue.
@@ -416,7 +369,7 @@ static const std::chrono::milliseconds FSTLruGcRegularDelay = std::chrono::minut
                         self->_userExecutor->Execute([=] { completion(result, error); });
                       }
                     }];
-  });
+  }];
 }
 
 - (const DatabaseInfo *)databaseInfo {

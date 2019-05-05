@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-import FacebookCore
+
 import UserNotifications
 import CoreLocation
 import Fabric
@@ -79,7 +79,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)], for: .selected)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         UITabBar.appearance().tintColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
-
+        UITabBar.appearance().barTintColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1) // your color
+        
        // window?.rootViewController = PhoneNumberViewController()
      //  window?.rootViewController = EnterMorePhoneInfoViewController()
     //window?.rootViewController = FacebookPhoneController()

@@ -36,7 +36,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
+class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate {
+    func didSaveSettings() {
+        barsArray.removeAll()
+        fetchCurrentUser()
+    }
+    
 
     
         
@@ -104,7 +109,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            self.tabBarController?.delegate = self
             
             let cellId = "cellId"
             
@@ -135,7 +139,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
             //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
             self.searchController.searchBar.delegate = self
             self.navigationItem.hidesSearchBarWhenScrolling = false
-            messageBadge.isHidden = true
             // Setup the search footer
             // tableView.tableFooterView = searchFooter
             navigationController?.navigationBar.isTranslucent = false
@@ -144,37 +147,11 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
           
-         
-            
             
         }
-        
     
         
-        @objc func handleMessages() {
-            let messageController = MessageController()
-            messageBadge.removeFromSuperview()
-            sawMessage = true
-            messageController.user = user
-            let navController = UINavigationController(rootViewController: messageController)
-            present(navController, animated: true)
-            //navigationController?.pushViewController(messageController, animated: true)
-            
-        }
-        
-        let messageBadge: UILabel = {
-            let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
-            label.layer.borderColor = UIColor.clear.cgColor
-            label.layer.borderWidth = 2
-            label.layer.cornerRadius = label.bounds.size.height / 2
-            label.textAlignment = .center
-            label.layer.masksToBounds = true
-            label.font = UIFont.systemFont(ofSize: 10)
-            label.textColor = .white
-            label.backgroundColor = .red
-            label.text = "!"
-            return label
-        }()
+
         
         
         fileprivate func listenForMessages() {
@@ -297,7 +274,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
         
         var isRightSex = Bool()
     
-        var barName = String
+        var barName = String()
         
         var schoolUserDictionary = [String: User]()
         
@@ -1000,7 +977,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
         
     }
     
-    extension SchoolCrushController: UISearchResultsUpdating {
+    extension UsersInBarTableView: UISearchResultsUpdating {
         // MARK: - UISearchResultsUpdating Delegate
         func updateSearchResults(for searchController: UISearchController) {
             

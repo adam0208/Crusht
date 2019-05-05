@@ -33,7 +33,6 @@
 		281282DF2273ED4800CA324E /* LikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282DE2273ED4800CA324E /* LikeButtonCrusht.png */; };
 		281282E12273ED5000CA324E /* DislikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */; };
 		28148F3721D6C1540016BD22 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 28148F3621D6C1530016BD22 /* play.png */; };
-		282B2E592271813600BAB159 /* DetailsPOPVIEWController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */; };
 		282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */ = {isa = PBXBuildFile; fileRef = 282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */; };
 		28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */; };
 		28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */; };
@@ -193,7 +192,6 @@
 		281282DE2273ED4800CA324E /* LikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LikeButtonCrusht.png; sourceTree = "<group>"; };
 		281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DislikeButtonCrusht.png; sourceTree = "<group>"; };
 		28148F3621D6C1530016BD22 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
-		282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPOPVIEWController.swift; sourceTree = "<group>"; };
 		282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CrushtLogoLiam69!.png"; sourceTree = "<group>"; };
 		28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewCell.swift; sourceTree = "<group>"; };
 		28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSeniorFivePostTableViewController.swift; sourceTree = "<group>"; };
@@ -376,6 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				28F1121921F522A900A1CD73 /* Crusht.entitlements */,
+				283FD3DA227E669000C7760F /* CustomTabBarController.swift */,
 				2838170D21B8A24B00B3E4FD /* Models */,
 				283816F721B8929100B3E4FD /* Controllers */,
 				283816F621B8927D00B3E4FD /* Extensions */,
@@ -445,7 +444,6 @@
 				281282DE2273ED4800CA324E /* LikeButtonCrusht.png */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
 				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
-				283FD3DA227E669000C7760F /* CustomTabBarController.swift */,
 			);
 			path = Crusht;
 			sourceTree = "<group>";
@@ -585,7 +583,6 @@
 				28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */,
 				286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */,
 				2859707F22037A3700EB83CE /* SchoolUserDetailsController.swift */,
-				282B2E582271813600BAB159 /* DetailsPOPVIEWController.swift */,
 			);
 			path = "User Details";
 			sourceTree = "<group>";
@@ -819,13 +816,17 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/CountryPickerSwift/CountryPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -834,13 +835,17 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountryPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -1007,7 +1012,6 @@
 				28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */,
 				2838170321B8A0A700B3E4FD /* CardView.swift in Sources */,
 				283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */,
-				282B2E592271813600BAB159 /* DetailsPOPVIEWController.swift in Sources */,
 				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
 				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,
 				28FD7D0E2261BA8900B79496 /* YourSexController.swift in Sources */,

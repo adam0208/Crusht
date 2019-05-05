@@ -746,7 +746,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tabBarController?.tabBar.isTranslucent = false
         self.tabBarController?.delegate = self
 
         

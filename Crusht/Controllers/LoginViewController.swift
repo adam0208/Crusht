@@ -9,10 +9,6 @@
 import UIKit
 import Firebase
 import JGProgressHUD
-import FacebookLogin
-import FBSDKLoginKit
-import FacebookCore
-import FBSDKCoreKit
 import SDWebImage
 
 

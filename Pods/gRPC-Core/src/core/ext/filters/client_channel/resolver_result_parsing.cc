@@ -30,9 +30,12 @@
 
 #include "src/core/ext/filters/client_channel/client_channel.h"
 #include "src/core/ext/filters/client_channel/lb_policy_registry.h"
+#include "src/core/ext/filters/client_channel/server_address.h"
+#include "src/core/lib/channel/channel_args.h"
 #include "src/core/lib/channel/status_util.h"
 #include "src/core/lib/gpr/string.h"
 #include "src/core/lib/gprpp/memory.h"
+#include "src/core/lib/uri/uri_parser.h"
 
 // As per the retry design, we do not allow more than 5 retry attempts.
 #define MAX_MAX_RETRY_ATTEMPTS 5
@@ -40,99 +43,110 @@
 namespace grpc_core {
 namespace internal {
 
-namespace {
-
-// Converts string format from JSON to proto.
-grpc_core::UniquePtr<char> ConvertCamelToSnake(const char* camel) {
-  const size_t size = strlen(camel);
-  char* snake = static_cast<char*>(gpr_malloc(size * 2));
-  size_t j = 0;
-  for (size_t i = 0; i < size; ++i) {
-    if (isupper(camel[i])) {
-      snake[j++] = '_';
-      snake[j++] = tolower(camel[i]);
-    } else {
-      snake[j++] = camel[i];
-    }
-  }
-  snake[j] = '\0';
-  return grpc_core::UniquePtr<char>(snake);
-}
-
-}  // namespace
-
 ProcessedResolverResult::ProcessedResolverResult(
-    const grpc_channel_args* resolver_result, bool parse_retry) {
-  ProcessServiceConfig(resolver_result, parse_retry);
+    Resolver::Result* resolver_result, bool parse_retry)
+    : service_config_(resolver_result->service_config) {
+  // If resolver did not return a service config, use the default
+  // specified via the client API.
+  if (service_config_ == nullptr) {
+    const char* service_config_json = grpc_channel_arg_get_string(
+        grpc_channel_args_find(resolver_result->args, GRPC_ARG_SERVICE_CONFIG));
+    if (service_config_json != nullptr) {
+      service_config_ = ServiceConfig::Create(service_config_json);
+    }
+  } else {
+    // Add the service config JSON to channel args so that it's
+    // accessible in the subchannel.
+    // TODO(roth): Consider whether there's a better way to pass the
+    // service config down into the subchannel stack, such as maybe via
+    // call context or metadata.  This would avoid the problem of having
+    // to recreate all subchannels whenever the service config changes.
+    // It would also avoid the need to pass in the resolver result in
+    // mutable form, both here and in
+    // ResolvingLoadBalancingPolicy::ProcessResolverResultCallback().
+    grpc_arg arg = grpc_channel_arg_string_create(
+        const_cast<char*>(GRPC_ARG_SERVICE_CONFIG),
+        const_cast<char*>(service_config_->service_config_json()));
+    grpc_channel_args* new_args =
+        grpc_channel_args_copy_and_add(resolver_result->args, &arg, 1);
+    grpc_channel_args_destroy(resolver_result->args);
+    resolver_result->args = new_args;
+  }
+  // Process service config.
+  ProcessServiceConfig(*resolver_result, parse_retry);
   // If no LB config was found above, just find the LB policy name then.
-  if (lb_policy_config_ == nullptr) ProcessLbPolicyName(resolver_result);
+  if (lb_policy_name_ == nullptr) ProcessLbPolicyName(*resolver_result);
 }
 
 void ProcessedResolverResult::ProcessServiceConfig(
-    const grpc_channel_args* resolver_result, bool parse_retry) {
-  const grpc_arg* channel_arg =
-      grpc_channel_args_find(resolver_result, GRPC_ARG_SERVICE_CONFIG);
-  const char* service_config_json = grpc_channel_arg_get_string(channel_arg);
-  if (service_config_json != nullptr) {
-    service_config_json_.reset(gpr_strdup(service_config_json));
-    service_config_ = grpc_core::ServiceConfig::Create(service_config_json);
-    if (service_config_ != nullptr) {
-      if (parse_retry) {
-        channel_arg =
-            grpc_channel_args_find(resolver_result, GRPC_ARG_SERVER_URI);
-        const char* server_uri = grpc_channel_arg_get_string(channel_arg);
-        GPR_ASSERT(server_uri != nullptr);
-        grpc_uri* uri = grpc_uri_parse(server_uri, true);
-        GPR_ASSERT(uri->path[0] != '\0');
-        server_name_ = uri->path[0] == '/' ? uri->path + 1 : uri->path;
-        service_config_->ParseGlobalParams(ParseServiceConfig, this);
-        grpc_uri_destroy(uri);
-      } else {
-        service_config_->ParseGlobalParams(ParseServiceConfig, this);
-      }
-      method_params_table_ = service_config_->CreateMethodConfigTable(
-          ClientChannelMethodParams::CreateFromJson);
-    }
+    const Resolver::Result& resolver_result, bool parse_retry) {
+  if (service_config_ == nullptr) return;
+  service_config_json_ =
+      UniquePtr<char>(gpr_strdup(service_config_->service_config_json()));
+  if (parse_retry) {
+    const grpc_arg* channel_arg =
+        grpc_channel_args_find(resolver_result.args, GRPC_ARG_SERVER_URI);
+    const char* server_uri = grpc_channel_arg_get_string(channel_arg);
+    GPR_ASSERT(server_uri != nullptr);
+    grpc_uri* uri = grpc_uri_parse(server_uri, true);
+    GPR_ASSERT(uri->path[0] != '\0');
+    server_name_ = uri->path[0] == '/' ? uri->path + 1 : uri->path;
+    service_config_->ParseGlobalParams(ParseServiceConfig, this);
+    grpc_uri_destroy(uri);
+  } else {
+    service_config_->ParseGlobalParams(ParseServiceConfig, this);
   }
+  method_params_table_ = service_config_->CreateMethodConfigTable(
+      ClientChannelMethodParams::CreateFromJson);
 }
 
 void ProcessedResolverResult::ProcessLbPolicyName(
-    const grpc_channel_args* resolver_result) {
-  const char* lb_policy_name = nullptr;
+    const Resolver::Result& resolver_result) {
   // Prefer the LB policy name found in the service config. Note that this is
   // checking the deprecated loadBalancingPolicy field, rather than the new
   // loadBalancingConfig field.
   if (service_config_ != nullptr) {
-    lb_policy_name = service_config_->GetLoadBalancingPolicyName();
+    lb_policy_name_.reset(
+        gpr_strdup(service_config_->GetLoadBalancingPolicyName()));
+    // Convert to lower-case.
+    if (lb_policy_name_ != nullptr) {
+      char* lb_policy_name = lb_policy_name_.get();
+      for (size_t i = 0; i < strlen(lb_policy_name); ++i) {
+        lb_policy_name[i] = tolower(lb_policy_name[i]);
+      }
+    }
   }
   // Otherwise, find the LB policy name set by the client API.
-  if (lb_policy_name == nullptr) {
+  if (lb_policy_name_ == nullptr) {
     const grpc_arg* channel_arg =
-        grpc_channel_args_find(resolver_result, GRPC_ARG_LB_POLICY_NAME);
-    lb_policy_name = grpc_channel_arg_get_string(channel_arg);
+        grpc_channel_args_find(resolver_result.args, GRPC_ARG_LB_POLICY_NAME);
+    lb_policy_name_.reset(gpr_strdup(grpc_channel_arg_get_string(channel_arg)));
   }
   // Special case: If at least one balancer address is present, we use
   // the grpclb policy, regardless of what the resolver has returned.
-  const grpc_arg* channel_arg =
-      grpc_channel_args_find(resolver_result, GRPC_ARG_LB_ADDRESSES);
-  if (channel_arg != nullptr && channel_arg->type == GRPC_ARG_POINTER) {
-    grpc_lb_addresses* addresses =
-        static_cast<grpc_lb_addresses*>(channel_arg->value.pointer.p);
-    if (grpc_lb_addresses_contains_balancer_address(*addresses)) {
-      if (lb_policy_name != nullptr &&
-          gpr_stricmp(lb_policy_name, "grpclb") != 0) {
-        gpr_log(GPR_INFO,
-                "resolver requested LB policy %s but provided at least one "
-                "balancer address -- forcing use of grpclb LB policy",
-                lb_policy_name);
-      }
-      lb_policy_name = "grpclb";
+  bool found_balancer_address = false;
+  for (size_t i = 0; i < resolver_result.addresses.size(); ++i) {
+    const ServerAddress& address = resolver_result.addresses[i];
+    if (address.IsBalancer()) {
+      found_balancer_address = true;
+      break;
     }
+  }
+  if (found_balancer_address) {
+    if (lb_policy_name_ != nullptr &&
+        strcmp(lb_policy_name_.get(), "grpclb") != 0) {
+      gpr_log(GPR_INFO,
+              "resolver requested LB policy %s but provided at least one "
+              "balancer address -- forcing use of grpclb LB policy",
+              lb_policy_name_.get());
+    }
+    lb_policy_name_.reset(gpr_strdup("grpclb"));
   }
   // Use pick_first if nothing was specified and we didn't select grpclb
   // above.
-  if (lb_policy_name == nullptr) lb_policy_name = "pick_first";
-  lb_policy_name_.reset(gpr_strdup(lb_policy_name));
+  if (lb_policy_name_ == nullptr) {
+    lb_policy_name_.reset(gpr_strdup("pick_first"));
+  }
 }
 
 void ProcessedResolverResult::ParseServiceConfig(
@@ -146,44 +160,15 @@ void ProcessedResolverResult::ParseServiceConfig(
 void ProcessedResolverResult::ParseLbConfigFromServiceConfig(
     const grpc_json* field) {
   if (lb_policy_config_ != nullptr) return;  // Already found.
-  // Find the LB config global parameter.
-  if (field->key == nullptr || strcmp(field->key, "loadBalancingConfig") != 0 ||
-      field->type != GRPC_JSON_ARRAY) {
-    return;  // Not valid lb config array.
+  if (field->key == nullptr || strcmp(field->key, "loadBalancingConfig") != 0) {
+    return;  // Not the LB config global parameter.
   }
-  // Find the first LB policy that this client supports.
-  for (grpc_json* lb_config = field->child; lb_config != nullptr;
-       lb_config = lb_config->next) {
-    if (lb_config->type != GRPC_JSON_OBJECT) return;
-    // Find the policy object.
-    grpc_json* policy = nullptr;
-    for (grpc_json* field = lb_config->child; field != nullptr;
-         field = field->next) {
-      if (field->key == nullptr || strcmp(field->key, "policy") != 0 ||
-          field->type != GRPC_JSON_OBJECT) {
-        return;
-      }
-      if (policy != nullptr) return;  // Duplicate.
-      policy = field;
-    }
-    // Find the specific policy content since the policy object is of type
-    // "oneof".
-    grpc_json* policy_content = nullptr;
-    for (grpc_json* field = policy->child; field != nullptr;
-         field = field->next) {
-      if (field->key == nullptr || field->type != GRPC_JSON_OBJECT) return;
-      if (policy_content != nullptr) return;  // Violate "oneof" type.
-      policy_content = field;
-    }
-    grpc_core::UniquePtr<char> lb_policy_name =
-        ConvertCamelToSnake(policy_content->key);
-    if (!grpc_core::LoadBalancingPolicyRegistry::LoadBalancingPolicyExists(
-            lb_policy_name.get())) {
-      continue;
-    }
-    lb_policy_name_ = std::move(lb_policy_name);
-    lb_policy_config_ = policy_content->child;
-    return;
+  const grpc_json* policy =
+      LoadBalancingPolicy::ParseLoadBalancingConfig(field);
+  if (policy != nullptr) {
+    lb_policy_name_.reset(gpr_strdup(policy->key));
+    lb_policy_config_ =
+        MakeRefCounted<LoadBalancingPolicy::Config>(policy, service_config_);
   }
 }
 

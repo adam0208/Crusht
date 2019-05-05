@@ -16,13 +16,10 @@
 
 #import <Foundation/Foundation.h>
 
-#include <memory>
-
 #include "Firestore/core/include/firebase/firestore/timestamp.h"
 #include "Firestore/core/src/firebase/firestore/model/database_id.h"
 #include "Firestore/core/src/firebase/firestore/model/document_key.h"
 #include "Firestore/core/src/firebase/firestore/model/snapshot_version.h"
-#include "Firestore/core/src/firebase/firestore/remote/watch_change.h"
 
 @class FSTFieldValue;
 @class FSTMaybeDocument;
@@ -32,6 +29,7 @@
 @class FSTObjectValue;
 @class FSTQuery;
 @class FSTQueryData;
+@class FSTWatchChange;
 
 @class GCFSBatchGetDocumentsResponse;
 @class GCFSDocument;
@@ -85,9 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (GCFSWrite *)encodedMutation:(FSTMutation *)mutation;
 - (FSTMutation *)decodedMutation:(GCFSWrite *)mutation;
 
-- (FSTMutationResult *)decodedMutationResult:(GCFSWriteResult *)mutation
-                               commitVersion:(const firebase::firestore::model::SnapshotVersion &)
-                                                 commitVersion;
+- (FSTMutationResult *)decodedMutationResult:(GCFSWriteResult *)mutation;
 
 - (nullable NSMutableDictionary<NSString *, NSString *> *)encodedListenRequestLabelsForQueryData:
     (FSTQueryData *)queryData;
@@ -100,8 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (GCFSTarget_QueryTarget *)encodedQueryTarget:(FSTQuery *)query;
 - (FSTQuery *)decodedQueryFromQueryTarget:(GCFSTarget_QueryTarget *)target;
 
-- (std::unique_ptr<firebase::firestore::remote::WatchChange>)decodedWatchChange:
-    (GCFSListenResponse *)watchChange;
+- (FSTWatchChange *)decodedWatchChange:(GCFSListenResponse *)watchChange;
 - (firebase::firestore::model::SnapshotVersion)versionFromListenResponse:
     (GCFSListenResponse *)watchChange;
 

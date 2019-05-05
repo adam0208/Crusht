@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class FIRAuthCredential;
+@class FIRPhoneAuthCredential;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -84,19 +84,6 @@ NS_ASSUME_NONNULL_BEGIN
         deserializable as JSON, but couldn't be decoded as an error.
  */
 + (NSError *)unexpectedErrorResponseWithDeserializedResponse:(id)deserializedResponse;
-
-/** @fn malformedJWTErrorWithToken:underlyingError:
-    @brief Constructs an @c NSError with the code set to @c FIRAuthErrorCodeMalformedJWT and
-        populates the userInfo dictionary with an error message, the bad token, and an underlying
-        error that may have occurred when parsing.
-    @param token The token that failed to parse.
-    @param underlyingError The error that caused this error. If this parameter is nil, the
-        NSUnderlyingErrorKey value will not be set.
-    @remarks This error is returned when JWT parsing fails.
-    @returns An @c FIRAuthErrorCodeMalformedJWT error wrapping an underlying error, if available.
- */
-+ (NSError *)malformedJWTErrorWithToken:(NSString *)token
-                        underlyingError:(NSError *_Nullable)underlyingError;
 
 /** @fn unexpectedResponseWithData:underlyingError:
     @brief Constructs an @c NSError with the @c FIRAuthInternalErrorCodeUnexpectedResponse
@@ -262,16 +249,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSError *)userMismatchError;
 
-/** @fn credentialAlreadyInUseErrorWithMessage:email:
+/** @fn credentialAlreadyInUseErrorWithMessage:
     @brief Constructs an @c NSError with the @c FIRAuthErrorCodeCredentialAlreadyInUse code.
     @param message Error message from the backend, if any.
     @param credential Auth credential to be added to the Error User Info dictionary.
-    @param email Email to be added to the Error User Info dictionary.
     @return The NSError instance associated with the given FIRAuthError.
  */
 + (NSError *)credentialAlreadyInUseErrorWithMessage:(nullable NSString *)message
-                                         credential:(nullable FIRAuthCredential *)credential
-                                              email:(nullable NSString *)email;
+                                         credential:(nullable FIRPhoneAuthCredential *)credential;
+
 /** @fn operationNotAllowedErrorWithMessage:
     @brief Constructs an @c NSError with the @c FIRAuthErrorCodeOperationNotAllowed code.
     @param message Error message from the backend, if any.
@@ -284,7 +270,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param serverResponseReason A more detailed explanation string from server response.
     @return The NSError instance associated with the given FIRAuthError.
  */
-+ (NSError *)weakPasswordErrorWithServerResponseReason:(nullable NSString *)serverResponseReason;
++ (NSError *)weakPasswordErrorWithServerResponseReason:(NSString *)serverResponseReason;
 
 /** @fn appNotAuthorizedError
     @brief Constructs an @c NSError with the @c FIRAuthErrorCodeAppNotAuthorized code.
@@ -446,18 +432,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSError *)missingAppTokenErrorWithUnderlyingError:(nullable NSError *)underlyingError;
 
-/** @fn localPlayerNotAuthenticatedError
-    @brief Constructs an @c NSError with the @c FIRAuthErrorCodeLocalPlayerNotAuthenticated code.
-    @return The NSError instance associated with the given FIRAuthError.
- */
-+ (NSError *)localPlayerNotAuthenticatedError;
-
-/** @fn gameKitNotLinkedError
-   @brief Constructs an @c NSError with the @c FIRAuthErrorCodeGameKitNotLinked code.
-   @return The NSError instance associated with the given FIRAuthError.
- */
-+ (NSError *)gameKitNotLinkedError;
-
 /** @fn notificationNotForwardedError
     @brief Constructs an @c NSError with the @c FIRAuthErrorCodeNotificationNotForwarded code.
     @return The NSError instance associated with the given FIRAuthError.
@@ -500,20 +474,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSError *)appVerificationUserInteractionFailureWithReason:(NSString *)reason;
 
-/** @fn webSignInUserInteractionFailureWithReason:
-    @brief Constructs an @c NSError with the @c
-        FIRAuthErrorCodeWebSignInUserInteractionFailure code.
-    @param reason Reason for error, returned via URL response.
-    @return The NSError instance associated with the given FIRAuthError.
- */
-+ (NSError *)webSignInUserInteractionFailureWithReason:(nullable NSString *)reason;
-
 /** @fn URLResponseErrorWithCode:message:
     @brief Constructs an @c NSError with the code and message provided.
     @param message Error message from the backend, if any.
     @return The nullable NSError instance associated with the given error message, if one is found.
  */
-+ (nullable NSError *)URLResponseErrorWithCode:(NSString *)code message:(nullable NSString *)message;
++ (NSError *)URLResponseErrorWithCode:(NSString *)code message:(nullable NSString *)message;
 
 /** @fn nullUserErrorWithMessage:
     @brief Constructs an @c NSError with the code and message provided.
@@ -521,20 +487,6 @@ NS_ASSUME_NONNULL_BEGIN
     @return The nullable NSError instance associated with the given error message, if one is found.
  */
 + (NSError *)nullUserErrorWithMessage:(nullable NSString *)message;
-
-/** @fn invalidProviderIDErrorWithMessage:
-    @brief Constructs an @c NSError with the @c FIRAuthErrorCodeInvalidProviderID code.
-    @param message Error message from the backend, if any.
-    @remarks This error indicates that the provider id given for the web operation is invalid.
- */
-+ (NSError *)invalidProviderIDErrorWithMessage:(nullable NSString *)message;
-
-/** @fn invalidDynamicLinkDomainErrorWithMessage:
-    @brief Constructs an @c NSError with the code and message provided.
-    @param message Error message from the backend, if any.
-    @return The nullable NSError instance associated with the given error message, if one is found.
- */
-+ (NSError *)invalidDynamicLinkDomainErrorWithMessage:(nullable NSString *)message;
 
 /** @fn keychainErrorWithFunction:status:
     @brief Constructs an @c NSError with the @c FIRAuthErrorCodeKeychainError code.

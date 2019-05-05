@@ -11,7 +11,6 @@ import Firebase
 
 class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = false

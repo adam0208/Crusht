@@ -16,33 +16,27 @@
 
 #import <Foundation/Foundation.h>
 
-#include <vector>
-
 #import "Firestore/Source/Core/FSTTypes.h"
+#import "Firestore/Source/Remote/FSTRemoteStore.h"
 
 #include "Firestore/core/src/firebase/firestore/auth/user.h"
-#include "Firestore/core/src/firebase/firestore/model/types.h"
-#include "Firestore/core/src/firebase/firestore/remote/remote_store.h"
-#include "Firestore/core/src/firebase/firestore/util/async_queue.h"
 
+@class FSTDispatchQueue;
 @class FSTLocalStore;
 @class FSTMutation;
 @class FSTQuery;
-
-using firebase::firestore::model::OnlineState;
+@class FSTRemoteEvent;
+@class FSTRemoteStore;
+@class FSTViewSnapshot;
 
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - FSTSyncEngineDelegate
 
-/**
- * A delegate to be notified when the client's online state changes or when the sync engine produces
- * new view snapshots or errors.
- */
+/** A Delegate to be notified when the sync engine produces new view snapshots or errors. */
 @protocol FSTSyncEngineDelegate
-- (void)handleViewSnapshots:(std::vector<firebase::firestore::core::ViewSnapshot> &&)viewSnapshots;
+- (void)handleViewSnapshots:(NSArray<FSTViewSnapshot *> *)viewSnapshots;
 - (void)handleError:(NSError *)error forQuery:(FSTQuery *)query;
-- (void)applyChangedOnlineState:(OnlineState)onlineState;
 @end
 
 /**
@@ -57,29 +51,30 @@ NS_ASSUME_NONNULL_BEGIN
  *    sending to the backend.
  *
  * The SyncEngine’s methods should only ever be called by methods running on our own worker
- * queue.
+ * dispatch queue.
  */
 @interface FSTSyncEngine : NSObject <FSTRemoteSyncer>
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithLocalStore:(FSTLocalStore *)localStore
-                       remoteStore:(firebase::firestore::remote::RemoteStore *)remoteStore
+                       remoteStore:(FSTRemoteStore *)remoteStore
                        initialUser:(const firebase::firestore::auth::User &)user
     NS_DESIGNATED_INITIALIZER;
 
 /**
- * A delegate to be notified when queries being listened to produce new view snapshots or errors.
+ * A delegate to be notified when queries being listened to produce new view snapshots or
+ * errors.
  */
-@property(nonatomic, weak) id<FSTSyncEngineDelegate> syncEngineDelegate;
+@property(nonatomic, weak) id<FSTSyncEngineDelegate> delegate;
 
 /**
  * Initiates a new listen. The FSTLocalStore will be queried for initial data and the listen will
- * be sent to the `RemoteStore` to get remote data. The registered FSTSyncEngineDelegate will be
+ * be sent to the FSTRemoteStore to get remote data. The registered FSTSyncEngineDelegate will be
  * notified of resulting view snapshots and/or listen errors.
  *
  * @return the target ID assigned to the query.
  */
-- (firebase::firestore::model::TargetId)listenToQuery:(FSTQuery *)query;
+- (FSTTargetID)listenToQuery:(FSTQuery *)query;
 
 /** Stops listening to a query previously listened to via listenToQuery:. */
 - (void)stopListeningToQuery:(FSTQuery *)query;
@@ -90,26 +85,25 @@ NS_ASSUME_NONNULL_BEGIN
  * write caused. The provided completion block will be called once the write has been acked or
  * rejected by the backend (or failed locally for any other reason).
  */
-- (void)writeMutations:(std::vector<FSTMutation *> &&)mutations
-            completion:(FSTVoidErrorBlock)completion;
+- (void)writeMutations:(NSArray<FSTMutation *> *)mutations completion:(FSTVoidErrorBlock)completion;
 
 /**
  * Runs the given transaction block up to retries times and then calls completion.
  *
  * @param retries The number of times to try before giving up.
- * @param workerQueue The queue to dispatch sync engine calls to.
+ * @param workerDispatchQueue The queue to dispatch sync engine calls to.
  * @param updateBlock The block to call to execute the user's transaction.
  * @param completion The block to call when the transaction is finished or failed.
  */
 - (void)transactionWithRetries:(int)retries
-                   workerQueue:(firebase::firestore::util::AsyncQueue *)workerQueue
+           workerDispatchQueue:(FSTDispatchQueue *)workerDispatchQueue
                    updateBlock:(FSTTransactionBlock)updateBlock
                     completion:(FSTVoidIDErrorBlock)completion;
 
-- (void)credentialDidChangeWithUser:(const firebase::firestore::auth::User &)user;
+- (void)userDidChange:(const firebase::firestore::auth::User &)user;
 
-/** Applies an OnlineState change to the sync engine and notifies any views of the change. */
-- (void)applyChangedOnlineState:(firebase::firestore::model::OnlineState)onlineState;
+/** Applies an FSTOnlineState change to the sync engine and notifies any views of the change. */
+- (void)applyChangedOnlineState:(FSTOnlineState)onlineState;
 
 @end
 

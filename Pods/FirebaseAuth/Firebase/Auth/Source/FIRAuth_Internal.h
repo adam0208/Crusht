@@ -18,20 +18,18 @@
 
 #import "FIRAuth.h"
 
-#import <FirebaseAuthInterop/FIRAuthInterop.h>
-
 @class FIRAuthRequestConfiguration;
-@class FIRAuthURLPresenter;
 
 #if TARGET_OS_IOS
 @class FIRAuthAPNSTokenManager;
 @class FIRAuthAppCredentialManager;
 @class FIRAuthNotificationManager;
+@class FIRAuthURLPresenter;
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FIRAuth () <FIRAuthInterop>
+@interface FIRAuth ()
 
 /** @property requestConfiguration
     @brief The configuration object comprising of paramters needed to make a request to Firebase
@@ -56,12 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, strong, readonly) FIRAuthNotificationManager *notificationManager;
 
-#endif // TARGET_OS_IOS
-
 /** @property authURLPresenter
     @brief An object that takes care of presenting URLs via the auth instance.
  */
 @property(nonatomic, strong, readonly) FIRAuthURLPresenter *authURLPresenter;
+
+#endif // TARGET_OS_IOS
 
 /** @fn initWithAPIKey:appName:
     @brief Designated initializer.
@@ -71,11 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithAPIKey:(NSString *)APIKey
                                 appName:(NSString *)appName NS_DESIGNATED_INITIALIZER;
 
-/** @fn getUserID
+/** @fn getUID
     @brief Gets the identifier of the current user, if any.
     @return The identifier of the current user, or nil if there is no current user.
  */
-- (nullable NSString *)getUserID;
+- (nullable NSString *)getUID;
 
 /** @fn updateKeychainWithUser:error:
     @brief Updates the keychain for the given user.

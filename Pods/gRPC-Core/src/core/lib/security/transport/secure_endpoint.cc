@@ -255,7 +255,7 @@ static void on_read(void* user_data, grpc_error* error) {
 }
 
 static void endpoint_read(grpc_endpoint* secure_ep, grpc_slice_buffer* slices,
-                          grpc_closure* cb) {
+                          grpc_closure* cb, bool urgent) {
   secure_endpoint* ep = reinterpret_cast<secure_endpoint*>(secure_ep);
   ep->read_cb = cb;
   ep->read_buffer = slices;
@@ -269,7 +269,7 @@ static void endpoint_read(grpc_endpoint* secure_ep, grpc_slice_buffer* slices,
     return;
   }
 
-  grpc_endpoint_read(ep->wrapped_ep, &ep->source_buffer, &ep->on_read);
+  grpc_endpoint_read(ep->wrapped_ep, &ep->source_buffer, &ep->on_read, urgent);
 }
 
 static void flush_write_staging_buffer(secure_endpoint* ep, uint8_t** cur,
@@ -416,6 +416,11 @@ static grpc_resource_user* endpoint_get_resource_user(
   return grpc_endpoint_get_resource_user(ep->wrapped_ep);
 }
 
+static bool endpoint_can_track_err(grpc_endpoint* secure_ep) {
+  secure_endpoint* ep = reinterpret_cast<secure_endpoint*>(secure_ep);
+  return grpc_endpoint_can_track_err(ep->wrapped_ep);
+}
+
 static const grpc_endpoint_vtable vtable = {endpoint_read,
                                             endpoint_write,
                                             endpoint_add_to_pollset,
@@ -425,7 +430,8 @@ static const grpc_endpoint_vtable vtable = {endpoint_read,
                                             endpoint_destroy,
                                             endpoint_get_resource_user,
                                             endpoint_get_peer,
-                                            endpoint_get_fd};
+                                            endpoint_get_fd,
+                                            endpoint_can_track_err};
 
 grpc_endpoint* grpc_secure_endpoint_create(
     struct tsi_frame_protector* protector,

@@ -14,36 +14,50 @@
  * limitations under the License.
  */
 
-#include <utility>
-
 #import "Firestore/Source/API/FIRQuerySnapshot+Internal.h"
 
+#import "FIRFirestore.h"
 #import "FIRSnapshotMetadata.h"
 #import "Firestore/Source/API/FIRDocumentChange+Internal.h"
 #import "Firestore/Source/API/FIRDocumentSnapshot+Internal.h"
-#import "Firestore/Source/API/FIRFirestore+Internal.h"
 #import "Firestore/Source/API/FIRQuery+Internal.h"
-#import "Firestore/Source/API/FIRSnapshotMetadata+Internal.h"
 #import "Firestore/Source/Core/FSTQuery.h"
+#import "Firestore/Source/Core/FSTViewSnapshot.h"
 #import "Firestore/Source/Model/FSTDocument.h"
-#import "Firestore/Source/Util/FSTUsageValidation.h"
+#import "Firestore/Source/Model/FSTDocumentSet.h"
 
-#include "Firestore/core/src/firebase/firestore/core/view_snapshot.h"
-#include "Firestore/core/src/firebase/firestore/model/document_set.h"
-#include "Firestore/core/src/firebase/firestore/util/delayed_constructor.h"
-
-using firebase::firestore::api::Firestore;
-using firebase::firestore::api::QuerySnapshot;
-using firebase::firestore::core::ViewSnapshot;
-using firebase::firestore::util::DelayedConstructor;
+#include "Firestore/core/src/firebase/firestore/util/hard_assert.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface FIRQuerySnapshot ()
+
+- (instancetype)initWithFirestore:(FIRFirestore *)firestore
+                    originalQuery:(FSTQuery *)query
+                         snapshot:(FSTViewSnapshot *)snapshot
+                         metadata:(FIRSnapshotMetadata *)metadata;
+
+@property(nonatomic, strong, readonly) FIRFirestore *firestore;
+@property(nonatomic, strong, readonly) FSTQuery *originalQuery;
+@property(nonatomic, strong, readonly) FSTViewSnapshot *snapshot;
+
+@end
+
+@implementation FIRQuerySnapshot (Internal)
+
++ (instancetype)snapshotWithFirestore:(FIRFirestore *)firestore
+                        originalQuery:(FSTQuery *)query
+                             snapshot:(FSTViewSnapshot *)snapshot
+                             metadata:(FIRSnapshotMetadata *)metadata {
+  return [[FIRQuerySnapshot alloc] initWithFirestore:firestore
+                                       originalQuery:query
+                                            snapshot:snapshot
+                                            metadata:metadata];
+}
+
+@end
+
 @implementation FIRQuerySnapshot {
-  DelayedConstructor<QuerySnapshot> _snapshot;
-
-  FIRSnapshotMetadata *_cached_metadata;
-
   // Cached value of the documents property.
   NSArray<FIRQueryDocumentSnapshot *> *_documents;
 
@@ -52,64 +66,75 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL _documentChangesIncludeMetadataChanges;
 }
 
-- (instancetype)initWithSnapshot:(QuerySnapshot &&)snapshot {
+- (instancetype)initWithFirestore:(FIRFirestore *)firestore
+                    originalQuery:(FSTQuery *)query
+                         snapshot:(FSTViewSnapshot *)snapshot
+                         metadata:(FIRSnapshotMetadata *)metadata {
   if (self = [super init]) {
-    _snapshot.Init(std::move(snapshot));
+    _firestore = firestore;
+    _originalQuery = query;
+    _snapshot = snapshot;
+    _metadata = metadata;
+    _documentChangesIncludeMetadataChanges = NO;
   }
   return self;
 }
 
-- (instancetype)initWithFirestore:(Firestore *)firestore
-                    originalQuery:(FSTQuery *)query
-                         snapshot:(ViewSnapshot &&)snapshot
-                         metadata:(SnapshotMetadata)metadata {
-  QuerySnapshot wrapped(firestore, query, std::move(snapshot), std::move(metadata));
-  return [self initWithSnapshot:std::move(wrapped)];
-}
-
 // NSObject Methods
 - (BOOL)isEqual:(nullable id)other {
-  if (![other isKindOfClass:[FIRQuerySnapshot class]]) return NO;
+  if (other == self) return YES;
+  if (![[other class] isEqual:[self class]]) return NO;
 
-  FIRQuerySnapshot *otherSnapshot = other;
-  return *_snapshot == *(otherSnapshot->_snapshot);
+  return [self isEqualToSnapshot:other];
+}
+
+- (BOOL)isEqualToSnapshot:(nullable FIRQuerySnapshot *)snapshot {
+  if (self == snapshot) return YES;
+  if (snapshot == nil) return NO;
+
+  return [self.firestore isEqual:snapshot.firestore] &&
+         [self.originalQuery isEqual:snapshot.originalQuery] &&
+         [self.snapshot isEqual:snapshot.snapshot] && [self.metadata isEqual:snapshot.metadata];
 }
 
 - (NSUInteger)hash {
-  return _snapshot->Hash();
-}
-
-- (FIRQuery *)query {
-  FIRFirestore *firestore = [FIRFirestore recoverFromFirestore:_snapshot->firestore()];
-  return [FIRQuery referenceWithQuery:_snapshot->internal_query() firestore:firestore];
-}
-
-- (FIRSnapshotMetadata *)metadata {
-  if (!_cached_metadata) {
-    _cached_metadata = [[FIRSnapshotMetadata alloc] initWithMetadata:_snapshot->metadata()];
-  }
-  return _cached_metadata;
+  NSUInteger hash = [self.firestore hash];
+  hash = hash * 31u + [self.originalQuery hash];
+  hash = hash * 31u + [self.snapshot hash];
+  hash = hash * 31u + [self.metadata hash];
+  return hash;
 }
 
 @dynamic empty;
 
+- (FIRQuery *)query {
+  return [FIRQuery referenceWithQuery:self.originalQuery firestore:self.firestore];
+}
+
 - (BOOL)isEmpty {
-  return _snapshot->empty();
+  return self.snapshot.documents.isEmpty;
 }
 
 // This property is exposed as an NSInteger instead of an NSUInteger since (as of Xcode 8.1)
 // Swift bridges NSUInteger as UInt, and we want to avoid forcing Swift users to cast their ints
 // where we can. See cr/146959032 for additional context.
 - (NSInteger)count {
-  return static_cast<NSInteger>(_snapshot->size());
+  return self.snapshot.documents.count;
 }
 
 - (NSArray<FIRQueryDocumentSnapshot *> *)documents {
   if (!_documents) {
+    FSTDocumentSet *documentSet = self.snapshot.documents;
+    FIRFirestore *firestore = self.firestore;
+    BOOL fromCache = self.metadata.fromCache;
+
     NSMutableArray<FIRQueryDocumentSnapshot *> *result = [NSMutableArray array];
-    _snapshot->ForEachDocument([&result](DocumentSnapshot snapshot) {
-      [result addObject:[[FIRQueryDocumentSnapshot alloc] initWithSnapshot:std::move(snapshot)]];
-    });
+    for (FSTDocument *document in documentSet.documentEnumerator) {
+      [result addObject:[FIRQueryDocumentSnapshot snapshotWithFirestore:firestore
+                                                            documentKey:document.key
+                                                               document:document
+                                                              fromCache:fromCache]];
+    }
 
     _documents = result;
   }
@@ -122,16 +147,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray<FIRDocumentChange *> *)documentChangesWithIncludeMetadataChanges:
     (BOOL)includeMetadataChanges {
-  if (includeMetadataChanges && _snapshot->view_snapshot().excludes_metadata_changes()) {
-    FSTThrowInvalidArgument(
-        @"To include metadata changes with your document changes, you must call "
-        @"addSnapshotListener(includeMetadataChanges: true).");
-  }
-
   if (!_documentChanges || _documentChangesIncludeMetadataChanges != includeMetadataChanges) {
-    _documentChanges = [FIRDocumentChange documentChangesForSnapshot:_snapshot->view_snapshot()
+    _documentChanges = [FIRDocumentChange documentChangesForSnapshot:self.snapshot
                                               includeMetadataChanges:includeMetadataChanges
-                                                           firestore:_snapshot->firestore()];
+                                                           firestore:self.firestore];
     _documentChangesIncludeMetadataChanges = includeMetadataChanges;
   }
   return _documentChanges;

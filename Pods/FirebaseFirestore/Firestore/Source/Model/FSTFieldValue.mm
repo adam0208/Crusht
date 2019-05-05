@@ -24,7 +24,6 @@
 #import "Firestore/Source/Util/FSTClasses.h"
 
 #include "Firestore/core/src/firebase/firestore/model/database_id.h"
-#include "Firestore/core/src/firebase/firestore/model/document_key.h"
 #include "Firestore/core/src/firebase/firestore/model/field_path.h"
 #include "Firestore/core/src/firebase/firestore/util/comparison.h"
 #include "Firestore/core/src/firebase/firestore/util/hard_assert.h"
@@ -32,7 +31,6 @@
 
 namespace util = firebase::firestore::util;
 using firebase::firestore::model::DatabaseId;
-using firebase::firestore::model::FieldMask;
 using firebase::firestore::model::FieldPath;
 using firebase::firestore::util::Comparator;
 using firebase::firestore::util::CompareMixedNumber;
@@ -48,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation FSTFieldValueOptions
 
-- (instancetype)initWithServerTimestampBehavior:(ServerTimestampBehavior)serverTimestampBehavior
+- (instancetype)initWithServerTimestampBehavior:(FSTServerTimestampBehavior)serverTimestampBehavior
                    timestampsInSnapshotsEnabled:(BOOL)timestampsInSnapshotsEnabled {
   self = [super init];
 
@@ -358,7 +356,7 @@ template <>
 struct Comparator<NSString *> {
   bool operator()(NSString *left, NSString *right) const {
     Comparator<absl::string_view> lessThan;
-    return lessThan(MakeString(left), MakeString(right));
+    return lessThan(MakeStringView(left), MakeStringView(right));
   }
 };
 
@@ -495,11 +493,11 @@ struct Comparator<NSString *> {
 
 - (id)valueWithOptions:(FSTFieldValueOptions *)options {
   switch (options.serverTimestampBehavior) {
-    case ServerTimestampBehavior::None:
+    case FSTServerTimestampBehaviorNone:
       return [NSNull null];
-    case ServerTimestampBehavior::Estimate:
+    case FSTServerTimestampBehaviorEstimate:
       return [[FSTTimestampValue timestampValue:self.localWriteTime] valueWithOptions:options];
-    case ServerTimestampBehavior::Previous:
+    case FSTServerTimestampBehaviorPrevious:
       return self.previousValue ? [self.previousValue valueWithOptions:options] : [NSNull null];
     default:
       HARD_FAIL("Unexpected server timestamp option: %s", options.serverTimestampBehavior);
@@ -680,7 +678,7 @@ static NSComparisonResult CompareBytes(NSData *left, NSData *right) {
   }
 
   FSTReferenceValue *otherRef = (FSTReferenceValue *)other;
-  return self.key.key == otherRef.key.key && *self.databaseID == *otherRef.databaseID;
+  return [self.key isEqualToKey:otherRef.key] && *self.databaseID == *otherRef.databaseID;
 }
 
 - (NSUInteger)hash {
@@ -698,7 +696,7 @@ static NSComparisonResult CompareBytes(NSData *left, NSData *right) {
       return cmp;
     }
     cmp = WrapCompare(self.databaseID->database_id(), ref.databaseID->database_id());
-    return cmp != NSOrderedSame ? cmp : CompareKeys(self.key.key, ref.key.key);
+    return cmp != NSOrderedSame ? cmp : [self.key compare:ref.key];
   } else {
     return [self defaultCompare:other];
   }
@@ -872,21 +870,6 @@ static const NSComparator StringComparator = ^NSComparisonResult(NSString *left,
 - (FSTObjectValue *)objectBySettingValue:(FSTFieldValue *)value forField:(NSString *)field {
   return [[FSTObjectValue alloc]
       initWithImmutableDictionary:[_internalValue dictionaryBySettingObject:value forKey:field]];
-}
-
-- (FSTObjectValue *)objectByApplyingFieldMask:(const FieldMask &)fieldMask {
-  FSTObjectValue *filteredObject = self;
-  for (const FieldPath &path : fieldMask) {
-    if (path.empty()) {
-      return self;
-    } else {
-      FSTFieldValue *newValue = [self valueForPath:path];
-      if (newValue) {
-        filteredObject = [filteredObject objectBySettingValue:newValue forPath:path];
-      }
-    }
-  }
-  return filteredObject;
 }
 
 @end

@@ -10,8 +10,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 import SDWebImage
-import FacebookCore
-import FacebookLogin
+
 
 protocol SettingsControllerDelegate {
     func didSaveSettings()
@@ -654,7 +653,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     @objc fileprivate func goToProfile() {
         //handleSave()
-        let userDetailsController = DetailsPOPVIEWController()
+        let userDetailsController = UserDetailsController()
         let myBackButton = UIBarButtonItem()
         myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton
