@@ -143,7 +143,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     var userAge = Int()
     
     fileprivate func fetchCurrentUser(user: User) {
-        
+        self.refreshLabel.isHidden = true
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
@@ -234,11 +234,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     func fetchUsersFromFirestore() {
         
-//        if topStackView.collegeOnlySwitch.isOn == true {
-//            fetchSchoolUsersOnly()
-//        }
-//
-//        else {
+        if topStackView.collegeOnlySwitch.isOn == true {
+            fetchSchoolUsersOnly()
+        }
+
+        else {
         
         
         let minAge = user?.minSeekingAge ?? 18
@@ -279,7 +279,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 
                print(key, "hhhhh")
                
-                Firestore.firestore().collection("users").whereField("uid", isEqualTo: key).whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).getDocuments { (snapshot, err) in
+                Firestore.firestore().collection("users").whereField("uid", isEqualTo: key).whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).limit(to: 5).getDocuments { (snapshot, err) in
                     if let err = err {
                         print("failed to fetch user", err)
                         self.hud.textLabel.text = "Failed To Fetch user"
@@ -343,10 +343,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
                 }
         }
-        hud.dismiss()
+      
            self.refreshLabel.isHidden = false
         
     }
+}
     
     var reportUID = String()
     
@@ -876,7 +877,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     @objc fileprivate func handleRefresh() {
         cardDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchUsersFromFirestore()
+        fetchSwipes()
     }
     
     //func bellow handles fetchusers on load -little improv

@@ -76,10 +76,10 @@ class CardView: UIView {
         super.init(frame: frame)
         setupLayout()
         
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        addGestureRecognizer(panGesture)
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action:
-            #selector(handleTap)))
+//        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+//        addGestureRecognizer(panGesture)
+//        addGestureRecognizer(UITapGestureRecognizer(target: self, action:
+//            #selector(handleTap)))
     }
     
     //var imageIndex = 0

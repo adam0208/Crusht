@@ -62,7 +62,8 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         navigationController?.navigationBar.prefersLargeTitles = true
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
-        fetchCurrentUser()
+        messages.removeAll()
+        fetchUserAndSetupNavBarTitle()
         listenForMessages()
     }
     
