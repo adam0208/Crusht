@@ -49,7 +49,6 @@ class ChatMessageCell: UICollectionViewCell {
             activityIndicatorView.startAnimating()
             playButton.isHidden = true
             
-            print("Attempting to play video......???")
         }
     }
     

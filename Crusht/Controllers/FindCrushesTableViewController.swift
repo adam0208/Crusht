@@ -29,7 +29,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 switch CNContactStore.authorizationStatus(for: .contacts) {
         
                 case .authorized:
-                    print("yay")
+                    print("Hey")
                 case .denied:
                     showSettingsAlert()
                 case .restricted, .notDetermined:
@@ -77,7 +77,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             guard let uid = Auth.auth().currentUser?.uid else {return}
             Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
                 if let err = err {
-                    print(err)
                     return
                 }
                 
@@ -176,7 +175,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                             in
                             //hud.dismiss()
                             if let err = err {
-                                print("Failed to retrieve user settings", err)
                                 return
                             }
                           
@@ -201,10 +199,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 
     // you should use Custom Delegation properly instead
     func someMethodIWantToCall(cell: UITableViewCell) {
-
-        // we're going to figure out which name we're clicking on
-        
-        print("you are liking something")
         
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
@@ -235,18 +229,15 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     lazy var filteredContanct = [ExpandableNames]()
 
     fileprivate func fetchContacts() {
-        print("Attempting to fetch contacts today..")
 
         let store = CNContactStore()
 
         store.requestAccess(for: .contacts) { (granted, err) in
             if let err = err {
-                print("Failed to request access:", err)
                 return
             }
 
             if granted {
-                print("Access granted")
 
                 let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
                 let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
@@ -259,9 +250,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 
                     try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointerIfYouWantToStopEnumerating) in
 
-                        print(contact.givenName)
-                        print(contact.familyName)
-                        print(contact.phoneNumbers.first?.value.stringValue ?? "")
 
                         favoritableContacts.append(FavoritableContact(contact: contact, hasFavorited: false))
                         
@@ -283,7 +271,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     
 
                 } catch let err {
-                    print("Failed to enumerate contacts:", err)
                 }
 
             } else {
@@ -307,7 +294,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
         let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
         
-        print(phoneNoDash)
         
         if phoneNoDash.count < 11 {
             phoneFinal = "+1\(phoneNoDash)"
@@ -316,7 +302,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             phoneFinal = phoneNoDash
         }
         
-        print(phoneFinal)
 
         //LOT OF TRIMMING AND STRIPPING
         
@@ -329,7 +314,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phoneFinal).getDocuments { (snapshot, err) in
             
             if let err = err {
-                print("Major fuck up", err)
+                return
             }
            
             if (snapshot?.isEmpty)! {
@@ -337,30 +322,25 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 
                 Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
                     if let err = err {
-                        print("Failed to fetch swipe doc", err)
                         return
                     }
                     if snapshot?.exists == true {
                         Firestore.firestore().collection("phone-swipes").document(phoneNumber).updateData(documentData) { (err) in
                             if let err = err {
-                                print("failed to save swipe", err)
                                 return
                             }
                             if didLike == 1 {
                                 self.checkIfMatchExists(cardUID: cardUID)
                             }
-                            print("Success")
                         }
                     } else {
                         Firestore.firestore().collection("phone-swipes").document(phoneNumber).setData(documentData) { (err) in
                             if let err = err {
-                                print("Error", err)
                                 return
                             }
                             if didLike == 1 {
                                 self.checkIfMatchExists(cardUID: cardUID)
                             }
-                            print("Success saved swipe SETDATA")
                         }
                     }
                 }
@@ -371,30 +351,25 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
             if let err = err {
-                print("Failed to fetch swipe doc", err)
                 return
             }
             if snapshot?.exists == true {
                 Firestore.firestore().collection("phone-swipes").document(phoneNumber).updateData(documentData) { (err) in
                     if let err = err {
-                        print("failed to save swipe", err)
                         return
                     }
                     if didLike == 1 {
                         self.checkIfMatchExists(cardUID: cardUID)
                     }
-                    print("Success")
                 }
             } else {
                 Firestore.firestore().collection("phone-swipes").document(phoneNumber).setData(documentData) { (err) in
                     if let err = err {
-                        print("Error", err)
                         return
                     }
                     if didLike == 1 {
                         self.checkIfMatchExists(cardUID: cardUID)
                     }
-                    print("Success saved swipe SETDATA")
                 }
             }
         }
@@ -405,23 +380,18 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
     fileprivate func checkIfMatchExists(cardUID: String) {
         
-        print("Match detection")
-        print(cardUID)
         
         Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
             if let err = err {
-                print("Failed to fetch doc for card user", err)
                 return
             }
             guard let data = snapshot?.data() else {return}
-            print(data)
             
             //guard let uid = Auth.auth().currentUser?.uid else {return}
             let phoneNumber = self.user?.phoneNumber ?? ""
             
             let hasMatched = data[phoneNumber] as? Int == 1
             if hasMatched {
-                print("we have a match!")
                 self.getCardUID(phoneNumber: cardUID)
             }
         }
@@ -435,7 +405,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
             
             if let err = err {
-                print("Major fuck up", err)
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
@@ -450,7 +419,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 //this is for message controller
                 Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
                     if let err = err {
-                        print(err)
                     }
                     if (snapshot?.isEmpty)! {
                         Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
@@ -492,29 +460,22 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         //let ref = Firestore.firestore().collection("messages")
         
         
-        print("about to send new message")
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            print("HAHHAHAAHAHAAAHAAHAH")
             if let err = err {
-                print("Error making individual convo", err)
                 return
             }
             
             if (snapshot?.isEmpty)! {
-                print("SENDING NEW MESSAGE")
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
                     if let err = err {
-                        print("error sending message", err)
                         return
                     }
                     //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        print("TITITITITITITITIITITIT")
                         if let err = err {
-                            print("Error making individual convo", err)
                             return
                         }
                         
@@ -555,9 +516,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            print("TITITITITITITITIITITIT")
                             if let err = err {
-                                print("Error making individual convo", err)
                                 return
                             }
                             
@@ -619,29 +578,22 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         //let ref = Firestore.firestore().collection("messages")
         
         
-        print("about to send new message")
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            print("HAHHAHAAHAHAAAHAAHAH")
             if let err = err {
-                print("Error making individual convo", err)
                 return
             }
             
             if (snapshot?.isEmpty)! {
-                print("SENDING NEW MESSAGE")
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
                     if let err = err {
-                        print("error sending message", err)
                         return
                     }
                     //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        print("TITITITITITITITIITITIT")
                         if let err = err {
-                            print("Error making individual convo", err)
                             return
                         }
                         
@@ -682,9 +634,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            print("TITITITITITITITIITITIT")
                             if let err = err {
-                                print("Error making individual convo", err)
                                 return
                             }
                             
@@ -712,7 +662,10 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
     }
     
+   let messageController = MessageController()
+    
     var crushScoreID = String()
+    
     
     func presentMatchView(cardUID: String) {
         let matchView = MatchView()
@@ -721,6 +674,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         UIApplication.shared.applicationIconBadgeNumber = 1
+       MessageController.sharedInstance?.didHaveNewMessage = true
         self.tabBarController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
@@ -733,10 +687,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
             if let err = err {
-                print("failed to fetch swipe info", err)
                 return
             }
-            print("phone-Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
             // self.fetchUsersFromFirestore()
@@ -770,7 +722,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
     fileprivate func addCrushScore() {
         
-        print("starting journey master cheif")
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -779,7 +730,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
                 return
             }
             if snapshot?.exists == true {
@@ -904,7 +854,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush Contacts: select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab!"
+        hud.textLabel.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab!"
         hud.show(in: navigationController!.view)
         hud.dismiss(afterDelay: 5)
     }
@@ -940,7 +890,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
             .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshots: \(error!)")
                     return
                 }
                 snapshot.documentChanges.forEach { diff in

@@ -30,7 +30,6 @@ class BirthdayController: UIViewController {
     @objc func dateChanged() {
         let components = Calendar.current.dateComponents([.year, .month, .day], from: datepicker.date)
         if let day = components.day, let month = components.month, let year = components.year {
-            print("\(day) \(month) \(year)")
             ageTextField.text = "\(month)-\(day)-\(year)"
             
         }

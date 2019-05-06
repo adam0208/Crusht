@@ -99,7 +99,6 @@ func toCardViewModel() -> CardViewModel {
     
     attributedText.append(NSAttributedString(string: "\n\(schoolString)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
     
-    print(imageUrl1 ?? "")
     
     var imageUrls = [String]()
     if let url = imageUrl1 { imageUrls.append(url) }

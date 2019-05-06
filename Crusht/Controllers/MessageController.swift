@@ -33,17 +33,24 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-class MessageController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
+class MessageController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate, SchoolDelegate {
+    func didSendNewMessage() {
+        messages.removeAll()
+        fetchCurrentUser()
+    }
+    
+    var didHaveNewMessage = Bool()
+    static var sharedInstance: MessageController?
     
     func didSaveSettings() {
         messages.removeAll()
-        fetchUserAndSetupNavBarTitle()
+        fetchCurrentUser()
     }
     
     
     func didFinishLoggingIn() {
         messages.removeAll()
-        fetchUserAndSetupNavBarTitle()
+        fetchCurrentUser()
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -62,8 +69,8 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         navigationController?.navigationBar.prefersLargeTitles = true
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
-        messages.removeAll()
-        fetchUserAndSetupNavBarTitle()
+        checkNewMessage()
+
         listenForMessages()
     }
     
@@ -109,11 +116,10 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         present(alert, animated: true)
     }
     
-    fileprivate func fetchCurrentUser() {
+     func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
                 return
             }
             
@@ -132,11 +138,20 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
                 return
             }
           
-            self.fetchUserAndSetupNavBarTitle()
+            self.fromName = self.user?.name ?? "Match"
+            self.setupNavBarWithUser(self.user!)
+        }
+    }
+    
+    fileprivate func checkNewMessage() {
+        if didHaveNewMessage == true {
+            didHaveNewMessage = false
+            fetchCurrentUser()
         }
     }
     
     override func viewDidLoad() {
+        MessageController.sharedInstance = self
         super.viewDidLoad()
         let cellId = "cellId"
         self.tabBarController?.delegate = self
@@ -192,7 +207,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         //Firestore.firestore.coll
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
             if let err = err {
-                print("HELLLLLLLLNO", err)
+                return
             }
             
             //need to use where call and set it to from id
@@ -225,7 +240,6 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
             .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshots: \(error!)")
                     return
                 }
                 snapshot.documentChanges.forEach { diff in
@@ -250,7 +264,6 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     @objc func handleReloadTable() {
         //this will crash because of background thread, so lets call this on dispatch_async main thread
         DispatchQueue.main.async(execute: {
-            print("we reloaded the table")
             self.tableView.reloadData()
         })
     }
@@ -263,7 +276,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
             if let err = err {
-                print("FAILLLLLLLLL", err)
+                return
             }
             
             snapshot?.documents.forEach({ (documentSnapshot) in
@@ -375,33 +388,15 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         })
     }
     
+        
 
-    
-    func fetchUserAndSetupNavBarTitle() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            //for some reason uid = nil
-            return
-        }
-        
-//        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-        
-    Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-        
-            if let dictionary = snapshot?.data() {
-
-                let user = User(dictionary: dictionary)
-                self.setupNavBarWithUser(user)
-                self.fromName = user.name ?? "Match"
-            }
-        }
-        
-    }
     
     var fromName = String()
     
     func setupNavBarWithUser(_ user: User) {
         messages.removeAll()
         messagesDictionary.removeAll()
+        messageArray.removeAll()
         tableView.reloadData()
         
         observeUserMessages()

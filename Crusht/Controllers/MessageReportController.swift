@@ -182,11 +182,9 @@ class MessageReportController: UIViewController {
         // how to figure out how tall the keyboard actually is
         guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = value.cgRectValue
-        print(keyboardFrame)
         
         // let's try to figure out how tall the gap is from the register button to the bottom of the screen
         let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
-        print(bottomSpace)
         
         let difference = keyboardFrame.height - bottomSpace
         self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)

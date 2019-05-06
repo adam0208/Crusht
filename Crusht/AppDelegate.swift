@@ -116,7 +116,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // Print full message.
-        print(userInfo)
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
@@ -181,7 +180,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         }
         
         // Print full message.
-        print(userInfo)
         
         // Change this to your preferred presentation option
         completionHandler([.alert, .badge, .sound])
@@ -197,7 +195,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         }
         
         // Print full message.
-        print(userInfo)
       
        
         completionHandler()
@@ -220,7 +217,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 extension AppDelegate : MessagingDelegate {
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
         
         let dataDict:[String: String] = ["token": fcmToken]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)

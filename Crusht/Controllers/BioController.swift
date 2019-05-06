@@ -62,7 +62,6 @@ class BioController: UIViewController {
         }
         else {
             bio = bioTF.text
-            print(age, "littttttt")
             let enterSexController = EnterPhotoController()
             enterSexController.age = age
             enterSexController.name = name

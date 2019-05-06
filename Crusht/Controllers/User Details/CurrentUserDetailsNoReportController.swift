@@ -44,7 +44,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         let uid = cardViewModel.uid
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print("error yo", err)
                 return
             }
             
@@ -123,7 +122,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
     //    lazy var likeButton = self.createButton(image: #imageLiteral(resourceName: "like_circle"), selector: #selector(handleDislike))
     
     @objc fileprivate func handleDislike() {
-        print("Disliking")
     }
     
     //    let likeBttn: UIButton = {

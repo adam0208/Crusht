@@ -9,11 +9,8 @@
 /* Begin PBXBuildFile section */
 		28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2D21C0C18D001F6BC5 /* MessageController.swift */; };
 		28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */; };
-		280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */; };
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
-		280F67A22274219E00C1F2C4 /* ReportButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A12274219E00C1F2C4 /* ReportButtonCrusht.png */; };
-		280F67A42274241A00C1F2C4 /* Recycle button.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A32274241A00C1F2C4 /* Recycle button.png */; };
 		280F67A62274294200C1F2C4 /* icons8-back-filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A52274294200C1F2C4 /* icons8-back-filled-50.png */; };
 		280F67A822742BDF00C1F2C4 /* icons8-mortarboard-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A722742BDF00C1F2C4 /* icons8-mortarboard-30.png */; };
 		280F67AA22742CBF00C1F2C4 /* icons8-phone-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67A922742CBF00C1F2C4 /* icons8-phone-30.png */; };
@@ -30,8 +27,6 @@
 		280F67C22274E63C00C1F2C4 /* icons8-mortarboard-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67C12274E63C00C1F2C4 /* icons8-mortarboard-30-2.png */; };
 		280F67C42274E66B00C1F2C4 /* icons8-phone-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67C32274E66B00C1F2C4 /* icons8-phone-30-2.png */; };
 		280F67C62274E6E000C1F2C4 /* icons8-bar-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F67C52274E6E000C1F2C4 /* icons8-bar-30-2.png */; };
-		281282DF2273ED4800CA324E /* LikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282DE2273ED4800CA324E /* LikeButtonCrusht.png */; };
-		281282E12273ED5000CA324E /* DislikeButtonCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */; };
 		28148F3721D6C1540016BD22 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 28148F3621D6C1530016BD22 /* play.png */; };
 		282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */ = {isa = PBXBuildFile; fileRef = 282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */; };
 		28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */; };
@@ -63,23 +58,12 @@
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
 		287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F3A8F225B1C43008F5BD0 /* AnimationView.swift */; };
-		28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */; };
-		28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C5A21B8D1D100A654A0 /* IMG_0184.png */; };
-		28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C6421B8D1D200A654A0 /* NoProfileImage.png */; };
-		28857CBF21B8D1D500A654A0 /* FaveBttn2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9421B8D1D500A654A0 /* FaveBttn2.png */; };
-		28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */; };
-		28857CC321B8D1D600A654A0 /* CrushTLogoIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */; };
-		28857CC821B98F9300A654A0 /* top_left_profile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857CC621B98F9200A654A0 /* top_left_profile@2x.png */; };
-		28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28857CC721B98F9200A654A0 /* top_right_messages@2x.png */; };
 		28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCA21B9A91500A654A0 /* LoginViewController.swift */; };
 		28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CD021B9A9C200A654A0 /* VerifyViewController.swift */; };
 		28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDB21B9B82700A654A0 /* CustomTextField.swift */; };
 		28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */; };
 		28857CE021B9B95900A654A0 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDF21B9B95900A654A0 /* Bindable.swift */; };
 		288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288C87CC21F28C25000B5058 /* SchoolCrushes.swift */; };
-		28908D8221C0A41600391A39 /* CrushtLogoPinkBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */; };
-		28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8321C0A6B300391A39 /* SettingsBetter.png */; };
-		28908D8621C0A99A00391A39 /* MessagesIconCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */; };
 		28908D8821C0AB2C00391A39 /* ExpandableNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8721C0AB2C00391A39 /* ExpandableNames.swift */; };
 		28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8921C0AB6400391A39 /* ContactsCell.swift */; };
 		28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */; };
@@ -105,10 +89,7 @@
 		28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */; };
 		28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */; };
 		28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */; };
-		28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */; };
-		28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */; };
 		28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624A21BDB76A00EAFFE2 /* LoginController.swift */; };
-		28BE624E21BDDBDE00EAFFE2 /* infoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BE624D21BDDBDE00EAFFE2 /* infoButton.png */; };
 		28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */; };
 		28C06E0B22593CE3004F0C1E /* MessageReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C06E0A22593CE3004F0C1E /* MessageReportController.swift */; };
 		28C30330226BFE21002FB145 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C3032F226BFE21002FB145 /* Venue.swift */; };
@@ -127,7 +108,6 @@
 		28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */; };
 		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
 		28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9621C41A7800B7051F /* SendMessageButton.swift */; };
-		28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */; };
 		28F54071224C163F00EC5062 /* BioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54070224C163F00EC5062 /* BioCell.swift */; };
 		28F54073224C23C600EC5062 /* BioTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54072224C23C600EC5062 /* BioTextView.swift */; };
 		28F67BA52276381B00EDFDFF /* icons8-settings-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F67BA42276381A00EDFDFF /* icons8-settings-30-2.png */; };
@@ -168,11 +148,8 @@
 /* Begin PBXFileReference section */
 		28067D2D21C0C18D001F6BC5 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
-		280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SeniorFiveIcon.png; sourceTree = "<group>"; };
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
-		280F67A12274219E00C1F2C4 /* ReportButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ReportButtonCrusht.png; sourceTree = "<group>"; };
-		280F67A32274241A00C1F2C4 /* Recycle button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Recycle button.png"; sourceTree = "<group>"; };
 		280F67A52274294200C1F2C4 /* icons8-back-filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-back-filled-50.png"; sourceTree = "<group>"; };
 		280F67A722742BDF00C1F2C4 /* icons8-mortarboard-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-mortarboard-30.png"; sourceTree = "<group>"; };
 		280F67A922742CBF00C1F2C4 /* icons8-phone-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-phone-30.png"; sourceTree = "<group>"; };
@@ -189,8 +166,6 @@
 		280F67C12274E63C00C1F2C4 /* icons8-mortarboard-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-mortarboard-30-2.png"; sourceTree = "<group>"; };
 		280F67C32274E66B00C1F2C4 /* icons8-phone-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-phone-30-2.png"; sourceTree = "<group>"; };
 		280F67C52274E6E000C1F2C4 /* icons8-bar-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-bar-30-2.png"; sourceTree = "<group>"; };
-		281282DE2273ED4800CA324E /* LikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LikeButtonCrusht.png; sourceTree = "<group>"; };
-		281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DislikeButtonCrusht.png; sourceTree = "<group>"; };
 		28148F3621D6C1530016BD22 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		282B2E5A22718E8600BAB159 /* CrushtLogoLiam69!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CrushtLogoLiam69!.png"; sourceTree = "<group>"; };
 		28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewCell.swift; sourceTree = "<group>"; };
@@ -228,23 +203,12 @@
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		287F3A8F225B1C43008F5BD0 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
-		28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide_out_menu_poster.png; sourceTree = "<group>"; };
-		28857C5A21B8D1D100A654A0 /* IMG_0184.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0184.png; sourceTree = "<group>"; };
-		28857C6421B8D1D200A654A0 /* NoProfileImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoProfileImage.png; sourceTree = "<group>"; };
-		28857C9421B8D1D500A654A0 /* FaveBttn2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FaveBttn2.png; sourceTree = "<group>"; };
-		28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChrushtHomeIcon4.png; sourceTree = "<group>"; };
-		28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CrushTLogoIcon.png; sourceTree = "<group>"; };
-		28857CC621B98F9200A654A0 /* top_left_profile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_left_profile@2x.png"; sourceTree = "<group>"; };
-		28857CC721B98F9200A654A0 /* top_right_messages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_right_messages@2x.png"; sourceTree = "<group>"; };
 		28857CCA21B9A91500A654A0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		28857CD021B9A9C200A654A0 /* VerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyViewController.swift; sourceTree = "<group>"; };
 		28857CDB21B9B82700A654A0 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		28857CDF21B9B95900A654A0 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		288C87CC21F28C25000B5058 /* SchoolCrushes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushes.swift; sourceTree = "<group>"; };
-		28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CrushtLogoPinkBackground.png; sourceTree = "<group>"; };
-		28908D8321C0A6B300391A39 /* SettingsBetter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsBetter.png; sourceTree = "<group>"; };
-		28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessagesIconCrusht.png; sourceTree = "<group>"; };
 		28908D8721C0AB2C00391A39 /* ExpandableNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableNames.swift; sourceTree = "<group>"; };
 		28908D8921C0AB6400391A39 /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindCrushesTableViewController.swift; sourceTree = "<group>"; };
@@ -270,10 +234,7 @@
 		28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTextFieldDropDown.swift; sourceTree = "<group>"; };
 		28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserDetailsNoReportController.swift; sourceTree = "<group>"; };
 		28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
-		28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsWheelCrusht.png; sourceTree = "<group>"; };
-		28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeIconWithBackground.png; sourceTree = "<group>"; };
 		28BE624A21BDB76A00EAFFE2 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		28BE624D21BDDBDE00EAFFE2 /* infoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoButton.png; sourceTree = "<group>"; };
 		28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
 		28C06E0A22593CE3004F0C1E /* MessageReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageReportController.swift; sourceTree = "<group>"; };
 		28C3032F226BFE21002FB145 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
@@ -293,7 +254,6 @@
 		28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveModel.swift; sourceTree = "<group>"; };
 		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		28F46D9621C41A7800B7051F /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
-		28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "itsamatch@2x copy.png"; sourceTree = "<group>"; };
 		28F54070224C163F00EC5062 /* BioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioCell.swift; sourceTree = "<group>"; };
 		28F54072224C23C600EC5062 /* BioTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioTextView.swift; sourceTree = "<group>"; };
 		28F67BA42276381A00EDFDFF /* icons8-settings-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-settings-30-2.png"; sourceTree = "<group>"; };
@@ -422,26 +382,6 @@
 				28ECDADD21CEF9EC0024E62F /* upload_image_icon.png */,
 				28CFC6B021C56D3500387129 /* heartIcon3Crusht.png */,
 				28CFC6AE21C56BAB00387129 /* heart2crusht.png */,
-				28908D8521C0A99A00391A39 /* MessagesIconCrusht.png */,
-				28F46D9821C41C8000B7051F /* itsamatch@2x copy.png */,
-				28908D8321C0A6B300391A39 /* SettingsBetter.png */,
-				28908D8121C0A41600391A39 /* CrushtLogoPinkBackground.png */,
-				28BE624D21BDDBDE00EAFFE2 /* infoButton.png */,
-				28BE624621BD9E7700EAFFE2 /* homeIconWithBackground.png */,
-				28BE624421BD9E6E00EAFFE2 /* SettingsWheelCrusht.png */,
-				280B1ED021CAC4D800A89C5E /* SeniorFiveIcon.png */,
-				28857C9721B8D1D500A654A0 /* ChrushtHomeIcon4.png */,
-				28857C9821B8D1D500A654A0 /* CrushTLogoIcon.png */,
-				280F67A32274241A00C1F2C4 /* Recycle button.png */,
-				28857C9421B8D1D500A654A0 /* FaveBttn2.png */,
-				28857C5A21B8D1D100A654A0 /* IMG_0184.png */,
-				28857CC621B98F9200A654A0 /* top_left_profile@2x.png */,
-				28857CC721B98F9200A654A0 /* top_right_messages@2x.png */,
-				28857C6421B8D1D200A654A0 /* NoProfileImage.png */,
-				28857C5821B8D1D000A654A0 /* slide_out_menu_poster.png */,
-				281282E02273ED4F00CA324E /* DislikeButtonCrusht.png */,
-				280F67A12274219E00C1F2C4 /* ReportButtonCrusht.png */,
-				281282DE2273ED4800CA324E /* LikeButtonCrusht.png */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
 				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
 			);
@@ -724,31 +664,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28857CBF21B8D1D500A654A0 /* FaveBttn2.png in Resources */,
-				28857CC321B8D1D600A654A0 /* CrushTLogoIcon.png in Resources */,
 				280F67C42274E66B00C1F2C4 /* icons8-phone-30-2.png in Resources */,
-				281282E12273ED5000CA324E /* DislikeButtonCrusht.png in Resources */,
-				28857CC921B98F9300A654A0 /* top_right_messages@2x.png in Resources */,
 				280F67AA22742CBF00C1F2C4 /* icons8-phone-30.png in Resources */,
-				28857CC821B98F9300A654A0 /* top_left_profile@2x.png in Resources */,
-				28BE624521BD9E6E00EAFFE2 /* SettingsWheelCrusht.png in Resources */,
 				282B2E5B22718E8600BAB159 /* CrushtLogoLiam69!.png in Resources */,
-				28857CC221B8D1D600A654A0 /* ChrushtHomeIcon4.png in Resources */,
-				280F67A42274241A00C1F2C4 /* Recycle button.png in Resources */,
 				2895575D227E5BCC001EFD73 /* icons8-bar-30-2.png in Resources */,
 				28955765227E5BF9001EFD73 /* icons8-refresh-30.png in Resources */,
 				2895575B227E5B99001EFD73 /* icons8-exclamation-mark-30.png in Resources */,
 				280F67B82274415600C1F2C4 /* icons8-male-user-filled-50-2.png in Resources */,
-				28908D8421C0A6B300391A39 /* SettingsBetter.png in Resources */,
 				28955761227E5BE3001EFD73 /* icons8-phone-30-2.png in Resources */,
 				280F67B02274345C00C1F2C4 /* icons8-back-filled-30.png in Resources */,
-				28857C9A21B8D1D500A654A0 /* slide_out_menu_poster.png in Resources */,
-				281282DF2273ED4800CA324E /* LikeButtonCrusht.png in Resources */,
-				28BE624E21BDDBDE00EAFFE2 /* infoButton.png in Resources */,
 				280F67C62274E6E000C1F2C4 /* icons8-bar-30-2.png in Resources */,
 				28955757227E5B82001EFD73 /* icons8-information-30.png in Resources */,
 				28F148862249725E00E5FB39 /* CrushtLogoLiam.png in Resources */,
-				28F46D9921C41C8000B7051F /* itsamatch@2x copy.png in Resources */,
 				280F67AC22742DF000C1F2C4 /* icons8-guinness-beer-filled-50.png in Resources */,
 				280F67C22274E63C00C1F2C4 /* icons8-mortarboard-30-2.png in Resources */,
 				28955763227E5BE9001EFD73 /* icons8-mortarboard-30-2.png in Resources */,
@@ -756,7 +683,6 @@
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
 				280F67B4227439DA00C1F2C4 /* icons8-male-user-filled-50.png in Resources */,
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
-				28908D8621C0A99A00391A39 /* MessagesIconCrusht.png in Resources */,
 				2895576B227E5D5A001EFD73 /* CrushtLogoLiam69!.png in Resources */,
 				2895575F227E5BD6001EFD73 /* icons8-love-30.png in Resources */,
 				28955769227E5C47001EFD73 /* icons8-box-important-30.png in Resources */,
@@ -764,20 +690,14 @@
 				28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */,
 				280F67B22274354300C1F2C4 /* icons8-back-filled-30-2.png in Resources */,
 				280F67A822742BDF00C1F2C4 /* icons8-mortarboard-30.png in Resources */,
-				28908D8221C0A41600391A39 /* CrushtLogoPinkBackground.png in Resources */,
 				280F67A62274294200C1F2C4 /* icons8-back-filled-50.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
 				28F67BA52276381B00EDFDFF /* icons8-settings-30-2.png in Resources */,
 				28955767227E5C41001EFD73 /* icons8-cancel-30.png in Resources */,
 				280F67AE22742F8C00C1F2C4 /* icons8-bar-30.png in Resources */,
-				28857C9C21B8D1D500A654A0 /* IMG_0184.png in Resources */,
-				280B1ED121CAC4D900A89C5E /* SeniorFiveIcon.png in Resources */,
 				28148F3721D6C1540016BD22 /* play.png in Resources */,
 				280F67BC2274E1D700C1F2C4 /* icons8-box-important-30.png in Resources */,
 				28CFC6AF21C56BAB00387129 /* heart2crusht.png in Resources */,
-				280F67A22274219E00C1F2C4 /* ReportButtonCrusht.png in Resources */,
-				28BE624721BD9E7700EAFFE2 /* homeIconWithBackground.png in Resources */,
-				28857CA621B8D1D500A654A0 /* NoProfileImage.png in Resources */,
 				28F67BA92276382E00EDFDFF /* icons8-communication-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
 				28F67BA72276382100EDFDFF /* icons8-swipe-right-gesture-30.png in Resources */,

@@ -81,9 +81,7 @@ searchController.searchBar.barStyle = .black
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
             
-            print(locationManager.location?.coordinate.latitude as Any)
-            print(locationManager.location?.coordinate.latitude as Any)
-            print("We have your location!")
+       
         }
         self.locationManager.requestAlwaysAuthorization()
         
@@ -111,7 +109,7 @@ searchController.searchBar.barStyle = .black
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush People at Venues: join the venue you're attending to see who is present there at the time. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
+        hud.textLabel.text = "Crush People at Venues: Join the venue you're attending to see who is present there at the time. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
         hud.show(in: navigationController!.view)
         hud.dismiss(afterDelay: 9)
     }
@@ -146,7 +144,6 @@ searchController.searchBar.barStyle = .black
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
             .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshots: \(error!)")
                     return
                 }
                 snapshot.documentChanges.forEach { diff in
@@ -207,7 +204,6 @@ searchController.searchBar.barStyle = .black
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        print("locations = \(locValue.latitude) \(locValue.longitude)")
         userLat = locValue.latitude
         userLong = locValue.longitude
     }
@@ -249,7 +245,6 @@ searchController.searchBar.barStyle = .black
                 }
             }
                 
-                print(self.user?.phoneNumber ?? "Fuck you")
                 self.fetchBars()
         }
     }
@@ -268,9 +263,6 @@ searchController.searchBar.barStyle = .black
         
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 20)
         
-        print("hahahaaha")
-        
-        print(userLat, "Fuck")
         
         radiusQuery.observe(.documentEntered) { (key, location) in
             if let key = key, let loc = location {
@@ -280,7 +272,6 @@ searchController.searchBar.barStyle = .black
                         return
                     }
                     
-                    print(key, "hagaha")
                     
                     if (snapshot?.isEmpty)! {
                         
@@ -289,7 +280,6 @@ searchController.searchBar.barStyle = .black
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         let barDictionary = documentSnapshot.data()
                         let bar = Venue(dictionary: barDictionary)
-                        print(bar.venueName!)
                         
                         self.barArray.append(bar)
                         

@@ -56,14 +56,12 @@ class RegistrationViewModel {
                 completion(err)
                 return //bail
             }
-            print("finished Uploading image")
             ref.downloadURL(completion: { (url, err) in
                 if let err = err {
                     completion(err)
                     return
                 }
                 self.bindableIsRegistering.value = false
-                print("Download url of our image is:", url?.absoluteString ?? "")
                 
                 let imageUrl = url?.absoluteString ?? ""
                 self.saveInfoToFirestore(imageUrl: imageUrl, completion: completion)

@@ -156,7 +156,6 @@ class EnterPhotoController: UIViewController {
     
         
     fileprivate func handleRegister() {
-        print(phone, "lalalalal")
         
         registrationViewModel.age = age
         registrationViewModel.birthday = birthday

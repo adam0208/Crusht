@@ -98,7 +98,6 @@ class UserBarCell: UITableViewCell {
     @objc func handleTapped() {
         link?.hasTappedCrush(cell: self)
         //starButton.tintColor = .red
-        print("CRUSHBUTTONTAPPED")
     }
     
     

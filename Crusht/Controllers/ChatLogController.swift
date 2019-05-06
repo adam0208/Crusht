@@ -55,7 +55,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let fromId = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
             if let err = err {
-                print("Error making individual convo", err)
                 return
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
@@ -63,7 +62,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         if let err = err {
-                            print("FAILLLLLLLLL", err)
                         }
                         let userDictionary = documentSnapshot.data()
                         let message = Message(dictionary: userDictionary)
@@ -94,14 +92,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let fromId = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
             if let err = err {
-                print("Error making individual convo", err)
                 return
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         if let err = err {
-                            print("FAILLLLLLLLL", err)
+                            return
                         }
                         let userDictionary = documentSnapshot.data()
                         let message = Message(dictionary: userDictionary)
@@ -163,7 +160,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId)
             .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshots: \(error!)")
                     return
                 }
                 snapshot.documentChanges.forEach { diff in
@@ -389,13 +385,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let ref = Storage.storage().reference().child("message_movies").child(filename)
         let uploadTask = ref.putFile(from: url, metadata: nil, completion: { (_, err) in
             if let err = err {
-                print("Failed to upload movie:", err)
                 return
             }
             
             ref.downloadURL(completion: { (downloadUrl, err) in
                 if let err = err {
-                    print("Failed to get download url:", err)
                     return
                 }
                 
@@ -467,13 +461,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             ref.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 
                 if error != nil {
-                    print("Failed to upload image:", error!)
                     return
                 }
                 
                 ref.downloadURL(completion: { (url, err) in
                     if let err = err {
-                        print(err)
                         return
                     }
                     
@@ -703,17 +695,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         let toName = user?.name ?? ""
         
-        //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
-        //            if let err = err {
-        //                print(err)
-        //            }
-        //            let userFromNameDictionary = snapshot?.data()
-        //            let userFromName = User(dictionary: userFromNameDictionary!)
-        //            self.fromName = userFromName.name ?? "loser"
-        //            print(userFromName.name ?? "hi ho yo")
-        //        }
-        //
-        //        print(fromName, "Fuck you bro")
         
         let timestamp = Int(Date().timeIntervalSince1970)
         var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": self.fromName as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
@@ -730,28 +711,21 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         //let ref = Firestore.firestore().collection("messages")
         
-        print("about to send new message")
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            print("HAHHAHAAHAHAAAHAAHAH")
             if let err = err {
-                print("Error making individual convo", err)
                 return
             }
             
             if (snapshot?.isEmpty)! {
-                print("SENDING NEW MESSAGE")
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
                     if let err = err {
-                        print("error sending message", err)
                         return
                     }
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        print("TITITITITITITITIITITIT")
                         if let err = err {
-                            print("Error making individual convo", err)
                             return
                         }
                         
@@ -794,9 +768,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            print("TITITITITITITITIITITIT")
                             if let err = err {
-                                print("Error making individual convo", err)
                                 return
                             }
                             

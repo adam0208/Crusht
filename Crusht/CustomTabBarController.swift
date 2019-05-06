@@ -15,8 +15,6 @@ class CustomTabBarController: UITabBarController {
     let venueController = BarsTableView()
     let messageController = MessageController()
     
-    
-    
    override func viewDidLoad() {
         super.viewDidLoad()
     

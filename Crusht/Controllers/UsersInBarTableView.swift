@@ -69,7 +69,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
                 if let err = err {
-                    print(err)
                     return
                 }
                 if snapshot?.exists == true {
@@ -111,6 +110,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             super.viewDidLoad()
             
             let cellId = "cellId"
+            
             
             fetchCurrentUser()
             //        navigationItem.leftItemsSupplementBackButton = true
@@ -289,8 +289,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             query.getDocuments { (snapshot, err) in
                 if let err = err {
-                    print("failed to fetch ", err)
-                    self.hud.textLabel.text = "Failed To Fetch School"
+                    self.hud.textLabel.text = "Failed To Fetch Bar"
                     self.hud.show(in: self.view)
                     self.hud.dismiss(afterDelay: 2)
                     return
@@ -352,7 +351,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
             
-            print("YOU Have selected something")
             
             let crush = barsArray[indexPathTapped.row]
             
@@ -386,54 +384,63 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         var matchUID = String()
         
         
-        func saveSwipeToFireStore(didLike: Int) {
+    func saveSwipeToFireStore(didLike: Int) {
+        
+        let phoneID = user?.phoneNumber ?? ""
+        
+        let cardUID = matchUID
+        
+        let documentData = [cardUID: didLike]
+        let otherDocData = [crushScoreID: didLike]
+        
+        Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
+            if let err = err {
+                return
+            }
+            if snapshot?.exists == true {
+                Firestore.firestore().collection("phone-swipes").document(phoneID).updateData(documentData) { (err) in
+                    if let err = err {
+                        return
+                    }
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
+                }
+            } else {
+                Firestore.firestore().collection("phone-swipes").document(phoneID).setData(documentData) { (err) in
+                    if let err = err {
+                        print("Error", err)
+                        return
+                    }
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
+                }
+            }
             
-            
-            
-            let phoneID = user?.phoneNumber ?? ""
-            
-            let cardUID = matchUID
-            
-            let documentData = [cardUID: didLike]
-            
-            Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
+            Firestore.firestore().collection("swipes").document(self.user?.uid ?? "").getDocument { (snapshot, err) in
                 if let err = err {
-                    print("Failed to fetch swipe doc", err)
                     return
                 }
                 if snapshot?.exists == true {
-                    Firestore.firestore().collection("phone-swipes").document(phoneID).updateData(documentData) { (err) in
+                    Firestore.firestore().collection("swipes").document(self.user?.uid ?? "").updateData(otherDocData) { (err) in
                         if let err = err {
-                            print("failed to save swipe", err)
                             return
                         }
-                        if didLike == 1 {
-                            self.checkIfMatchExists(cardUID: cardUID)
-                        }
-                        print("Success")
+                       
                     }
                 } else {
-                    Firestore.firestore().collection("phone-swipes").document(phoneID).setData(documentData) { (err) in
-                        if let err = err {
-                            print("Error", err)
-                            return
-                        }
-                        if didLike == 1 {
-                            self.checkIfMatchExists(cardUID: cardUID)
-                        }
-                        print("Success saved swipe SETDATA")
-                    }
+                    print("Cool")
                 }
                 
-                self.fetchSwipes()
-                
             }
+            self.fetchSwipes()
         }
+    }
         
         fileprivate func checkIfMatchExists(cardUID: String) {
             
-            print("Match detection")
-            print(cardUID)
+          
             
             Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
                 if let err = err {
@@ -441,7 +448,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                     return
                 }
                 guard let data = snapshot?.data() else {return}
-                print(data)
                 
                 
                 //guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -451,7 +457,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 
                 let hasMatched = data[phoneNumber] as? Int == 1
                 if hasMatched {
-                    print("we have a match!")
                     self.getCardUID(phoneNumber: cardUID)
                 }
             }
@@ -461,22 +466,21 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             guard let uid = Auth.auth().currentUser?.uid else {return}
             
             let phone = phoneNumber
-            print(phone, "LLLLLLLLLLLLLLLLLLLL")
             Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
                 
                 if let err = err {
-                    print("Major fuck up", err)
+                    return
                 }
                 snapshot?.documents.forEach({ (documentSnapshot) in
                     let userDictionary = documentSnapshot.data()
                     let user = User(dictionary: userDictionary)
                     
                     let cardUID = user.uid!
-                    print(user.name ?? "Not getting user")
                     
                     Firestore.firestore().collection("users").document(uid).getDocument(completion: { (snapshot, err) in
                         if let err = err {
                             print(err, "getting whatever failed")
+                            return
                         }
                         let secondUserDictionary = snapshot?.data()
                         let secondUser = User(dictionary: secondUserDictionary!)
@@ -538,7 +542,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                     print("failed to fetch swipe info", err)
                     return
                 }
-                print("Swipes", snapshot?.data() ?? "")
                 guard let data = snapshot?.data() as? [String: Int] else {return}
                 self.swipes = data
                 
@@ -559,7 +562,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                     print("failed to fetch swipe info", err)
                     return
                 }
-                print("Swipes", snapshot?.data() ?? "")
                 guard let data = snapshot?.data() as? [String: Int] else {return}
                 self.locationSwipes = data
                 // self.fetchUsersFromFirestore()
@@ -600,18 +602,15 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             //let ref = Firestore.firestore().collection("messages")
             
             
-            print("about to send new message")
             //SOLUTION TO CURRENT ISSUE
             //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
             Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                print("HAHHAHAAHAHAAAHAAHAH")
                 if let err = err {
                     print("Error making individual convo", err)
                     return
                 }
                 
                 if (snapshot?.isEmpty)! {
-                    print("SENDING NEW MESSAGE")
                     Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
                         if let err = err {
                             print("error sending message", err)
@@ -620,7 +619,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                         //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                            print("TITITITITITITITIITITIT")
                             if let err = err {
                                 print("Error making individual convo", err)
                                 return
@@ -663,9 +661,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                             //flip it
                             
                             Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                                print("TITITITITITITITIITITIT")
                                 if let err = err {
-                                    print("Error making individual convo", err)
                                     return
                                 }
                                 
@@ -701,17 +697,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             let toName = toName
             
-            //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
-            //            if let err = err {
-            //                print(err)
-            //            }
-            //            let userFromNameDictionary = snapshot?.data()
-            //            let userFromName = User(dictionary: userFromNameDictionary!)
-            //            self.fromName = userFromName.name ?? "loser"
-            //            print(userFromName.name ?? "hi ho yo")
-            //        }
-            //
-            //        print(fromName, "Fuck you bro")
+            
             
             let timestamp = Int(Date().timeIntervalSince1970)
             var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
@@ -727,18 +713,15 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             //let ref = Firestore.firestore().collection("messages")
             
             
-            print("about to send new message")
             //SOLUTION TO CURRENT ISSUE
             //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
             Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                print("HAHHAHAAHAHAAAHAAHAH")
                 if let err = err {
                     print("Error making individual convo", err)
                     return
                 }
                 
                 if (snapshot?.isEmpty)! {
-                    print("SENDING NEW MESSAGE")
                     Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
                         if let err = err {
                             print("error sending message", err)
@@ -747,7 +730,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                         //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                            print("TITITITITITITITIITITIT")
                             if let err = err {
                                 print("Error making individual convo", err)
                                 return
@@ -790,7 +772,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                             //flip it
                             
                             Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                                print("TITITITITITITITIITITIT")
                                 if let err = err {
                                     print("Error making individual convo", err)
                                     return
@@ -819,6 +800,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             self.presentMatchView(cardUID: fromId)
             
         }
+    let messageController = MessageController()
         
         func presentMatchView(cardUID: String) {
             let matchView = MatchView()
@@ -827,7 +809,10 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
             UIApplication.shared.applicationIconBadgeNumber = 1
+            MessageController.sharedInstance?.didHaveNewMessage = true
+           
             self.tabBarController?.view.addSubview(matchView)
+            
             matchView.bringSubviewToFront(view)
             matchView.fillSuperview()
         }

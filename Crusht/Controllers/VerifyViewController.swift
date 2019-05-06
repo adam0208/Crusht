@@ -99,10 +99,8 @@ class VerifyViewController: UIViewController {
         let credential: PhoneAuthCredential = PhoneAuthProvider.provider().credential(withVerificationID: defaults.string(forKey: "authVerificationID")!, verificationCode: verificationCodeText.text!)
         Auth.auth().signInAndRetrieveData(with: credential) { (user, error) in
             if error != nil {
-                print("error: \(String(describing: error?.localizedDescription))")
             } else {
                 guard let uid = Auth.auth().currentUser?.uid else {return}
-                print("signed in")
                 let docData: [String: Any] =
                     ["Full Name": "",
                      "uid": uid,
@@ -126,7 +124,6 @@ class VerifyViewController: UIViewController {
                 
                 Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: self.phoneNumber ?? "").getDocuments(completion: { (snapshot, err) in
                     if let err = err {
-                        print(err)
                     }
                     if (snapshot?.isEmpty)! {
                         Firestore.firestore().collection("users").document(uid).setData(docData)

@@ -50,7 +50,7 @@ class UserCell: UITableViewCell {
             Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
              
                 if let err = err {
-                    print("FAILLLLLLLLL", err)
+                    return
                 }
                 //should get document uid
                 //snapshot?.data().forEach({ (documentSnapshot) in

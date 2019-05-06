@@ -60,14 +60,12 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         ref.putData(uploadData, metadata: nil) { (nil, err) in
             
             if let err = err {
-                print("Failed to upload photo", err)
                 hud.dismiss()
                 return
             }
             ref.downloadURL(completion: { (url, err) in
                 hud.dismiss()
                 if let err = err {
-                    print("Failed to download url", err)
                     return
                 }
                 
@@ -139,10 +137,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
                 return
             }
-            //print(snapshot?.data())
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             self.loadUserPhotos()
@@ -454,7 +450,6 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     @objc fileprivate func handleNameChange(textField: UITextField) {
-        print("name changing")
         self.user?.name = textField.text
     }
     
@@ -579,12 +574,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             in
             //hud.dismiss()
             if let err = err {
-                print("Failed to retrieve user settings", err)
                 return
             }
             hud.dismiss()
             self.dismiss(animated: true, completion: {
-                print("Dismissal Complete")
                 self.delegate?.didSaveSettings()
                 
             })
@@ -609,7 +602,6 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         do {
             try firebaseAuth.signOut()
         } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
             }
             present(navController, animated: true)
         }

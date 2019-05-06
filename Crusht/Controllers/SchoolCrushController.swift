@@ -34,6 +34,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
+protocol SchoolDelegate {
+    func didSendNewMessage()
+}
+
 class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +48,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         schoolArray.removeAll()
         fetchCurrentUser()
     }
+    
+     var schoolDelegate: SchoolDelegate?
     
     func didSaveSettings() {
         schoolArray.removeAll()
@@ -69,7 +75,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
                 return
             }
             if snapshot?.exists == true {
@@ -86,7 +91,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
                 return
             }
             if snapshot?.exists == true {
@@ -113,12 +117,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         }
     }
 
+   
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
         
         let cellId = "cellId"
+       
         
         fetchCurrentUser()
         //        navigationItem.leftItemsSupplementBackButton = true
@@ -165,7 +172,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush Classmates: select the heart next people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
+        hud.textLabel.text = "Crush Classmates: Select the heart next people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
         hud.show(in: navigationController!.view)
         hud.dismiss(afterDelay: 5)
     }
@@ -204,7 +211,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId)
             .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshots: \(error!)")
                     return
                 }
                 snapshot.documentChanges.forEach { diff in
@@ -292,7 +298,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
                 return
             }
             
@@ -343,7 +348,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         query.getDocuments { (snapshot, err) in
             if let err = err {
-                print("failed to fetch ", err)
                 self.hud.textLabel.text = "Failed To Fetch School"
                 self.hud.show(in: self.view)
                 self.hud.dismiss(afterDelay: 2)
@@ -443,8 +447,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
-        print("YOU Have selected something")
-        
         let crush = schoolArray[indexPathTapped.row]
         
         crushScoreID = crush.uid ?? ""
@@ -479,60 +481,67 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     
     func saveSwipeToFireStore(didLike: Int) {
         
-        
-        
         let phoneID = user?.phoneNumber ?? ""
         
         let cardUID = matchUID
         
         let documentData = [cardUID: didLike]
+        let otherDocData = [crushScoreID: didLike]
         
         Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
             if let err = err {
-                print("Failed to fetch swipe doc", err)
                 return
             }
             if snapshot?.exists == true {
                 Firestore.firestore().collection("phone-swipes").document(phoneID).updateData(documentData) { (err) in
                     if let err = err {
-                        print("failed to save swipe", err)
                         return
                     }
                     if didLike == 1 {
                         self.checkIfMatchExists(cardUID: cardUID)
                     }
-                    print("Success")
                 }
             } else {
                 Firestore.firestore().collection("phone-swipes").document(phoneID).setData(documentData) { (err) in
                     if let err = err {
-                        print("Error", err)
                         return
                     }
                     if didLike == 1 {
                         self.checkIfMatchExists(cardUID: cardUID)
                     }
-                    print("Success saved swipe SETDATA")
                 }
             }
             
-            self.fetchSwipes()
+            Firestore.firestore().collection("swipes").document(self.user?.uid ?? "").getDocument { (snapshot, err) in
+                if let err = err {
+                    return
+                }
+                if snapshot?.exists == true {
+                    Firestore.firestore().collection("swipes").document(self.user?.uid ?? "").updateData(otherDocData) { (err) in
+                        if let err = err {
+                            return
+                        }
+                        if didLike == 1 {
+                           print("great")
+                        }
+                    }
+                } else {
+                        print("Success saved swipe SETDATA")
+                    }
             
         }
+        self.fetchSwipes()
     }
+}
     
     fileprivate func checkIfMatchExists(cardUID: String) {
         
-        print("Match detection")
-        print(cardUID)
         
         Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
             if let err = err {
-                print("Failed to fetch doc for card user", err)
                 return
             }
             guard let data = snapshot?.data() else {return}
-            print(data)
             
             
             //guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -542,7 +551,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             
             let hasMatched = data[phoneNumber] as? Int == 1
             if hasMatched {
-                print("we have a match!")
                 self.getCardUID(phoneNumber: cardUID)
             }
         }
@@ -552,22 +560,20 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         guard let uid = Auth.auth().currentUser?.uid else {return}
         
         let phone = phoneNumber
-        print(phone, "LLLLLLLLLLLLLLLLLLLL")
         Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
             
             if let err = err {
-                print("Major fuck up", err)
+                return
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
                 
                 let cardUID = user.uid!
-                print(user.name ?? "Not getting user")
                 
                 Firestore.firestore().collection("users").document(uid).getDocument(completion: { (snapshot, err) in
                     if let err = err {
-                        print(err, "getting whatever failed")
+                        return
                     }
                     let secondUserDictionary = snapshot?.data()
                     let secondUser = User(dictionary: secondUserDictionary!)
@@ -580,7 +586,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                     //this is for message controller
                     Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
                         if let err = err {
-                            print(err)
+                            return
                         }
                         
                         
@@ -626,10 +632,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
             if let err = err {
-                print("failed to fetch swipe info", err)
                 return
             }
-            print("Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
             
@@ -647,10 +651,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         }
         Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print("failed to fetch swipe info", err)
                 return
             }
-            print("Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.locationSwipes = data
             // self.fetchUsersFromFirestore()
@@ -691,29 +693,22 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         //let ref = Firestore.firestore().collection("messages")
         
         
-        print("about to send new message")
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            print("HAHHAHAAHAHAAAHAAHAH")
             if let err = err {
-                print("Error making individual convo", err)
                 return
             }
             
             if (snapshot?.isEmpty)! {
-                print("SENDING NEW MESSAGE")
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
                     if let err = err {
-                        print("error sending message", err)
                         return
                     }
                     //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        print("TITITITITITITITIITITIT")
                         if let err = err {
-                            print("Error making individual convo", err)
                             return
                         }
                         
@@ -754,9 +749,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            print("TITITITITITITITIITITIT")
                             if let err = err {
-                                print("Error making individual convo", err)
                                 return
                             }
                             
@@ -818,29 +811,22 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         //let ref = Firestore.firestore().collection("messages")
         
         
-        print("about to send new message")
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            print("HAHHAHAAHAHAAAHAAHAH")
             if let err = err {
-                print("Error making individual convo", err)
                 return
             }
             
             if (snapshot?.isEmpty)! {
-                print("SENDING NEW MESSAGE")
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
                     if let err = err {
-                        print("error sending message", err)
                         return
                     }
                     //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        print("TITITITITITITITIITITIT")
                         if let err = err {
-                            print("Error making individual convo", err)
                             return
                         }
                         
@@ -881,9 +867,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            print("TITITITITITITITIITITIT")
                             if let err = err {
-                                print("Error making individual convo", err)
                                 return
                             }
                             
@@ -911,6 +895,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
     }
     
+    let messageController = MessageController()
+    
     func presentMatchView(cardUID: String) {
         let matchView = MatchView()
         matchView.cardUID = cardUID
@@ -918,6 +904,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         UIApplication.shared.applicationIconBadgeNumber = 1
+       MessageController.sharedInstance?.didHaveNewMessage = true
+
         self.tabBarController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()

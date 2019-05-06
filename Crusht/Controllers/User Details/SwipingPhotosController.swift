@@ -54,7 +54,6 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         }
         
         
-        print("swipe complete")
     }
 
     var controllers = [UIViewController]()
