@@ -111,9 +111,9 @@ searchController.searchBar.barStyle = .black
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Join your current venue to crush on the people there! This resets every 18 hours"
+        hud.textLabel.text = "Crush People at Venues: join the venue you're attending to see who is present there at the time. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
         hud.show(in: navigationController!.view)
-        hud.dismiss(afterDelay: 3)
+        hud.dismiss(afterDelay: 9)
     }
     
     @objc func handleMessages() {
@@ -225,7 +225,18 @@ searchController.searchBar.barStyle = .black
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-           
+            self.user = User(dictionary: dictionary)
+            if self.user?.phoneNumber == ""{
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
+                return
+            }
+            else if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+                namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+                return
+            }
             
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)

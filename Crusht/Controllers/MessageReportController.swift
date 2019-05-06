@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import JGProgressHUD
 
 class MessageReportController: UIViewController {
 
@@ -85,12 +86,15 @@ class MessageReportController: UIViewController {
         
         stackView.spacing = 14
         
-        
-        stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 70, left: 20, bottom: 250, right: 20))
+      stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/10, left: view.bounds.width/9, bottom: view.bounds.height/3, right: view.bounds.width/9))
         
     }
     
+    let hud = JGProgressHUD(style: .dark)
+    
     @objc fileprivate func reportUser() {
+        hud.textLabel.text = "Thank you for reporting this user, we will process your request"
+        hud.show(in: navigationController!.view)
         
         let docData: [String: Any] = ["uid": reportUID,
                                       "offender-name": reportName,
@@ -128,7 +132,11 @@ class MessageReportController: UIViewController {
                 })
             }
         }
-        self.dismiss(animated: true)
+        hud.dismiss(afterDelay: 4)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.1) {
+              self.dismiss(animated: true)
+        }
+      
     }
     
     let gradientLayer = CAGradientLayer()

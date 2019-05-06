@@ -119,6 +119,18 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
+            
+            if self.user?.phoneNumber == ""{
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
+                return
+            }
+            else if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+                namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+                return
+            }
           
             self.fetchUserAndSetupNavBarTitle()
         }

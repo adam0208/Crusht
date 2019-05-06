@@ -110,8 +110,7 @@ class VerifyViewController: UIViewController {
                     "Age": "",
         
                         "ImageUrl1": "",
-                        "ImageUrl2": "",
-                        "ImageUrl3": "",
+                       
                        
                         "Birthday": "",
                         "School": "",
@@ -119,8 +118,7 @@ class VerifyViewController: UIViewController {
                         "minSeekingAge": 18,
                         "maxSeekingAge": 40,
                         "maxDistance": 5,
-                        "email": "",
-                        "fbid": "",
+                       
                         "deviceID": Messaging.messaging().fcmToken ?? "",
                         "Gender-Preference": "",
                         "User-Gender": ""

@@ -48,7 +48,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         override func viewWillAppear(_ animated: Bool) {
             
             super.viewWillAppear(animated)
-            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.prefersLargeTitles = false
             
             barsArray.removeAll()
             fetchCurrentUser()
@@ -116,15 +116,13 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             //        navigationItem.leftItemsSupplementBackButton = true
             //        navigationItem.leftBarButtonItem?.title = "👈"
             //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
+        
             //navigationItem.title = "School"
             tableView.register(UserBarCell.self, forCellReuseIdentifier: cellId)
             
-            let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-            
             
             listenForMessages()
-            navigationItem.rightBarButtonItem = swipeButton
+            
             
             view.addSubview(searchController.searchBar)
             // Setup the Search Controller
@@ -932,12 +930,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             })
         }
         
-        fileprivate func showProfileForUser(_ user: User) {
-            let schoolProfileDetails = SchoolUserDetailsController()
-            schoolProfileDetails.user = user
-            let navController = UINavigationController(rootViewController: schoolProfileDetails)
-            present(navController, animated: true)
-        }
+   
         
         var hasFavorited = Bool()
         // pass cell as a parameter to deal with it turning red

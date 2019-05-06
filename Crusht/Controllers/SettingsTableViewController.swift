@@ -221,7 +221,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         case 6:
             headerLabel.text = ""
         case 7:
-            headerLabel.text = "Match by Locantion prefrences"
+            headerLabel.text = "Match by Location Preferences"
     
         default:
             headerLabel.text = ""
@@ -493,7 +493,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))
         
-        let profileButton = UIBarButtonItem(title: "Preview", style: .plain, target: self, action: #selector(goToProfile))
+        let profileButton = UIBarButtonItem(title: "Profile", style: .plain, target: self, action: #selector(goToProfile))
         
         navigationItem.rightBarButtonItems = [saveButton, profileButton]
         
@@ -521,8 +521,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             "minSeekingAge": user?.minSeekingAge ?? 18,
             "maxSeekingAge": user?.maxSeekingAge ?? 50,
             "maxDistance": user?.maxDistance ?? 3,
-            "email": user?.email ?? "",
-            "fbid": user?.fbid ?? "",
+   
             "PhoneNumber": user?.phoneNumber ?? "",
             "deviceID": Messaging.messaging().fcmToken ?? "",
             "Gender-Preference": user?.sexPref ?? "",
@@ -544,8 +543,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 "minSeekingAge": user?.minSeekingAge ?? 18,
                 "maxSeekingAge": user?.maxSeekingAge ?? 50,
                 "maxDistance": user?.maxDistance ?? 3,
-                "email": user?.email ?? "",
-                "fbid": user?.fbid ?? "",
+            
                 "PhoneNumber": user?.phoneNumber ?? "",
                 "deviceID": Messaging.messaging().fcmToken ?? "",
                 "Gender-Preference": user?.sexPref ?? "",
@@ -567,8 +565,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 "minSeekingAge": user?.minSeekingAge ?? 18,
                 "maxSeekingAge": user?.maxSeekingAge ?? 50,
                 "maxDistance": user?.maxDistance ?? 3,
-                "email": user?.email ?? "",
-                "fbid": user?.fbid ?? "",
+                
                 "PhoneNumber": user?.phoneNumber ?? "",
                 "deviceID": Messaging.messaging().fcmToken ?? "",
                 "Gender-Preference": user?.sexPref ?? "",
@@ -653,7 +650,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     @objc fileprivate func goToProfile() {
         //handleSave()
-        let userDetailsController = UserDetailsController()
+        let userDetailsController = CurrentUserDetailsNoReportController()
         let myBackButton = UIBarButtonItem()
         myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton

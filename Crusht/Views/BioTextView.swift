@@ -25,7 +25,11 @@ class BioTextView: UITextView, UITextViewDelegate {
         override var intrinsicContentSize: CGSize {
             return .init(width: 0, height: 100)
         }
-
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        //300 chars restriction
+        return textView.text.count + (text.count - range.length) <= 30
+    }
+    
     
     
     required init?(coder aDecoder: NSCoder) {

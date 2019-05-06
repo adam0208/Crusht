@@ -165,9 +165,9 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush on your schoolmates!"
+        hud.textLabel.text = "Crush Classmates: select the heart next people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
         hud.show(in: navigationController!.view)
-        hud.dismiss(afterDelay: 2)
+        hud.dismiss(afterDelay: 5)
     }
     
     
@@ -297,8 +297,19 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             }
             
             guard let dictionary = snapshot?.data() else {return}
+        
             self.user = User(dictionary: dictionary)
-          
+            if self.user?.phoneNumber == ""{
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
+                return
+            }
+            else if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+                namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+                return
+            }
       
             
             //self.fetchSwipes()
@@ -1008,13 +1019,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             
             
         })
-    }
-    
-    fileprivate func showProfileForUser(_ user: User) {
-        let schoolProfileDetails = SchoolUserDetailsController()
-        schoolProfileDetails.user = user
-        let navController = UINavigationController(rootViewController: schoolProfileDetails)
-        present(navController, animated: true)
     }
     
     var hasFavorited = Bool()

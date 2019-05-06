@@ -904,9 +904,9 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush on your contacts!!"
+        hud.textLabel.text = "Crush Contacts: select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab!"
         hud.show(in: navigationController!.view)
-        hud.dismiss(afterDelay: 2)
+        hud.dismiss(afterDelay: 5)
     }
     
     @objc func handleMessages() {

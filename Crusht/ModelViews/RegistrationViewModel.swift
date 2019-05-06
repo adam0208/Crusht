@@ -86,8 +86,7 @@ class RegistrationViewModel {
              "maxSeekingAge": 50,
              "PhoneNumber": phone,
              "deviceID": token ?? "",
-             "fbid": fbid ?? "",
-             "email": email ?? "",
+             
              "ImageUrl1": imageUrl,
              "Gender-Preference": sexYouLike,
              "User-Gender": gender

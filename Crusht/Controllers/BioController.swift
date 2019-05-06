@@ -110,6 +110,10 @@ class BioController: UIViewController {
         
     }
     
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        //300 chars restriction
+        return bioTF.text.count + (text.count - range.length) <= 500
+    }
     
     let gradientLayer = CAGradientLayer()
     
