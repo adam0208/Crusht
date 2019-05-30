@@ -18,6 +18,10 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
+        if UIApplication.shared.applicationIconBadgeNumber == 1 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+        }
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
@@ -215,9 +219,15 @@ searchController.searchBar.barStyle = .black
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print(err)
+                self.hud.textLabel.text = "Something went wrong! Just log in again!"
+                self.hud.show(in: self.navigationController!.view)
+                self.hud.dismiss(afterDelay: 2)
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
                 return
+                
             }
+            
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
@@ -225,13 +235,13 @@ searchController.searchBar.barStyle = .black
             if self.user?.phoneNumber == ""{
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
-                return
+                
             }
             else if self.user?.name == "" {
                 let namecontroller = EnterNameController()
                 namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
-                return
+                
             }
             
             let geoFirestoreRef = Firestore.firestore().collection("users")
@@ -244,9 +254,10 @@ searchController.searchBar.barStyle = .black
                     print("Saved location successfully!")
                 }
             }
-                
-                self.fetchBars()
+            
+            self.fetchBars()
         }
+   
     }
     
     
@@ -306,6 +317,9 @@ searchController.searchBar.barStyle = .black
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! VenueCell
         cell.selectionStyle = .none
+        
+        if barArray.isEmpty == false {
+        
         if isFiltering() {
             let venue = venues[indexPath.row]
             cell.textLabel?.text = venue.venueName
@@ -322,6 +336,12 @@ searchController.searchBar.barStyle = .black
             SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                 cell.profileImageView.image = image
             }
+        }
+        } else {
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
         }
         
         //        if hasFavorited == true {
@@ -365,29 +385,76 @@ searchController.searchBar.barStyle = .black
         else if Int(truncating: user?.timeLastJoined ?? 5000) < timestamp - 1800 {
             let alert = UIAlertController(title: "Join Bar?", message: "Join \(barName) to see who's there?", preferredStyle: .alert)
             let action = UIAlertAction(title: "Join", style: .default){(UIAlertAction) in
+                 var docData = [String: Any]()
                 guard let uid = Auth.auth().currentUser?.uid else {return}
-                let docData: [String: Any] = [
-                    "uid": uid,
-                    "Full Name": self.user?.name ?? "",
-                    "ImageUrl1": self.user?.imageUrl1 ?? "",
-                    "ImageUrl2": self.user?.imageUrl2 ?? "",
-                    "ImageUrl3": self.user?.imageUrl3 ?? "",
-                    "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
-                    "Birthday": self.user?.birthday ?? "",
-                    "School": self.user?.school ?? "",
-                    "Bio": self.user?.bio ?? "",
-                    "minSeekingAge": self.user?.minSeekingAge ?? 18,
-                    "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
-                    "maxDistance": self.user?.maxDistance ?? 3,
-                    "email": self.user?.email ?? "",
-                    "fbid": self.user?.fbid ?? "",
-                    "PhoneNumber": self.user?.phoneNumber ?? "",
-                    "deviceID": Messaging.messaging().fcmToken ?? "",
-                    "Gender-Preference": self.user?.sexPref ?? "",
-                    "User-Gender": self.user?.gender ?? "",
-                    "CurrentVenue": barName,
-                    "TimeLastJoined": timestamp
-                ]
+                if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 != "" {
+                    docData = [
+                        "uid": uid,
+                        "Full Name": self.user?.name ?? "",
+                        "ImageUrl1": self.user?.imageUrl1 ?? "",
+                        "ImageUrl2": self.user?.imageUrl2 ?? "",
+                        "ImageUrl3": self.user?.imageUrl3 ?? "",
+                        "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                        "Birthday": self.user?.birthday ?? "",
+                        "School": self.user?.school ?? "",
+                        "Bio": self.user?.bio ?? "",
+                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                        "maxDistance": self.user?.maxDistance ?? 3,
+                        
+                        "PhoneNumber": self.user?.phoneNumber ?? "",
+                        "deviceID": Messaging.messaging().fcmToken ?? "",
+                        "Gender-Preference": self.user?.sexPref ?? "",
+                        "User-Gender": self.user?.gender ?? "",
+                        "CurrentVenue": barName,
+                        "TimeLastJoined": timestamp
+                        
+                    ]
+                } else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 == "" {
+                    docData = [
+                        "uid": uid,
+                        "Full Name": self.user?.name ?? "",
+                        "ImageUrl1": self.user?.imageUrl1 ?? "",
+                        "ImageUrl2": self.user?.imageUrl2 ?? "",
+                        "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                        "Birthday": self.user?.birthday ?? "",
+                        "School": self.user?.school ?? "",
+                        "Bio": self.user?.bio ?? "",
+                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                        "maxDistance": self.user?.maxDistance ?? 3,
+                        
+                        "PhoneNumber": self.user?.phoneNumber ?? "",
+                        "deviceID": Messaging.messaging().fcmToken ?? "",
+                        "Gender-Preference": self.user?.sexPref ?? "",
+                        "User-Gender": self.user?.gender ?? "",
+                        "CurrentVenue": barName,
+                        "TimeLastJoined": timestamp
+                        
+                    ]
+                }
+                else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 == "" && self.user?.imageUrl3 == "" {
+                    docData = [
+                        "uid": uid,
+                        "Full Name": self.user?.name ?? "",
+                        "ImageUrl1": self.user?.imageUrl1 ?? "",
+                        "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                        "Birthday": self.user?.birthday ?? "",
+                        "School": self.user?.school ?? "",
+                        "Bio": self.user?.bio ?? "",
+                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                        "maxDistance": self.user?.maxDistance ?? 3,
+                        
+                        "PhoneNumber": self.user?.phoneNumber ?? "",
+                        "deviceID": Messaging.messaging().fcmToken ?? "",
+                        "Gender-Preference": self.user?.sexPref ?? "",
+                        "User-Gender": self.user?.gender ?? "",
+                        "CurrentVenue": barName,
+                        "TimeLastJoined": timestamp
+                        
+                    ]
+                }
                 Firestore.firestore().collection("users").document(uid).setData(docData)
                 
                 let userbarController = UsersInBarTableView()

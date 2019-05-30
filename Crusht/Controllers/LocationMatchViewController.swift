@@ -422,6 +422,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             return
         }
         
+        
         let documentData = [cardUID: didLike]
         
         Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
@@ -470,18 +471,16 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 guard let userDictionary = snapshot?.data() else {return}
                 let user = User(dictionary: userDictionary)
                 
-                let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
-                ]
+                let docData: [String: Any] = ["uid": cardUID]
+                
                     
-                    
-                    
-                    let otherDocData:  [String: Any] = ["uid": user.uid ?? "", "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
-                    ]
+                    let otherDocData:  [String: Any] = ["uid": uid]
                 //this is for message controller
                     
                     
         Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
                         if let err = err {
+                            return
                         }
             
                         if (snapshot?.isEmpty)! {
@@ -722,6 +721,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
         MessageController.sharedInstance?.didHaveNewMessage = true
+    
+        UIApplication.shared.applicationIconBadgeNumber = 1
         view.addSubview(matchView)
         matchView.fillSuperview()
     }

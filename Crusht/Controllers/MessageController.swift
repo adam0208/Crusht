@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import CoreLocation
 import GeoFire
+import JGProgressHUD
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -116,11 +117,17 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         present(alert, animated: true)
     }
     
+    let hud = JGProgressHUD(style: .dark)
+    
      func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                return
+                self.hud.textLabel.text = "Something went wrong! Just log in again!"
+                self.hud.show(in: self.navigationController!.view)
+                self.hud.dismiss(afterDelay: 2)
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
             }
             
             guard let dictionary = snapshot?.data() else {return}
@@ -129,19 +136,21 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
             if self.user?.phoneNumber == ""{
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
-                return
+                
             }
             else if self.user?.name == "" {
                 let namecontroller = EnterNameController()
                 namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
-                return
+                
             }
           
             self.fromName = self.user?.name ?? "Match"
             self.setupNavBarWithUser(self.user!)
         }
+        
     }
+
     
     fileprivate func checkNewMessage() {
         if didHaveNewMessage == true {
@@ -343,7 +352,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         //let user = users[indexPath.row]
         
-      
+        if messages.isEmpty == false {
         
         if isFiltering() {
             let message = messages[indexPath.row]
@@ -361,6 +370,15 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
 //            cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
 //        }
         
+
+        }
+        else {
+            self.messages.removeAll()
+            self.observeMessages()
+            self.observeUserMessages()
+            
+            self.handleReloadTable()
+        }
         return cell
     }
     

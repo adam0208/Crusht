@@ -54,6 +54,9 @@
 		2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */; };
 		285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285A34A521BC7B920086CC95 /* SettingsCells.swift */; };
 		286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */; };
+		2864C4EE228E655300E3165F /* icons8-remove-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 2864C4ED228E655300E3165F /* icons8-remove-30.png */; };
+		2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4EF228E6FC500E3165F /* TermsViewController.swift */; };
+		2864C4F2228E743B00E3165F /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4F1228E743B00E3165F /* PrivacyController.swift */; };
 		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
@@ -87,6 +90,10 @@
 		28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */; };
 		28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */; };
 		28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */; };
+		28BA4A7D2280399500525397 /* LaunchScreenCrusht.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BA4A7C2280399400525397 /* LaunchScreenCrusht.png */; };
+		28BA4A7F228039FF00525397 /* LaunchScreenCrusht XR.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BA4A7E228039FF00525397 /* LaunchScreenCrusht XR.png */; };
+		28BA4A8122803ABC00525397 /* LaunchScreenCrusht Xr Max land.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BA4A8022803ABC00525397 /* LaunchScreenCrusht Xr Max land.png */; };
+		28BA4A8322803B0D00525397 /* LaunchScreenCrusht XSMax land copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BA4A8222803B0D00525397 /* LaunchScreenCrusht XSMax land copy.png */; };
 		28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */; };
 		28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */; };
 		28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624A21BDB76A00EAFFE2 /* LoginController.swift */; };
@@ -199,6 +206,9 @@
 		2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckVerificationViewController.swift; sourceTree = "<group>"; };
 		285A34A521BC7B920086CC95 /* SettingsCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCells.swift; sourceTree = "<group>"; };
 		286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
+		2864C4ED228E655300E3165F /* icons8-remove-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-remove-30.png"; sourceTree = "<group>"; };
+		2864C4EF228E6FC500E3165F /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		2864C4F1228E743B00E3165F /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
 		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
@@ -232,6 +242,10 @@
 		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
 		28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushController.swift; sourceTree = "<group>"; };
 		28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTextFieldDropDown.swift; sourceTree = "<group>"; };
+		28BA4A7C2280399400525397 /* LaunchScreenCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenCrusht.png; path = ../../LaunchScreenCrusht.png; sourceTree = "<group>"; };
+		28BA4A7E228039FF00525397 /* LaunchScreenCrusht XR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreenCrusht XR.png"; sourceTree = "<group>"; };
+		28BA4A8022803ABC00525397 /* LaunchScreenCrusht Xr Max land.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreenCrusht Xr Max land.png"; sourceTree = "<group>"; };
+		28BA4A8222803B0D00525397 /* LaunchScreenCrusht XSMax land copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreenCrusht XSMax land copy.png"; sourceTree = "<group>"; };
 		28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserDetailsNoReportController.swift; sourceTree = "<group>"; };
 		28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
 		28BE624A21BDB76A00EAFFE2 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -344,7 +358,12 @@
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
 				283816CD21B8925F00B3E4FD /* Assets.xcassets */,
+				2864C4ED228E655300E3165F /* icons8-remove-30.png */,
+				28BA4A8222803B0D00525397 /* LaunchScreenCrusht XSMax land copy.png */,
+				28BA4A8022803ABC00525397 /* LaunchScreenCrusht Xr Max land.png */,
+				28BA4A7E228039FF00525397 /* LaunchScreenCrusht XR.png */,
 				28955756227E5B82001EFD73 /* icons8-information-30.png */,
+				28BA4A7C2280399400525397 /* LaunchScreenCrusht.png */,
 				28F67BAC22766D8C00EDFDFF /* icons8-user-male-30.png */,
 				28F67BAA22766D1F00EDFDFF /* icons8-exclamation-mark-30.png */,
 				2895575A227E5B98001EFD73 /* icons8-exclamation-mark-30.png */,
@@ -491,6 +510,8 @@
 				28FD7D1722642D4700B79496 /* PhotoController.swift */,
 				2857DF09226BF9CE0072C952 /* BarsTableView.swift */,
 				2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */,
+				2864C4EF228E6FC500E3165F /* TermsViewController.swift */,
+				2864C4F1228E743B00E3165F /* PrivacyController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -671,8 +692,11 @@
 				28955765227E5BF9001EFD73 /* icons8-refresh-30.png in Resources */,
 				2895575B227E5B99001EFD73 /* icons8-exclamation-mark-30.png in Resources */,
 				280F67B82274415600C1F2C4 /* icons8-male-user-filled-50-2.png in Resources */,
+				28BA4A8122803ABC00525397 /* LaunchScreenCrusht Xr Max land.png in Resources */,
+				28BA4A8322803B0D00525397 /* LaunchScreenCrusht XSMax land copy.png in Resources */,
 				28955761227E5BE3001EFD73 /* icons8-phone-30-2.png in Resources */,
 				280F67B02274345C00C1F2C4 /* icons8-back-filled-30.png in Resources */,
+				28BA4A7D2280399500525397 /* LaunchScreenCrusht.png in Resources */,
 				280F67C62274E6E000C1F2C4 /* icons8-bar-30-2.png in Resources */,
 				28955757227E5B82001EFD73 /* icons8-information-30.png in Resources */,
 				28F148862249725E00E5FB39 /* CrushtLogoLiam.png in Resources */,
@@ -684,7 +708,9 @@
 				280F67B4227439DA00C1F2C4 /* icons8-male-user-filled-50.png in Resources */,
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
 				2895576B227E5D5A001EFD73 /* CrushtLogoLiam69!.png in Resources */,
+				2864C4EE228E655300E3165F /* icons8-remove-30.png in Resources */,
 				2895575F227E5BD6001EFD73 /* icons8-love-30.png in Resources */,
+				28BA4A7F228039FF00525397 /* LaunchScreenCrusht XR.png in Resources */,
 				28955769227E5C47001EFD73 /* icons8-box-important-30.png in Resources */,
 				28F67BAB22766D1F00EDFDFF /* icons8-exclamation-mark-30.png in Resources */,
 				28ECDADE21CEF9EC0024E62F /* upload_image_icon.png in Resources */,
@@ -919,6 +945,7 @@
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
 				28F54073224C23C600EC5062 /* BioTextView.swift in Sources */,
+				2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */,
 				28FD7D0C2261AFBB00B79496 /* GenderController.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
 				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
@@ -931,6 +958,7 @@
 				28857CE021B9B95900A654A0 /* Bindable.swift in Sources */,
 				28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */,
 				2838170321B8A0A700B3E4FD /* CardView.swift in Sources */,
+				2864C4F2228E743B00E3165F /* PrivacyController.swift in Sources */,
 				283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */,
 				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
 				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,

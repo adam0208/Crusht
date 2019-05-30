@@ -120,7 +120,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         let locale = Locale.current
         let code = (locale as NSLocale).object(forKey: NSLocale.Key.countryCode) as! String?
         //init Picker
-        picker.displayOnlyCountriesWithCodes = ["US", "DK", "SE", "NO", "DE"] //display only
+        picker.displayOnlyCountriesWithCodes = ["US"] //display only
         picker.exeptCountriesWithCodes = ["RU"] //exept country
         let theme = CountryViewTheme(countryCodeTextColor: .white, countryNameTextColor: .white, rowBackgroundColor: .clear, showFlagsBorder: false)        //optional for UIPickerView theme changes
         picker.theme = theme //optional for UIPickerView theme changes
@@ -141,8 +141,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         
         let codeText = "\(countryCodeTF.text ?? "")\(phoneNumberTextField.text ?? "")"
         
-        let alert = UIAlertController(title: "Phone Number", message: "Is this your phone number? \n \(codeText)", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Yes", style: .default){(UIAlertAction) in
+
             
             PhoneAuthProvider.provider().verifyPhoneNumber(codeText, uiDelegate: nil) { (verificationID, error) in
                 if let error = error {
@@ -156,12 +155,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
                     self.goToVerify()
                 }
             }
-        }
-        let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
-        alert.addAction(action)
-        alert.addAction(cancel)
-        self.present(alert, animated: true, completion: nil)
-        return
+    
     }
     
     fileprivate func goToVerify() {

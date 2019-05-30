@@ -14,6 +14,7 @@ import CoreLocation
 import Fabric
 import Crashlytics
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -66,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         if Auth.auth().currentUser == nil {
-            window?.rootViewController = LoginViewController()
+            window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
         } else {
         window?.rootViewController = CustomTabBarController()
 

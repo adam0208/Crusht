@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import JGProgressHUD
 
 class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelegate {
     
@@ -99,6 +100,7 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         return label
     }()
     
+    let hud = JGProgressHUD(style: .dark)
     
     let dismissButton: UIButton = {
         
@@ -183,7 +185,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         
         view.addSubview(scrollView)
         
-        
         scrollView.addSubview(crushScoreLabel)
         bioLabel.text = cardViewModel.bio
         crushScoreLabel.anchor(top: infoLabel.bottomAnchor, leading: infoLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
@@ -218,11 +219,19 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         view.backgroundColor = .white
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.isTranslucent = false
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
        
         setupLayout()
         
         setupVisualBlurEffectView()
         
+    }
+    
+    @objc fileprivate func handleInfo() {
+        hud.textLabel.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
+        hud.show(in: navigationController!.view)
+        hud.dismiss(afterDelay: 3)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

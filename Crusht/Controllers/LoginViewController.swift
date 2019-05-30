@@ -10,9 +10,14 @@ import UIKit
 import Firebase
 import JGProgressHUD
 import SDWebImage
+import WebKit
 
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UINavigationControllerDelegate{
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+    }
     
     var bindableIsRegistering = Bindable<Bool>()
     var bindableImage = Bindable<UIImage>()
@@ -31,6 +36,19 @@ class LoginViewController: UIViewController {
         label.adjustsFontSizeToFitWidth = true
         
         return label
+    }()
+    
+    let privacyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("By Logging In You Agree to our Terms of Use", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .heavy)
+        button.backgroundColor = .clear
+        button.titleLabel?.numberOfLines = 0
+        button.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.textAlignment = .center
+        return button
     }()
   
 
@@ -251,11 +269,11 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupGradientLayer()
         
         setupLayout()
     }
+    
     
     let tap = UITapGestureRecognizer()
     
@@ -279,11 +297,31 @@ class LoginViewController: UIViewController {
         
         text.anchor(top: logoImage.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 14, left: 40, bottom: 0, right: 40))
        
+        view.addSubview(privacyButton)
+        privacyButton.addTarget(self, action: #selector(handleTerms), for: .touchUpInside)
+        privacyButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 20, right: 10))
         
         view.bringSubviewToFront(text)
        
     }
     
+    @objc fileprivate func handlePrivacy() {
+        if let url = URL(string: "https://app.termly.io/document/privacy-policy/7b4441c3-63d0-4987-a99d-856e5053ea0c"),
+            UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:])
+        }
+    }
+    
+    @objc fileprivate func handleTerms() {
+//        if let url = URL(string: "https://app.termly.io/document/terms-of-use-for-website/2ce67fc1-504a-49aa-a498-5c1d8f3f8225") {
+//            let myRequest = URLRequest(url: url)
+//            webView.fillSuperview()
+//            webView.load(myRequest)
+//        }
+        let termsController = TermsViewController()
+      self.navigationController?.pushViewController(termsController, animated: true)
+    }
+   
 
     let gradientLayer = CAGradientLayer()
     

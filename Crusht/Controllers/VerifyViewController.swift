@@ -55,6 +55,19 @@ class VerifyViewController: UIViewController {
         return tf
     }()
     
+    let goBackBttn: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Didn't Get a Code?", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .heavy)
+        button.backgroundColor = .clear
+        button.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        return button
+    }()
+    
     let verifyButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Verify", for: .normal)
@@ -62,7 +75,7 @@ class VerifyViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-//        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
 //        button.widthAnchor.constraint(equalToConstant: 100)
         
         button.layer.cornerRadius = 22
@@ -70,6 +83,11 @@ class VerifyViewController: UIViewController {
         button.addTarget(self, action: #selector(handleVerify), for: .touchUpInside)
         return button
     }()
+    
+    @objc fileprivate func goBack() {
+        let phoneControlla = PhoneNumberViewController()
+        self.present(phoneControlla, animated: true)
+    }
 
 
     override func viewDidLoad() {
@@ -82,8 +100,12 @@ class VerifyViewController: UIViewController {
         
         stack.axis = .vertical
         
+        view.addSubview(goBackBttn)
+        goBackBttn.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
+        
         view.addSubview(label)
-          label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+        
+          label.anchor(top: goBackBttn.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/8, left: 30, bottom: 0, right: 30))
         
          stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: view.bounds.height/9, bottom: view.bounds.height/2.2, right: view.bounds.height/9))
         

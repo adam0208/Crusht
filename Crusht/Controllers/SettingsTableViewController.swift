@@ -137,6 +137,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
+                self.handleBack()
                 return
             }
             guard let dictionary = snapshot?.data() else {return}
@@ -247,7 +248,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 14
+        return 15
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -298,6 +299,14 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
             
         else if indexPath.section == 10 {
+            
+            let termsCell = TermsCell(style: .default, reuseIdentifier: nil)
+            termsCell.termsBttn.addTarget(self, action: #selector(handleTerms), for: .touchUpInside)
+            return termsCell
+            
+        }
+            
+        else if indexPath.section == 11 {
             let logoutCell = LogoutBttnCell(style: .default, reuseIdentifier: nil)
             
             logoutCell.logOutBttn.addTarget(self, action: #selector(handleLogOut), for: .touchUpInside)
@@ -305,15 +314,15 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             return logoutCell
         }
             
-        else if indexPath.section == 11 {
+        else if indexPath.section == 12 {
             let privacyText = ContactsTextCell(style: .default, reuseIdentifier: nil)
             return privacyText
         }
-        else if indexPath.section == 12 {
+        else if indexPath.section == 13 {
             let email = SupportCell(style: .default, reuseIdentifier: nil)
             return email
         }
-        else if indexPath.section == 13 {
+        else if indexPath.section == 14 {
             let text = VersionNumber(style: .default, reuseIdentifier: nil)
             return text
         }
@@ -386,6 +395,10 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         return cell
     }
 
+    @objc fileprivate func handleTerms() {
+        let termsController = TermsViewController()
+        self.navigationController?.pushViewController(termsController, animated: true)
+    }
     
     public func textViewDidChange(_ textView: UITextView){
        user?.bio = textView.text
@@ -634,10 +647,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
    @objc fileprivate func handlePrivacy() {
-    if let url = URL(string: "https://app.termly.io/document/privacy-policy/7b4441c3-63d0-4987-a99d-856e5053ea0c"),
-        UIApplication.shared.canOpenURL(url) {
-        UIApplication.shared.open(url, options: [:])
-        }
+    let privacyCon = PrivacyController()
+    self.navigationController?.pushViewController(privacyCon, animated: true)
     }
     
     @objc fileprivate func goToProfile() {
@@ -672,7 +683,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 9 || indexPath.section == 10 || indexPath.section == 11 || indexPath.section == 12 || indexPath.section == 13 {
+        if indexPath.section == 9 || indexPath.section == 10 || indexPath.section == 11 || indexPath.section == 12 || indexPath.section == 13 || indexPath.section == 14 {
             cell.backgroundColor = UIColor.clear
         }
         else {

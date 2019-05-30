@@ -21,6 +21,10 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
+        if UIApplication.shared.applicationIconBadgeNumber == 1 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+        }
         handleContacts()
         tableView.reloadData()
     }
@@ -77,21 +81,29 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             guard let uid = Auth.auth().currentUser?.uid else {return}
             Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
                 if let err = err {
+                    self.hud.textLabel.text = "Something went wrong! Just log in again!"
+                    self.hud.show(in: self.navigationController!.view)
+                    self.hud.dismiss(afterDelay: 2)
+                    let loginController = LoginViewController()
+                    self.present(loginController, animated: true)
                     return
                 }
+                
+           
+                
                 
                 guard let dictionary = snapshot?.data() else {return}
                 self.user = User(dictionary: dictionary)
                 if self.user?.phoneNumber == ""{
                     let loginController = LoginViewController()
                     self.present(loginController, animated: true)
-                return
+                
                 }
                 else if self.user?.name == "" {
                     let namecontroller = EnterNameController()
                     namecontroller.phone = self.user?.phoneNumber ?? ""
                     self.present(namecontroller, animated: true)
-                    return
+                    
                 }
                 
                 let timestamp = Int(Date().timeIntervalSince1970)
@@ -180,9 +192,10 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                           
                         }
             
-                }
                 
-                self.fetchSwipes()
+                 
+            self.fetchSwipes()
+            }
     }
     
     func calcAge(birthday: String) -> Int {

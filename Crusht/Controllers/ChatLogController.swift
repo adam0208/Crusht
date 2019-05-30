@@ -10,6 +10,7 @@ import Firebase
 import MobileCoreServices
 import AVFoundation
 import SDWebImage
+import JGProgressHUD
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -40,14 +41,92 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     var user: User? {
         didSet {
             navigationItem.title = user?.name
-            observeMessages()
-            observeMoreMessages()
+            if messages.isEmpty == true {
+                self.observeMessages()
+                self.observeMoreMessages()
+            } else {
+            messages.removeAll()
+            self.observeMessages()
+            self.observeMoreMessages()
+            }
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+        self.navigationController?.setToolbarHidden(false, animated: animated)
+        self.navigationController?.toolbar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        self.navigationController?.toolbar.isTranslucent = false
+        self.navigationController?.toolbar.barTintColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated);
+        self.navigationController?.setToolbarHidden(true, animated: animated)
+    }
+    
+    @objc fileprivate func deleteConvo() {
+        let alert = UIAlertController(title: "Delete Match", message: "Delete your match with \(navigationItem.title ?? "this user")?", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Delete", style: .default){(UIAlertAction) in
+            let toId = self.user!.uid!
+            let fromId = Auth.auth().currentUser!.uid
+            Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
+                if let err = err {
+                    self.handleback()
+                    return
+                }
+                snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let docID = documentSnapshot.documentID
+                    Firestore.firestore().collection("messages").document(docID).delete()
+                     MessageController.sharedInstance?.didHaveNewMessage = true
+                    self.deleteConvoPart2()
+                })
+            })
+        }
+        let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        alert.addAction(action)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+        return
+       
+    }
+    
+    let hud = JGProgressHUD(style: .dark)
+    
+    fileprivate func deleteConvoPart2() {
+        let toId = user!.uid!
+        let fromId = Auth.auth().currentUser!.uid
+        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
+            if let err = err {
+                self.handleback()
+                return
+            }
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                    
+                    let docID = documentSnapshot.documentID
+                    Firestore.firestore().collection("messages").document(docID).delete()
+                
+                self.hud.textLabel.text = "This user can't harm you anymore. You're safe now."
+                self.hud.show(in: self.view)
+                self.hud.dismiss(afterDelay: 2.1)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                     self.handleback()
+                }
+                
+                
+                })
+            })
+        }
+    
     
     var messages = [Message]()
     
     var fromName: String?
+    
+   
     
     func observeMoreMessages() {
         //guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -55,6 +134,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let fromId = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
             if let err = err {
+                self.handleback()
                 return
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
@@ -62,6 +142,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         if let err = err {
+                            self.handleback()
                         }
                         let userDictionary = documentSnapshot.data()
                         let message = Message(dictionary: userDictionary)
@@ -76,7 +157,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                                 
                                 //scroll to the last index
                                 let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                                
+                                
+                                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                                    
+                                
+                            
                             })
                         }
                     })
@@ -92,12 +178,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let fromId = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
             if let err = err {
+                self.handleback()
                 return
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         if let err = err {
+                            self.handleback()
                             return
                         }
                         let userDictionary = documentSnapshot.data()
@@ -111,11 +199,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                             DispatchQueue.main.async(execute: {
                                 self.collectionView?.reloadData()
                                 
-                                //scroll to the last index
                                 let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                                
+                                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                               
                             })
-                            
                             
                             
                         }
@@ -178,13 +266,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.hideKeyboard()
         listenForMessages()
         navigationController?.navigationBar.isTranslucent = false
-
+        
         navigationController?.navigationBar.prefersLargeTitles = false
-
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-back-filled-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleback))
+        
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-back-filled-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleback)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-remove-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(deleteConvo))]
         
         //navigationController?.title.
         
@@ -277,6 +364,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     
     @objc func handleback() {
+        self.inputContainerView.alpha = 0
+          self.navigationController?.setToolbarHidden(true, animated: true)
         self.dismiss(animated: true)
     }
     
@@ -298,7 +387,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     lazy var inputContainerView: UIView = {
         
         //need to fix for iphone x
-        let containerView = UIView()
+        let containerView = CustomView()
+        
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
         containerView.backgroundColor = UIColor.white
         //        containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -408,7 +498,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         })
         
         uploadTask.observe(.progress) { (snapshot) in
-
+            
             if let completedUnitCount = snapshot.progress?.completedUnitCount {
                 self.navigationItem.title = String(completedUnitCount)
             }
@@ -500,9 +590,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     }
     
     @objc func handleKeyboardDidShow() {
+        
+        if messages.isEmpty == false {
+        
         if messages.count > 0 {
             let indexPath = IndexPath(item: messages.count - 1, section: 0)
             collectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
+            }
+        }
+        else {
+            DispatchQueue.main.async(execute: {
+                self.collectionView?.reloadData()
+            })
         }
     }
     
@@ -545,6 +644,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         cell.chatLogController = self
         
+        if messages.isEmpty == false {
+        
         let message = messages[indexPath.item]
         
         cell.message = message
@@ -552,15 +653,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         cell.textView.text = message.text
         
         
-        
         setupCell(cell, message: message)
-           if message.text != "Image" {
-        if let text = message.text {
-            //a text message
-            cell.bubbleWidthAnchor?.constant = estimateFrameForText(text).width + 32
-            cell.textView.isHidden = false
+        if message.text != "Image" {
+            if let text = message.text {
+                //a text message
+                cell.bubbleWidthAnchor?.constant = estimateFrameForText(text).width + 32
+                cell.textView.isHidden = false
             }
-           } else if message.imageUrl != nil {
+        } else if message.imageUrl != nil {
             //fall in here if its an image message
             cell.bubbleWidthAnchor?.constant = 200
             cell.textView.isHidden = true
@@ -568,7 +668,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         cell.playButton.isHidden = message.videoUrl == nil
         
-        
+        }
+        else {
+            DispatchQueue.main.async(execute: {
+                self.collectionView?.reloadData()
+                
+            })
+        }
         
         return cell
     }
@@ -580,8 +686,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         let message = messages[indexPath.item]
         if message.text != "Image" {
-        if let text = message.text {
-            height = estimateFrameForText(text).height + 20
+            if let text = message.text {
+                height = estimateFrameForText(text).height + 20
             }
         }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
             
@@ -619,20 +725,20 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         }
         if let messageImageUrl = message.imageUrl {
             if ( messageImageUrl == message.imageUrl && message.text == "Image") {
-            let url = URL(string: messageImageUrl)
-            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                cell.messageImageView.image = image
-                cell.textView.text = ""
-            cell.messageImageView.isHidden = false
-            cell.bubbleView.backgroundColor = UIColor.clear
-            }
+                let url = URL(string: messageImageUrl)
+                SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                    cell.messageImageView.image = image
+                    cell.textView.text = ""
+                    cell.messageImageView.isHidden = false
+                    cell.bubbleView.backgroundColor = UIColor.clear
+                }
             }
         }else {
             cell.messageImageView.isHidden = true
         }
     }
     
-
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
     }
@@ -811,7 +917,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     //my custom zooming logic
     func performZoomInForStartingImageView(_ startingImageView: UIImageView) {
         
-        dismissKeyboard()
         self.startingImageView = startingImageView
         self.startingImageView?.isHidden = true
         
@@ -893,23 +998,6 @@ fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Ke
     return input.rawValue
 }
 
-extension ChatLogController
-{
-    func hideKeyboard()
-    {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(ChatLogController.dismissKeyboard))
-        
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard()
-    {
-        view.endEditing(true)
-    }
-}
 
 class CustomView: UIView {
     
@@ -920,7 +1008,7 @@ class CustomView: UIView {
         super.didMoveToWindow()
         if #available(iOS 11.0, *) {
             if let window = self.window {
-                self.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1.0).isActive = true
+                self.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 0.1).isActive = true
             }
         }
     }

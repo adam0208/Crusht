@@ -104,7 +104,6 @@ class ChatMessageCell: UICollectionViewCell {
     }()
     
     @objc func handleZoomTap(_ tapGesture: UITapGestureRecognizer) {
-        self.chatLogController?.hideKeyboard()
         if message?.videoUrl != nil {
             return
         }

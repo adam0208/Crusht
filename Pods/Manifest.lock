@@ -69,37 +69,37 @@ PODS:
     - GTMSessionFetcher/Core (~> 1.1)
   - GeoFire (3.0.0):
     - Firebase/Database (~> 5.0)
-  - Geofirestore (0.1.0):
+  - Geofirestore (1.2.0):
     - Firebase (~> 5.4)
-    - FirebaseCore (~> 5.0.3)
-    - FirebaseFirestore (~> 0.12.3)
+    - FirebaseCore (~> 5.0)
+    - FirebaseFirestore (~> 0.12)
     - GeoFire (~> 3.0)
-  - GoogleAppMeasurement (5.8.1):
-    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
-    - GoogleUtilities/MethodSwizzler (~> 5.2)
-    - GoogleUtilities/Network (~> 5.2)
-    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+  - GoogleAppMeasurement (6.0.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/MethodSwizzler (~> 6.0)
+    - GoogleUtilities/Network (~> 6.0)
+    - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 0.3)
   - GoogleToolboxForMac/Defines (2.2.0)
   - GoogleToolboxForMac/Logger (2.2.0):
     - GoogleToolboxForMac/Defines (= 2.2.0)
   - "GoogleToolboxForMac/NSData+zlib (2.2.0)":
     - GoogleToolboxForMac/Defines (= 2.2.0)
-  - GoogleUtilities/AppDelegateSwizzler (5.8.0):
+  - GoogleUtilities/AppDelegateSwizzler (6.0.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (5.8.0)
-  - GoogleUtilities/Logger (5.8.0):
+  - GoogleUtilities/Environment (6.0.0)
+  - GoogleUtilities/Logger (6.0.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (5.8.0):
+  - GoogleUtilities/MethodSwizzler (6.0.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (5.8.0):
+  - GoogleUtilities/Network (6.0.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (5.8.0)"
-  - GoogleUtilities/Reachability (5.8.0):
+  - "GoogleUtilities/NSData+zlib (6.0.0)"
+  - GoogleUtilities/Reachability (6.0.0):
     - GoogleUtilities/Logger
   - gRPC (1.20.0):
     - gRPC-RxLibrary (= 1.20.0)
@@ -195,10 +195,10 @@ SPEC CHECKSUMS:
   FirebaseMessaging: f43eb0c0e1da096e659de6f713038e74862a62cd
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
   GeoFire: e3ae6f4be3f2466c3467ef6c1c203db3af935c59
-  Geofirestore: d41d8b0341399468c7f8f9e2f3d5c8328e1627ce
-  GoogleAppMeasurement: ffe513e90551844a739e7bcbb1d2aca1c28a4338
+  Geofirestore: ad548ea5e3c1ae595c746c7b796df5534d8202f3
+  GoogleAppMeasurement: 7f028ea162b72c8f326daec74afc95d94f7a47d6
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
-  GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
+  GoogleUtilities: f1faafc033ea203adf1783ce00af455bb99d0e5b
   gRPC: d175f32a1f0ff0eafc768e38e8c0b8a9fcbacc65
   gRPC-Core: b247504496d2bdf47e6a87690c0d48f8424b324a
   gRPC-ProtoRPC: d49c7074c6a5e5a9f18f9b5a1c6d94787334bcbe

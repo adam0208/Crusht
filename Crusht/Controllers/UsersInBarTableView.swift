@@ -53,6 +53,11 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             barsArray.removeAll()
             fetchCurrentUser()
         }
+    
+    fileprivate func handleReload() {
+        barsArray.removeAll()
+        fetchCurrentUser()
+    }
         
     
         //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
@@ -843,6 +848,8 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             cellL.link = self
             
+            if barsArray.isEmpty == false {
+            
             if isFiltering() {
                 let crush = users[indexPath.row]
                 cellL.textLabel?.text = crush.name
@@ -882,7 +889,14 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             else{
                 cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
             }
-            return cellL
+           
+            } else {
+                DispatchQueue.main.async(execute: {
+                    self.tableView.reloadData()
+                    
+                })
+            }
+        return cellL
         }
         
         override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

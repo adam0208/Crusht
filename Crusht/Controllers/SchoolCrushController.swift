@@ -44,7 +44,17 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
+        
+        if UIApplication.shared.applicationIconBadgeNumber == 1 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+        }
   
+        schoolArray.removeAll()
+        fetchCurrentUser()
+    }
+    
+    fileprivate func handleReload () {
         schoolArray.removeAll()
         fetchCurrentUser()
     }
@@ -298,28 +308,32 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
+                self.hud.textLabel.text = "Something went wrong! Just log in again!"
+                self.hud.show(in: self.navigationController!.view)
+                self.hud.dismiss(afterDelay: 2)
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
                 return
             }
-            
             guard let dictionary = snapshot?.data() else {return}
-        
+            
             self.user = User(dictionary: dictionary)
             if self.user?.phoneNumber == ""{
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
-                return
+        
             }
             else if self.user?.name == "" {
                 let namecontroller = EnterNameController()
                 namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
-                return
+              
             }
-      
             
             //self.fetchSwipes()
             self.fetchSchool()
-        }
+            }
+      
     }
     
     //    var indexSchoolNames = [String]()
@@ -937,6 +951,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         cellL.link = self
         
+        if schoolArray.isEmpty == false {
+        
         if isFiltering() {
             let crush = users[indexPath.row]
             cellL.textLabel?.text = crush.name
@@ -976,7 +992,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         else{
             cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
         }
-        return cellL
+   
+        } else {
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
+
+        }
+    return cellL
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

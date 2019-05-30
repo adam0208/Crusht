@@ -111,9 +111,6 @@ class MatchView: UIView {
         return label
     }()
     
-    
- 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

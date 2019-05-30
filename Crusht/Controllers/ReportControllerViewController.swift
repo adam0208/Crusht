@@ -43,7 +43,7 @@ class ReportControllerViewController: UIViewController {
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
          label.textColor = .white
-        label.text = "Please tell us why you are reporting this user. We take these accusations seriously."
+        label.text = "Please tell us why you are reporting this user. We take these accusations seriously. We will review your report within 24 hours."
         label.numberOfLines = 0
         return label
     }()
