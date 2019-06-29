@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-import JGProgressHUD
+
 import SDWebImage
 import WebKit
 

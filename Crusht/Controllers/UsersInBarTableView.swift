@@ -9,7 +9,6 @@
 import UIKit
 
 import Firebase
-import JGProgressHUD
 import CoreLocation
 import SDWebImage
 import GeoFire
@@ -116,8 +115,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             let cellId = "cellId"
             
-            
-            fetchCurrentUser()
+     
             //        navigationItem.leftItemsSupplementBackButton = true
             //        navigationItem.leftBarButtonItem?.title = "👈"
             //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
@@ -222,7 +220,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         }
         
         var user: User?
-        let hud = JGProgressHUD(style: .dark)
         
         var barsArray = [User]()
         
@@ -294,9 +291,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             query.getDocuments { (snapshot, err) in
                 if let err = err {
-                    self.hud.textLabel.text = "Failed To Fetch Bar"
-                    self.hud.show(in: self.view)
-                    self.hud.dismiss(afterDelay: 2)
+                
                     return
                 }
                 

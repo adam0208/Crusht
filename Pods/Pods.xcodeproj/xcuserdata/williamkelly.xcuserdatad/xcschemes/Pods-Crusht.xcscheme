@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "40D4BEF27BF0908436DE455B83A6C8F1"
+               BlueprintIdentifier = "879C98E047A34823FABC4420DDFE2687"
                BuildableName = "Pods_Crusht.framework"
                BlueprintName = "Pods-Crusht"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "40D4BEF27BF0908436DE455B83A6C8F1"
+            BlueprintIdentifier = "879C98E047A34823FABC4420DDFE2687"
             BuildableName = "Pods_Crusht.framework"
             BlueprintName = "Pods-Crusht"
             ReferencedContainer = "container:Pods.xcodeproj">

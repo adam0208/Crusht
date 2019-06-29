@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JGProgressHUD
+import Firebase
 
 class BirthdayController: UIViewController {
     
@@ -74,6 +74,18 @@ class BirthdayController: UIViewController {
         return label
     }()
     
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please enter your birthday"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
+    
     
     let doneBttn: UIButton = {
         let button = UIButton(type: .system)
@@ -94,7 +106,6 @@ class BirthdayController: UIViewController {
     
   
     
-    let hud = JGProgressHUD(style: .dark)
     
     @objc fileprivate func handleDone() {
         let bday = ageTextField.text?.replacingOccurrences(of: "/", with: "-")
@@ -102,25 +113,30 @@ class BirthdayController: UIViewController {
         birthday = bday ?? "10-30-1999"
         age = calcAge(birthday: birthday)
         if ageTextField.text == "" {
-            hud.textLabel.text = "Please enter your b-day"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+            
+            errorLabel.isHidden = false
+            
             return
+        
         }
         else if age < 18 {
-            hud.textLabel.text = "Must be 18 or older to join"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+         
+            errorLabel.text = "Must be 18 or older to join"
+            
             return
         }
         else {
-          
+           let enterSchoolController = EnterSchoolController()
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            let docData: [String: Any] = ["Birthday": birthday,
+                                          "Age": age]
+            Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
            
-            let enterSchoolController = EnterSchoolController()
-            enterSchoolController.name = name
-            enterSchoolController.birthday = birthday
-            enterSchoolController.age = age
-            enterSchoolController.phone = phone
+//
+//            enterSchoolController.name = name
+//            enterSchoolController.birthday = birthday
+//            enterSchoolController.age = age
+//            enterSchoolController.phone = phone
             present(enterSchoolController, animated: true)
         }
         
@@ -163,6 +179,11 @@ class BirthdayController: UIViewController {
         stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         stack.spacing = 20
+        
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+        
         
         
     }

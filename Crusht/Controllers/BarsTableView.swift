@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 import GeoFire
-import JGProgressHUD
 import CoreLocation
 import SDWebImage
 
@@ -113,9 +112,14 @@ searchController.searchBar.barStyle = .black
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush People at Venues: Join the venue you're attending to see who is present there at the time. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
-        hud.show(in: navigationController!.view)
-        hud.dismiss(afterDelay: 9)
+        
+        let infoView = InfoView()
+        infoView.infoText.text = "Crush People at Venues: Join the venue you're attending to see who is present there at the time. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
+        tabBarController?.view.addSubview(infoView)
+         infoView.anchor(top: tabBarController?.view.topAnchor, leading: tabBarController?.view.leadingAnchor, bottom: tabBarController?.view.bottomAnchor, trailing: tabBarController?.view.trailingAnchor, padding: .init(top: 200, left: 15, bottom: 200, right: 15))
+//        hud.textLabel.text = "Crush People at Venues: Join the venue you're attending to see who is present there at the time. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
+//        hud.show(in: navigationController!.view)
+//        hud.dismiss(afterDelay: 9)
     }
     
     @objc func handleMessages() {
@@ -219,9 +223,7 @@ searchController.searchBar.barStyle = .black
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                self.hud.textLabel.text = "Something went wrong! Just log in again!"
-                self.hud.show(in: self.navigationController!.view)
-                self.hud.dismiss(afterDelay: 2)
+               
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
                 return
@@ -263,7 +265,6 @@ searchController.searchBar.barStyle = .black
     
     // MARK: - Table view data source
     
-    let hud = JGProgressHUD(style: .dark)
     
     fileprivate func fetchBars () {
         
@@ -476,9 +477,11 @@ searchController.searchBar.barStyle = .black
         }
         
         else {
-            hud.textLabel.text = "You can only join one venue every half-hour"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+            let infoView = InfoView()
+            infoView.infoText.text = "You can only join one bar every 30 minutes"
+            tabBarController?.view.addSubview(infoView)
+                infoView.anchor(top: tabBarController?.view.topAnchor, leading: tabBarController?.view.leadingAnchor, bottom: tabBarController?.view.bottomAnchor, trailing: tabBarController?.view.trailingAnchor, padding: .init(top: 110, left: 15, bottom: 110, right: 15))
+            
             return
         }
         

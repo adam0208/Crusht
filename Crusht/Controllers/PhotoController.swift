@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import JGProgressHUD
 import UserNotifications
 import SDWebImage
 
@@ -24,7 +23,7 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
 }
 
 class EnterPhotoController: UIViewController {
-   
+    
     let registrationViewModel = RegistrationViewModel()
     
     var name = String()
@@ -57,12 +56,24 @@ class EnterPhotoController: UIViewController {
     
     let label: UILabel = {
         let label = UILabel()
-         label.textColor = .white
+        label.textColor = .white
         label.text = "Select Your Profile Picture"
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         
+        
+        return label
+    }()
+    
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please select a photo"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         
         return label
     }()
@@ -92,9 +103,9 @@ class EnterPhotoController: UIViewController {
     @objc func handleSelectPhoto() {
         let alert = UIAlertController(title: "Access your photos", message: "Can Crusht open your photos so you can select a profile picture?", preferredStyle: .alert)
         let action = UIAlertAction(title: "Yes", style: .default){(UIAlertAction) in
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        self.present(imagePickerController, animated: true)
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            self.present(imagePickerController, animated: true)
         }
         let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
         alert.addAction(action)
@@ -102,10 +113,10 @@ class EnterPhotoController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         return
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         setupGradientLayer()
         
         let stack = UIStackView(arrangedSubviews: [selectPhotoButton, doneButton])
@@ -121,16 +132,18 @@ class EnterPhotoController: UIViewController {
         
         stack.spacing = 15
         
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 20, bottom: 0, right: 20))
     }
     
     
-    let hud = JGProgressHUD(style: .dark)
+
     
     @objc fileprivate func handleDone(completion: @escaping (Error?) ->()) {
         if registrationViewModel.bindableImage.value == nil {
-            hud.textLabel.text = "Please select a photo"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+            
+          errorLabel.isHidden = false
             return
         }
         else {
@@ -141,42 +154,30 @@ class EnterPhotoController: UIViewController {
         
     }
     
-    fileprivate func showHUDWithError(error: Error) {
-        
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Failed registration"
-        hud.detailTextLabel.text = error.localizedDescription
-        hud.show(in: self.view)
-        hud.dismiss(afterDelay: 3)
-    }
     
     var phone: String!
     var gender = String()
     var sexYouLike = String()
     
-        
+    let animationView = AnimationView()
+    
     fileprivate func handleRegister() {
         
-        registrationViewModel.age = age
-        registrationViewModel.birthday = birthday
-        registrationViewModel.fullName = name
-        registrationViewModel.bio = bio
-        registrationViewModel.school = school
-        registrationViewModel.phone = phone
-        registrationViewModel.gender = gender
-        registrationViewModel.sexYouLike = sexYouLike
-        
-        hud.textLabel.text = "Registering..."
-        hud.show(in: view)
+        view.addSubview(animationView)
+        animationView.fillSuperview()
         
         let profile = CustomTabBarController()
         registrationViewModel.performRegistration { [weak self] (err) in
             if let err = err {
-                self?.showHUDWithError(error: err)
+                self?.errorLabel.text = "This error occured \(err)"
+                self?.errorLabel.isHidden = false
                 return
             }
             
-            self?.hud.dismiss()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
+                self?.animationView.removeFromSuperview()
+            }
+            
             self?.present(profile, animated: true)
         }
         
@@ -200,5 +201,5 @@ class EnterPhotoController: UIViewController {
         gradientLayer.frame = view.bounds
     }
     
-
+    
 }

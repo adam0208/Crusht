@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import JGProgressHUD
 
 class MessageReportController: UIViewController {
 
@@ -44,6 +43,18 @@ class MessageReportController: UIViewController {
         tv.clipsToBounds = true
         tv.adjustsFontForContentSizeCategory = true
         return tv
+    }()
+    
+    
+    let hudLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.textColor = .white
+        label.text = "Processing..."
+        label.numberOfLines = 0
+        return label
     }()
     
     let reportBttn: UIButton = {
@@ -87,15 +98,18 @@ class MessageReportController: UIViewController {
         stackView.spacing = 14
         
       stackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/10, left: view.bounds.width/9, bottom: view.bounds.height/3, right: view.bounds.width/9))
+        view.addSubview(hudLabel)
+        hudLabel.isHidden = true
+        hudLabel.anchor(top: stackView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 5, left: 20, bottom: 0, right: 20))
         
     }
     
-    let hud = JGProgressHUD(style: .dark)
     
     @objc fileprivate func reportUser() {
-        hud.textLabel.text = "Thank you for reporting this user, we will process your request"
-        hud.show(in: navigationController!.view)
-        
+//        hud.textLabel.text = "Thank you for reporting this user, we will process your request"
+//        hud.show(in: navigationController!.view)
+
+        hudLabel.isHidden = false
         let docData: [String: Any] = ["uid": reportUID,
                                       "offender-name": reportName,
                                       "phone": reportPhoneNumebr,
@@ -132,8 +146,8 @@ class MessageReportController: UIViewController {
                 })
             }
         }
-        hud.dismiss(afterDelay: 4)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.1) {
+       // hud.dismiss(afterDelay: 4)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
               self.dismiss(animated: true)
         }
       
@@ -184,7 +198,8 @@ class MessageReportController: UIViewController {
         let keyboardFrame = value.cgRectValue
         
         // let's try to figure out how tall the gap is from the register button to the bottom of the screen
-        let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
+        let bottomSpace = view.frame.height - stackView.frame.origin.y
+            - (stackView.frame.height + 30)
         
         let difference = keyboardFrame.height - bottomSpace
         self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)

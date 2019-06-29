@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import SDWebImage
-import JGProgressHUD
+
 import CoreLocation
 import GeoFire
 import UserNotifications
@@ -216,7 +216,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     var lastFetchedUser: User?
-    let hud = JGProgressHUD(style: .dark)
+
     
     var radiusInt = Double()
     
@@ -252,12 +252,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 
                 Firestore.firestore().collection("users").whereField("uid", isEqualTo: key).whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).limit(to: 5).getDocuments { (snapshot, err) in
                     if let err = err {
-                        self.hud.textLabel.text = "Failed To Fetch user"
-                        self.hud.show(in: self.view)
-                        self.hud.dismiss(afterDelay: 2)
+                        self.refreshLabel.text = "Failed to Fetch User"
                         return
                     }
-                    
                     
                     var previousCardView: CardView?
                     
@@ -265,7 +262,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         //                    radiusQuery.observe(.documentEntered) { (key, location) in
                         //                        geoFirestore.getCollectionReference()
-                        
                         
                         
                         let userDictionary = documentSnapshot.data()
@@ -346,9 +342,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     fileprivate func fetchSchoolUsersOnly() {
         Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").getDocuments { (snapshot, err) in
             if let err = err {
-                self.hud.textLabel.text = "Failed To Fetch user"
-                self.hud.show(in: self.view)
-                self.hud.dismiss(afterDelay: 2)
+                self.refreshLabel.text = "Failed to Fetch User \(err)"
                 return
             }
             
@@ -381,7 +375,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 }
                 
                
-                if isNotCurrentUser && hasNotSwipedBefore && hasNotSwipedPhoneBefore && self.isRightSex {
+                if isNotCurrentUser && hasNotSwipedBefore && minAge && maxAge && hasNotSwipedPhoneBefore && self.isRightSex {
                     let cardView = self.setupCardFromUser(user: user)
                     
                     previousCardView?.nextCardView = cardView
@@ -427,11 +421,13 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
             if let err = err {
+                print(err)
                 return
             }
             if snapshot?.exists == true {
                 Firestore.firestore().collection("swipes").document(uid).updateData(documentData) { (err) in
                     if let err = err {
+                        print(err)
                         return
                     }
                     if didLike == 1 {
@@ -441,6 +437,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             } else {
                 Firestore.firestore().collection("swipes").document(uid).setData(documentData) { (err) in
                     if let err = err {
+                        print(err)
                         return
                     }
                     if didLike == 1 {

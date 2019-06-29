@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JGProgressHUD
+import Firebase
 
 class BioController: UIViewController {
 
@@ -33,6 +33,18 @@ class BioController: UIViewController {
         return label
     }()
     
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please enter your bio"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
+    
     
     let doneButton: UIButton = {
         let button = UIButton(type: .system)
@@ -51,28 +63,29 @@ class BioController: UIViewController {
         return button
     }()
     
-    let hud = JGProgressHUD(style: .dark)
     
     @objc fileprivate func handleDone() {
         if bioTF.text == "" {
-            hud.textLabel.text = "Please enter your bio"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+            errorLabel.isHidden = false
             return
         }
         else {
-            bio = bioTF.text
+            DispatchQueue.main.async {
+                self.bio = self.bioTF.text
             let enterSexController = EnterPhotoController()
-            enterSexController.age = age
-            enterSexController.name = name
-            enterSexController.birthday = birthday
-            enterSexController.bio = bio
-            enterSexController.school = school
-            enterSexController.phone = phone
-            enterSexController.gender = gender
-            enterSexController.sexYouLike = sexYouLike
-            present(enterSexController, animated: true)
-            
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            let docData: [String: Any] = ["Bio": self.bio]
+            Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+//            enterSexController.age = age
+//            enterSexController.name = name
+//            enterSexController.birthday = birthday
+//            enterSexController.bio = bio
+//            enterSexController.school = school
+//            enterSexController.phone = phone
+//            enterSexController.gender = gender
+//            enterSexController.sexYouLike = sexYouLike
+            self.present(enterSexController, animated: true)
+            }
         }
         
     }
@@ -105,6 +118,11 @@ class BioController: UIViewController {
         stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 10, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         stack.spacing = 20
+        
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+        
         
         
     }

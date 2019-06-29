@@ -64,6 +64,7 @@ class RegistrationViewModel {
                 self.bindableIsRegistering.value = false
                 
                 let imageUrl = url?.absoluteString ?? ""
+               
                 self.saveInfoToFirestore(imageUrl: imageUrl, completion: completion)
             })
         })
@@ -74,23 +75,13 @@ class RegistrationViewModel {
     fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()) {
         let uid = Auth.auth().currentUser?.uid ?? ""
         let docData: [String: Any] =
-            ["Full Name": fullName ?? "",
-             "uid": uid,
-             "Bio": bio ?? "",
-             "School": school ?? "",
-             "Birthday": birthday ?? "10-31-1995",
-             "Age": age ?? 19,
-             "minSeekingAge": 18,
-             "maxSeekingAge": 50,
-             "PhoneNumber": phone,
-             "deviceID": token ?? "",
-             
+            [
+            
              "ImageUrl1": imageUrl,
-             "Gender-Preference": sexYouLike,
-             "User-Gender": gender
+            
         ]
         //let userAge = ["Age": age]
-        Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
+        Firestore.firestore().collection("users").document(uid).setData(docData, merge: true) { (err) in
             self.bindableIsRegistering.value = false
             if let err = err {
                 completion(err)
@@ -106,15 +97,6 @@ class RegistrationViewModel {
         
     }
     
-    func calcAge(birthday: String) -> Int {
-        let dateFormater = DateFormatter()
-        dateFormater.dateFormat = "MM/dd/yyyy"
-        let birthdayDate = dateFormater.date(from: birthday)
-        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
-        let now = Date()
-        let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
-        let age = calcAge.year
-        return age!
-    }
+
     
 }

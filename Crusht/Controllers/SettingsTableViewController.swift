@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-import JGProgressHUD
+
 import SDWebImage
 
 
@@ -51,20 +51,18 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
         
         dismiss(animated: true)
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Uploading image..."
-        hud.show(in: view)
+       
         let filename = UUID().uuidString
         let ref = Storage.storage().reference(withPath: "/images/\(filename)")
         guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
         ref.putData(uploadData, metadata: nil) { (nil, err) in
             
             if let err = err {
-                hud.dismiss()
+             
                 return
             }
             ref.downloadURL(completion: { (url, err) in
-                hud.dismiss()
+           
                 if let err = err {
                     return
                 }
@@ -77,7 +75,6 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 else {
                     self.user?.imageUrl3 = url?.absoluteString
                 }
-                hud.dismiss(afterDelay: 1)
                 self.loadUserPhotos()
             })
         }
@@ -509,9 +506,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     let bioTextView = BioTextView()
     
     @objc fileprivate func handleSave() {
-              let hud = JGProgressHUD(style: .dark)
-                hud.textLabel.text = "Saving Changes"
-                hud.show(in: view)
+        
 
         var docData = [String: Any]()
         guard let uid = Auth.auth().currentUser?.uid else { return}
@@ -561,7 +556,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
                 
             ]
         }
-        else if user?.imageUrl1 != "" && user?.imageUrl2 == "" && user?.imageUrl3 == "" {
+        else if user?.imageUrl1 != "" && user?.imageUrl2 == "" && user?.imageUrl3 == "" || user?.imageUrl1 == "" {
             docData = [
                 "uid": uid,
                 "Full Name": user?.name ?? "",
@@ -589,7 +584,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             if let err = err {
                 return
             }
-            hud.dismiss()
+          
             self.dismiss(animated: true, completion: {
                 self.delegate?.didSaveSettings()
                 

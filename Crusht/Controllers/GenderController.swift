@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import JGProgressHUD
 
 class GenderTextField: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -49,6 +48,18 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
          label.textColor = .white
         return label
     }()
+    
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please select a preference"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
 
     
     let doneButton: UIButton = {
@@ -86,7 +97,7 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     }
     var genderPicker = UIPickerView()
     
-    let myPickerData = [String](arrayLiteral: " ", "Male", "Female", "All Humans")
+    let myPickerData = [String](arrayLiteral: "", "Male", "Female", "All Humans")
     
     var user: User?
 
@@ -112,6 +123,10 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
         
         genderTextField.inputView = genderPicker
         
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+        
     }
     
     var name = String()
@@ -126,24 +141,28 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
 
     
     @objc fileprivate func handleDone() {
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Select a preference"
+    
+       
         if genderTextField.text == "" {
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+            errorLabel.isHidden = false
             return
         } else {
-            sexYouLike = genderTextField.text ?? ""
+            
+                self.sexYouLike = self.genderTextField.text ?? ""
             let photoCnotroller = BioController()
-            photoCnotroller.age = age
-            photoCnotroller.name = name
-            photoCnotroller.birthday = birthday
-            photoCnotroller.phone = phone
-            photoCnotroller.bio = bio
-            photoCnotroller.school = school
-            photoCnotroller.gender = gender
-            photoCnotroller.sexYouLike = sexYouLike
-            present(photoCnotroller, animated: true)
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+                let docData: [String: Any] = ["Gender-Preference": self.sexYouLike]
+            Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+//            photoCnotroller.age = age
+//            photoCnotroller.name = name
+//            photoCnotroller.birthday = birthday
+//            photoCnotroller.phone = phone
+//            photoCnotroller.bio = bio
+//            photoCnotroller.school = school
+//            photoCnotroller.gender = gender
+//            photoCnotroller.sexYouLike = sexYouLike
+           self.present(photoCnotroller, animated: true)
+            
         }
         
     }

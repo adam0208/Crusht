@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import Contacts
-import JGProgressHUD
+
 import CoreLocation
 import GeoFire
 
@@ -81,9 +81,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             guard let uid = Auth.auth().currentUser?.uid else {return}
             Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
                 if let err = err {
-                    self.hud.textLabel.text = "Something went wrong! Just log in again!"
-                    self.hud.show(in: self.navigationController!.view)
-                    self.hud.dismiss(afterDelay: 2)
+                    
                     let loginController = LoginViewController()
                     self.present(loginController, animated: true)
                     return
@@ -867,9 +865,14 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab!"
-        hud.show(in: navigationController!.view)
-        hud.dismiss(afterDelay: 5)
+        let infoView = InfoView()
+        infoView.infoText.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
+        tabBarController?.view.addSubview(infoView)
+               infoView.anchor(top: tabBarController?.view.topAnchor, leading: tabBarController?.view.leadingAnchor, bottom: tabBarController?.view.bottomAnchor, trailing: tabBarController?.view.trailingAnchor, padding: .init(top: 200, left: 15, bottom: 200, right: 15))
+        
+//        hud.textLabel.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
+//        hud.show(in: navigationController!.view)
+//        hud.dismiss(afterDelay: 7.5)
     }
     
     @objc func handleMessages() {
@@ -963,8 +966,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         present(alert, animated: true)
     }
     
-    
-    let hud = JGProgressHUD(style: .dark)
+
 
     @objc fileprivate func handleBack() {
         dismiss(animated: true)

@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-import JGProgressHUD
+
 
 class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelegate {
     
@@ -100,7 +100,7 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         return label
     }()
     
-    let hud = JGProgressHUD(style: .dark)
+    
     
     let dismissButton: UIButton = {
         
@@ -228,10 +228,16 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         
     }
     
+
+    
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
-        hud.show(in: navigationController!.view)
-        hud.dismiss(afterDelay: 3)
+            let infoView = InfoView()
+            infoView.infoText.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
+            navigationController?.view.addSubview(infoView)
+            infoView.fillSuperview()
+//        hud.textLabel.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
+//        hud.show(in: navigationController!.view)
+//        hud.dismiss(afterDelay: 3)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

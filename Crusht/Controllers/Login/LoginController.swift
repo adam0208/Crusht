@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JGProgressHUD
+
 
 protocol LoginControllerDelegate {
     func didFinishLoggingIn()

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JGProgressHUD
+import Firebase
 
 class NameTextField: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -39,9 +39,9 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
     
     let label: UILabel = {
         let label = UILabel()
-        
         label.text = "Enter Your Full Name"
-         label.textColor = .white
+        
+        label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -49,6 +49,17 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please enter your name"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
     
     let doneButton: UIButton = {
         let button = UIButton(type: .system)
@@ -67,22 +78,26 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-    let hud = JGProgressHUD(style: .dark)
     
     @objc fileprivate func handleDone() {
         if nameTF.text == "" {
-            hud.textLabel.text = "Please enter your name"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+            
+            errorLabel.isHidden = false
+            
             return
         }
         else {
             
-              name = nameTF.text ?? ""
+//            name = nameTF.text ?? ""
             let birthdayController = BirthdayController()
-            birthdayController.name = name
-            birthdayController.phone = phone
+//            birthdayController.name = name
+//            birthdayController.phone = phone
+//            self.present(birthdayController, animated: true)
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            let docData: [String: Any] = ["Full Name": nameTF.text ?? ""]
+            Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
             self.present(birthdayController, animated: true)
+
             
         }
       
@@ -112,6 +127,9 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         stack.spacing = 20
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
         
         
     }

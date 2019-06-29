@@ -104,7 +104,7 @@ class GenderCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
     
     var genderPicker = UIPickerView()
     
-    let myPickerData = [String](arrayLiteral: " ", "Male", "Female", "Other")
+    let myPickerData = [String](arrayLiteral: "Male", "Female", "Other")
     
     let textField: UITextField = {
         let tf = GenderTextField()
@@ -189,7 +189,7 @@ class GenderPrefCell: UITableViewCell, UIPickerViewDataSource, UIPickerViewDeleg
     var genderPrefPicker = UIPickerView()
     var sexPrefSwitch = String()
     
-    let myPickerData = [String](arrayLiteral: " ", "Male", "Female", "All Humans")
+    let myPickerData = [String](arrayLiteral: "Male", "Female", "All Humans")
     
     let textField: UITextField = {
         let tf = GenderPrefTextField()

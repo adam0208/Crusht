@@ -57,6 +57,7 @@
 		2864C4EE228E655300E3165F /* icons8-remove-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 2864C4ED228E655300E3165F /* icons8-remove-30.png */; };
 		2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4EF228E6FC500E3165F /* TermsViewController.swift */; };
 		2864C4F2228E743B00E3165F /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4F1228E743B00E3165F /* PrivacyController.swift */; };
+		286B05D722B5C9A40068015E /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286B05D622B5C9A40068015E /* InfoView.swift */; };
 		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
@@ -209,6 +210,7 @@
 		2864C4ED228E655300E3165F /* icons8-remove-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-remove-30.png"; sourceTree = "<group>"; };
 		2864C4EF228E6FC500E3165F /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2864C4F1228E743B00E3165F /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
+		286B05D622B5C9A40068015E /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 				287F3A8F225B1C43008F5BD0 /* AnimationView.swift */,
 				28C30331226C02AE002FB145 /* VenueCell.swift */,
 				2895576E227E644F001EFD73 /* UserBarCell.swift */,
+				286B05D622B5C9A40068015E /* InfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -582,8 +585,8 @@
 				283816BF21B8925C00B3E4FD /* Sources */,
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
-				135C14FC3E7469E297AF6393 /* [CP] Embed Pods Frameworks */,
 				28FD7D192264488900B79496 /* ShellScript */,
+				3BBB4210FA48E768D96A9B88 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -752,54 +755,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		135C14FC3E7469E297AF6393 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/CountryPickerSwift/CountryPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountryPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		205815491933167ADC528E57 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -838,6 +793,52 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+		};
+		3BBB4210FA48E768D96A9B88 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/CountryPickerSwift/CountryPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountryPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -963,6 +964,7 @@
 				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
 				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,
 				28FD7D0E2261BA8900B79496 /* YourSexController.swift in Sources */,
+				286B05D722B5C9A40068015E /* InfoView.swift in Sources */,
 				28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

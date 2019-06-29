@@ -8,26 +8,25 @@
 
 import UIKit
 import Firebase
-import JGProgressHUD
 
-class YourSexTextField: UITextField {
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 24, dy: 0)
-    }
-    
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 24, dy: 0)
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return .init(width: 0, height: 100)
-    }
-}
+//class YourSexTextField: UITextField {
+//    override func textRect(forBounds bounds: CGRect) -> CGRect {
+//        return bounds.insetBy(dx: 24, dy: 0)
+//    }
+//
+//    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+//        return bounds.insetBy(dx: 24, dy: 0)
+//    }
+//
+//    override var intrinsicContentSize: CGSize {
+//        return .init(width: 0, height: 100)
+//    }
+//}
 
 class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let yourSexField: UITextField = {
-        let tf = YourSexTextField()
+        let tf = GenderTextField()
       
         tf.placeholder = "Select"
         tf.backgroundColor = .white
@@ -47,6 +46,18 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
          label.textColor = .white
+        return label
+    }()
+    
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please select an option"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
         return label
     }()
     
@@ -86,15 +97,10 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     }
     var genderPicker = UIPickerView()
     
-    let myPickerData = [String](arrayLiteral: " ", "Male", "Female", "Other")
+    let myPickerData = [String](arrayLiteral: "", "Male", "Female", "Other")
     
     var user: User?
-    var name = String()
-    var birthday = String()
-    var bio = String()
-    var school = String()
-    var age = Int()
-    var phone: String!
+    
     var gender = String()
     
     
@@ -104,44 +110,65 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         
         genderPicker.delegate = self
         
-        setupGradientLayer()
+        self.setupGradientLayer()
         
-        let stack = UIStackView(arrangedSubviews: [yourSexField, doneButton])
-        view.addSubview(stack)
+        setUpUI()
+       
         
-        stack.axis = .vertical
+    }
+    
+    fileprivate func setUpUI () {
+       
+            
+            
+            let stack = UIStackView(arrangedSubviews: [self.yourSexField, self.doneButton])
+            self.view.addSubview(stack)
+            
+            stack.axis = .vertical
+            
+            self.view.addSubview(self.label)
+            
+            self.label.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.leadingAnchor, bottom: nil, trailing: self.view.trailingAnchor, padding: .init(top: self.view.bounds.height/5, left: 30, bottom: 0, right: 30))
+            
+            stack.anchor(top: self.label.bottomAnchor, leading: self.view.leadingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: self.view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: self.view.bounds.height/2.2, right: 30))
+            
+            stack.spacing = 20
+            
+            self.yourSexField.inputView = self.genderPicker
         
-        view.addSubview(label)
-        
-        label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
-        
-        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/2.2, right: 30))
-        
-        stack.spacing = 20
-        
-        yourSexField.inputView = genderPicker
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+            
         
     }
     
     
     @objc fileprivate func handleDone() {
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Select a preference"
+        
+        
         if yourSexField.text == "" {
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+           errorLabel.isHidden = false
             return
         } else {
-            gender = yourSexField.text ?? ""
-            let genderPreference = GenderController()
-            genderPreference.name = name
-            genderPreference.bio = bio
-            genderPreference.age = age
-            genderPreference.gender = gender
-            genderPreference.birthday = birthday
-            genderPreference.phone = phone
-            genderPreference.school = school
-            present(genderPreference, animated: true)
+            
+           
+                
+                self.gender = self.yourSexField.text ?? ""
+                let genderPreference = GenderController()
+                guard let uid = Auth.auth().currentUser?.uid else {return}
+                let docData: [String: Any] = ["User-Gender": self.gender]
+                Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+                //            genderPreference.name = name
+                //            genderPreference.bio = bio
+                //            genderPreference.age = age
+                //            genderPreference.gender = gender
+                //            genderPreference.birthday = birthday
+                //            genderPreference.phone = phone
+                //            genderPreference.school = school
+                self.present(genderPreference, animated: true)
+        
+  
         }
         
     }

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JGProgressHUD
+import Firebase
 
 class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
@@ -2140,6 +2140,17 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
         return label
     }()
     
+    let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please select your school/alma mater"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
     
     let doneButton: UIButton = {
         let button = UIButton(type: .system)
@@ -2160,26 +2171,26 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     var age = Int()
   var phone: String!
-    
-    let hud = JGProgressHUD(style: .dark)
-    
+        
     @objc fileprivate func handleDone() {
         if schoolTF.text == "" {
-            hud.textLabel.text = "Please select your school"
-            hud.show(in: view)
-            hud.dismiss(afterDelay: 2)
+            errorLabel.isHidden = false
             return
         }
         else {
-            
-            school = schoolTF.text ?? ""
+         
+            self.school = self.schoolTF.text ?? ""
             let bioController = YourSexController()
-            bioController.name = name
-            bioController.school = school
-            bioController.birthday = birthday
-            bioController.age = age
-            bioController.phone = phone
-            present(bioController, animated: true)
+            
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            let docData: [String: Any] = ["School": self.school]
+            Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+//            bioController.name = name
+//            bioController.school = school
+//            bioController.birthday = birthday
+//            bioController.age = age
+//            bioController.phone = phone
+            self.present(bioController, animated: true)
         
             
         }
@@ -2213,6 +2224,11 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
         stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 10, left: 30, bottom: view.bounds.height/2.2, right: 30))
         
         stack.spacing = 20
+        
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+        
         
         
     }

@@ -10,7 +10,7 @@ import Firebase
 import MobileCoreServices
 import AVFoundation
 import SDWebImage
-import JGProgressHUD
+
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -93,7 +93,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
        
     }
     
-    let hud = JGProgressHUD(style: .dark)
     
     fileprivate func deleteConvoPart2() {
         let toId = user!.uid!
@@ -108,9 +107,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                     let docID = documentSnapshot.documentID
                     Firestore.firestore().collection("messages").document(docID).delete()
                 
-                self.hud.textLabel.text = "This user can't harm you anymore. You're safe now."
-                self.hud.show(in: self.view)
-                self.hud.dismiss(afterDelay: 2.1)
+//                self.hud.textLabel.text = "This user can't harm you anymore. You're safe now."
+//                self.hud.show(in: self.view)
+//                self.hud.dismiss(afterDelay: 2.1)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                      self.handleback()

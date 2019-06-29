@@ -7,7 +7,7 @@
 //
 import UIKit
 import Firebase
-import JGProgressHUD
+
 import CoreLocation
 import SDWebImage
 import GeoFire
@@ -182,9 +182,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     @objc fileprivate func handleInfo() {
-        hud.textLabel.text = "Crush Classmates: Select the heart next people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
-        hud.show(in: navigationController!.view)
-        hud.dismiss(afterDelay: 5)
+        
+        let infoView = InfoView()
+        infoView.infoText.text = "Crush Classmates: Select the heart next to people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
+        tabBarController?.view.addSubview(infoView)
+        
+           infoView.anchor(top: tabBarController?.view.topAnchor, leading: tabBarController?.view.leadingAnchor, bottom: tabBarController?.view.bottomAnchor, trailing: tabBarController?.view.trailingAnchor, padding: .init(top: 200, left: 15, bottom: 200, right: 15))
+//        hud.textLabel.text = "Crush Classmates: Select the heart next people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
+//        hud.show(in: navigationController!.view)
+//        hud.dismiss(afterDelay: 5)
     }
     
     
@@ -280,7 +286,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     var user: User?
-    let hud = JGProgressHUD(style: .dark)
     
     var schoolArray = [User]()
     
@@ -308,9 +313,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                self.hud.textLabel.text = "Something went wrong! Just log in again!"
-                self.hud.show(in: self.navigationController!.view)
-                self.hud.dismiss(afterDelay: 2)
+              
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
                 return
@@ -321,12 +324,14 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             if self.user?.phoneNumber == ""{
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
+                return
         
             }
             else if self.user?.name == "" {
                 let namecontroller = EnterNameController()
                 namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
+                return
               
             }
             
@@ -362,9 +367,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         query.getDocuments { (snapshot, err) in
             if let err = err {
-                self.hud.textLabel.text = "Failed To Fetch School"
-                self.hud.show(in: self.view)
-                self.hud.dismiss(afterDelay: 2)
+          
                 return
             }
             

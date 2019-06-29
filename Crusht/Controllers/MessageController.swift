@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import CoreLocation
 import GeoFire
-import JGProgressHUD
+
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -117,15 +117,13 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         present(alert, animated: true)
     }
     
-    let hud = JGProgressHUD(style: .dark)
+
     
      func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                self.hud.textLabel.text = "Something went wrong! Just log in again!"
-                self.hud.show(in: self.navigationController!.view)
-                self.hud.dismiss(afterDelay: 2)
+          
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
             }

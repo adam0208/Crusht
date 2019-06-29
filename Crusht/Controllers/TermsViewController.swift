@@ -27,7 +27,7 @@ class TermsViewController: UIViewController, WKUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let myURL = URL(string:"https://app.termly.io/document/terms-of-use-for-website/2ce67fc1-504a-49aa-a498-5c1d8f3f8225")
+        let myURL = URL(string:"https://www.crusht.co/terms-and-conditions")
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
     }
