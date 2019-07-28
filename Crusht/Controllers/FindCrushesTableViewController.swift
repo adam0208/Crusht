@@ -26,6 +26,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
         handleContacts()
+      
         tableView.reloadData()
     }
     fileprivate func handleContacts() {
@@ -33,7 +34,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 switch CNContactStore.authorizationStatus(for: .contacts) {
         
                 case .authorized:
-                    print("Hey")
+                    fetchContacts()
                 case .denied:
                     showSettingsAlert()
                 case .restricted, .notDetermined:
@@ -99,7 +100,43 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 }
                 else if self.user?.name == "" {
                     let namecontroller = EnterNameController()
-                    namecontroller.phone = self.user?.phoneNumber ?? ""
+                   // namecontroller.phone = self.user?.phoneNumber ?? ""
+                    self.present(namecontroller, animated: true)
+                    
+                }
+                
+                else if self.user?.birthday == "" {
+                    let namecontroller = BirthdayController()
+                  //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                    self.present(namecontroller, animated: true)
+                    
+                }
+                
+                else if self.user?.school == "" {
+                    let namecontroller = EnterSchoolController()
+                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                    self.present(namecontroller, animated: true)
+                    
+                }
+                
+                
+                else if self.user?.bio == "" {
+                    let namecontroller = BioController()
+                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                    self.present(namecontroller, animated: true)
+                    
+                }
+                
+                else if self.user?.gender == "" {
+                    let namecontroller = YourSexController()
+                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                    self.present(namecontroller, animated: true)
+                    
+                }
+                
+                else if self.user?.sexPref == "" {
+                    let namecontroller = GenderController()
+                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
                     self.present(namecontroller, animated: true)
                     
                 }
@@ -190,10 +227,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                           
                         }
             
-                
-                 
-            self.fetchSwipes()
             }
+                   self.fetchSwipes()
     }
     
     func calcAge(birthday: String) -> Int {
@@ -384,13 +419,13 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 }
             }
         }
+               //  self.fetchSwipes()
         }
             
         }
     }
     
     fileprivate func checkIfMatchExists(cardUID: String) {
-        
         
         Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
             if let err = err {
@@ -405,6 +440,10 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             if hasMatched {
                 self.getCardUID(phoneNumber: cardUID)
             }
+//            DispatchQueue.main.async(execute: {
+//                self.tableView.reloadData()
+//                
+//            })
         }
     }
    
@@ -427,6 +466,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 ]
                 let otherDocData: [String: Any] = ["uid": uid, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!
                 ]
+                
+                //print(cardUID, "li hi you")
                 //this is for message controller
                 Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
                     if let err = err {
@@ -434,9 +475,15 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                     if (snapshot?.isEmpty)! {
                         Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
                         Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
+                        
+                        self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
                     }
                 })
-                self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
+              
+//                DispatchQueue.main.async(execute: {
+//                    self.tableView.reloadData()
+//
+//                })
                 
             })
         }
@@ -550,6 +597,9 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 })
             }
         })
+        
+//        self.presentMatchView(cardUID: toId)
+
         
         self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
         
@@ -695,6 +745,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
     fileprivate func fetchSwipes() {
        let phoneNumber = user?.phoneNumber ?? ""
+       // print(phoneNumber,"kick")
         
         Firestore.firestore().collection("phone-swipes").document(phoneNumber).getDocument { (snapshot, err) in
             if let err = err {
@@ -702,6 +753,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             }
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
+            
+            //print(self.swipes, "Hi hi hi you fools")
             // self.fetchUsersFromFirestore()
             //self.fetchUsersOnLoad()
             DispatchQueue.main.async(execute: {
@@ -849,8 +902,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //        self.searchController.searchBar.delegate = self
 //        self.navigationItem.hidesSearchBarWhenScrolling = false
         
-        fetchContacts()
-        
         
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))
         
@@ -868,7 +919,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let infoView = InfoView()
         infoView.infoText.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
         tabBarController?.view.addSubview(infoView)
-               infoView.anchor(top: tabBarController?.view.topAnchor, leading: tabBarController?.view.leadingAnchor, bottom: tabBarController?.view.bottomAnchor, trailing: tabBarController?.view.trailingAnchor, padding: .init(top: 200, left: 15, bottom: 200, right: 15))
+               infoView.fillSuperview()
         
 //        hud.textLabel.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
 //        hud.show(in: navigationController!.view)
@@ -1042,8 +1093,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 //                cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
 //            }
         
-            
-        
             let favoritableContact = twoDimensionalArray[indexPath.section].names[indexPath.row]
             cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
@@ -1065,17 +1114,16 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
                 phoneCellFinal = phoneNoDash
             }
             
-        
-        
-          let hasLiked = swipes[phoneCellFinal] as? Int == 1
+       // print(phoneCellFinal, "hey")
+        let hasLiked = swipes[phoneCellFinal] as? Int == 1
         
         if hasLiked {
             cell.accessoryView?.tintColor = .red
-            
         }
-        else{
+        else {
             cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
         }
+        
         return cell
     
         //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)

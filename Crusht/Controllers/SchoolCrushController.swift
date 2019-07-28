@@ -187,7 +187,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         infoView.infoText.text = "Crush Classmates: Select the heart next to people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
         tabBarController?.view.addSubview(infoView)
         
-           infoView.anchor(top: tabBarController?.view.topAnchor, leading: tabBarController?.view.leadingAnchor, bottom: tabBarController?.view.bottomAnchor, trailing: tabBarController?.view.trailingAnchor, padding: .init(top: 200, left: 15, bottom: 200, right: 15))
+          infoView.fillSuperview()
 //        hud.textLabel.text = "Crush Classmates: Select the heart next people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
 //        hud.show(in: navigationController!.view)
 //        hud.dismiss(afterDelay: 5)
@@ -481,7 +481,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         //cell.tintColor = .red
         
-        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
+        if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1) {
             
             handleLike(cell: cell)
         }
@@ -545,9 +545,9 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 } else {
                         print("Success saved swipe SETDATA")
                     }
-            
+                self.fetchSwipes()
         }
-        self.fetchSwipes()
+
     }
 }
     
@@ -789,7 +789,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 })
             }
         })
-        
+          //      self.presentMatchView(cardUID: toId)
         self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
         
     }
@@ -993,7 +993,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             hasFavorited = true
         }
         else{
-            cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+            cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
         }
    
         } else {

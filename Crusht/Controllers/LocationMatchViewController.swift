@@ -604,6 +604,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             }
         })
         
+          //      self.presentMatchView(cardUID: toId)
+        
         self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
         
     }

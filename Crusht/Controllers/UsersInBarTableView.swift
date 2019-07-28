@@ -432,14 +432,13 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 } else {
                     print("Cool")
                 }
-                
+                  self.fetchSwipes()
             }
-            self.fetchSwipes()
+          
         }
     }
         
         fileprivate func checkIfMatchExists(cardUID: String) {
-            
           
             
             Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
@@ -685,7 +684,9 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 }
             })
             
-            self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
+            //   self.presentMatchView(cardUID: toId)
+            
+           self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
             
         }
         

@@ -13,18 +13,48 @@ import SDWebImage
 
 extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[.originalImage] as? UIImage
-        selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-        registrationViewModel.checkFormValidity()
-        registrationViewModel.bindableImage.value = image
-        dismiss(animated: true, completion: nil)
+  @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    let selectedImage = info[.originalImage] as? UIImage
+    
+    let imageButton = (picker as? CustomImagePickerController)?.imageBttn
+    
+    imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+    
+    self.imageFull = true
+    
+    dismiss(animated: true)
+    
+    self.errorLabel.text = "Registering, hang tight..."
+    self.errorLabel.isHidden = false
+    
+    let filename = UUID().uuidString
+    let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+    guard let imageData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
+    ref.putData(imageData, metadata: nil) { (nil, err) in
+        
+        if let err = err {
+            print(err)
+            return
+        }
+        ref.downloadURL(completion: { (url, err) in
+            
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            let imageUrl = url?.absoluteString ?? ""
+            
+            self.saveInfoToFirestore(imageUrl: imageUrl)
+        })
+    }
+    
     }
 }
 
 class EnterPhotoController: UIViewController {
     
-    let registrationViewModel = RegistrationViewModel()
+    var imageFull = Bool()
     
     var name = String()
     var birthday = String()
@@ -79,22 +109,22 @@ class EnterPhotoController: UIViewController {
     }()
     
     
-    let doneButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Register", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        
-        button.layer.cornerRadius = 22
-        
-        button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
-        
-        return button
-    }()
+//    let doneButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle("Register", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+//        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+//        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+//        button.widthAnchor.constraint(equalToConstant: 60).isActive = true
+//        button.titleLabel?.adjustsFontForContentSizeCategory = true
+//
+//        button.layer.cornerRadius = 22
+//
+//        button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
+//
+//        return button
+//    }()
     
     
     lazy var selectPhotoButtonWidthAnchor = selectPhotoButton.widthAnchor.constraint(equalToConstant: 275)
@@ -103,9 +133,13 @@ class EnterPhotoController: UIViewController {
     @objc func handleSelectPhoto() {
         let alert = UIAlertController(title: "Access your photos", message: "Can Crusht open your photos so you can select a profile picture?", preferredStyle: .alert)
         let action = UIAlertAction(title: "Yes", style: .default){(UIAlertAction) in
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            self.present(imagePickerController, animated: true)
+//            let imagePickerController = UIImagePickerController()
+//            imagePickerController.delegate = self
+//            self.present(imagePickerController, animated: true)
+            let imagePicker = CustomImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.imageBttn = self.selectPhotoButton
+           self.present(imagePicker, animated: true)
         }
         let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
         alert.addAction(action)
@@ -119,7 +153,7 @@ class EnterPhotoController: UIViewController {
         
         setupGradientLayer()
         
-        let stack = UIStackView(arrangedSubviews: [selectPhotoButton, doneButton])
+        let stack = UIStackView(arrangedSubviews: [selectPhotoButton, errorLabel])
         view.addSubview(stack)
         
         stack.axis = .vertical
@@ -128,30 +162,12 @@ class EnterPhotoController: UIViewController {
         
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/9, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/5, right: 30))
+        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/4, right: 30))
         
         stack.spacing = 15
         
-        view.addSubview(errorLabel)
         errorLabel.isHidden = true
-        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 20, bottom: 0, right: 20))
-    }
-    
-    
-
-    
-    @objc fileprivate func handleDone(completion: @escaping (Error?) ->()) {
-        if registrationViewModel.bindableImage.value == nil {
-            
-          errorLabel.isHidden = false
-            return
-        }
-        else {
-            handleRegister()
-            
-            
-        }
-        
+      
     }
     
     
@@ -161,27 +177,28 @@ class EnterPhotoController: UIViewController {
     
     let animationView = AnimationView()
     
-    fileprivate func handleRegister() {
+
         
-        view.addSubview(animationView)
-        animationView.fillSuperview()
-        
-        let profile = CustomTabBarController()
-        registrationViewModel.performRegistration { [weak self] (err) in
+    fileprivate func saveInfoToFirestore(imageUrl: String){
+        let uid = Auth.auth().currentUser?.uid ?? ""
+        let docData: [String: Any] =
+            [
+                "ImageUrl1": imageUrl,
+                ]
+        //let userAge = ["Age": age]
+        Firestore.firestore().collection("users").document(uid).setData(docData, merge: true) { (err) in
             if let err = err {
-                self?.errorLabel.text = "This error occured \(err)"
-                self?.errorLabel.isHidden = false
+                print(err)
                 return
             }
+            let customtabController = CustomTabBarController()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
-                self?.animationView.removeFromSuperview()
-            }
-            
-            self?.present(profile, animated: true)
+            self.present(customtabController, animated: true)
+
         }
-        
     }
+    
+    
     let gradientLayer = CAGradientLayer()
     
     override func viewWillLayoutSubviews() {
