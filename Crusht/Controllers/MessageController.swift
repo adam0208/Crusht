@@ -341,6 +341,9 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         if isFiltering() {
             return messageArray.count
         }
+        if messages.isEmpty == true {
+            return 1
+        }
         return messages.count
     }
     
@@ -367,15 +370,15 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
 //        if let profileImageUrl = user.imageUrl1 {
 //            cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
 //        }
-        
 
         }
         else {
-            self.messages.removeAll()
-            self.observeMessages()
-            self.observeUserMessages()
             
-            self.handleReloadTable()
+            if messages.isEmpty == true {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                cell.textLabel?.text = "No matches yet 😬"
+                }
+            }
         }
         return cell
     }

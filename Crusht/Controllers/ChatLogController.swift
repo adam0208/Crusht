@@ -111,10 +111,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
 //                self.hud.show(in: self.view)
 //                self.hud.dismiss(afterDelay: 2.1)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                      self.handleback()
-                }
-                
                 
                 })
             })
@@ -124,8 +121,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     var messages = [Message]()
     
     var fromName: String?
-    
-   
     
     func observeMoreMessages() {
         //guard let uid = Auth.auth().currentUser?.uid else {return}

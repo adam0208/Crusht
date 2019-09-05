@@ -943,6 +943,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             return users.count
         }
         
+        if schoolArray.isEmpty == true {
+            return 1
+        }
+        
         return schoolArray.count
         
     }
@@ -997,10 +1001,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         }
    
         } else {
-            DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 
-            })
+                if self.schoolArray.isEmpty == true {
+                    cellL.textLabel?.text = "No classmates to show 😔"
+                    cellL.accessoryView?.isHidden = true
+                }
+            }
 
         }
     return cellL

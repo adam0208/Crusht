@@ -147,6 +147,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             
+            self.userAge = user.age ?? 18
+            
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
             
@@ -222,12 +224,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     func fetchUsersFromFirestore() {
         
-        if topStackView.collegeOnlySwitch.isOn == true {
-            fetchSchoolUsersOnly()
-        }
-
-        else {
-        
         
         let minAge = user?.minSeekingAge ?? 18
         let maxAge = user?.maxSeekingAge ?? 50
@@ -263,14 +259,14 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         //                    radiusQuery.observe(.documentEntered) { (key, location) in
                         //                        geoFirestore.getCollectionReference()
                         
-                        
+                          print("hey")
                         let userDictionary = documentSnapshot.data()
                         let user = User(dictionary: userDictionary)
                         // if user.uid != Auth.auth().currentUser?.uid {
                         let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                         let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                         let hasNotSwipedPhoneBefore = self.phoneSwipes[user.phoneNumber!] == nil
-                        
+                         print(user.age, "YoYo")
                         let isInRadius = user.uid == key
                         
                         let isEnabled = user.g != "7zzzzzzzzz"
@@ -288,6 +284,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         
                         
                         if isNotCurrentUser && hasNotSwipedBefore && hasNotSwipedPhoneBefore && isInRadius && isEnabled && self.isRightSex {
+                            
                             let cardView = self.setupCardFromUser(user: user)
                             
                             previousCardView?.nextCardView = cardView
@@ -310,7 +307,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
       
            self.refreshLabel.isHidden = false
         
-    }
+    
 }
     
     var reportUID = String()
@@ -342,27 +339,33 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     fileprivate func fetchSchoolUsersOnly() {
         Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").getDocuments { (snapshot, err) in
             if let err = err {
+                print(err, "noooo")
                 self.refreshLabel.text = "Failed to Fetch User \(err)"
                 return
             }
+            
+            print(snapshot, "wzzzzup")
+            
+            print("hello")
             
             self.topCardView = nil
             
             var previousCardView: CardView?
             
             snapshot?.documents.forEach({ (documentSnapshot) in
-            
+            print("hey")
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
+                print(user.age, "YoYo")
                 // if user.uid != Auth.auth().currentUser?.uid {
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                 let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                 
                 let hasNotSwipedPhoneBefore = self.phoneSwipes[user.phoneNumber!] == nil
                 
-                let maxAge = user.age ?? 20 < (self.userAge + 5)
+                let maxAge = user.age ?? 18  < (self.userAge + 5)
                 
-                let minAge = user.age ?? 20 > (self.userAge - 5)
+                let minAge = user.age ?? 18 > (self.userAge - 5)
                 
                 if self.sexPref == "Female" {
                     self.isRightSex = user.gender == "Female" || user.gender == "Other"
@@ -375,7 +378,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 }
                 
                
-                if isNotCurrentUser && hasNotSwipedBefore && minAge && maxAge && hasNotSwipedPhoneBefore && self.isRightSex {
+                if isNotCurrentUser && minAge && maxAge && hasNotSwipedBefore && hasNotSwipedPhoneBefore && self.isRightSex {
+                 
                     let cardView = self.setupCardFromUser(user: user)
                     
                     previousCardView?.nextCardView = cardView

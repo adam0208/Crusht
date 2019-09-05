@@ -339,10 +339,13 @@ searchController.searchBar.barStyle = .black
             }
         }
         } else {
-            DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 
-            })
+                if self.barArray.isEmpty == true {
+                cell.textLabel?.text = "No venues in your area 😔"
+                }
+            }
+            
         }
         
         //        if hasFavorited == true {
@@ -384,7 +387,7 @@ searchController.searchBar.barStyle = .black
             
     
         else if Int(truncating: user?.timeLastJoined ?? 5000) < timestamp - 1800 {
-            let alert = UIAlertController(title: "Join Bar?", message: "Join \(barName) to see who's there?", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Join Venue?", message: "Join \(barName) to see who's there?", preferredStyle: .alert)
             let action = UIAlertAction(title: "Join", style: .default){(UIAlertAction) in
                  var docData = [String: Any]()
                 guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -478,7 +481,7 @@ searchController.searchBar.barStyle = .black
         
         else {
             let infoView = InfoView()
-            infoView.infoText.text = "You can only join one bar every 30 minutes"
+            infoView.infoText.text = "You can only join one venue every 30 minutes"
             tabBarController?.view.addSubview(infoView)
          infoView.fillSuperview()
             
@@ -511,6 +514,10 @@ searchController.searchBar.barStyle = .black
         // #warning Incomplete implementation, return the number of rows
         if isFiltering() {
             return venues.count
+        }
+        
+        if barArray.isEmpty == true {
+            return 1
         }
         
         return barArray.count
