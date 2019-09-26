@@ -35,14 +35,13 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
+//This controller shows users in bar which they have joined
+
 class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate {
     func didSaveSettings() {
         barsArray.removeAll()
         fetchCurrentUser()
     }
-    
-
-    
         
         override func viewWillAppear(_ animated: Bool) {
             
@@ -106,10 +105,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
         }
         
-    
-    
-        
-        
         override func viewDidLoad() {
             super.viewDidLoad()
             
@@ -153,7 +148,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     
         
 
-        
+        //Listen for messages
         
         fileprivate func listenForMessages() {
             guard let toId = Auth.auth().currentUser?.uid else {return}
@@ -261,7 +256,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 
                 
                 //self.fetchSwipes()
-                self.fetchSchool()
+                self.fetchUsersInBar()
             }
         }
         
@@ -277,8 +272,11 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         var barName = String()
         
         var schoolUserDictionary = [String: User]()
-        
-        fileprivate func fetchSchool() {
+    
+        //fetching users within the bar that you are in
+        //PLEASE PAGINATE THIS
+    
+        fileprivate func fetchUsersInBar() {
             
             navigationItem.title = "\(barName) (Joined)"
             
@@ -440,7 +438,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         
         fileprivate func checkIfMatchExists(cardUID: String) {
           
-            
             Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
                 if let err = err {
                     print("Failed to fetch doc for card user", err)

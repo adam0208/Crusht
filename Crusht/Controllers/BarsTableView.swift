@@ -12,6 +12,8 @@ import GeoFire
 import CoreLocation
 import SDWebImage
 
+//This Controller shows venues around a users location
+
 class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
@@ -265,7 +267,7 @@ searchController.searchBar.barStyle = .black
     
     // MARK: - Table view data source
     
-    
+    //fetches bars via raidus of current user
     fileprivate func fetchBars () {
         
         let geoFirestoreRef = Firestore.firestore().collection("venues")
@@ -369,6 +371,8 @@ searchController.searchBar.barStyle = .black
         self.handleJoin(barName: venue.venueName ?? "Venue")
        
     }
+    
+    //Join a bar
     
     fileprivate func handleJoin(barName: String) {
         
