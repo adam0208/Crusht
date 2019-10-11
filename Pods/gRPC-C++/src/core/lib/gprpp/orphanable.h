@@ -86,8 +86,7 @@ class InternallyRefCounted : public Orphanable {
   GPRC_ALLOW_CLASS_TO_USE_NON_PUBLIC_DELETE
 
   // Allow RefCountedPtr<> to access Unref() and IncrementRefCount().
-  template <typename T>
-  friend class RefCountedPtr;
+  friend class RefCountedPtr<Child>;
 
   InternallyRefCounted() { gpr_ref_init(&refs_, 1); }
   virtual ~InternallyRefCounted() {}
@@ -130,8 +129,7 @@ class InternallyRefCountedWithTracing : public Orphanable {
   GPRC_ALLOW_CLASS_TO_USE_NON_PUBLIC_DELETE
 
   // Allow RefCountedPtr<> to access Unref() and IncrementRefCount().
-  template <typename T>
-  friend class RefCountedPtr;
+  friend class RefCountedPtr<Child>;
 
   InternallyRefCountedWithTracing()
       : InternallyRefCountedWithTracing(static_cast<TraceFlag*>(nullptr)) {}

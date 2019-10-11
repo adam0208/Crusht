@@ -52,12 +52,12 @@ class GenericServerContext final : public ServerContext {
 //   ServerBuilder builder;
 //   auto cq = builder.AddCompletionQueue();
 //   AsyncGenericService generic_service;
-//   builder.RegisterAsyncGenericService(&generic_service);
+//   builder.RegisterAsyncGeneicService(&generic_service);
 //   auto server = builder.BuildAndStart();
 //
 //   // request a new call
 //   GenericServerContext context;
-//   GenericServerAsyncReaderWriter stream;
+//   GenericAsyncReaderWriter stream;
 //   generic_service.RequestCall(&context, &stream, cq.get(), cq.get(), tag);
 //
 // When tag is retrieved from cq->Next(), context.method() can be used to look

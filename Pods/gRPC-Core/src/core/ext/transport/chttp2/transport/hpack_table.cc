@@ -29,8 +29,6 @@
 
 #include "src/core/lib/debug/trace.h"
 #include "src/core/lib/gpr/murmur_hash.h"
-#include "src/core/lib/surface/validate_metadata.h"
-#include "src/core/lib/transport/static_metadata.h"
 
 extern grpc_core::TraceFlag grpc_http_trace;
 
@@ -248,7 +246,7 @@ void grpc_chttp2_hptbl_set_max_bytes(grpc_chttp2_hptbl* tbl,
   if (tbl->max_bytes == max_bytes) {
     return;
   }
-  if (GRPC_TRACE_FLAG_ENABLED(grpc_http_trace)) {
+  if (grpc_http_trace.enabled()) {
     gpr_log(GPR_INFO, "Update hpack parser max size to %d", max_bytes);
   }
   while (tbl->mem_used > max_bytes) {
@@ -271,7 +269,7 @@ grpc_error* grpc_chttp2_hptbl_set_current_table_size(grpc_chttp2_hptbl* tbl,
     gpr_free(msg);
     return err;
   }
-  if (GRPC_TRACE_FLAG_ENABLED(grpc_http_trace)) {
+  if (grpc_http_trace.enabled()) {
     gpr_log(GPR_INFO, "Update hpack parser table size to %d", bytes);
   }
   while (tbl->mem_used > bytes) {
@@ -367,24 +365,4 @@ grpc_chttp2_hptbl_find_result grpc_chttp2_hptbl_find(
   }
 
   return r;
-}
-
-static size_t get_base64_encoded_size(size_t raw_length) {
-  static const uint8_t tail_xtra[3] = {0, 2, 3};
-  return raw_length / 3 * 4 + tail_xtra[raw_length % 3];
-}
-
-size_t grpc_chttp2_get_size_in_hpack_table(grpc_mdelem elem,
-                                           bool use_true_binary_metadata) {
-  const uint8_t* key_buf = GRPC_SLICE_START_PTR(GRPC_MDKEY(elem));
-  size_t key_len = GRPC_SLICE_LENGTH(GRPC_MDKEY(elem));
-  size_t overhead_and_key = 32 + key_len;
-  size_t value_len = GRPC_SLICE_LENGTH(GRPC_MDVALUE(elem));
-  if (grpc_key_is_binary_header(key_buf, key_len)) {
-    return overhead_and_key + (use_true_binary_metadata
-                                   ? value_len + 1
-                                   : get_base64_encoded_size(value_len));
-  } else {
-    return overhead_and_key + value_len;
-  }
 }

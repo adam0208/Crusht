@@ -81,24 +81,10 @@ class GrpcPolledFd {
   GRPC_ABSTRACT_BASE_CLASS
 };
 
-/* A GrpcPolledFdFactory is 1-to-1 with and owned by the
- * ares event driver. It knows how to create GrpcPolledFd's
- * for the current platform, and the ares driver uses it for all of
- * its fd's. */
-class GrpcPolledFdFactory {
- public:
-  virtual ~GrpcPolledFdFactory() {}
-  /* Creates a new wrapped fd for the current platform */
-  virtual GrpcPolledFd* NewGrpcPolledFdLocked(
-      ares_socket_t as, grpc_pollset_set* driver_pollset_set,
-      grpc_combiner* combiner) GRPC_ABSTRACT;
-  /* Optionally configures the ares channel after creation */
-  virtual void ConfigureAresChannelLocked(ares_channel channel) GRPC_ABSTRACT;
-
-  GRPC_ABSTRACT_BASE_CLASS
-};
-
-UniquePtr<GrpcPolledFdFactory> NewGrpcPolledFdFactory(grpc_combiner* combiner);
+/* Creates a new wrapped fd for the current platform */
+GrpcPolledFd* NewGrpcPolledFdLocked(ares_socket_t as,
+                                    grpc_pollset_set* driver_pollset_set);
+void ConfigureAresChannelLocked(ares_channel* channel);
 
 }  // namespace grpc_core
 

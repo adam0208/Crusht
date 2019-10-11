@@ -23,48 +23,44 @@
 
 #include "src/core/lib/channel/channel_args.h"
 #include "src/core/lib/channel/channel_stack.h"
-#include "src/core/lib/channel/channel_trace.h"
 #include "src/core/lib/channel/channelz.h"
+#include "src/core/lib/gprpp/inlined_vector.h"
 
 namespace grpc_core {
 
-class Subchannel;
+// TODO(ncteisen), this only contains the uuids of the children for now,
+// since that is all that is strictly needed. In a future enhancement we will
+// add human readable names as in the channelz.proto
+typedef InlinedVector<intptr_t, 10> ChildRefsList;
 
 namespace channelz {
 
-class SubchannelNode : public BaseNode {
+// Subtype of ChannelNode that overrides and provides client_channel specific
+// functionality like querying for connectivity_state and subchannel data.
+class ClientChannelNode : public ChannelNode {
  public:
-  SubchannelNode(Subchannel* subchannel, size_t channel_tracer_max_nodes);
-  ~SubchannelNode() override;
+  static RefCountedPtr<ChannelNode> MakeClientChannelNode(
+      grpc_channel* channel, size_t channel_tracer_max_nodes);
 
-  void MarkSubchannelDestroyed() {
-    GPR_ASSERT(subchannel_ != nullptr);
-    subchannel_ = nullptr;
-  }
+  // Override this functionality since client_channels have a notion of
+  // channel connectivity.
+  void PopulateConnectivityState(grpc_json* json) override;
 
-  grpc_json* RenderJson() override;
+  // Override this functionality since client_channels have subchannels
+  void PopulateChildRefs(grpc_json* json) override;
 
-  // proxy methods to composed classes.
-  void AddTraceEvent(ChannelTrace::Severity severity, const grpc_slice& data) {
-    trace_.AddTraceEvent(severity, data);
-  }
-  void AddTraceEventWithReference(ChannelTrace::Severity severity,
-                                  const grpc_slice& data,
-                                  RefCountedPtr<BaseNode> referenced_channel) {
-    trace_.AddTraceEventWithReference(severity, data,
-                                      std::move(referenced_channel));
-  }
-  void RecordCallStarted() { call_counter_.RecordCallStarted(); }
-  void RecordCallFailed() { call_counter_.RecordCallFailed(); }
-  void RecordCallSucceeded() { call_counter_.RecordCallSucceeded(); }
+  // Helper to create a channel arg to ensure this type of ChannelNode is
+  // created.
+  static grpc_arg CreateChannelArg();
+
+ protected:
+  GPRC_ALLOW_CLASS_TO_USE_NON_PUBLIC_DELETE
+  GPRC_ALLOW_CLASS_TO_USE_NON_PUBLIC_NEW
+  ClientChannelNode(grpc_channel* channel, size_t channel_tracer_max_nodes);
+  virtual ~ClientChannelNode() {}
 
  private:
-  void PopulateConnectivityState(grpc_json* json);
-
-  Subchannel* subchannel_;
-  UniquePtr<char> target_;
-  CallCountingHelper call_counter_;
-  ChannelTrace trace_;
+  grpc_channel_element* client_channel_;
 };
 
 }  // namespace channelz

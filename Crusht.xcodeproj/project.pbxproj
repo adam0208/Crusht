@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -131,7 +131,7 @@
 		28FD7D162264282B00B79496 /* BioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D152264282B00B79496 /* BioController.swift */; };
 		28FD7D1822642D4700B79496 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D1722642D4700B79496 /* PhotoController.swift */; };
 		28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE2D72216672000896198 /* FacebookCrushCell.swift */; };
-		93EA35963A0441CD6DC3A04D /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */; };
+		3346C346E45B8D6FA6B59A62 /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */; };
 		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
 		EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */; };
 /* End PBXBuildFile section */
@@ -244,7 +244,7 @@
 		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
 		28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushController.swift; sourceTree = "<group>"; };
 		28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTextFieldDropDown.swift; sourceTree = "<group>"; };
-		28BA4A7C2280399400525397 /* LaunchScreenCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenCrusht.png; path = ../../LaunchScreenCrusht.png; sourceTree = "<group>"; };
+		28BA4A7C2280399400525397 /* LaunchScreenCrusht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreenCrusht.png; sourceTree = "<group>"; };
 		28BA4A7E228039FF00525397 /* LaunchScreenCrusht XR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreenCrusht XR.png"; sourceTree = "<group>"; };
 		28BA4A8022803ABC00525397 /* LaunchScreenCrusht Xr Max land.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreenCrusht Xr Max land.png"; sourceTree = "<group>"; };
 		28BA4A8222803B0D00525397 /* LaunchScreenCrusht XSMax land copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreenCrusht XSMax land copy.png"; sourceTree = "<group>"; };
@@ -285,13 +285,13 @@
 		28FD7D152264282B00B79496 /* BioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioController.swift; sourceTree = "<group>"; };
 		28FD7D1722642D4700B79496 /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		28FDE2D72216672000896198 /* FacebookCrushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushCell.swift; sourceTree = "<group>"; };
-		36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
+		614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		88CEC1C899A7A479F2B97784 /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A1A0ED2C5A62100BB45399E9 /* Pods-Crusht.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.release.xcconfig"; path = "Pods/Target Support Files/Pods-Crusht/Pods-Crusht.release.xcconfig"; sourceTree = "<group>"; };
 		A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5E694249E63AA717CB3E9B1 /* Pods-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
+		ABF0827A56C8711CB8DC476F /* Pods-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
 		BE89E100C843D14F4320B7CD /* Pods-CrushtTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.release.xcconfig"; sourceTree = "<group>"; };
 		F1BF50EB51F6D239872AFDF1 /* Pods-Crusht.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Crusht/Pods-Crusht.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -317,7 +317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93EA35963A0441CD6DC3A04D /* Pods_CrushtUITests.framework in Frameworks */,
+				3346C346E45B8D6FA6B59A62 /* Pods_CrushtUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,8 +558,8 @@
 				A1A0ED2C5A62100BB45399E9 /* Pods-Crusht.release.xcconfig */,
 				5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */,
 				BE89E100C843D14F4320B7CD /* Pods-CrushtTests.release.xcconfig */,
-				36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */,
-				B5E694249E63AA717CB3E9B1 /* Pods-CrushtUITests.release.xcconfig */,
+				88CEC1C899A7A479F2B97784 /* Pods-CrushtUITests.debug.xcconfig */,
+				ABF0827A56C8711CB8DC476F /* Pods-CrushtUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -569,7 +569,7 @@
 			children = (
 				814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */,
 				A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */,
-				4E460A210D4F641BC67566F8 /* Pods_CrushtUITests.framework */,
+				614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -587,6 +587,7 @@
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
 				F603C36DF30ACBC8BE45C5FC /* [CP] Embed Pods Frameworks */,
+				10DEA401406EBE308D90A955 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -620,7 +621,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816F121B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "CrushtUITests" */;
 			buildPhases = (
-				B60DE9019BF16FBFC1FDB340 /* [CP] Check Pods Manifest.lock */,
+				D059AFD861FB853CFF6CD407 /* [CP] Check Pods Manifest.lock */,
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
@@ -755,6 +756,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		10DEA401406EBE308D90A955 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		205815491933167ADC528E57 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -816,7 +834,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B60DE9019BF16FBFC1FDB340 /* [CP] Check Pods Manifest.lock */ = {
+		D059AFD861FB853CFF6CD407 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -844,44 +862,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/CountryPickerSwift/CountryPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountryPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1225,7 +1214,7 @@
 		};
 		283816F221B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 36F9D78E43691F67C908EF8C /* Pods-CrushtUITests.debug.xcconfig */;
+			baseConfigurationReference = 88CEC1C899A7A479F2B97784 /* Pods-CrushtUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1246,7 +1235,7 @@
 		};
 		283816F321B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5E694249E63AA717CB3E9B1 /* Pods-CrushtUITests.release.xcconfig */;
+			baseConfigurationReference = ABF0827A56C8711CB8DC476F /* Pods-CrushtUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

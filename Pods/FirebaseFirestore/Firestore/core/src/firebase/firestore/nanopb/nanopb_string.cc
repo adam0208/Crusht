@@ -19,18 +19,12 @@
 #include <cstdlib>
 #include <utility>
 
-#include "Firestore/core/src/firebase/firestore/nanopb/nanopb_util.h"
-
 namespace firebase {
 namespace firestore {
 namespace nanopb {
 
-String::~String() {
-  std::free(bytes_);
-}
-
 /* static */ pb_bytes_array_t* String::MakeBytesArray(absl::string_view value) {
-  pb_size_t size = CheckedSize(value.size());
+  auto size = static_cast<pb_size_t>(value.size());
 
   // Allocate one extra byte for the null terminator that's not necessarily
   // there in a string_view. As long as we're making a copy, might as well

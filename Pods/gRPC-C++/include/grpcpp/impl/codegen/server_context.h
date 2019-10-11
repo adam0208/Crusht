@@ -26,14 +26,11 @@
 #include <grpc/impl/codegen/compression_types.h>
 
 #include <grpcpp/impl/codegen/call.h>
-#include <grpcpp/impl/codegen/call_op_set.h>
-#include <grpcpp/impl/codegen/callback_common.h>
 #include <grpcpp/impl/codegen/completion_queue_tag.h>
 #include <grpcpp/impl/codegen/config.h>
 #include <grpcpp/impl/codegen/create_auth_context.h>
 #include <grpcpp/impl/codegen/metadata_map.h>
 #include <grpcpp/impl/codegen/security/auth_context.h>
-#include <grpcpp/impl/codegen/server_interceptor.h>
 #include <grpcpp/impl/codegen/string_ref.h>
 #include <grpcpp/impl/codegen/time.h>
 
@@ -66,12 +63,9 @@ template <class ServiceType, class RequestType, class ResponseType>
 class ServerStreamingHandler;
 template <class ServiceType, class RequestType, class ResponseType>
 class BidiStreamingHandler;
-template <class ServiceType, class RequestType, class ResponseType>
-class CallbackUnaryHandler;
+class UnknownMethodHandler;
 template <class Streamer, bool WriteNeeded>
 class TemplatedBidiStreamingHandler;
-template <StatusCode code>
-class ErrorMethodHandler;
 class Call;
 }  // namespace internal
 
@@ -112,7 +106,7 @@ class ServerContext {
   /// Return a \a gpr_timespec representation of the server call's deadline.
   gpr_timespec raw_deadline() const { return deadline_; }
 
-  /// Add the (\a key, \a value) pair to the initial metadata
+  /// Add the (\a meta_key, \a meta_value) pair to the initial metadata
   /// associated with a server call. These are made available at the client side
   /// by the \a grpc::ClientContext::GetServerInitialMetadata() method.
   ///
@@ -120,13 +114,13 @@ class ServerContext {
   /// to the client (which can happen explicitly, or implicitly when sending a
   /// a response message or status to the client).
   ///
-  /// \param key The metadata key. If \a value is binary data, it must
+  /// \param meta_key The metadata key. If \a meta_value is binary data, it must
   /// end in "-bin".
-  /// \param value The metadata value. If its value is binary, the key name
+  /// \param meta_value The metadata value. If its value is binary, the key name
   /// must end in "-bin".
   void AddInitialMetadata(const grpc::string& key, const grpc::string& value);
 
-  /// Add the (\a key, \a value) pair to the initial metadata
+  /// Add the (\a meta_key, \a meta_value) pair to the initial metadata
   /// associated with a server call. These are made available at the client
   /// side by the \a grpc::ClientContext::GetServerTrailingMetadata() method.
   ///
@@ -134,13 +128,13 @@ class ServerContext {
   /// metadata to the client (which happens when the call is finished and a
   /// status is sent to the client).
   ///
-  /// \param key The metadata key. If \a value is binary data,
+  /// \param meta_key The metadata key. If \a meta_value is binary data,
   /// it must end in "-bin".
-  /// \param value The metadata value. If its value is binary, the key name
+  /// \param meta_value The metadata value. If its value is binary, the key name
   /// must end in "-bin".
   void AddTrailingMetadata(const grpc::string& key, const grpc::string& value);
 
-  /// IsCancelled is always safe to call when using sync or callback API.
+  /// IsCancelled is always safe to call when using sync API.
   /// When using async API, it is only safe to call IsCancelled after
   /// the AsyncNotifyWhenDone tag has been delivered.
   bool IsCancelled() const;
@@ -182,9 +176,9 @@ class ServerContext {
     return compression_level_;
   }
 
-  /// Set \a level to be the compression level used for the server call.
+  /// Set \a algorithm to be the compression algorithm used for the server call.
   ///
-  /// \param level The compression level used for the server call.
+  /// \param algorithm The compression algorithm used for the server call.
   void set_compression_level(grpc_compression_level level) {
     compression_level_set_ = true;
     compression_level_ = level;
@@ -232,8 +226,6 @@ class ServerContext {
   /// Async only. Has to be called before the rpc starts.
   /// Returns the tag in completion queue when the rpc finishes.
   /// IsCancelled() can then be called to check whether the rpc was cancelled.
-  /// TODO(vjpai): Fix this so that the tag is returned even if the call never
-  /// starts (https://github.com/grpc/grpc/issues/10136).
   void AsyncNotifyWhenDone(void* tag) {
     has_notify_when_done_tag_ = true;
     async_notify_when_done_tag_ = tag;
@@ -270,10 +262,7 @@ class ServerContext {
   friend class ::grpc::internal::ServerStreamingHandler;
   template <class Streamer, bool WriteNeeded>
   friend class ::grpc::internal::TemplatedBidiStreamingHandler;
-  template <class ServiceType, class RequestType, class ResponseType>
-  friend class ::grpc::internal::CallbackUnaryHandler;
-  template <StatusCode code>
-  friend class internal::ErrorMethodHandler;
+  friend class ::grpc::internal::UnknownMethodHandler;
   friend class ::grpc::ClientContext;
 
   /// Prevent copying.
@@ -282,7 +271,7 @@ class ServerContext {
 
   class CompletionOp;
 
-  void BeginCompletionOp(internal::Call* call, bool callback);
+  void BeginCompletionOp(internal::Call* call);
   /// Return the tag queued by BeginCompletionOp()
   internal::CompletionQueueTag* GetCompletionOpTag();
 
@@ -290,37 +279,18 @@ class ServerContext {
 
   void set_call(grpc_call* call) { call_ = call; }
 
-  void BindDeadlineAndMetadata(gpr_timespec deadline, grpc_metadata_array* arr);
-
-  void Clear();
-
-  void Setup(gpr_timespec deadline);
-
   uint32_t initial_metadata_flags() const { return 0; }
-
-  experimental::ServerRpcInfo* set_server_rpc_info(
-      const char* method,
-      const std::vector<
-          std::unique_ptr<experimental::ServerInterceptorFactoryInterface>>&
-          creators) {
-    if (creators.size() != 0) {
-      rpc_info_ = new experimental::ServerRpcInfo(this, method);
-      rpc_info_->RegisterInterceptors(creators);
-    }
-    return rpc_info_;
-  }
 
   CompletionOp* completion_op_;
   bool has_notify_when_done_tag_;
   void* async_notify_when_done_tag_;
-  internal::CallbackWithSuccessTag completion_tag_;
 
   gpr_timespec deadline_;
   grpc_call* call_;
   CompletionQueue* cq_;
   bool sent_initial_metadata_;
   mutable std::shared_ptr<const AuthContext> auth_context_;
-  mutable internal::MetadataMap client_metadata_;
+  internal::MetadataMap client_metadata_;
   std::multimap<grpc::string, grpc::string> initial_metadata_;
   std::multimap<grpc::string, grpc::string> trailing_metadata_;
 
@@ -332,8 +302,6 @@ class ServerContext {
                       internal::CallOpSendMessage>
       pending_ops_;
   bool has_pending_ops_;
-
-  experimental::ServerRpcInfo* rpc_info_;
 };
 
 }  // namespace grpc

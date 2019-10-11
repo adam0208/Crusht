@@ -60,10 +60,10 @@ CompletionQueue::NextStatus CompletionQueue::AsyncNextInternal(
       case GRPC_QUEUE_SHUTDOWN:
         return SHUTDOWN;
       case GRPC_OP_COMPLETE:
-        auto core_cq_tag = static_cast<internal::CompletionQueueTag*>(ev.tag);
+        auto cq_tag = static_cast<internal::CompletionQueueTag*>(ev.tag);
         *ok = ev.success != 0;
-        *tag = core_cq_tag;
-        if (core_cq_tag->FinalizeResult(tag, ok)) {
+        *tag = cq_tag;
+        if (cq_tag->FinalizeResult(tag, ok)) {
           return GOT_EVENT;
         }
         break;
@@ -87,9 +87,9 @@ bool CompletionQueue::CompletionQueueTLSCache::Flush(void** tag, bool* ok) {
   flushed_ = true;
   if (grpc_completion_queue_thread_local_cache_flush(cq_->cq_, &res_tag,
                                                      &res)) {
-    auto core_cq_tag = static_cast<internal::CompletionQueueTag*>(res_tag);
+    auto cq_tag = static_cast<internal::CompletionQueueTag*>(res_tag);
     *ok = res == 1;
-    if (core_cq_tag->FinalizeResult(tag, ok)) {
+    if (cq_tag->FinalizeResult(tag, ok)) {
       return true;
     }
   }
