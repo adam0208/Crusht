@@ -16,8 +16,7 @@ import UserNotifications
 
 class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocationManagerDelegate {
     
-    override func viewWillDisappear(_ animated: Bool)
-    {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.isNavigationBarHidden = true
     }
@@ -28,6 +27,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         refreshLabel.isHidden = true
         navigationController?.isNavigationBarHidden = true
         
+        topCardView = nil
+        lastFetchedDocument = nil
+        fetchedAllUsers = false
     }
     
     fileprivate var crushScore: CrushScore?
@@ -222,16 +224,12 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     var radiusInt = Double()
     
-    func fetchUsersFromFirestore() {
-        
+    func fetchMoreNearbyUsers() {
         
         let minAge = user?.minSeekingAge ?? 18
         let maxAge = user?.maxSeekingAge ?? 50
         
-     
-        
         radiusInt = (Double(user?.maxDistance ?? 10)/1.609344)
-        
         
         let geoFirestoreRef = Firestore.firestore().collection("users")
         let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
@@ -239,9 +237,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let userCenter = CLLocation(latitude: userLat, longitude: userLong)
         
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: radiusInt)
-
-        topCardView = nil
-        
 
         radiusQuery.observe(.documentEntered) { (key, location) in
              if let key = key, let loc = location {
@@ -336,27 +331,36 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     var isRightSex = Bool()
     
-    fileprivate func fetchSchoolUsersOnly() {
-        Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").getDocuments { (snapshot, err) in
+    fileprivate func fetchMoreSchoolUsers() {
+        guard !fetchingMoreUsers else { return }
+        fetchingMoreUsers = true
+        var query: Query
+        if let lastFetchedDocument = lastFetchedDocument {
+            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").start(afterDocument: lastFetchedDocument).limit(to: 8)
+        } else {
+            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").limit(to: 8)
+        }
+        
+        query.getDocuments { (snapshot, err) in
             if let err = err {
                 print(err, "noooo")
                 self.refreshLabel.text = "Failed to Fetch User \(err)"
                 return
             }
             
-            print(snapshot, "wzzzzup")
+            guard let snapshot = snapshot else { return }
             
-            print("hello")
+            if snapshot.documents.count == 0 {
+                self.fetchedAllUsers = true
+                return
+            }
             
-            self.topCardView = nil
+            var previousCardView = self.topCardView?.lastCardView
             
-            var previousCardView: CardView?
-            
-            snapshot?.documents.forEach({ (documentSnapshot) in
-            print("hey")
+            self.lastFetchedDocument = snapshot.documents.last
+            snapshot.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
-                print(user.age, "YoYo")
                 // if user.uid != Auth.auth().currentUser?.uid {
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                 let hasNotSwipedBefore = self.swipes[user.uid!] == nil
@@ -386,7 +390,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     previousCardView = cardView
                     
                     
-                    
                     if self.topCardView == nil {
                         self.topCardView = cardView
                     }
@@ -396,19 +399,24 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                 
             })
             
+            self.fetchingMoreUsers = false
+            if self.topCardView == nil, snapshot.documents.count > 0 {
+                self.fetchMoreSchoolUsers()
+            }
+            
         }
     }
     
     var topCardView: CardView?
+    var lastFetchedDocument: QueryDocumentSnapshot? = nil
+    var fetchingMoreUsers = false
+    var fetchedAllUsers = false
     
     @objc func handleLike() {
-        
         saveSwipeToFireStore(didLike: 1)
-        
         addCrushScore()
-        
         performSwipeAnimation(translation: 700, angle: 15)
-        
+        fetchMoreUsersIfNecessary()
     }
     
     fileprivate func saveSwipeToFireStore(didLike: Int) {
@@ -733,6 +741,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     @objc func handleDislike() {
         saveSwipeToFireStore(didLike: 0)
         performSwipeAnimation(translation: -700, angle: -15)
+        fetchMoreUsersIfNecessary()
     }
     
     let refreshLabel: UILabel = {
@@ -769,6 +778,16 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         cardView?.layer.add(rotationAnimation, forKey: "rotation")
         
         CATransaction.commit()
+    }
+    
+    private func fetchMoreUsersIfNecessary() {
+        if topCardView?.nextCardView == nil {
+            if topStackView.collegeOnlySwitch.isOn {
+                fetchMoreSchoolUsers()
+            } else {
+                fetchMoreNearbyUsers()
+            }
+        }
     }
     
     func didRemoveCard(cardView: CardView) {
@@ -808,14 +827,12 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     //func bellow handles fetchusers on load -little improv
     fileprivate func fetchUsersOnLoad() {
         cardDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchUsersFromFirestore()
-        
+        fetchMoreNearbyUsers()
     }
     
     fileprivate func fetchSchoolUsersCall() {
         cardDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchSchoolUsersOnly()
-        
+        fetchMoreSchoolUsers()
     }
     
     //MARK:- Fileprivate
@@ -849,17 +866,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     @objc fileprivate func switchValueDidChange() {
+        topCardView = nil
+        lastFetchedDocument = nil
+        fetchedAllUsers = false
         
-        if topStackView.collegeOnlySwitch.isOn == true {
-        fetchSchoolUsersCall()
-        }
-        else{
-            
+        if topStackView.collegeOnlySwitch.isOn {
+            fetchSchoolUsersCall()
+        } else {
             fetchUsersOnLoad()
-            
-            
         }
     }
 
 }
-

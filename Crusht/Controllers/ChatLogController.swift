@@ -42,15 +42,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         didSet {
             navigationItem.title = user?.name
             if messages.isEmpty == true {
-                self.observeMessages()
-                self.observeMoreMessages()
+                self.observeSentMessages()
+                self.observeReceivedMessages()
             } else {
-            messages.removeAll()
-            self.observeMessages()
-            self.observeMoreMessages()
+                messages.removeAll()
+                self.observeSentMessages()
+                self.observeReceivedMessages()
             }
         }
     }
+    
+    var messages = [Message]()
+    var fromName: String?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated);
@@ -107,9 +110,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                     let docID = documentSnapshot.documentID
                     Firestore.firestore().collection("messages").document(docID).delete()
                 
-//                self.hud.textLabel.text = "This user can't harm you anymore. You're safe now."
-//                self.hud.show(in: self.view)
-//                self.hud.dismiss(afterDelay: 2.1)
+                    //self.hud.textLabel.text = "This user can't harm you anymore. You're safe now."
+                    //self.hud.show(in: self.view)
+                    //self.hud.dismiss(afterDelay: 2.1)
                 
                      self.handleback()
                 
@@ -117,59 +120,19 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             })
         }
     
-    
-    var messages = [Message]()
-    
-    var fromName: String?
-    
-    func observeMoreMessages() {
-        //guard let uid = Auth.auth().currentUser?.uid else {return}
+    func observeSentMessages() {
         let toId = user!.uid!
         let fromId = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
-                self.handleback()
-                return
-            }
-            snapshot?.documents.forEach({ (documentSnapshot) in
-                
-                Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
-                    snapshot?.documents.forEach({ (documentSnapshot) in
-                        if let err = err {
-                            self.handleback()
-                        }
-                        let userDictionary = documentSnapshot.data()
-                        let message = Message(dictionary: userDictionary)
-                        if message.chatPartnerId() == self.user?.uid {
-                            self.messages.append(message)
-                            self.messages.sort(by: { (message1, message2) -> Bool in
-                                return message1.timestamp?.int32Value < message2.timestamp?.int32Value
-                            })
-                            
-                            DispatchQueue.main.async(execute: {
-                                self.collectionView?.reloadData()
-                                
-                                //scroll to the last index
-                                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                                
-                                
-                                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                                    
-                                
-                            
-                            })
-                        }
-                    })
-                    
-                })
-            })
-        })
+        observeMessages(fromId: fromId, toId: toId)
     }
     
-    func observeMessages() {
-        //guard let uid = Auth.auth().currentUser?.uid else {return}
-        let toId = user!.uid!
-        let fromId = Auth.auth().currentUser!.uid
+    func observeReceivedMessages() {
+        let toId = Auth.auth().currentUser!.uid
+        let fromId = user!.uid!
+        observeMessages(fromId: fromId, toId: toId)
+    }
+    
+    func observeMessages(fromId: String, toId: String) {
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
             if let err = err {
                 self.handleback()
@@ -192,14 +155,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                             
                             DispatchQueue.main.async(execute: {
                                 self.collectionView?.reloadData()
-                                
                                 let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                                
-                                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                                
                             })
-                            
-                            
                         }
                     })
                     
@@ -249,8 +208,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                     }
                     if (diff.type == .modified) {
                         self.messages.removeAll()
-                        self.observeMessages()
-                        self.observeMoreMessages()
+                        self.observeSentMessages()
+                        self.observeReceivedMessages()
                     }
                     if (diff.type == .removed) {
                     }
@@ -342,8 +301,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     @objc func handleReloadTable() {
         messages.removeAll()
-        observeMessages()
-        observeMoreMessages()
+        self.observeSentMessages()
+        self.observeReceivedMessages()
         
         
         
@@ -565,8 +524,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         dismiss(animated: true, completion: nil)
     }
     
-    
-    
     override var inputAccessoryView: UIView? {
         get {
             return inputContainerView
@@ -690,6 +647,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         }
         let width = UIScreen.main.bounds.width
         return CGSize(width: width, height: height)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row > messages.count - 1 {
+            observeSentMessages()
+            observeReceivedMessages()
+        }
     }
     
     fileprivate func setupCell(_ cell: ChatMessageCell, message: Message) {
@@ -839,10 +803,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                                 //just flip toID and Fromid
                                 
                                 self.messages.removeAll()
-                                self.observeMoreMessages()
-                                self.observeMessages()
-                                
-                                
+                                self.observeReceivedMessages()
+                                self.observeSentMessages()
                             }
                             else{
                                 print("DOC DOESN't exist yet")

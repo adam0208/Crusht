@@ -231,6 +231,13 @@ class CardView: UIView {
         
     }
     
+    var lastCardView: CardView {
+        if let nextCardView = nextCardView {
+            return nextCardView.lastCardView
+        }
+        return self
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

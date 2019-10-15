@@ -132,6 +132,7 @@
 		28FD7D1822642D4700B79496 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D1722642D4700B79496 /* PhotoController.swift */; };
 		28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE2D72216672000896198 /* FacebookCrushCell.swift */; };
 		3346C346E45B8D6FA6B59A62 /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */; };
+		4C60BD6E235630A900B59D35 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60BD6D235630A900B59D35 /* LoadingCell.swift */; };
 		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
 		EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */; };
 /* End PBXBuildFile section */
@@ -285,6 +286,7 @@
 		28FD7D152264282B00B79496 /* BioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioController.swift; sourceTree = "<group>"; };
 		28FD7D1722642D4700B79496 /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		28FDE2D72216672000896198 /* FacebookCrushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushCell.swift; sourceTree = "<group>"; };
+		4C60BD6D235630A900B59D35 /* LoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
 		614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -430,6 +432,7 @@
 		283816F421B8926F00B3E4FD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4C60BD6D235630A900B59D35 /* LoadingCell.swift */,
 				2838170021B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift */,
 				2838170221B8A0A700B3E4FD /* CardView.swift */,
 				2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */,
@@ -898,6 +901,7 @@
 				2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
 				2895576F227E644F001EFD73 /* UserBarCell.swift in Sources */,
+				4C60BD6E235630A900B59D35 /* LoadingCell.swift in Sources */,
 				28FD7D1022641FB100B79496 /* EnterNameController.swift in Sources */,
 				28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,

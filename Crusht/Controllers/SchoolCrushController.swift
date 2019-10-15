@@ -40,8 +40,11 @@ protocol SchoolDelegate {
 
 class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
     
+    var fetchedAllUsers = false
+    var fetchingMoreUsers = false
+    var lastFetchedDocument: QueryDocumentSnapshot? = nil
+    
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
         
@@ -50,27 +53,31 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
   
+        fetchedAllUsers = false
+        lastFetchedDocument = nil
         schoolArray.removeAll()
+        tableView.reloadSections(IndexSet(integer: 0), with: .none)
         fetchCurrentUser()
     }
     
-    fileprivate func handleReload () {
-        schoolArray.removeAll()
-        fetchCurrentUser()
-    }
-    
-     var schoolDelegate: SchoolDelegate?
+    var schoolDelegate: SchoolDelegate?
     
     func didSaveSettings() {
+        fetchedAllUsers = false
+        lastFetchedDocument = nil
         schoolArray.removeAll()
+        tableView.reloadSections(IndexSet(integer: 0), with: .none)
         fetchCurrentUser()
     }
     
-  
     func didFinishLoggingIn() {
+        fetchedAllUsers = false
+        lastFetchedDocument = nil
         schoolArray.removeAll()
+        tableView.reloadSections(IndexSet(integer: 0), with: .none)
         fetchCurrentUser()
     }
+    
     //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
   
     fileprivate var crushScore: CrushScore?
@@ -128,22 +135,21 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
 
    
-    
+    let cellId = "cellId"
+    let loadingCellId = "loadingCellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
         
-        let cellId = "cellId"
-       
         
-        fetchCurrentUser()
         //        navigationItem.leftItemsSupplementBackButton = true
         //        navigationItem.leftBarButtonItem?.title = "👈"
         //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
         //navigationItem.title = "School"
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
         
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
         let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
@@ -177,8 +183,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
             self.animationView.removeFromSuperview()
         }
-    
-        
     }
     
     @objc fileprivate func handleInfo() {
@@ -306,9 +310,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         tableView.reloadData()
     }
     
-    
- 
-    
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
@@ -353,33 +354,37 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     var schoolUserDictionary = [String: User]()
     
     fileprivate func fetchSchool() {
+        guard !fetchedAllUsers, !fetchingMoreUsers else { return }
+        fetchingMoreUsers = true
+        tableView.reloadSections(IndexSet(integer: 1), with: .none)
+        
         let school = user?.school ?? "Your School"
-        
-        
         navigationItem.title = school
-        
-        
-        let query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").start(at: ["A"])
+        var query: Query
+        if let lastFetchedDocument = lastFetchedDocument {
+            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").start(afterDocument: lastFetchedDocument).limit(to: 8)
+        } else {
+            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").limit(to: 8)
+        }
         
         //chagne logic where gender variable is just the where field firebase thing
-        
-        
-        
         query.getDocuments { (snapshot, err) in
-            if let err = err {
-          
+            guard err == nil, let snapshot = snapshot else { return }
+            
+            if snapshot.documents.count == 0 {
+                self.fetchedAllUsers = true
+                self.fetchingMoreUsers = false
+                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
                 return
             }
             
-            snapshot?.documents.forEach({ (documentSnapshot) in
+            self.lastFetchedDocument = snapshot.documents.last
+            snapshot.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
-                var crush = User(dictionary: userDictionary)
+                let crush = User(dictionary: userDictionary)
                 let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
                 
                 let sexPref = self.user?.sexPref
-                
-                
-                
                 if sexPref == "Female" {
                     self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
                 }
@@ -390,14 +395,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                     self.isRightSex = crush.school == self.user?.school
                 }
                 
-                
-                
                 let maxAge = crush.age < ((self.user?.age)! + 5)
-                
                 let minAge = crush.age > ((self.user?.age)! - 5)
                 
                 if isNotCurrentUser && minAge && maxAge && self.isRightSex {
-                    
                     //                    self.indexSchoolNames.append(String(crush.name!.prefix(1)))
                     //                    for indexSchoolName in self.indexSchoolNames {
                     //
@@ -416,9 +417,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                     //                self.indexSchoolNames = self.indexSchoolNames.sorted()
                     
                     self.schoolArray.append(crush)
-                    
-                    
-                    
                 }
                 
                 
@@ -432,14 +430,12 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 
             })
             
-            
             DispatchQueue.main.async(execute: {
+                self.fetchingMoreUsers = false
                 self.tableView.reloadData()
-                
             })
             
             self.fetchSwipes()
-            
         }
         
     }
@@ -655,8 +651,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             self.swipes = data
             
             self.fetchMoreSwipes()
-            
-            
         }
     }
     
@@ -929,88 +923,87 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     // MARK: - Table view data source
-    //    override func numberOfSections(in tableView: UITableView) -> Int {
-    //        return 1
-    //    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 65.0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if isFiltering() {
-            return users.count
-        }
-        
-        if schoolArray.isEmpty == true {
+        if section == 0 {
+            if isFiltering() {
+                return users.count
+            }
+            if schoolArray.isEmpty {
+                return 1
+            }
+            return schoolArray.count
+            
+        } else if section == 1 && fetchingMoreUsers {
             return 1
         }
         
-        return schoolArray.count
-        
+        return 0
     }
     
-    let cellId = "cellId"
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.clear
+        if indexPath.row == schoolArray.count - 1 && !isFiltering() {
+            fetchSchool()
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
-        
-        cellL.link = self
-        
-        if schoolArray.isEmpty == false {
-        
-        if isFiltering() {
-            let crush = users[indexPath.row]
-            cellL.textLabel?.text = crush.name
-            let imageUrl = crush.imageUrl1!
-            let url = URL(string: imageUrl)
-            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                cellL.profileImageView.image = image
-            }
-        } else {
-            let crush = schoolArray[indexPath.row]
-            cellL.textLabel?.text = crush.name
-            let imageUrl = crush.imageUrl1!
-            let url = URL(string: imageUrl)
-            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                cellL.profileImageView.image = image
-            }
-        }
-        
-        
-        //        if hasFavorited == true {
-        //        cellL.starButton.tintColor = .red
-        //        }
-        //        else {
-        //            cellL.starButton.tintColor = .gray
-        //        }
-        
-        let crush = schoolArray[indexPath.row]
-        
-        let hasLiked = swipes[crush.phoneNumber ?? ""] as? Int == 1
-        
-        let swipeLike = locationSwipes[crush.uid ?? ""] as? Int == 1
-        
-        if hasLiked || swipeLike{
-            cellL.accessoryView?.tintColor = .red
-            hasFavorited = true
-        }
-        else{
-            cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
-        }
-   
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        if indexPath.section == 0 {
+            let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
+            cellL.link = self
+            
+            if !schoolArray.isEmpty {
+                if isFiltering() {
+                    let crush = users[indexPath.row]
+                    cellL.textLabel?.text = crush.name
+                    let imageUrl = crush.imageUrl1!
+                    let url = URL(string: imageUrl)
+                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                        cellL.profileImageView.image = image
+                    }
+                } else {
+                    let crush = schoolArray[indexPath.row]
+                    cellL.textLabel?.text = crush.name
+                    let imageUrl = crush.imageUrl1!
+                    let url = URL(string: imageUrl)
+                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                        cellL.profileImageView.image = image
+                    }
+                }
                 
-                if self.schoolArray.isEmpty == true {
-                    cellL.textLabel?.text = "No classmates to show 😔"
-                    cellL.accessoryView?.isHidden = true
+                let crush = schoolArray[indexPath.row]
+                let hasLiked = swipes[crush.phoneNumber ?? ""] == 1
+                let swipeLike = locationSwipes[crush.uid ?? ""] == 1
+                
+                if hasLiked || swipeLike {
+                    cellL.accessoryView?.tintColor = .red
+                    hasFavorited = true
+                } else {
+                    cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
+                }
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    if self.schoolArray.isEmpty {
+                        cellL.textLabel?.text = "No classmates to show 😔"
+                        cellL.accessoryView?.isHidden = true
+                    }
                 }
             }
-
+            return cellL
+        } else { // Set up loading cell
+            let loadingCell = tableView.dequeueReusableCell(withIdentifier: loadingCellId, for: indexPath) as! LoadingCell
+            loadingCell.spinner.startAnimating()
+            return loadingCell
         }
-    return cellL
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -1047,30 +1040,18 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     // pass cell as a parameter to deal with it turning red
     
     func handleLike(cell: UITableViewCell) {
-        
         saveSwipeToFireStore(didLike: 1)
         addCrushScore()
-        
         cell.accessoryView?.tintColor = .red
-        
-        
-        
     }
     
     func handleDislike(cell: UITableViewCell) {
-        
         saveSwipeToFireStore(didLike: 0)
-        
         cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-        
     }
     
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = UIColor.clear
     }
     
     //Searchbar stuff

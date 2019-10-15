@@ -38,25 +38,29 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 //This controller shows users in bar which they have joined
 
 class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate {
+    
+    var fetchedAllUsers = false
+    var fetchingMoreUsers = false
+    var lastFetchedDocument: QueryDocumentSnapshot? = nil
+    
     func didSaveSettings() {
+        fetchedAllUsers = false
+        lastFetchedDocument = nil
         barsArray.removeAll()
+        tableView.reloadSections(IndexSet(integer: 0), with: .none)
         fetchCurrentUser()
     }
         
         override func viewWillAppear(_ animated: Bool) {
-            
             super.viewWillAppear(animated)
             navigationController?.navigationBar.prefersLargeTitles = false
             
+            fetchedAllUsers = false
+            lastFetchedDocument = nil
             barsArray.removeAll()
+            tableView.reloadSections(IndexSet(integer: 0), with: .none)
             fetchCurrentUser()
         }
-    
-    fileprivate func handleReload() {
-        barsArray.removeAll()
-        fetchCurrentUser()
-    }
-        
     
         //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
         
@@ -107,9 +111,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            
-            let cellId = "cellId"
-            
      
             //        navigationItem.leftItemsSupplementBackButton = true
             //        navigationItem.leftBarButtonItem?.title = "👈"
@@ -117,7 +118,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         
             //navigationItem.title = "School"
             tableView.register(UserBarCell.self, forCellReuseIdentifier: cellId)
-            
+            tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
             
             listenForMessages()
             
@@ -234,9 +235,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             tableView.reloadData()
         }
-        
-        
-        
+    
         
         fileprivate func fetchCurrentUser() {
             guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -256,7 +255,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 
                 
                 //self.fetchSwipes()
-                self.fetchUsersInBar()
+                self.fetchMoreUsersInBar()
             }
         }
         
@@ -274,33 +273,39 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         var schoolUserDictionary = [String: User]()
     
         //fetching users within the bar that you are in
-        //PLEASE PAGINATE THIS
     
-        fileprivate func fetchUsersInBar() {
-            
+        fileprivate func fetchMoreUsersInBar() {
+            guard !fetchedAllUsers, !fetchingMoreUsers else { return }
+            fetchingMoreUsers = true
+            tableView.reloadSections(IndexSet(integer: 1), with: .none)
             navigationItem.title = "\(barName) (Joined)"
             
-            
-            let query = Firestore.firestore().collection("users").whereField("CurrentVenue", isEqualTo: barName).order(by: "Full Name").start(at: ["A"])
+            var query: Query
+            if let lastFetchedDocument = lastFetchedDocument {
+                query = Firestore.firestore().collection("users").whereField("CurrentVenue", isEqualTo: barName).order(by: "Full Name").start(afterDocument: lastFetchedDocument).limit(to: 8)
+            } else {
+                query = Firestore.firestore().collection("users").whereField("CurrentVenue", isEqualTo: barName).order(by: "Full Name").limit(to: 8)
+            }
             
             //chagne logic where gender variable is just the where field firebase thing
             
-            
-            
             query.getDocuments { (snapshot, err) in
-                if let err = err {
+                guard err == nil, let snapshot = snapshot else { return }
                 
+                if snapshot.documents.count == 0 {
+                    self.fetchedAllUsers = true
+                    self.fetchingMoreUsers = false
+                    self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
                     return
                 }
                 
-                snapshot?.documents.forEach({ (documentSnapshot) in
+                self.lastFetchedDocument = snapshot.documents.last
+                snapshot.documents.forEach({ (documentSnapshot) in
                     let userDictionary = documentSnapshot.data()
                     var crush = User(dictionary: userDictionary)
                     let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
                     
                     let sexPref = self.user?.sexPref
-                    
-                    
                     
                     if sexPref == "Female" {
                         self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
@@ -312,32 +317,21 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                         self.isRightSex = crush.school == self.user?.school
                     }
                     
-                    
-                    
                     let maxAge = crush.age < ((self.user?.age)! + 5)
-                    
                     let minAge = crush.age > ((self.user?.age)! - 5)
                     
                     if isNotCurrentUser && minAge && maxAge && self.isRightSex {
-                        
-                        
                         self.barsArray.append(crush)
-                        
-                        
                     }
-                    
-          
                     
                 })
                 
-                
                 DispatchQueue.main.async(execute: {
+                    self.fetchingMoreUsers = false
                     self.tableView.reloadData()
-                    
                 })
                 
                 self.fetchSwipes()
-                
             }
             
         }
@@ -816,80 +810,80 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         }
         
         // MARK: - Table view data source
-        //    override func numberOfSections(in tableView: UITableView) -> Int {
-        //        return 1
-        //    }
+        override func numberOfSections(in tableView: UITableView) -> Int {
+            return 2
+        }
         
         override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 65.0
         }
         
         override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            
-            if isFiltering() {
-                return users.count
+            if section == 0 {
+                return isFiltering() ? users.count : barsArray.count
+            } else if section == 1 && fetchingMoreUsers {
+                return 1
+            } else {
+                return 0
             }
-            
-            return barsArray.count
-            
         }
         
         let cellId = "cellId"
+        let loadingCellId = "loadingCellId"
         
         override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserBarCell
-            
-            cellL.link = self
-            
-            if barsArray.isEmpty == false {
-            
-            if isFiltering() {
-                let crush = users[indexPath.row]
-                cellL.textLabel?.text = crush.name
-                let imageUrl = crush.imageUrl1!
-                let url = URL(string: imageUrl)
-                SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                    cellL.profileImageView.image = image
-                }
-            } else {
-                let crush = barsArray[indexPath.row]
-                cellL.textLabel?.text = crush.name
-                let imageUrl = crush.imageUrl1!
-                let url = URL(string: imageUrl)
-                SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                    cellL.profileImageView.image = image
-                }
-            }
-            
-            
-            //        if hasFavorited == true {
-            //        cellL.starButton.tintColor = .red
-            //        }
-            //        else {
-            //            cellL.starButton.tintColor = .gray
-            //        }
-            
-            let crush = barsArray[indexPath.row]
-            
-            let hasLiked = swipes[crush.phoneNumber ?? ""] as? Int == 1
-            
-            let swipeLike = locationSwipes[crush.uid ?? ""] as? Int == 1
-            
-            if hasLiked || swipeLike{
-                cellL.accessoryView?.tintColor = .red
-                hasFavorited = true
-            }
-            else{
-                cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-            }
-           
-            } else {
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
+            if indexPath.section == 0 {
+                let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserBarCell
+                cellL.link = self
+                if !barsArray.isEmpty {
+                
+                    if isFiltering() {
+                        let crush = users[indexPath.row]
+                        cellL.textLabel?.text = crush.name
+                        let imageUrl = crush.imageUrl1!
+                        let url = URL(string: imageUrl)
+                        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                            cellL.profileImageView.image = image
+                        }
+                    } else {
+                        let crush = barsArray[indexPath.row]
+                        cellL.textLabel?.text = crush.name
+                        let imageUrl = crush.imageUrl1!
+                        let url = URL(string: imageUrl)
+                        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                            cellL.profileImageView.image = image
+                        }
+                    }
+                        
+                    let crush = barsArray[indexPath.row]
+                    let hasLiked = swipes[crush.phoneNumber ?? ""] == 1
+                    let swipeLike = locationSwipes[crush.uid ?? ""] == 1
                     
-                })
+                    if hasLiked || swipeLike{
+                        cellL.accessoryView?.tintColor = .red
+                        hasFavorited = true
+                    } else {
+                        cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+                    }
+                } else {
+                    DispatchQueue.main.async(execute: {
+                        self.tableView.reloadData()
+                        
+                    })
+                }
+                return cellL
+            } else { // Set up loading cell
+                let loadingCell = tableView.dequeueReusableCell(withIdentifier: loadingCellId, for: indexPath) as! LoadingCell
+                loadingCell.spinner.startAnimating()
+                return loadingCell
             }
-        return cellL
+        }
+    
+        override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            cell.backgroundColor = UIColor.clear
+            if indexPath.row == barsArray.count - 1 && !isFiltering() {
+                fetchMoreUsersInBar()
+            }
         }
         
         override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -950,10 +944,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             dismiss(animated: true)
         }
         
-        override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-            cell.backgroundColor = UIColor.clear
-        }
-        
         //Searchbar stuff
         
         let searchController = UISearchController(searchResultsController: nil)
@@ -963,6 +953,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         }
         
     }
+
     
     extension UsersInBarTableView: UISearchResultsUpdating {
         // MARK: - UISearchResultsUpdating Delegate
