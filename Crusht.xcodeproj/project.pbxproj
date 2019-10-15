@@ -68,7 +68,7 @@
 		28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */; };
 		28857CE021B9B95900A654A0 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CDF21B9B95900A654A0 /* Bindable.swift */; };
 		288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288C87CC21F28C25000B5058 /* SchoolCrushes.swift */; };
-		28908D8821C0AB2C00391A39 /* ExpandableNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8721C0AB2C00391A39 /* ExpandableNames.swift */; };
+		28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */; };
 		28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8921C0AB6400391A39 /* ContactsCell.swift */; };
 		28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */; };
 		28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */; };
@@ -221,7 +221,7 @@
 		28857CDD21B9B8CD00A654A0 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		28857CDF21B9B95900A654A0 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		288C87CC21F28C25000B5058 /* SchoolCrushes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushes.swift; sourceTree = "<group>"; };
-		28908D8721C0AB2C00391A39 /* ExpandableNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableNames.swift; sourceTree = "<group>"; };
+		28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableContacts.swift; sourceTree = "<group>"; };
 		28908D8921C0AB6400391A39 /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindCrushesTableViewController.swift; sourceTree = "<group>"; };
 		28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewController.swift; sourceTree = "<group>"; };
@@ -472,7 +472,7 @@
 			isa = PBXGroup;
 			children = (
 				2838171D21B8C90100B3E4FD /* Extension.swift */,
-				28908D8721C0AB2C00391A39 /* ExpandableNames.swift */,
+				28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */,
 				28744A2021FF8BC800B438A8 /* GeoFire.swift */,
 				28711AAF220BABC400DD82EB /* SearchFooter.swift */,
 			);
@@ -942,7 +942,7 @@
 				28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */,
 				28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */,
 				2838171E21B8C90100B3E4FD /* Extension.swift in Sources */,
-				28908D8821C0AB2C00391A39 /* ExpandableNames.swift in Sources */,
+				28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */,
 				2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */,
 				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,
 				28857CE021B9B95900A654A0 /* Bindable.swift in Sources */,

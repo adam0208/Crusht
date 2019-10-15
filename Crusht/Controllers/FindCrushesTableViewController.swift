@@ -16,7 +16,23 @@ import GeoFire
 
 class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate, UITabBarControllerDelegate {
     
-    let schoolController = SchoolCrushController()
+    var expandableContacts = ExpandableContacts(isExpanded: true, contacts: [])
+    lazy var filteredExpandableContacts = ExpandableContacts(isExpanded: true, contacts: [])
+    
+    var users = [User]()
+    var user: User?
+    
+    fileprivate var crushScore: CrushScore?
+    var crushScoreID = String()
+    
+    var phoneFinal = String()
+    var showIndexPaths = false
+    var swipes = [String: Int]()
+    
+    let messageController = MessageController()
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    let cellId = "cellId123123"
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -29,39 +45,40 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
       
         tableView.reloadData()
     }
+    
     fileprivate func handleContacts() {
-                let store = CNContactStore()
-                switch CNContactStore.authorizationStatus(for: .contacts) {
-        
-                case .authorized:
-                    fetchContacts()
-                case .denied:
-                    showSettingsAlert()
-                case .restricted, .notDetermined:
-                    store.requestAccess(for: .contacts) { granted, error in
-                        if granted {
-                            self.fetchContacts()
-                        } else {
-                            DispatchQueue.main.async {
-                                self.showSettingsAlert()
-                            }
-                        }
+        let store = CNContactStore()
+        switch CNContactStore.authorizationStatus(for: .contacts) {
+
+        case .authorized:
+            fetchContacts()
+        case .denied:
+            showSettingsAlert()
+        case .restricted, .notDetermined:
+            store.requestAccess(for: .contacts) { granted, error in
+                if granted {
+                    self.fetchContacts()
+                } else {
+                    DispatchQueue.main.async {
+                        self.showSettingsAlert()
                     }
                 }
-        
             }
-    
-        private func showSettingsAlert() {
-            let alert = UIAlertController(title: "Enable Contacts", message: "Crusht requires access to Contacts to proceed. We use your contacts to help you find your match. WE DON'T STORE YOUR CONTACTS IN OUR DATABASE. Would you like to open settings and grant permission to contacts?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
-    
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            })
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
-                return
-            })
-            present(alert, animated: true)
         }
+
+    }
+    
+    private func showSettingsAlert() {
+        let alert = UIAlertController(title: "Enable Contacts", message: "Crusht requires access to Contacts to proceed. We use your contacts to help you find your match. WE DON'T STORE YOUR CONTACTS IN OUR DATABASE. Would you like to open settings and grant permission to contacts?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            return
+        })
+        present(alert, animated: true)
+    }
     
     func didSaveSettings() {
         fetchCurrentUser()
@@ -72,251 +89,205 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         fetchCurrentUser()
     }
 
-    let cellId = "cellId123123"
-    
-    var users = [User]()
-    
-     var user: User?
-        
-        fileprivate func fetchCurrentUser() {
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-                if let err = err {
-                    
-                    let loginController = LoginViewController()
-                    self.present(loginController, animated: true)
-                    return
-                }
+    fileprivate func fetchCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
                 
-           
-                
-                
-                guard let dictionary = snapshot?.data() else {return}
-                self.user = User(dictionary: dictionary)
-                if self.user?.phoneNumber == ""{
-                    let loginController = LoginViewController()
-                    self.present(loginController, animated: true)
-                
-                }
-                else if self.user?.name == "" {
-                    let namecontroller = EnterNameController()
-                   // namecontroller.phone = self.user?.phoneNumber ?? ""
-                    self.present(namecontroller, animated: true)
-                    
-                }
-                
-                else if self.user?.birthday == "" {
-                    let namecontroller = BirthdayController()
-                  //  namecontroller.phone = self.user?.phoneNumber ?? ""
-                    self.present(namecontroller, animated: true)
-                    
-                }
-                
-                else if self.user?.school == "" {
-                    let namecontroller = EnterSchoolController()
-                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
-                    self.present(namecontroller, animated: true)
-                    
-                }
-                
-                
-                else if self.user?.bio == "" {
-                    let namecontroller = BioController()
-                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
-                    self.present(namecontroller, animated: true)
-                    
-                }
-                
-                else if self.user?.gender == "" {
-                    let namecontroller = YourSexController()
-                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
-                    self.present(namecontroller, animated: true)
-                    
-                }
-                
-                else if self.user?.sexPref == "" {
-                    let namecontroller = GenderController()
-                    //  namecontroller.phone = self.user?.phoneNumber ?? ""
-                    self.present(namecontroller, animated: true)
-                    
-                }
-                
-                let timestamp = Int(Date().timeIntervalSince1970)
-                
-                if Int(truncating: self.user?.timeLastJoined ?? 5000) < timestamp - 64800 {
-                        
-                        var docData = [String: Any]()
-                        guard let uid = Auth.auth().currentUser?.uid else { return}
-                    if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 != "" {
-                            docData = [
-                                "uid": uid,
-                                "Full Name": self.user?.name ?? "",
-                                "ImageUrl1": self.user?.imageUrl1 ?? "",
-                                "ImageUrl2": self.user?.imageUrl2 ?? "",
-                                "ImageUrl3": self.user?.imageUrl3 ?? "",
-                                "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
-                                "Birthday": self.user?.birthday ?? "",
-                                "School": self.user?.school ?? "",
-                                "Bio": self.user?.bio ?? "",
-                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
-                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
-                                "maxDistance": self.user?.maxDistance ?? 3,
-                                "email": self.user?.email ?? "",
-                                "fbid": self.user?.fbid ?? "",
-                                "PhoneNumber": self.user?.phoneNumber ?? "",
-                                "deviceID": Messaging.messaging().fcmToken ?? "",
-                                "Gender-Preference": self.user?.sexPref ?? "",
-                                "User-Gender": self.user?.gender ?? "",
-                                "CurrentVenue": "",
-                                "TimeLastJoined": timestamp - 3600
-                                
-                            ]
-                        } else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 == "" {
-                            docData = [
-                                "uid": uid,
-                                "Full Name": self.user?.name ?? "",
-                                "ImageUrl1": self.user?.imageUrl1 ?? "",
-                                "ImageUrl2": self.user?.imageUrl2 ?? "",
-                                "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
-                                "Birthday": self.user?.birthday ?? "",
-                                "School": self.user?.school ?? "",
-                                "Bio": self.user?.bio ?? "",
-                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
-                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
-                                "maxDistance": self.user?.maxDistance ?? 3,
-                                "email": self.user?.email ?? "",
-                                "fbid": self.user?.fbid ?? "",
-                                "PhoneNumber": self.user?.phoneNumber ?? "",
-                                "deviceID": Messaging.messaging().fcmToken ?? "",
-                                "Gender-Preference": self.user?.sexPref ?? "",
-                                "User-Gender": self.user?.gender ?? "",
-                                "CurrentVenue": "",
-                                "TimeLastJoined": timestamp - 3600
-                                
-                            ]
-                        }
-                    else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 == "" && self.user?.imageUrl3 == "" {
-                            docData = [
-                                "uid": uid,
-                                "Full Name": self.user?.name ?? "",
-                                "ImageUrl1": self.user?.imageUrl1 ?? "",
-                                "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
-                                "Birthday": self.user?.birthday ?? "",
-                                "School": self.user?.school ?? "",
-                                "Bio": self.user?.bio ?? "",
-                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
-                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
-                                "maxDistance": self.user?.maxDistance ?? 3,
-                                "email": self.user?.email ?? "",
-                                "fbid": self.user?.fbid ?? "",
-                                "PhoneNumber": self.user?.phoneNumber ?? "",
-                                "deviceID": Messaging.messaging().fcmToken ?? "",
-                                "Gender-Preference": self.user?.sexPref ?? "",
-                                "User-Gender": self.user?.gender ?? "",
-                                "CurrentVenue": "",
-                                "TimeLastJoined": timestamp - 3600
-                                
-                            ]
-                        }
-                        Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
-                            in
-                            //hud.dismiss()
-                            if let err = err {
-                                return
-                            }
-                          
-                        }
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
+                return
+            }
+            
+            guard let dictionary = snapshot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            
+            if self.user?.phoneNumber == ""{
+                let loginController = LoginViewController()
+                self.present(loginController, animated: true)
             
             }
-                   self.fetchSwipes()
-    }
+            else if self.user?.name == "" {
+                let namecontroller = EnterNameController()
+               // namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
+            
+            else if self.user?.birthday == "" {
+                let namecontroller = BirthdayController()
+              //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
+            
+            else if self.user?.school == "" {
+                let namecontroller = EnterSchoolController()
+                //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
+            
+            else if self.user?.bio == "" {
+                let namecontroller = BioController()
+                //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
+            
+            else if self.user?.gender == "" {
+                let namecontroller = YourSexController()
+                //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
+            
+            else if self.user?.sexPref == "" {
+                let namecontroller = GenderController()
+                //  namecontroller.phone = self.user?.phoneNumber ?? ""
+                self.present(namecontroller, animated: true)
+            }
+            
+            let timestamp = Int(Date().timeIntervalSince1970)
+            
+            if Int(truncating: self.user?.timeLastJoined ?? 5000) < timestamp - 64800 {
+                var docData = [String: Any]()
+                guard let uid = Auth.auth().currentUser?.uid else { return}
+                if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 != "" {
+                    docData = [
+                        "uid": uid,
+                        "Full Name": self.user?.name ?? "",
+                        "ImageUrl1": self.user?.imageUrl1 ?? "",
+                        "ImageUrl2": self.user?.imageUrl2 ?? "",
+                        "ImageUrl3": self.user?.imageUrl3 ?? "",
+                        "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                        "Birthday": self.user?.birthday ?? "",
+                        "School": self.user?.school ?? "",
+                        "Bio": self.user?.bio ?? "",
+                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                        "maxDistance": self.user?.maxDistance ?? 3,
+                        "email": self.user?.email ?? "",
+                        "fbid": self.user?.fbid ?? "",
+                        "PhoneNumber": self.user?.phoneNumber ?? "",
+                        "deviceID": Messaging.messaging().fcmToken ?? "",
+                        "Gender-Preference": self.user?.sexPref ?? "",
+                        "User-Gender": self.user?.gender ?? "",
+                        "CurrentVenue": "",
+                        "TimeLastJoined": timestamp - 3600
+                    ]
+                } else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 == "" {
+                    docData = [
+                        "uid": uid,
+                        "Full Name": self.user?.name ?? "",
+                        "ImageUrl1": self.user?.imageUrl1 ?? "",
+                        "ImageUrl2": self.user?.imageUrl2 ?? "",
+                        "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                        "Birthday": self.user?.birthday ?? "",
+                        "School": self.user?.school ?? "",
+                        "Bio": self.user?.bio ?? "",
+                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                        "maxDistance": self.user?.maxDistance ?? 3,
+                        "email": self.user?.email ?? "",
+                        "fbid": self.user?.fbid ?? "",
+                        "PhoneNumber": self.user?.phoneNumber ?? "",
+                        "deviceID": Messaging.messaging().fcmToken ?? "",
+                        "Gender-Preference": self.user?.sexPref ?? "",
+                        "User-Gender": self.user?.gender ?? "",
+                        "CurrentVenue": "",
+                        "TimeLastJoined": timestamp - 3600
+                    ]
+                }
+                else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 == "" && self.user?.imageUrl3 == "" {
+                    docData = [
+                        "uid": uid,
+                        "Full Name": self.user?.name ?? "",
+                        "ImageUrl1": self.user?.imageUrl1 ?? "",
+                        "Age": calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                        "Birthday": self.user?.birthday ?? "",
+                        "School": self.user?.school ?? "",
+                        "Bio": self.user?.bio ?? "",
+                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                        "maxDistance": self.user?.maxDistance ?? 3,
+                        "email": self.user?.email ?? "",
+                        "fbid": self.user?.fbid ?? "",
+                        "PhoneNumber": self.user?.phoneNumber ?? "",
+                        "deviceID": Messaging.messaging().fcmToken ?? "",
+                        "Gender-Preference": self.user?.sexPref ?? "",
+                        "User-Gender": self.user?.gender ?? "",
+                        "CurrentVenue": "",
+                        "TimeLastJoined": timestamp - 3600
+                    ]
+                }
+                Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
+                    in
+                    //hud.dismiss()
+                    if let err = err {
+                        return
+                    }
+                }
+            }
+           self.fetchSwipes()
+        }
     
-    func calcAge(birthday: String) -> Int {
-        let dateFormater = DateFormatter()
-        dateFormater.dateFormat = "MM/dd/yyyy"
-        let birthdayDate = dateFormater.date(from: birthday)
-        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
-        let now = Date()
-        let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
-        let age = calcAge.year
-        return age!
+        func calcAge(birthday: String) -> Int {
+            let dateFormater = DateFormatter()
+            dateFormater.dateFormat = "MM/dd/yyyy"
+            let birthdayDate = dateFormater.date(from: birthday)
+            let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
+            let now = Date()
+            let calcAge = (calendar.components(.year, from: birthdayDate ?? dateFormater.date(from: "10-31-1995")!, to: now, options: []))
+            let age = calcAge.year
+            return age!
+        }
     }
-}
 
     // you should use Custom Delegation properly instead
     func someMethodIWantToCall(cell: UITableViewCell) {
-        
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
+        let contact = isFiltering() ? filteredExpandableContacts.contacts[indexPathTapped.row] : expandableContacts.contacts[indexPathTapped.row]
         
-        let contact = twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row]
-      
-        
-//        let hasFavorited = contact.hasFavorited
-//        twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
-        
-        let phoneString = contact.contact.phoneNumbers.first?.value.stringValue ?? ""
-        
-        phoneID = phoneString
-        
-//        cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
+        //let hasFavorited = contact.hasFavorited
+        //twoDimensionalArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        //cell.accessoryView?.tintColor = hasFavorited ? #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) : .red
         
         if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
-            
-            handleLike(cell: cell)
+            handleLike(contact: contact, cell: cell)
         }
         else {
-            handleDislike(cell: cell)
+            handleDislike(contact: contact, cell: cell)
         }
     }
 
-    var phoneID: String?
-
-    var twoDimensionalArray = [ExpandableNames]()
-    lazy var filteredContanct = [ExpandableNames]()
-
     fileprivate func fetchContacts() {
-
         let store = CNContactStore()
-
         store.requestAccess(for: .contacts) { (granted, err) in
             if let err = err {
                 return
             }
 
             if granted {
-
                 let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
                 let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
 
                 request.sortOrder = CNContactSortOrder.givenName
 
                 do {
-
                     var favoritableContacts = [FavoritableContact]()
 
                     try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointerIfYouWantToStopEnumerating) in
-
-
                         favoritableContacts.append(FavoritableContact(contact: contact, hasFavorited: false))
                         
-                        
-//
-//                        self.filteredContanct = ["\(contact.givenName) \(contact.familyName)"]
+                        //self.filteredContanct = ["\(contact.givenName) \(contact.familyName)"]
                         //                        favoritableContacts.append(FavoritableContact(name: contact.givenName + " " + contact.familyName, hasFavorited: false))
                     })
 
-                    let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
-                    self.twoDimensionalArray = [names]
+                    self.expandableContacts = ExpandableContacts(isExpanded: true, contacts: favoritableContacts)
                     
                     self.fetchCurrentUser()
                     
                     DispatchQueue.main.async(execute: {
                         self.tableView.reloadData()
-                        
                     })
                     
-
-                } catch let err {
+                } catch {
                 }
 
             } else {
@@ -325,33 +296,16 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         }
     }
     
-    var phoneFinal = String()
-    var showIndexPaths = false
+    func saveSwipeLocally(contact: FavoritableContact, didLike: Int) {
+        swipes[contact.phoneCell] = didLike
+    }
     
-    func saveSwipeToFireStore(didLike: Int) {
- 
+    func saveSwipeToFireStore(contact: FavoritableContact, didLike: Int) {
         let phoneNumber = user?.phoneNumber ?? ""
         
-        //let crush = schoolArray[IndexPath.row]
-        let phoneString = phoneID ?? ""
-        
-        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
-        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
-        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
-        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
-        
-        
-        if phoneNoDash.count < 11 {
-            phoneFinal = "+1\(phoneNoDash)"
-        }
-        else {
-            phoneFinal = phoneNoDash
-        }
-        
-
         //LOT OF TRIMMING AND STRIPPING
         
-        let cardUID = phoneFinal
+        let cardUID = contact.phoneCell
         
         let twilioPhoneData: [String: Any] = ["phoneToInvite": phoneFinal]
         
@@ -723,11 +677,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         
     }
     
-   let messageController = MessageController()
-    
-    var crushScoreID = String()
-    
-    
     func presentMatchView(cardUID: String) {
         let matchView = MatchView()
         matchView.cardUID = cardUID
@@ -741,8 +690,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         matchView.fillSuperview()
     }
         
-    var swipes = [String: Int]()
-    
     fileprivate func fetchSwipes() {
        let phoneNumber = user?.phoneNumber ?? ""
        // print(phoneNumber,"kick")
@@ -765,24 +712,18 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
      
     }
     
-    func handleLike(cell: UITableViewCell) {
-        
-        saveSwipeToFireStore(didLike: 1)
+    func handleLike(contact: FavoritableContact, cell: UITableViewCell) {
+        saveSwipeLocally(contact: contact, didLike: 1)
+        saveSwipeToFireStore(contact: contact, didLike: 1)
         addCrushScore()
         cell.accessoryView?.tintColor = .red
-        
-        
     }
     
-    func handleDislike(cell: UITableViewCell) {
-        
-        saveSwipeToFireStore(didLike: 0)
-        
-         cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-        
+    func handleDislike(contact: FavoritableContact, cell: UITableViewCell) {
+        saveSwipeLocally(contact: contact, didLike: 0)
+        saveSwipeToFireStore(contact: contact, didLike: 0)
+        cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
     }
-    
-    fileprivate var crushScore: CrushScore?
     
     fileprivate func addCrushScore() {
         
@@ -879,12 +820,14 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
-//        view.addSubview(searchController.searchBar)
-//        // Setup the Search Controller
-//        searchController.searchResultsUpdater = self
-//        searchController.obscuresBackgroundDuringPresentation = false
-//        searchController.searchBar.placeholder = "Search Contacts"
-//        navigationItem.searchController = self.searchController
+        view.addSubview(searchController.searchBar)
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Contacts"
+        searchController.searchBar.barStyle = .black
+        searchController.searchBar.tintColor = .white
+        navigationItem.searchController = self.searchController
         definesPresentationContext = true
         navigationController?.isNavigationBarHidden = false
    
@@ -899,8 +842,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         // Setup the Scope Bar
         //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
-//        self.searchController.searchBar.delegate = self
-//        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show IndexPath", style: .plain, target: self, action: #selector(handleShowIndexPath))
@@ -935,7 +878,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         //navigationController?.pushViewController(messageController, animated: true)
         
     }
-    
     
     let messageBadge: UILabel = {
         let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
@@ -999,11 +941,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         } else {
             showSettingsAlert2()
         }
-        
-        
-        
     }
-    
     
     private func showSettingsAlert2() {
         let alert = UIAlertController(title: "Enable Location", message: "Crusht would like to use your location to match you with nearby users.", preferredStyle: .alert)
@@ -1035,142 +973,47 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return twoDimensionalArray.count
+        return 1
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if isFiltering() {
-//            return filteredContanct.count
-//        }
-        
-        return twoDimensionalArray[section].names.count
+        return isFiltering() ? filteredExpandableContacts.contacts.count : expandableContacts.contacts.count
     }
-    
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ContactCell
-        
         let cell = ContactsCell(style: .subtitle, reuseIdentifier: cellId)
-        
         cell.link = self
-        
         cell.selectionStyle = .none
         
-//        if isFiltering() {
-//            let favoritableContact = filteredContanct[indexPath.section].names[indexPath.row]
-//            cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
-//            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-//
-//            cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
-//
-//            let phoneString = favoritableContact.contact.phoneNumbers.first?.value.stringValue ?? ""
-//
-//            let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
-//            let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
-//            let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
-//            let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
-//            var phoneCellFinal = String()
-//
-//            if phoneNoDash.count < 11 {
-//                phoneCellFinal = "+1\(phoneNoDash)"
-//            }
-//            else {
-//                phoneCellFinal = phoneNoDash
-//            }
-//
-//            let hasLiked = swipes[phoneCellFinal] as? Int == 1
-//
-//
-//
-//            if hasLiked{
-//                cell.accessoryView?.tintColor = .red
-//
-//            }
-//            else {
-//                cell.accessoryView?.tintColor = #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
-//            }
+        let favoritableContact = isFiltering() ? filteredExpandableContacts.contacts[indexPath.row] : expandableContacts.contacts[indexPath.row]
         
-            let favoritableContact = twoDimensionalArray[indexPath.section].names[indexPath.row]
-            cell.textLabel?.text = favoritableContact.contact.givenName + " " + favoritableContact.contact.familyName
-            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-            
-            cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
-            
-            let phoneString = favoritableContact.contact.phoneNumbers.first?.value.stringValue ?? ""
-            
-            let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
-            let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
-            let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
-            let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
-            var phoneCellFinal = String()
-            
-            if phoneNoDash.count < 11 {
-                phoneCellFinal = "+1\(phoneNoDash)"
-            }
-            else {
-                phoneCellFinal = phoneNoDash
-            }
-            
-       // print(phoneCellFinal, "hey")
-        let hasLiked = swipes[phoneCellFinal] as? Int == 1
+        cell.textLabel?.text = favoritableContact.name
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
         
-        if hasLiked {
-            cell.accessoryView?.tintColor = .red
-        }
-        else {
-            cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-        }
+        let hasLiked = swipes[favoritableContact.phoneCell] == 1
+        cell.accessoryView?.tintColor = hasLiked ? .red : #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
         
         return cell
-    
-        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
-
     }
     
-//    let searchController = UISearchController(searchResultsController: nil)
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
     
-//    func searchBarIsEmpty() -> Bool {
-//        // Returns true if the text is empty or nil
-//        return searchController.searchBar.text?.isEmpty ?? true
-//
-//    }
-    
-//    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-//        //let favoritableContact = twoDimensionalArray[IndexPath.section].names[IndexPath.row]
-//
-//        filteredContanct = twoDimensionalArray.filter({( user : ExpandableNames ) -> Bool in
-//            //            var favoritableContacts = [FavoritableContact]()
-//            //            let names = ExpandableNames(isExpanded: true, names: favoritableContacts)
-//            //            self.twoDimensionalArray = [names]
-//             user.names.contains(where: { (contact) -> Bool in
-//                return contact.contact.givenName.lowercased().contains(searchText.lowercased())
-//
-//            })
-//        })
-//
-//        DispatchQueue.main.async(execute: {
-//            self.tableView.reloadData()
-//
-//        })
-//    }
-//
-//    func isFiltering() -> Bool {
-//        return searchController.isActive && !searchBarIsEmpty()
-//    }
-//
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredExpandableContacts = expandableContacts.filterBy(text: searchText)
+        tableView.reloadData()
+    }
+
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
  }
 
-
-//extension FindCrushesTableViewController: UISearchResultsUpdating {
-//    // MARK: - UISearchResultsUpdating Delegate
-//    func updateSearchResults(for searchController: UISearchController) {
-//
-//        filterContentForSearchText(searchController.searchBar.text!)
-//    }
-//}
-
-    
-
+extension FindCrushesTableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
