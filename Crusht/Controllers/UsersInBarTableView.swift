@@ -282,9 +282,9 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             var query: Query
             if let lastFetchedDocument = lastFetchedDocument {
-                query = Firestore.firestore().collection("users").whereField("CurrentVenue", isEqualTo: barName).order(by: "Full Name").start(afterDocument: lastFetchedDocument).limit(to: 8)
+                query = Firestore.firestore().collection("users").whereField("CurrentVenue", isEqualTo: barName).order(by: "Full Name").start(afterDocument: lastFetchedDocument).limit(to: 15)
             } else {
-                query = Firestore.firestore().collection("users").whereField("CurrentVenue", isEqualTo: barName).order(by: "Full Name").limit(to: 8)
+                query = Firestore.firestore().collection("users").whereField("CurrentVenue", isEqualTo: barName).order(by: "Full Name").limit(to: 15)
             }
             
             //chagne logic where gender variable is just the where field firebase thing

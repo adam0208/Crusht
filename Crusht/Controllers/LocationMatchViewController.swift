@@ -336,9 +336,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         fetchingMoreUsers = true
         var query: Query
         if let lastFetchedDocument = lastFetchedDocument {
-            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").start(afterDocument: lastFetchedDocument).limit(to: 8)
+            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").start(afterDocument: lastFetchedDocument).limit(to: 15)
         } else {
-            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").limit(to: 8)
+            query = Firestore.firestore().collection("users").whereField("School", isEqualTo: user?.school ?? "jjjjj").limit(to: 15)
         }
         
         query.getDocuments { (snapshot, err) in
