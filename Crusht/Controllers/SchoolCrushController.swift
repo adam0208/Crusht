@@ -951,7 +951,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = UIColor.clear
-        if indexPath.row == schoolArray.count - 1 && !isFiltering() {
+        if schoolArray.count > 0 && indexPath.section == 0 && indexPath.row >= schoolArray.count - 3 && !isFiltering() {
             fetchSchool()
         }
     }

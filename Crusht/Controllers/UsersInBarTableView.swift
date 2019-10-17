@@ -881,7 +881,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     
         override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
             cell.backgroundColor = UIColor.clear
-            if indexPath.row == barsArray.count - 1 && !isFiltering() {
+            if barsArray.count > 0 && indexPath.section == 0 && indexPath.row >= barsArray.count - 3 && !isFiltering() {
                 fetchMoreUsersInBar()
             }
         }
