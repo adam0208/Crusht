@@ -102,8 +102,8 @@ func toCardViewModel() -> CardViewModel {
     
     var imageUrls = [String]()
     if let url = imageUrl1 { imageUrls.append(url) }
-    if let url = imageUrl2 { imageUrls.append(url) }
-    if let url = imageUrl3 { imageUrls.append(url) }
+    if let url = imageUrl2, url != "" { imageUrls.append(url) }
+    if let url = imageUrl3, url != "" { imageUrls.append(url) }
     
     return CardViewModel(uid: self.uid ?? "", bio: self.bio ?? "", phone: self.phoneNumber ?? "", imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     
