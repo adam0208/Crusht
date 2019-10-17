@@ -26,6 +26,7 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
     
     self.errorLabel.text = "Registering, hang tight..."
     self.errorLabel.isHidden = false
+    self.selectPhotoButton.isEnabled = false
     
     let filename = UUID().uuidString
     let ref = Storage.storage().reference(withPath: "/images/\(filename)")
