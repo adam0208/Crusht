@@ -56,7 +56,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         fetchedAllUsers = false
         lastFetchedDocument = nil
         schoolArray.removeAll()
-        tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        tableView.reloadData()
         fetchCurrentUser()
     }
     
@@ -66,7 +66,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         fetchedAllUsers = false
         lastFetchedDocument = nil
         schoolArray.removeAll()
-        tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        tableView.reloadData()
         fetchCurrentUser()
     }
     
@@ -74,7 +74,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         fetchedAllUsers = false
         lastFetchedDocument = nil
         schoolArray.removeAll()
-        tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        tableView.reloadData()
         fetchCurrentUser()
     }
     

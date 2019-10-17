@@ -47,7 +47,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         fetchedAllUsers = false
         lastFetchedDocument = nil
         barsArray.removeAll()
-        tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        tableView.reloadData()
         fetchCurrentUser()
     }
         
@@ -58,7 +58,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             fetchedAllUsers = false
             lastFetchedDocument = nil
             barsArray.removeAll()
-            tableView.reloadSections(IndexSet(integer: 0), with: .none)
+            tableView.reloadData()
             fetchCurrentUser()
         }
     
