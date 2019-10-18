@@ -266,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				28F1121921F522A900A1CD73 /* Crusht.entitlements */,
+				4C7CF43B2359EF610039B0E3 /* UnusedFiles */,
 				2838170D21B8A24B00B3E4FD /* Models */,
 				283816F721B8929100B3E4FD /* Controllers */,
 				283816F621B8927D00B3E4FD /* Extensions */,
@@ -319,11 +320,7 @@
 				28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */,
 				280B1ED221CB3FD700A89C5E /* UserCell.swift */,
 				280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */,
-				28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */,
-				28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */,
-				28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */,
 				28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */,
-				28FDE2D72216672000896198 /* FacebookCrushCell.swift */,
 				287F3A8F225B1C43008F5BD0 /* AnimationView.swift */,
 				28C30331226C02AE002FB145 /* VenueCell.swift */,
 				2895576E227E644F001EFD73 /* UserBarCell.swift */,
@@ -359,23 +356,15 @@
 				28BE624821BDB76A00EAFFE2 /* Login */,
 				283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */,
 				283FD3DA227E669000C7760F /* CustomTabBarController.swift */,
-				2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */,
 				28857CCA21B9A91500A654A0 /* LoginViewController.swift */,
 				28857CD021B9A9C200A654A0 /* VerifyViewController.swift */,
 				28857CDF21B9B95900A654A0 /* Bindable.swift */,
 				28A7F9E521BC3C1D00238B7D /* SettingsTableViewController.swift */,
 				28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */,
-				28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */,
 				28067D2D21C0C18D001F6BC5 /* MessageController.swift */,
 				28CFC6B621C5B46A00387129 /* ChatLogController.swift */,
 				28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */,
-				28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */,
 				28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */,
-				28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */,
-				28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */,
-				28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */,
-				2859707522026EF800EB83CE /* FacebookPhoneController.swift */,
-				2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */,
 				2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */,
 				28C06E0A22593CE3004F0C1E /* MessageReportController.swift */,
 				28FD7D0F22641FB100B79496 /* EnterNameController.swift */,
@@ -423,6 +412,25 @@
 				28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */,
 			);
 			path = "User Details";
+			sourceTree = "<group>";
+		};
+		4C7CF43B2359EF610039B0E3 /* UnusedFiles */ = {
+			isa = PBXGroup;
+			children = (
+				2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */,
+				28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */,
+				28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */,
+				28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */,
+				28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */,
+				28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */,
+				2859707522026EF800EB83CE /* FacebookPhoneController.swift */,
+				2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */,
+				28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */,
+				28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */,
+				28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */,
+				28FDE2D72216672000896198 /* FacebookCrushCell.swift */,
+			);
+			path = UnusedFiles;
 			sourceTree = "<group>";
 		};
 		68FD194D3467F67A969E93D2 /* Pods */ = {
