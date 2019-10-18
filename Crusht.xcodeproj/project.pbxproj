@@ -352,7 +352,6 @@
 			isa = PBXGroup;
 			children = (
 				28F1121921F522A900A1CD73 /* Crusht.entitlements */,
-				283FD3DA227E669000C7760F /* CustomTabBarController.swift */,
 				2838170D21B8A24B00B3E4FD /* Models */,
 				283816F721B8929100B3E4FD /* Controllers */,
 				283816F621B8927D00B3E4FD /* Extensions */,
@@ -488,6 +487,7 @@
 				28BE624F21BE08F300EAFFE2 /* User Details */,
 				28BE624821BDB76A00EAFFE2 /* Login */,
 				283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */,
+				283FD3DA227E669000C7760F /* CustomTabBarController.swift */,
 				2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */,
 				28857CCA21B9A91500A654A0 /* LoginViewController.swift */,
 				28857CD021B9A9C200A654A0 /* VerifyViewController.swift */,

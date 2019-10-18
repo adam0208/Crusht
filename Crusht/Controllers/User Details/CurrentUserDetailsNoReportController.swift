@@ -49,25 +49,10 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
             }
             
             if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else {return}
+                guard let dictionary = snapshot?.data() else { return }
+                let crushScore = CrushScore(dictionary: dictionary)
                 self.crushScore = CrushScore(dictionary: dictionary)
-                
-                if (self.crushScore?.crushScore ?? 0) > -1 && (self.crushScore?.crushScore ?? 0) <= 50 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍🔥"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍🔥❤️"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 400 {
-                    self.crushScoreLabel.text = " Crusht Score: 😊😎😍🔥❤️👀"
-                }
-                
+                self.crushScoreLabel.text = crushScore.toString
             }
             else {
                 self.crushScoreLabel.text = " Crusht Score: 😊"
@@ -103,7 +88,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
     
     
     let dismissButton: UIButton = {
-        
         let button = UIButton(type: .system)
         button.setBackgroundImage(#imageLiteral(resourceName: "icons8-back-filled-30").withRenderingMode(.alwaysOriginal), for: .normal)
         button.backgroundColor = .white
@@ -190,10 +174,7 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         
         bioLabel.anchor(top: crushScoreLabel.bottomAnchor, leading: crushScoreLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
         
-        
         scrollView.fillSuperview()
-        
-        
     }
     
     fileprivate let extraSwipingHeight: CGFloat = 100
@@ -221,21 +202,19 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
        
         setupLayout()
-        
         setupVisualBlurEffectView()
-        
     }
     
 
     
     @objc fileprivate func handleInfo() {
-            let infoView = InfoView()
-            infoView.infoText.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
-            navigationController?.view.addSubview(infoView)
-            infoView.fillSuperview()
-//        hud.textLabel.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
-//        hud.show(in: navigationController!.view)
-//        hud.dismiss(afterDelay: 3)
+        let infoView = InfoView()
+        infoView.infoText.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
+        navigationController?.view.addSubview(infoView)
+        infoView.fillSuperview()
+        //hud.textLabel.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
+        //hud.show(in: navigationController!.view)
+        //hud.dismiss(afterDelay: 3)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -246,11 +225,10 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         let imageView = swipingPhotosController.view!
         
         imageView.frame = CGRect(x: min(0,-changeY), y: min(0, -changeY), width: width, height: width)
-        
     }
     
-    //
-    //    @objc fileprivate func handleTapDismiss () {
-    //        self.dismiss(animated: true)
-    //    }
+
+    //@objc fileprivate func handleTapDismiss () {
+    //    self.dismiss(animated: true)
+    //}
 }

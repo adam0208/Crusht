@@ -50,5 +50,27 @@ class CrushScore: NSObject {
         self.crushScore = dictionary["CrushScore"] as? Int
     }
     
+    var toString: String {
+        let crushScore = self.crushScore ?? 0
+        if crushScore > -1 && crushScore <= 50 {
+            return "Crusht Score: 😊😎"
+        }
+        else if crushScore > 50 && crushScore <= 100 {
+            return "Crusht Score: 😊😎😍"
+        }
+        else if crushScore > 100 && crushScore <= 200 {
+            return "Crusht Score: 😊😎😍🔥"
+        }
+        else if crushScore > 200 && crushScore <= 400 {
+            return "Crusht Score: 😊😎😍🔥❤️"
+        }
+        else if crushScore > 400 {
+            return " Crusht Score: 😊😎😍🔥❤️👀"
+        }
+        else {
+            return ""
+        }
+    }
+    
 }
 

@@ -49,24 +49,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
             
             if snapshot?.exists == true {
                 guard let dictionary = snapshot?.data() else {return}
+                let crushScore = CrushScore(dictionary: dictionary)
                 self.crushScore = CrushScore(dictionary: dictionary)
-                
-                if (self.crushScore?.crushScore ?? 0) > -1 && (self.crushScore?.crushScore ?? 0) <= 50 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 50 && (self.crushScore?.crushScore ?? 0) <= 100 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 100 && (self.crushScore?.crushScore ?? 0) <= 200 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍🔥"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 200 && (self.crushScore?.crushScore ?? 0) <= 400 {
-                    self.crushScoreLabel.text = "Crusht Score: 😊😎😍🔥❤️"
-                }
-                else if (self.crushScore?.crushScore ?? 0) > 400 {
-                    self.crushScoreLabel.text = " Crusht Score: 😊😎😍🔥❤️👀"
-                }
-                
+                self.crushScoreLabel.text = crushScore.toString
             }
             else {
                 self.crushScoreLabel.text = " Crusht Score: 😊"
@@ -101,17 +86,16 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     
     let dismissButton: UIButton = {
- 
-            let button = UIButton(type: .system)
-            button.setBackgroundImage(#imageLiteral(resourceName: "icons8-back-filled-30").withRenderingMode(.alwaysOriginal), for: .normal)
-            button.backgroundColor = .white
-            button.layer.cornerRadius = 15
+        let button = UIButton(type: .system)
+        button.setBackgroundImage(#imageLiteral(resourceName: "icons8-back-filled-30").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 15
         button.clipsToBounds = true
-            button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
             
-            return button
-        }()
+        return button
+    }()
     
 
     
@@ -156,12 +140,10 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     @objc fileprivate func handleDismiss() {
         navigationController?.isNavigationBarHidden = false
-       navigationController?.popToRootViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @objc fileprivate func handleReport() {
-        
-        
         let reportController = ReportControllerViewController()
         reportController.reportUID = cardViewModel.uid
         reportController.uid = Auth.auth().currentUser!.uid
@@ -194,22 +176,29 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
        
         scrollView.addSubview(infoLabel)
-        infoLabel.anchor(top: swipingView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
-    
+        infoLabel.anchor(top: swipingView.bottomAnchor,
+                         leading: scrollView.leadingAnchor,
+                         bottom: nil,
+                         trailing: scrollView.trailingAnchor,
+                         padding: .init(top: 16, left: 16, bottom: 0, right: 16))
+
         view.addSubview(scrollView)
-
-       
-           scrollView.addSubview(crushScoreLabel)
+        scrollView.addSubview(crushScoreLabel)
         bioLabel.text = cardViewModel.bio
-        crushScoreLabel.anchor(top: infoLabel.bottomAnchor, leading: infoLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
-        scrollView.addSubview(bioLabel)
-
-        bioLabel.anchor(top: crushScoreLabel.bottomAnchor, leading: crushScoreLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+        crushScoreLabel.anchor(top: infoLabel.bottomAnchor,
+                               leading: infoLabel.leadingAnchor,
+                               bottom: nil,
+                               trailing: view.trailingAnchor,
+                               padding: .init(top: 8, left: 0, bottom: 16, right: 16))
         
+        scrollView.addSubview(bioLabel)
+        bioLabel.anchor(top: crushScoreLabel.bottomAnchor,
+                        leading: crushScoreLabel.leadingAnchor,
+                        bottom: nil,
+                        trailing: view.trailingAnchor,
+                        padding: .init(top: 8, left: 0, bottom: 16, right: 16))
         
         scrollView.fillSuperview()
-        
-       
     }
     
     fileprivate let extraSwipingHeight: CGFloat = 100
@@ -237,7 +226,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         setupLayout()
         
         setupVisualBlurEffectView()
-        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -248,7 +236,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         let imageView = swipingPhotosController.view!
         
         imageView.frame = CGRect(x: min(0,-changeY), y: min(0, -changeY), width: width, height: width)
-        
     }
     
 //

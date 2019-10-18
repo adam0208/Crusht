@@ -37,7 +37,6 @@ class CustomTabBarController: UITabBarController {
         messageNave.tabBarItem.image = #imageLiteral(resourceName: "icons8-communication-30").withRenderingMode(.alwaysOriginal)
         messageNave.tabBarController?.tabBar.isTranslucent = false
     
-    
         tabBarController?.tabBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         
         viewControllers = [contactsNav, schoolNave, venueNav, messageNave]

@@ -14,7 +14,5 @@ protocol LoginControllerDelegate {
 }
 
 class LoginController: UIViewController {
-    
     var delegate: LoginControllerDelegate?
-    
 }

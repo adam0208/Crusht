@@ -18,10 +18,8 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
                 return photoController
             })
             
-        setViewControllers([controllers.first!], direction: .forward, animated: false)
-        
+            setViewControllers([controllers.first!], direction: .forward, animated: false)
             setupBarViews()
-            
         }
     }
     
@@ -52,8 +50,6 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
             barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
             barsStackView.arrangedSubviews[index].backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         }
-        
-        
     }
 
     var controllers = [UIViewController]()
@@ -75,7 +71,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         dataSource = self
         view.backgroundColor = .white
         delegate = self
-//        setViewControllers([controllers.first!], direction: .forward, animated: false)
+        //setViewControllers([controllers.first!], direction: .forward, animated: false)
         
         if isCardViewMode {
             disableSwipingAbility()
@@ -83,30 +79,24 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
     }
+    
      @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
         let currentController = viewControllers!.first!
         if let index = controllers.firstIndex(of: currentController) {
             barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
 
             if gesture.location(in: self.view).x > view.frame.width/2 {
-                
                 let nextIndex = min(index + 1, controllers.count - 1)
                 let nextController = controllers[nextIndex]
-                
                 setViewControllers([nextController], direction: .forward, animated: false)
-                
                 //barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
                 barsStackView.arrangedSubviews[nextIndex].backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
             } else {
-            
-            let prevIndex = max(0, index - 1)
-            let prevController = controllers[prevIndex]
-    
-            setViewControllers([prevController], direction: .forward, animated: false)
-                
+                let prevIndex = max(0, index - 1)
+                let prevController = controllers[prevIndex]
+                setViewControllers([prevController], direction: .forward, animated: false)
                 //barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
                 barsStackView.arrangedSubviews[prevIndex].backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-                
             }
         }
         
