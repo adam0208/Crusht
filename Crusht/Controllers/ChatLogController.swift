@@ -9,7 +9,6 @@ import UIKit
 import Firebase
 import MobileCoreServices
 import AVFoundation
-import SDWebImage
 
 private let reuseIdentifier = "Cell"
 
@@ -569,58 +568,30 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
-        
         cell.chatLogController = self
-        
-        if messages.isEmpty == false {
-        
-        let message = messages[indexPath.item]
-        
-        cell.message = message
-        
-        cell.textView.text = message.text
-        
-        
-        setupCell(cell, message: message)
-        if message.text != "Image" {
-            if let text = message.text {
-                //a text message
-                cell.bubbleWidthAnchor?.constant = estimateFrameForText(text).width + 32
-                cell.textView.isHidden = false
-            }
-        } else if message.imageUrl != nil {
-            //fall in here if its an image message
-            cell.bubbleWidthAnchor?.constant = 200
-            cell.textView.isHidden = true
-        }
-        
-        cell.playButton.isHidden = message.videoUrl == nil
-        
+        if !messages.isEmpty {
+            let message = messages[indexPath.item]
+            let widthForText = message.text != nil ? estimateFrameForText(message.text!).width + 32 : nil
+            cell.setup(message: message, currentUserId: Auth.auth().currentUser?.uid, userImageUrl: self.user?.imageUrl1, widthForText: widthForText)
         }
         else {
-            DispatchQueue.main.async(execute: {
+            DispatchQueue.main.async {
                 self.collectionView?.reloadData()
-                
-            })
+            }
         }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        
         var height: CGFloat = 80
-        
         let message = messages[indexPath.item]
         if message.text != "Image" {
             if let text = message.text {
                 height = estimateFrameForText(text).height + 20
             }
-        }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
-            
+        } else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
             height = CGFloat(imageHeight / imageWidth * 200)
-            
         }
         let width = UIScreen.main.bounds.width
         return CGSize(width: width, height: height)
@@ -632,47 +603,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             observeReceivedMessages()
         }
     }
-    
-    fileprivate func setupCell(_ cell: ChatMessageCell, message: Message) {
-        guard let imageUrl = self.user?.imageUrl1 else {return}
-        let url = URL(string: imageUrl)
-        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-            cell.profileImageView.image = image
-        }
-        
-        if message.fromId == Auth.auth().currentUser?.uid {
-            //outgoing pink
-            cell.bubbleView.backgroundColor = ChatMessageCell.pinkColor
-            cell.textView.textColor = UIColor.white
-            cell.profileImageView.isHidden = true
-            
-            cell.bubbleViewRightAnchor?.isActive = true
-            cell.bubbleViewLeftAnchor?.isActive = false
-            
-        } else {
-            //incoming gray
-            cell.bubbleView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-            cell.textView.textColor = UIColor.black
-            cell.profileImageView.isHidden = false
-            
-            cell.bubbleViewRightAnchor?.isActive = false
-            cell.bubbleViewLeftAnchor?.isActive = true
-        }
-        if let messageImageUrl = message.imageUrl {
-            if ( messageImageUrl == message.imageUrl && message.text == "Image") {
-                let url = URL(string: messageImageUrl)
-                SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                    cell.messageImageView.image = image
-                    cell.textView.text = ""
-                    cell.messageImageView.isHidden = false
-                    cell.bubbleView.backgroundColor = UIColor.clear
-                }
-            }
-        }else {
-            cell.messageImageView.isHidden = true
-        }
-    }
-    
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()

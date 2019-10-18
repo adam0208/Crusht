@@ -251,143 +251,71 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = SettingsCells(style: .default, reuseIdentifier: nil)
-        
-        
-        
-        if indexPath.section == 7 {
+        switch indexPath.section {
+        case 1:
+            let cell = SettingsCells(style: .default, reuseIdentifier: nil)
+            cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
+            cell.setup(text: user?.name, placeholderText: "Name", isUserInteractionEnabled: true)
+            return cell
+        case 2 :
+            let scell = SchoolCell(style: .default, reuseIdentifier: nil)
+            scell.settings = self
+            scell.textField.addTarget(self, action: #selector(handleSchoolChange), for: .editingChanged)
+            scell.setup(school: user?.school)
+            return scell
+        case 3:
+            let cell = SettingsCells(style: .default, reuseIdentifier: nil)
+            let age = calcAge(birthday: (user?.birthday ?? "10-31-1995"))
+            cell.setup(text: String(age), placeholderText: "Age", isUserInteractionEnabled: false)
+            return cell
+        case 4:
+            let bioCell = BioCell(style: .default, reuseIdentifier: nil)
+            bioCell.setup(text: user?.bio, textViewDelegate: self)
+            textViewDidChange(bioCell.textView)
+            return bioCell
+        case 5:
+            let gcell = GenderCell(style: .default, reuseIdentifier: nil)
+            gcell.textField.addTarget(self, action: #selector(handleGenderChange), for: .editingChanged)
+            gcell.settings = self
+            gcell.setup(gender: user?.gender)
+            return gcell
+        case 7:
             let ageRangeCell = AgeRangeTableViewCell(style: .default, reuseIdentifier: nil)
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinChanged), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChanged), for: .valueChanged)
-            
-            ageRangeCell.minLabel.text = " Min Age: \(user?.minSeekingAge ?? 18)"
-            ageRangeCell.maxLabel.text = " Max Age: \(user?.maxSeekingAge ?? 50)"
-            
-            ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? 18)
-            ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? 50)
-            ageRangeCell.layer.cornerRadius = 22
-            ageRangeCell.layer.masksToBounds = true
+            ageRangeCell.setup(minSeekingAge: user?.minSeekingAge, maxSeekingAge: user?.maxSeekingAge)
             return ageRangeCell
-        }
-        else if indexPath.section == 8 {
+        case 8:
             let locationRangeCell = LocationTableViewCell(style: .default, reuseIdentifier: nil)
-            //    locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
+            // locationRangeCell.minSlider.addTarget(self, action: #selector(handleMinChangedDistance), for: .valueChanged)
             locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
-            
-            //   locationRangeCell.minLabel.text = " Min Km: \(user?.minDistance ?? 1)"
-            locationRangeCell.maxLabel.text = " Miles: \(user?.maxDistance ?? 50)"
-            
-            //locationRangeCell.minSlider.value = Float(user?.minDistance ?? 1)
-            locationRangeCell.maxSlider.value = Float(user?.maxDistance ?? 50)
-            
-            locationRangeCell.layer.cornerRadius = 16
-            locationRangeCell.layer.masksToBounds = true
-            
+            locationRangeCell.setup(maxDistance: user?.maxDistance)
             return locationRangeCell
-        }
-        else if indexPath.section == 9 {
-            
+        case 9:
             let fbCell = FbConnectCell(style: .default, reuseIdentifier: nil)
             fbCell.FBLoginBttn.addTarget(self, action: #selector(handlePrivacy), for: .touchUpInside)
             return fbCell
-            
-        }
-            
-        else if indexPath.section == 10 {
-            
+        case 10:
             let termsCell = TermsCell(style: .default, reuseIdentifier: nil)
             termsCell.termsBttn.addTarget(self, action: #selector(handleTerms), for: .touchUpInside)
             return termsCell
-            
-        }
-            
-        else if indexPath.section == 11 {
+        case 11:
             let logoutCell = LogoutBttnCell(style: .default, reuseIdentifier: nil)
-            
             logoutCell.logOutBttn.addTarget(self, action: #selector(handleLogOut), for: .touchUpInside)
-            
             return logoutCell
-        }
-            
-        else if indexPath.section == 12 {
-            let privacyText = ContactsTextCell(style: .default, reuseIdentifier: nil)
-            return privacyText
-        }
-        else if indexPath.section == 13 {
-            let email = SupportCell(style: .default, reuseIdentifier: nil)
-            return email
-        }
-        else if indexPath.section == 14 {
-            let text = VersionNumber(style: .default, reuseIdentifier: nil)
-            return text
-        }
-        
-        
-        
-        switch indexPath.section {
-        case 1:
-            cell.textField.placeholder = "Name"
-            cell.textField.text = user?.name
-            cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
-            cell.layer.cornerRadius = 16
-            cell.layer.masksToBounds = true
-        case 2 :
-            let scell = SchoolCell(style: .default, reuseIdentifier: nil)
-            scell.textField.placeholder = "School"
-            scell.textField.text = user?.school
-            scell.settings = self
-            scell.textField.addTarget(self, action: #selector(handleSchoolChange), for: .editingChanged)
-            scell.layer.cornerRadius = 16
-            scell.layer.masksToBounds = true
-            return scell
-        case 3:
-            cell.textField.placeholder = "Age"
-            let age = calcAge(birthday: (user?.birthday ?? "10-31-1995"))
-            cell.textField.text = String(age)
-            cell.isUserInteractionEnabled = false
-            cell.layer.cornerRadius = 16
-            cell.layer.masksToBounds = true
-            
-            
-        //cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
-        case 4:
-            let bioCell = BioCell(style: .default, reuseIdentifier: nil)
-            bioCell.textView.font = UIFont.systemFont(ofSize: 16)
-            bioCell.textView.text = user?.bio
-            bioCell.textView.delegate = self
-            
-            textViewDidChange(bioCell.textView)
-            
-            bioCell.layer.cornerRadius = 22
-            bioCell.layer.masksToBounds = true
-            return bioCell
-            //            cell.textField.placeholder = "Bio"
-            //            cell.textField.text = user?.bio
-            //
-            //            cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
-            
-        case 5:
-            let gcell = GenderCell(style: .default, reuseIdentifier: nil)
-            gcell.textField.placeholder = "Sex"
-            gcell.textField.text = user?.gender
-            gcell.textField.addTarget(self, action: #selector(handleGenderChange), for: .editingChanged)
-            gcell.settings = self
-            gcell.layer.cornerRadius = 16
-            gcell.layer.masksToBounds = true
-            return gcell
-            
+        case 12:
+            return ContactsTextCell(style: .default, reuseIdentifier: nil)
+        case 13:
+            return SupportCell(style: .default, reuseIdentifier: nil)
+        case 14:
+            return VersionNumber(style: .default, reuseIdentifier: nil)
         default:
             let prefCell = GenderPrefCell(style: .default, reuseIdentifier: nil)
-            prefCell.textField.placeholder = "Sex Preference"
-            prefCell.textField.text = user?.sexPref
+            prefCell.setup(sexPref: user?.sexPref)
             prefCell.settings = self
             prefCell.textField.addTarget(self, action: #selector(handleSexPrefChange), for: .editingChanged)
-            prefCell.layer.cornerRadius = 16
-            prefCell.layer.masksToBounds = true
             return prefCell
         }
-        
-        return cell
     }
 
     @objc fileprivate func handleTerms() {
@@ -434,13 +362,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     fileprivate func evaluateMinMax() {
         guard let ageRangeCell = tableView.cellForRow(at: [7, 0]) as? AgeRangeTableViewCell else { return }
-        let minValue = Int(ageRangeCell.minSlider.value)
-        var maxValue = Int(ageRangeCell.maxSlider.value)
-        maxValue = max(minValue, maxValue)
-        ageRangeCell.maxSlider.value = Float(maxValue)
-        ageRangeCell.minLabel.text = "Min Age \(minValue)"
-        ageRangeCell.maxLabel.text = "Max Age \(maxValue)"
-        
+        let minValue = ageRangeCell.evaluateMin()
+        let maxValue = ageRangeCell.evaluateMax()
         user?.minSeekingAge = minValue
         user?.maxSeekingAge = maxValue
     }
@@ -448,12 +371,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     fileprivate func evaluateMinMaxDistance() {
         guard let locationRangeCell = tableView.cellForRow(at: [8, 0]) as? LocationTableViewCell else { return }
         //let minValue = Int(locationRangeCell.minSlider.value)
-        var maxValue = Int(locationRangeCell.maxSlider.value)
-        maxValue = max(maxValue, 1)
-        locationRangeCell.maxSlider.value = Float(maxValue)
         //locationRangeCell.minLabel.text = "Min \(minValue)"
-        locationRangeCell.maxLabel.text = " Miles \(maxValue)"
-        
+        let maxValue = locationRangeCell.evaluateMaxDistance()
         user?.maxDistance = maxValue
     }
     
@@ -679,7 +598,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             cell.backgroundColor = UIColor.clear
         }
         else {
-        cell.backgroundColor = UIColor.white
+            cell.backgroundColor = UIColor.white
         }
     }
 //    func setTableViewBackgroundGradient(sender: UITableViewController, _ topColor:UIColor, _ bottomColor:UIColor) {

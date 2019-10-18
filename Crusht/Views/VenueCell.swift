@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class VenueCell: UITableViewCell {
        
@@ -44,6 +45,14 @@ class VenueCell: UITableViewCell {
         
     }
 
+    func setup(venue: Venue) {
+        textLabel?.text = venue.venueName
+        let imageUrl = venue.venuePhotoUrl!
+        let url = URL(string: imageUrl)
+        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            self.profileImageView.image = image
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

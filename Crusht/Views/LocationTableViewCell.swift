@@ -46,6 +46,14 @@ class LocationTableViewCell: UITableViewCell {
         }
     }
     
+    func evaluateMaxDistance() -> Int {
+        var maxValue = Int(maxSlider.value)
+        maxValue = max(maxValue, 1)
+        maxSlider.value = Float(maxValue)
+        maxLabel.text = " Miles \(maxValue)"
+        return maxValue
+    }
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -72,6 +80,15 @@ class LocationTableViewCell: UITableViewCell {
             frame.size.width -= 2 * 12
             super.frame = frame
         }
+    }
+    
+    func setup(maxDistance: Int?) {
+        // minLabel.text = " Min Km: \(user?.minDistance ?? 1)"
+        // minSlider.value = Float(user?.minDistance ?? 1)
+        maxLabel.text = " Miles: \(maxDistance ?? 50)"
+        maxSlider.value = Float(maxDistance ?? 50)
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {

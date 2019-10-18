@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import GeoFire
 import CoreLocation
-import SDWebImage
 
 //This Controller shows venues around a users location
 
@@ -311,33 +310,15 @@ searchController.searchBar.barStyle = .black
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! VenueCell
         cell.selectionStyle = .none
         
-        if barArray.isEmpty == false {
-        
-        if isFiltering() {
-            let venue = venues[indexPath.row]
-            cell.textLabel?.text = venue.venueName
-            let imageUrl = venue.venuePhotoUrl!
-            let url = URL(string: imageUrl)
-            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                cell.profileImageView.image = image
-            }
-        } else {
-            let venue = barArray[indexPath.row]
-            cell.textLabel?.text = venue.venueName
-            let imageUrl = venue.venuePhotoUrl!
-            let url = URL(string: imageUrl)
-            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                cell.profileImageView.image = image
-            }
-        }
+        if !barArray.isEmpty {
+            let venue = isFiltering() ? venues[indexPath.row] : barArray[indexPath.row]
+            cell.setup(venue: venue)
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                
-                if self.barArray.isEmpty == true {
-                cell.textLabel?.text = "No venues in your area 😔"
+                if self.barArray.isEmpty {
+                    cell.textLabel?.text = "No venues in your area 😔"
                 }
             }
-            
         }
         
         //        if hasFavorited == true {
@@ -355,11 +336,8 @@ searchController.searchBar.barStyle = .black
     var venues = [Venue]()
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let venue = barArray[indexPath.row]
-            
+        let venue = isFiltering() ? venues[indexPath.row] : barArray[indexPath.row]
         self.handleJoin(barName: venue.venueName ?? "Venue")
-       
     }
     
     //Join a bar

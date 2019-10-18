@@ -62,6 +62,31 @@ class AgeRangeTableViewCell: UITableViewCell {
         overallStackView.fillSuperview()
         
     }
+    
+    func setup(minSeekingAge: Int?, maxSeekingAge: Int?) {
+        minLabel.text = " Min Age: \(minSeekingAge ?? 18)"
+        maxLabel.text = " Max Age: \(maxSeekingAge ?? 50)"
+        minSlider.value = Float(minSeekingAge ?? 18)
+        maxSlider.value = Float(maxSeekingAge ?? 50)
+        layer.cornerRadius = 22
+        layer.masksToBounds = true
+    }
+    
+    func evaluateMax() -> Int {
+        let minValue = Int(minSlider.value)
+        var maxValue = Int(maxSlider.value)
+        maxValue = max(minValue, maxValue)
+        maxSlider.value = Float(maxValue)
+        maxLabel.text = "Max Age \(maxValue)"
+        return maxValue
+    }
+    
+    func evaluateMin() -> Int {
+        let minValue = Int(minSlider.value)
+        minLabel.text = "Min Age \(minValue)"
+        return minValue
+    }
+    
     override var frame: CGRect {
         get {
             return super.frame

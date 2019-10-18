@@ -976,20 +976,11 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ContactsCell(style: .subtitle, reuseIdentifier: cellId)
-        cell.link = self
-        cell.selectionStyle = .none
-        
         let favoritableContact = isFiltering() ? filteredExpandableContacts.contacts[indexPath.row] : expandableContacts.contacts[indexPath.row]
-        
-        cell.textLabel?.text = favoritableContact.name
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        cell.detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
-        
         let hasLiked = swipes[favoritableContact.phoneCell] == 1
-        cell.accessoryView?.tintColor = hasLiked ? .red : #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
-        
+        let cell = ContactsCell(style: .subtitle, reuseIdentifier: cellId)
+        cell.setup(favoritableContact: favoritableContact, hasLiked: hasLiked)
+        cell.link = self
         return cell
     }
     

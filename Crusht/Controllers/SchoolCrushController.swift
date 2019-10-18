@@ -9,7 +9,6 @@ import UIKit
 import Firebase
 
 import CoreLocation
-import SDWebImage
 import GeoFire
 
 protocol SchoolDelegate {
@@ -439,7 +438,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
-        let crush = schoolArray[indexPathTapped.row]
+        let crush = isFiltering() ? users[indexPathTapped.row] : schoolArray[indexPathTapped.row]
         
         crushScoreID = crush.uid ?? ""
         
@@ -457,7 +456,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         //cell.tintColor = .red
         
         if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1) {
-            
             handleLike(cell: cell)
         }
         else {
@@ -937,47 +935,23 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
-            cellL.link = self
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
+            cell.link = self
             if !schoolArray.isEmpty {
-                if isFiltering() {
-                    let crush = users[indexPath.row]
-                    cellL.textLabel?.text = crush.name
-                    let imageUrl = crush.imageUrl1!
-                    let url = URL(string: imageUrl)
-                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                        cellL.profileImageView.image = image
-                    }
-                } else {
-                    let crush = schoolArray[indexPath.row]
-                    cellL.textLabel?.text = crush.name
-                    let imageUrl = crush.imageUrl1!
-                    let url = URL(string: imageUrl)
-                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                        cellL.profileImageView.image = image
-                    }
-                }
-                
-                let crush = schoolArray[indexPath.row]
+                let crush = isFiltering() ? users[indexPath.row] : schoolArray[indexPath.row]
                 let hasLiked = swipes[crush.phoneNumber ?? ""] == 1
                 let swipeLike = locationSwipes[crush.uid ?? ""] == 1
-                
-                if hasLiked || swipeLike {
-                    cellL.accessoryView?.tintColor = .red
-                    hasFavorited = true
-                } else {
-                    cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
-                }
+                hasFavorited = hasLiked || swipeLike
+                cell.setup(crush: crush, hasFavorited: hasFavorited)
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     if self.schoolArray.isEmpty {
-                        cellL.textLabel?.text = "No classmates to show 😔"
-                        cellL.accessoryView?.isHidden = true
+                        cell.textLabel?.text = "No classmates to show 😔"
+                        cell.accessoryView?.isHidden = true
                     }
                 }
             }
-            return cellL
+            return cell
         } else { // Set up loading cell
             let loadingCell = tableView.dequeueReusableCell(withIdentifier: loadingCellId, for: indexPath) as! LoadingCell
             loadingCell.spinner.startAnimating()
@@ -987,7 +961,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let crush = schoolArray[indexPath.row]
+        let crush = isFiltering() ? users[indexPath.row] : schoolArray[indexPath.row]
         
         guard let profUID = crush.uid else {
             return
@@ -1010,8 +984,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             
             userDetailsController.cardViewModel = user.toCardViewModel()
             self.navigationController?.pushViewController(userDetailsController, animated: true)
-            
-            
         })
     }
     

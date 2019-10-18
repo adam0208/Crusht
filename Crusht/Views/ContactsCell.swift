@@ -11,42 +11,45 @@ import Contacts
 
 class ContactsCell: UITableViewCell {
         
-        var link: FindCrushesTableViewController?
+    var link: FindCrushesTableViewController?
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        // backgroundColor = .red
         
-
-            //        backgroundColor = .red
-            
-            // kind of cheat and use a hack
-            let starButton = UIButton(type: .system)
-            starButton.setImage(#imageLiteral(resourceName: "heartIcon3Crusht"), for: .normal)
-            starButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-            //starButton.tintColor = .red
-            starButton.addTarget(self, action: #selector(handleMarkAsFavorite), for: .touchUpInside)
-        
-            starButton.tintColor = .red
-            
-            accessoryView = starButton
-        }
-    
-//    override func layoutSubviews() {
-//       super.layoutSubviews()
-//
-//        contentView.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: 20)
-//        contentView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
-//
-//    }
-    
-        @objc private func handleMarkAsFavorite() {
-            //        print("Marking as favorite")
-            link?.someMethodIWantToCall(cell: self)
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
+        // kind of cheat and use a hack
+        let starButton = UIButton(type: .system)
+        starButton.setImage(#imageLiteral(resourceName: "heartIcon3Crusht"), for: .normal)
+        starButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        //starButton.tintColor = .red
+        starButton.addTarget(self, action: #selector(handleMarkAsFavorite), for: .touchUpInside)
+        starButton.tintColor = .red
+        accessoryView = starButton
     }
+    
+    //override func layoutSubviews() {
+        //super.layoutSubviews()
+        //contentView.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: 20)
+        //contentView.backgroundColor = #colorLiteral(red: 0.7607843137, green: 0.9294117647, blue: 0.6784313725, alpha: 1)
+    //}
+    
+    @objc private func handleMarkAsFavorite() {
+        // print("Marking as favorite")
+        link?.someMethodIWantToCall(cell: self)
+    }
+    
+    func setup(favoritableContact: FavoritableContact, hasLiked: Bool) {
+        selectionStyle = .none
+        textLabel?.text = favoritableContact.name
+        textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
+        accessoryView?.tintColor = hasLiked ? .red : #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        //cell.accessoryView?.tintColor = favoritableContact.hasFavorited ? UIColor.red : #colorLiteral(red: 0.8693239689, green: 0.8693239689, blue: 0.8693239689, alpha: 1)
+    }
+        
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
 

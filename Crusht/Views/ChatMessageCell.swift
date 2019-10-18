@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import SDWebImage
 
 class ChatMessageCell: UICollectionViewCell {
     
@@ -175,6 +176,64 @@ class ChatMessageCell: UICollectionViewCell {
         playButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         playButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         bringSubviewToFront(playButton)
+    }
+    
+    func setup(message: Message, currentUserId: String?, userImageUrl: String?, widthForText: CGFloat?) {
+        self.message = message
+        textView.text = message.text
+        
+        if let userImageUrl = userImageUrl {
+            let url = URL(string: userImageUrl)
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.profileImageView.image = image
+            }
+            
+            if message.fromId == currentUserId {
+                //outgoing pink
+                bubbleView.backgroundColor = ChatMessageCell.pinkColor
+                textView.textColor = UIColor.white
+                profileImageView.isHidden = true
+                
+                bubbleViewRightAnchor?.isActive = true
+                bubbleViewLeftAnchor?.isActive = false
+            } else {
+                //incoming gray
+                bubbleView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+                textView.textColor = UIColor.black
+                profileImageView.isHidden = false
+                
+                bubbleViewRightAnchor?.isActive = false
+                bubbleViewLeftAnchor?.isActive = true
+            }
+            
+            if let messageImageUrl = message.imageUrl {
+                if message.text == "Image" {
+                    let url = URL(string: messageImageUrl)
+                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                        self.messageImageView.image = image
+                        self.textView.text = ""
+                        self.messageImageView.isHidden = false
+                        self.bubbleView.backgroundColor = UIColor.clear
+                    }
+                }
+            } else {
+                messageImageView.isHidden = true
+            }
+        }
+        
+        if message.text != "Image" {
+            if let widthForText = widthForText {
+                //a text message
+                bubbleWidthAnchor?.constant = widthForText
+                textView.isHidden = false
+            }
+        } else if message.imageUrl != nil {
+            //fall in here if its an image message
+            bubbleWidthAnchor?.constant = 200
+            textView.isHidden = true
+        }
+        
+        playButton.isHidden = message.videoUrl == nil
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -43,7 +43,13 @@ class BioCell: UITableViewCell {
         }
     }
     
- 
+    func setup(text: String?, textViewDelegate: UITextViewDelegate) {
+        textView.delegate = textViewDelegate
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.text = text
+        layer.cornerRadius = 22
+        layer.masksToBounds = true
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

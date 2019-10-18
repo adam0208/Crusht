@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class UserBarCell: UITableViewCell {
 
@@ -100,6 +101,19 @@ class UserBarCell: UITableViewCell {
         //starButton.tintColor = .red
     }
     
+    func setup(crush: User, hasFavorited: Bool) {
+        textLabel?.text = crush.name
+        let imageUrl = crush.imageUrl1!
+        let url = URL(string: imageUrl)
+        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            self.profileImageView.image = image
+        }
+        if hasFavorited {
+            accessoryView?.tintColor = .red
+        } else {
+            accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

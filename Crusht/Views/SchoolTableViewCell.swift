@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class SchoolTableViewCell: UITableViewCell {
     
@@ -99,6 +100,20 @@ class SchoolTableViewCell: UITableViewCell {
     @objc func handleTapped() {
         link?.hasTappedCrush(cell: self)
         //starButton.tintColor = .red
+    }
+    
+    func setup(crush: User, hasFavorited: Bool) {
+        textLabel?.text = crush.name
+        let imageUrl = crush.imageUrl1!
+        let url = URL(string: imageUrl)
+        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            self.profileImageView.image = image
+        }
+        if hasFavorited {
+            accessoryView?.tintColor = .red
+        } else {
+            accessoryView?.tintColor = #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
+        }
     }
     
     

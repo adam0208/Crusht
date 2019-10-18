@@ -10,7 +10,6 @@ import UIKit
 
 import Firebase
 import CoreLocation
-import SDWebImage
 import GeoFire
 
 //This controller shows users in bar which they have joined
@@ -316,20 +315,13 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
         }
         
-      
-        
-        
         func hasTappedCrush(cell: UITableViewCell) {
-            
             guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
             
-            
-            let crush = barsArray[indexPathTapped.row]
-            
+            let crush = isFiltering() ? users[indexPathTapped.row] : barsArray[indexPathTapped.row]
             crushScoreID = crush.uid ?? ""
             
             let phoneString = crush.phoneNumber ?? ""
-            
             let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
             let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
             let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
@@ -342,13 +334,11 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             //cell.tintColor = .red
             
             if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1) {
-                
                 handleLike(cell: cell)
             }
             else {
                 handleDislike(cell: cell)
             }
-            
         }
         
         var crushScoreID = String()
@@ -812,45 +802,20 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         
         override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             if indexPath.section == 0 {
-                let cellL = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserBarCell
-                cellL.link = self
+                let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserBarCell
+                cell.link = self
                 if !barsArray.isEmpty {
-                
-                    if isFiltering() {
-                        let crush = users[indexPath.row]
-                        cellL.textLabel?.text = crush.name
-                        let imageUrl = crush.imageUrl1!
-                        let url = URL(string: imageUrl)
-                        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                            cellL.profileImageView.image = image
-                        }
-                    } else {
-                        let crush = barsArray[indexPath.row]
-                        cellL.textLabel?.text = crush.name
-                        let imageUrl = crush.imageUrl1!
-                        let url = URL(string: imageUrl)
-                        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                            cellL.profileImageView.image = image
-                        }
-                    }
-                        
-                    let crush = barsArray[indexPath.row]
+                    let crush = isFiltering() ? users[indexPath.row] : barsArray[indexPath.row]
                     let hasLiked = swipes[crush.phoneNumber ?? ""] == 1
                     let swipeLike = locationSwipes[crush.uid ?? ""] == 1
-                    
-                    if hasLiked || swipeLike{
-                        cellL.accessoryView?.tintColor = .red
-                        hasFavorited = true
-                    } else {
-                        cellL.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-                    }
+                    hasFavorited = hasLiked || swipeLike
+                    cell.setup(crush: crush, hasFavorited: hasFavorited)
                 } else {
-                    DispatchQueue.main.async(execute: {
+                    DispatchQueue.main.async {
                         self.tableView.reloadData()
-                        
-                    })
+                    }
                 }
-                return cellL
+                return cell
             } else { // Set up loading cell
                 let loadingCell = tableView.dequeueReusableCell(withIdentifier: loadingCellId, for: indexPath) as! LoadingCell
                 loadingCell.spinner.startAnimating()
@@ -867,7 +832,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         
         override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
-            let crush = barsArray[indexPath.row]
+            let crush = isFiltering() ? users[indexPath.row] : barsArray[indexPath.row]
             
             guard let profUID = crush.uid else {
                 return

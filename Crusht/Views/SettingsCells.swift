@@ -58,6 +58,14 @@ class SettingsCells: UITableViewCell {
         }
     }
     
+    func setup(text: String?, placeholderText: String, isUserInteractionEnabled: Bool) {
+        textField.placeholder = placeholderText
+        textField.text = text
+        self.isUserInteractionEnabled = isUserInteractionEnabled
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -78,6 +86,13 @@ class GenderCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
             return .init(width: 0, height: 50)
         }
         
+    }
+    
+    func setup(gender: String?) {
+        textField.placeholder = "Sex"
+        textField.text = gender
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
     }
     
     var settings = SettingsTableViewController()
@@ -227,6 +242,13 @@ class GenderPrefCell: UITableViewCell, UIPickerViewDataSource, UIPickerViewDeleg
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setup(sexPref: String?) {
+        textField.placeholder = "Sex Preference"
+        textField.text = sexPref
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
+    }
+    
 }
 
 class SchoolCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -297,6 +319,13 @@ class SchoolCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource 
             frame.size.width -= 2 * 12
             super.frame = frame
         }
+    }
+    
+    func setup(school: String?) {
+        textField.placeholder = "School"
+        textField.text = school
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
