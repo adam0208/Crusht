@@ -77,7 +77,6 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 100)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
 
         

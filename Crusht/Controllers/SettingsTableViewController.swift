@@ -57,13 +57,11 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
         ref.putData(uploadData, metadata: nil) { (nil, err) in
             
-            if let err = err {
-             
+            if err != nil {
                 return
             }
             ref.downloadURL(completion: { (url, err) in
-           
-                if let err = err {
+                if err != nil {
                     return
                 }
                 
@@ -133,7 +131,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 self.handleBack()
                 return
             }
@@ -581,7 +579,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err)
             in
             //hud.dismiss()
-            if let err = err {
+            if err != nil {
                 return
             }
           
@@ -609,8 +607,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         let navController = UINavigationController(rootViewController: loginViewController)
         do {
             try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-            }
+        } catch { }
             present(navController, animated: true)
         }
     

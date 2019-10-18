@@ -44,7 +44,7 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         
         let uid = cardViewModel.uid
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             
@@ -107,8 +107,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         let button = UIButton(type: .system)
         button.setBackgroundImage(#imageLiteral(resourceName: "icons8-back-filled-30").withRenderingMode(.alwaysOriginal), for: .normal)
         button.backgroundColor = .white
-        button.heightAnchor.constraint(equalToConstant: 30)
-        button.widthAnchor.constraint(equalToConstant: 30)
         button.layer.cornerRadius = 15
         button.clipsToBounds = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true

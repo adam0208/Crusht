@@ -17,7 +17,7 @@ public extension GeoPoint {
         return GeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
     }
     
-    public func locationValue() -> CLLocation {
+    func locationValue() -> CLLocation {
         return CLLocation(latitude: self.latitude, longitude: self.longitude)
     }
 }
@@ -27,7 +27,7 @@ public extension CLLocation {
         return CLLocation(latitude: geopoint.latitude, longitude: geopoint.longitude)
     }
     
-    public func geopointValue() -> GeoPoint {
+    func geopointValue() -> GeoPoint {
         return GeoPoint(latitude: self.coordinate.latitude, longitude: self.coordinate.longitude)
     }
 }
@@ -556,8 +556,6 @@ public class GFSQuery {
             case .documentMoved:
                 keyMovedObservers[firebaseHandle] = block
                 currentHandle += 1
-            default:
-                NSException.raise(.invalidArgumentException, format: "Event type was not a GFEventType!", arguments: getVaList(["nil"]))
             }
             if self.queries.isEmpty {
                 self.updateQueries()

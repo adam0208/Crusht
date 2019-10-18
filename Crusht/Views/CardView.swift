@@ -109,8 +109,6 @@ class CardView: UIView {
         button.setBackgroundImage(#imageLiteral(resourceName: "icons8-male-user-filled-50").withRenderingMode(.alwaysOriginal), for: .normal)
 
             button.backgroundColor = .white
-            button.heightAnchor.constraint(equalToConstant: 50)
-            button.widthAnchor.constraint(equalToConstant: 50)
             button.layer.cornerRadius = 25
           button.clipsToBounds = true
             button.titleLabel?.adjustsFontForContentSizeCategory = true

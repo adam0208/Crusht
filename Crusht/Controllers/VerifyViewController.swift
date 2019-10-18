@@ -145,8 +145,6 @@ class VerifyViewController: UIViewController {
                      ]
                 
                 Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: self.phoneNumber ?? "").getDocuments(completion: { (snapshot, err) in
-                    if let err = err {
-                    }
                     if (snapshot?.isEmpty)! {
                         Firestore.firestore().collection("users").document(uid).setData(docData)
                         let enterName = EnterNameController()

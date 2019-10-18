@@ -45,7 +45,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         }
         
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             if snapshot?.exists == true {
@@ -61,7 +61,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         }
         
         Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             if snapshot?.exists == true {
@@ -142,7 +142,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         self.refreshLabel.isHidden = true
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             
@@ -172,7 +172,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             return
         }
         Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             guard let data = snapshot?.data() as? [String: Int] else {return}
@@ -206,7 +206,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let phoneID = user?.phoneNumber ?? ""
         
         Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             guard let data = snapshot?.data() as? [String: Int] else {return}
@@ -238,11 +238,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: radiusInt)
 
-        radiusQuery.observe(.documentEntered) { (key, location) in
-             if let key = key, let loc = location {
+        let _ = radiusQuery.observe(.documentEntered) { (key, location) in
+             if let key = key, location != nil {
                 
                 Firestore.firestore().collection("users").whereField("uid", isEqualTo: key).whereField("Age", isGreaterThanOrEqualTo: minAge).whereField("Age", isLessThanOrEqualTo: maxAge).limit(to: 5).getDocuments { (snapshot, err) in
-                    if let err = err {
+                    if err != nil {
                         self.refreshLabel.text = "Failed to Fetch User"
                         return
                     }
@@ -464,7 +464,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     fileprivate func checkIfMatchExists(cardUID: String) {
         
         Firestore.firestore().collection("swipes").document(cardUID).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             guard let data = snapshot?.data() else {return}
@@ -474,7 +474,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             if hasMatched {
                 
                 Firestore.firestore().collection("users").document(cardUID).getDocument(completion: { (snapshot, err) in
-                    if let err = err {
+                    if err != nil {
                         return
                     }
                 guard let userDictionary = snapshot?.data() else {return}
@@ -488,7 +488,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     
                     
         Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
-                        if let err = err {
+                        if err != nil {
                             return
                         }
             
@@ -539,19 +539,19 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             
             if (snapshot?.isEmpty)! {
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-                    if let err = err {
+                    if err != nil {
                         return
                     }
                     //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        if let err = err {
+                        if err != nil {
                             return
                         }
                         
@@ -592,7 +592,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            if let err = err {
+                            if err != nil {
                                 return
                             }
                             
@@ -646,19 +646,19 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             
             if (snapshot?.isEmpty)! {
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-                    if let err = err {
+                    if err != nil {
                         return
                     }
                     //Firestore.firestore().collection("messages").addDocument(data: otherValues)
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        if let err = err {
+                        if err != nil {
                             return
                         }
                         
@@ -699,7 +699,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            if let err = err {
+                            if err != nil {
                                 return
                             }
                             

@@ -224,14 +224,11 @@ searchController.searchBar.barStyle = .black
     fileprivate func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-               
+            if err != nil {
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
                 return
-                
             }
-            
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
@@ -278,8 +275,8 @@ searchController.searchBar.barStyle = .black
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 20)
         
         
-        radiusQuery.observe(.documentEntered) { (key, location) in
-            if let key = key, let loc = location {
+        let _ = radiusQuery.observe(.documentEntered) { (key, location) in
+            if let key = key, location != nil {
                 Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: key).order(by: "name").getDocuments(completion: { (snapshot, err) in
                     if let err = err {
                         print(err)

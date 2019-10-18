@@ -59,7 +59,6 @@ let FBLoginBttn: UIButton = {
     button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
     button.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
     button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-    button.widthAnchor.constraint(equalToConstant: 100)
     button.layer.cornerRadius = 22
     button.titleLabel?.adjustsFontForContentSizeCategory = true
 

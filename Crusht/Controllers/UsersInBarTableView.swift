@@ -75,7 +75,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             let cardUID = crushScoreID
             
             Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-                if let err = err {
+                if err != nil {
                     return
                 }
                 if snapshot?.exists == true {
@@ -302,7 +302,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 self.lastFetchedDocument = snapshot.documents.last
                 snapshot.documents.forEach({ (documentSnapshot) in
                     let userDictionary = documentSnapshot.data()
-                    var crush = User(dictionary: userDictionary)
+                    let crush = User(dictionary: userDictionary)
                     let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
                     
                     let sexPref = self.user?.sexPref
@@ -386,12 +386,12 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         let otherDocData = [crushScoreID: didLike]
         
         Firestore.firestore().collection("phone-swipes").document(phoneID).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             if snapshot?.exists == true {
                 Firestore.firestore().collection("phone-swipes").document(phoneID).updateData(documentData) { (err) in
-                    if let err = err {
+                    if err != nil {
                         return
                     }
                     if didLike == 1 {
@@ -411,12 +411,12 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             }
             
             Firestore.firestore().collection("swipes").document(self.user?.uid ?? "").getDocument { (snapshot, err) in
-                if let err = err {
+                if err != nil {
                     return
                 }
                 if snapshot?.exists == true {
                     Firestore.firestore().collection("swipes").document(self.user?.uid ?? "").updateData(otherDocData) { (err) in
-                        if let err = err {
+                        if err != nil {
                             return
                         }
                        
@@ -457,8 +457,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             
             let phone = phoneNumber
             Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phone).getDocuments { (snapshot, err) in
-                
-                if let err = err {
+                if err != nil {
                     return
                 }
                 snapshot?.documents.forEach({ (documentSnapshot) in
@@ -651,7 +650,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                             //flip it
                             
                             Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                                if let err = err {
+                                if err != nil {
                                     return
                                 }
                                 

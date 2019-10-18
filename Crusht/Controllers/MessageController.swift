@@ -122,7 +122,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
      func fetchCurrentUser() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
+            if err != nil {
           
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
@@ -213,7 +213,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         guard let uid = Auth.auth().currentUser?.uid else {return}
         //Firestore.firestore.coll
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             
@@ -282,7 +282,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         guard let uid = Auth.auth().currentUser?.uid else {return}
         
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             

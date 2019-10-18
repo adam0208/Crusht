@@ -75,7 +75,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             let toId = self.user!.uid!
             let fromId = Auth.auth().currentUser!.uid
             Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                if let err = err {
+                if err != nil {
                     self.handleback()
                     return
                 }
@@ -101,7 +101,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let toId = user!.uid!
         let fromId = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 self.handleback()
                 return
             }
@@ -134,14 +134,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     
     func observeMessages(fromId: String, toId: String) {
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 self.handleback()
                 return
             }
             snapshot?.documents.forEach({ (documentSnapshot) in
                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
                     snapshot?.documents.forEach({ (documentSnapshot) in
-                        if let err = err {
+                        if err != nil {
                             self.handleback()
                             return
                         }
@@ -427,12 +427,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         let filename = UUID().uuidString + ".mov"
         let ref = Storage.storage().reference().child("message_movies").child(filename)
         let uploadTask = ref.putFile(from: url, metadata: nil, completion: { (_, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             
             ref.downloadURL(completion: { (downloadUrl, err) in
-                if let err = err {
+                if err != nil {
                     return
                 }
                 
@@ -508,7 +508,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 }
                 
                 ref.downloadURL(completion: { (url, err) in
-                    if let err = err {
+                    if err != nil {
                         return
                     }
                     
@@ -778,18 +778,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         //SOLUTION TO CURRENT ISSUE
         //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            if let err = err {
+            if err != nil {
                 return
             }
             
             if (snapshot?.isEmpty)! {
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-                    if let err = err {
+                    if err != nil {
                         return
                     }
                     
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        if let err = err {
+                        if err != nil {
                             return
                         }
                         
@@ -830,7 +830,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                         //flip it
                         
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            if let err = err {
+                            if err != nil {
                                 return
                             }
                             

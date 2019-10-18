@@ -48,8 +48,7 @@ class UserCell: UITableViewCell {
         
         if let uid = message?.chatPartnerId() {
             Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-             
-                if let err = err {
+                if err != nil {
                     return
                 }
                 //should get document uid
