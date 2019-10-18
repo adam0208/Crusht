@@ -282,31 +282,20 @@ searchController.searchBar.barStyle = .black
                         print(err)
                         return
                     }
+                    if snapshot?.isEmpty ?? true { return }
                     
-                    
-                    if (snapshot?.isEmpty)! {
-                        
-                        return
-                    }
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         let barDictionary = documentSnapshot.data()
                         let bar = Venue(dictionary: barDictionary)
-                        
                         self.barArray.append(bar)
-                        
-                        self.barArray.sort(by: { (Venue1, Venue2) -> Bool in
-                            return Venue1.venueName < Venue2.venueName
-                        })
-                        
                     })
-                    DispatchQueue.main.async(execute: {
+                    
+                    DispatchQueue.main.async {
+                        self.barArray.sort { $0.venueName < $1.venueName }
                         self.tableView.reloadData()
-                        
-                    })
+                    }
                 })
-                
             }
-            
         }
     }
     
