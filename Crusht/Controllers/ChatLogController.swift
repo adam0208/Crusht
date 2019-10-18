@@ -11,29 +11,6 @@ import MobileCoreServices
 import AVFoundation
 import SDWebImage
 
-
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l < r
-    case (nil, _?):
-        return true
-    default:
-        return false
-    }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l > r
-    default:
-        return rhs < lhs
-    }
-}
-
 private let reuseIdentifier = "Cell"
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UITextViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -159,7 +136,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 })
             })
             downloadGroup.notify(queue: .main) {
-                self.messages.sort { $0.timestamp?.int32Value < $1.timestamp?.int32Value }
+                self.messages.sort { $0.timestamp?.int32Value ?? 0 < $1.timestamp?.int32Value ?? 0 }
                 self.collectionView?.reloadData()
                 let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                 self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)

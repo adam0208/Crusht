@@ -13,28 +13,6 @@ import CoreLocation
 import SDWebImage
 import GeoFire
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l < r
-    case (nil, _?):
-        return true
-    default:
-        return false
-    }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l > r
-    default:
-        return rhs < lhs
-    }
-}
-
 //This controller shows users in bar which they have joined
 
 class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate {
@@ -319,8 +297,8 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                         self.isRightSex = crush.school == self.user?.school
                     }
                     
-                    let maxAge = crush.age < ((self.user?.age)! + 5)
-                    let minAge = crush.age > ((self.user?.age)! - 5)
+                    let maxAge = crush.age ?? 18 < ((self.user?.age)! + 5)
+                    let minAge = crush.age ?? 18 > ((self.user?.age)! - 5)
                     
                     if isNotCurrentUser && minAge && maxAge && self.isRightSex {
                         self.barsArray.append(crush)

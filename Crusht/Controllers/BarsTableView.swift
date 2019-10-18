@@ -291,7 +291,11 @@ searchController.searchBar.barStyle = .black
                     })
                     
                     DispatchQueue.main.async {
-                        self.barArray.sort { $0.venueName < $1.venueName }
+                        self.barArray.sort { (bar1, bar2) in
+                            guard let venueName1 = bar1.venueName else { return false }
+                            guard let venueName2 = bar2.venueName else { return true }
+                            return venueName1 < venueName2
+                        }
                         self.tableView.reloadData()
                     }
                 })
@@ -533,28 +537,6 @@ searchController.searchBar.barStyle = .black
         return searchController.isActive && !searchBarIsEmpty()
     }
     
-}
-
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l < r
-    case (nil, _?):
-        return true
-    default:
-        return false
-    }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l > r
-    default:
-        return rhs < lhs
-    }
 }
 
 extension BarsTableView: UISearchResultsUpdating {

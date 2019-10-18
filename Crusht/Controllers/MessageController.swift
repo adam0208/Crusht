@@ -11,29 +11,6 @@ import Firebase
 import CoreLocation
 import GeoFire
 
-
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l < r
-    case (nil, _?):
-        return true
-    default:
-        return false
-    }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l > r
-    default:
-        return rhs < lhs
-    }
-}
-
 class MessageController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate, SchoolDelegate {
     func didSendNewMessage() {
         messages.removeAll()
@@ -259,7 +236,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
                 if let chatPartnerId = message.chatPartnerId() {
                     self.messagesDictionary[chatPartnerId] = message
                     self.messages = Array(self.messagesDictionary.values)
-                    self.messages.sort { $0.timestamp?.int32Value > $1.timestamp?.int32Value }
+                    self.messages.sort { $0.timestamp?.int32Value ?? 0 > $1.timestamp?.int32Value ?? 0 }
                 }
                 
                 if !received {
