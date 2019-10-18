@@ -55,11 +55,13 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             super.viewWillAppear(animated)
             navigationController?.navigationBar.prefersLargeTitles = false
             
-            fetchedAllUsers = false
-            lastFetchedDocument = nil
-            barsArray.removeAll()
-            tableView.reloadData()
-            fetchCurrentUser()
+            if user == nil {
+                fetchedAllUsers = false
+                lastFetchedDocument = nil
+                barsArray.removeAll()
+                tableView.reloadData()
+                fetchCurrentUser()
+            }
         }
     
         //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER

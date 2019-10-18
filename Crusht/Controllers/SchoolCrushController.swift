@@ -53,11 +53,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
   
-        fetchedAllUsers = false
-        lastFetchedDocument = nil
-        schoolArray.removeAll()
-        tableView.reloadData()
-        fetchCurrentUser()
+        if user == nil {
+            fetchedAllUsers = false
+            lastFetchedDocument = nil
+            schoolArray.removeAll()
+            tableView.reloadData()
+            fetchCurrentUser()
+        }
     }
     
     var schoolDelegate: SchoolDelegate?
