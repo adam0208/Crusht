@@ -138,32 +138,32 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
                 self.handleback()
                 return
             }
+            let downloadGroup = DispatchGroup()
             snapshot?.documents.forEach({ (documentSnapshot) in
+                downloadGroup.enter()
                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").getDocuments(completion: { (snapshot, err) in
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         if err != nil {
                             self.handleback()
+                            downloadGroup.leave()
                             return
                         }
+                        
                         let userDictionary = documentSnapshot.data()
                         let message = Message(dictionary: userDictionary)
                         if message.chatPartnerId() == self.user?.uid {
                             self.messages.append(message)
-                            self.messages.sort(by: { (message1, message2) -> Bool in
-                                return message1.timestamp?.int32Value < message2.timestamp?.int32Value
-                            })
-                            
-                            DispatchQueue.main.async(execute: {
-                                self.collectionView?.reloadData()
-                                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                               
-                            })
                         }
                     })
-                    
+                    downloadGroup.leave()
                 })
             })
+            downloadGroup.notify(queue: .main) {
+                self.messages.sort { $0.timestamp?.int32Value < $1.timestamp?.int32Value }
+                self.collectionView?.reloadData()
+                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            }
         })
     }
     

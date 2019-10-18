@@ -208,39 +208,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
   
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
-      var messageArray = [Message]()
-    func observeUserMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        //Firestore.firestore.coll
-        Firestore.firestore().collection("messages").whereField("toId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            
-            //need to use where call and set it to from id
-            snapshot?.documents.forEach({ (documentSnapshot) in
-                let userDictionary = documentSnapshot.data()
-                let message = Message(dictionary: userDictionary)
-                self.messages.append(message)
-             
-                //this will crash because of background thread, so lets call this on dispatch_async main thread
-                let messageStuff = Message(dictionary: userDictionary)
-                
-                if let chatPartnerId = messageStuff.chatPartnerId() {
-                    self.messagesDictionary[chatPartnerId] = message
-                    self.messages = Array(self.messagesDictionary.values)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-                        //refactor to cut cost
-                    })
-                }
-                
-             
-                //changeHandler: nil)
-            })
-            
-        })
-    }
+    var messageArray = [Message]()
     
     fileprivate func listenForMessages() {
         guard let toId = Auth.auth().currentUser?.uid else {return}
@@ -254,8 +222,8 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
                     }
                     if (diff.type == .modified) {
                         self.messages.removeAll()
-                        self.observeMessages()
-                        self.observeUserMessages()
+                        self.observeMessages(received: false)
+                        self.observeMessages(received: true)
                         
                         self.handleReloadTable()
                         
@@ -277,39 +245,29 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
 
     
     
-    func observeMessages() {
-        
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        
-        Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
+    func observeMessages(received: Bool) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let field = received ? "toId" : "fromId"
+        Firestore.firestore().collection("messages").whereField(field, isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
             if err != nil {
                 return
             }
-            
             snapshot?.documents.forEach({ (documentSnapshot) in
-                let userDictionary = documentSnapshot.data()
-                let message = Message(dictionary: userDictionary)
-                
+                let message = Message(dictionary: documentSnapshot.data())
                 self.messages.append(message)
                 
-                let messageStuff = Message(dictionary: userDictionary)
-                
-                if let chatPartnerId = messageStuff.chatPartnerId() {
+                if let chatPartnerId = message.chatPartnerId() {
                     self.messagesDictionary[chatPartnerId] = message
                     self.messages = Array(self.messagesDictionary.values)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-                        //refactor to cut cost
-                    })
+                    self.messages.sort { $0.timestamp?.int32Value > $1.timestamp?.int32Value }
                 }
                 
-                DispatchQueue.main.async(execute: {
-                    
-                    self.tableView.reloadData()
-                })
-                
+                if !received {
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
             })
-            
         })
     }
     
@@ -418,8 +376,8 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         messageArray.removeAll()
         tableView.reloadData()
         
-        observeUserMessages()
-        observeMessages()
+        observeMessages(received: true)
+        observeMessages(received: false)
         
 
 //        let titleView = UIView()
