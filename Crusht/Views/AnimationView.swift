@@ -18,10 +18,7 @@ class AnimationView: UIView {
         let rightColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         gradientLayer.colors = [leftColor.cgColor, rightColor.cgColor]
         gradientLayer.locations = [0, 1]
-        
         self.layer.insertSublayer(gradientLayer, at: 0)
-        
-        
         gradientLayer.frame = rect
     }
     
@@ -49,18 +46,6 @@ class AnimationView: UIView {
         animation.repeatCount = 5
         animation.autoreverses = true
         sender.layer.add(animation, forKey: nil)
-    }
-    
-    let gradientLayer = CAGradientLayer()
-    
-    fileprivate func setupGradientLayer() {
-        
-        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        // make sure to user cgColor
-        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
-        gradientLayer.locations = [0, 1]
-        
     }
 
     required init?(coder aDecoder: NSCoder) {

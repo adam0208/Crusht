@@ -106,7 +106,7 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
        
         genderPicker.delegate = self
         
-        setupGradientLayer()
+        view.addGradientSublayer()
     
         let stack = UIStackView(arrangedSubviews: [genderTextField, doneButton])
         view.addSubview(stack)
@@ -166,24 +166,4 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
         }
         
     }
-    
-    let gradientLayer = CAGradientLayer()
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        gradientLayer.frame = view.bounds
-        
-    }
-    
-    fileprivate func setupGradientLayer() {
-        
-        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        // make sure to user cgColor
-        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
-        gradientLayer.locations = [0, 1]
-        view.layer.addSublayer(gradientLayer)
-        gradientLayer.frame = view.bounds
-    }
-
 }

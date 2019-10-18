@@ -56,7 +56,6 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
 class EnterPhotoController: UIViewController {
     
     var imageFull = false
-    let gradientLayer = CAGradientLayer()
     var selectPhotoButton: UIButton!
     
     let label: UILabel = {
@@ -95,15 +94,10 @@ class EnterPhotoController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         return
     }
-        
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        gradientLayer.frame = view.bounds
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupGradientLayer()
+        view.addGradientSublayer()
         setupButton()
         
         let stack = UIStackView(arrangedSubviews: [selectPhotoButton, errorLabel])
@@ -125,15 +119,6 @@ class EnterPhotoController: UIViewController {
         
         stack.spacing = 15
         errorLabel.isHidden = true
-    }
-    
-    fileprivate func setupGradientLayer() {
-        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
-        gradientLayer.locations = [0, 1]
-        view.layer.addSublayer(gradientLayer)
-        gradientLayer.frame = view.bounds
     }
     
     private func setupButton() {

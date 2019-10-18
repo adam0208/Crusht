@@ -23,6 +23,16 @@ struct AnchoredConstraints {
 // Reference Video: https://youtu.be/iqpAP7s3b-8
 extension UIView {
     
+    func addGradientSublayer() {
+        let gradientLayer = CAGradientLayer()
+        let topColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        layer.addSublayer(gradientLayer)
+        gradientLayer.frame = bounds
+    }
+    
     @discardableResult
     func anchor(top: NSLayoutYAxisAnchor?, leading: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, trailing: NSLayoutXAxisAnchor?, padding: UIEdgeInsets = .zero, size: CGSize = .zero) -> AnchoredConstraints {
         
@@ -136,6 +146,3 @@ extension UIImageView {
     }
     
 }
-
-
-
