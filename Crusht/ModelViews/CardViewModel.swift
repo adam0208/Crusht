@@ -18,11 +18,17 @@ class CardViewModel {
     let attributedString: NSAttributedString
     let textAlignment: NSTextAlignment
     let phone: String
-//    let name: String
-//    let phoneNumber: String
-//    let school: String
     let bio: String
+    
+    var imageIndexObserver: ((Int, String?) -> ())?
      
+    private var imageIndex = 0 {
+        didSet {
+            let imageUrl = imageUrls[imageIndex]
+            //let imnage = UIImage(named: imageName)
+            imageIndexObserver?(imageIndex, imageUrl)
+        }
+    }
     
     init(uid: String, bio: String, phone: String, imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
         self.uid = uid
@@ -33,20 +39,11 @@ class CardViewModel {
         self.textAlignment = textAlignment
     }
     
-    fileprivate var imageIndex = 0 {
-        didSet {
-            let imageUrl = imageUrls[imageIndex]
-            //let imnage = UIImage(named: imageName)
-            imageIndexObserver?(imageIndex, imageUrl)
-        }
-    }
-    
-    var imageIndexObserver: ((Int, String?) -> ())?
-    
     func advanceToNextPhoto() {
         imageIndex = min(imageIndex + 1, imageUrls.count - 1)
     }
+    
     func goToPreviousPhoto() {
         imageIndex = max(0, imageIndex - 1)
-}
+    }
 }

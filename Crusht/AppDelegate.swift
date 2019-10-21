@@ -17,25 +17,18 @@ import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     let gcmMessageIDKey = "gcm.message_id"
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        
-        
         UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         UINavigationBar.appearance().tintColor = .white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
        
-        
-        
         FirebaseApp.configure()
-        
         Messaging.messaging().delegate = self
-        
         Fabric.sharedSDK().debug = true
         
         InstanceID.instanceID().instanceID { (result, error) in
@@ -82,10 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
         UITabBar.appearance().barTintColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1) // your color
         
-       // window?.rootViewController = PhoneNumberViewController()
-     //  window?.rootViewController = EnterMorePhoneInfoViewController()
-    //window?.rootViewController = FacebookPhoneController()
-   //     window?.rootViewController = BarsTableView()
         return true
     }
     
@@ -100,7 +89,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Message ID: \(messageID)")
         }
         
-        // Print full message.
         print(userInfo)
     }
     
@@ -115,11 +103,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
-        
-        // Print full message.
-        
+                
         completionHandler(UIBackgroundFetchResult.newData)
     }
+    
     // [END receive_message]
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Unable to register for remote notifications: \(error.localizedDescription)")
@@ -134,38 +121,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // With swizzling disabled you must set the APNs token here.
         // Messaging.messaging().apnsToken = deviceToken
     }
-}
-
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-
-}
+    }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
-}
+    }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
-
     func applicationDidBecomeActive(_ application: UIApplication) {
-
-}
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+}
+
+
+    
 
 
 @available(iOS 10, *)
-extension AppDelegate : UNUserNotificationCenterDelegate {
+extension AppDelegate: UNUserNotificationCenterDelegate {
     
     // Receive displayed notifications for iOS 10 devices.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -194,15 +179,11 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
-        
-        // Print full message.
-      
-       
+              
         completionHandler()
         let actionIdentifier = response.actionIdentifier
         switch actionIdentifier {
         case UNNotificationDismissActionIdentifier: // Notification was dismissed by user
-            
             completionHandler()
         case UNNotificationDefaultActionIdentifier: // App was opened from notification
             UIApplication.shared.applicationIconBadgeNumber = 0
@@ -212,18 +193,18 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         }
     }
 }
+
 // [END ios_10_message_handling]
 
-
-extension AppDelegate : MessagingDelegate {
+extension AppDelegate: MessagingDelegate {
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        
         let dataDict:[String: String] = ["token": fcmToken]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
         // TODO: If necessary send token to application server.
         // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
+    
     // [END refresh_token]
     // [START ios_10_data_message]
     // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
@@ -233,4 +214,3 @@ extension AppDelegate : MessagingDelegate {
     }
     // [END ios_10_data_message]
 }
-

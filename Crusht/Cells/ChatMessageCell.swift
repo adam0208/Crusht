@@ -11,114 +11,18 @@ import AVFoundation
 import SDWebImage
 
 class ChatMessageCell: UICollectionViewCell {
-    
+    static let pinkColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
     var message: Message?
- 
     var chatLogController: ChatLogController?
-    
-    let activityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(style: .whiteLarge)
-        aiv.translatesAutoresizingMaskIntoConstraints = false
-        aiv.hidesWhenStopped = true
-        return aiv
-    }()
-    
-    lazy var playButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "play")
-        button.tintColor = UIColor.white
-        button.setImage(image, for: .normal)
-        
-        button.addTarget(self, action: #selector(handlePlay), for: .touchUpInside)
-        
-        return button
-    }()
-    
     var playerLayer: AVPlayerLayer?
     var player: AVPlayer?
-    
-    @objc func handlePlay() {
-        if let videoUrlString = message?.videoUrl, let url = URL(string: videoUrlString) {
-            player = AVPlayer(url: url)
-            
-            playerLayer = AVPlayerLayer(player: player)
-            playerLayer?.frame = bubbleView.bounds
-            bubbleView.layer.addSublayer(playerLayer!)
-            
-            player?.play()
-            activityIndicatorView.startAnimating()
-            playButton.isHidden = true
-            
-        }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        playerLayer?.removeFromSuperlayer()
-        player?.pause()
-        activityIndicatorView.stopAnimating()
-    }
- 
-    let textView: UITextView = {
-        let tv = UITextView()
-        tv.text = "SAMPLE TEXT FOR NOW"
-        tv.font = UIFont.systemFont(ofSize: 16)
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.backgroundColor = UIColor.clear
-        tv.textColor = .white
-        tv.isEditable = false
-        return tv
-    }()
-    
-    static let pinkColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
-    
-    let bubbleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = pinkColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 16
-        view.layer.masksToBounds = true
-        return view
-    }()
-    
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 16
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    lazy var messageImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 16
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
-        
-        
-        return imageView
-    }()
-    
-    @objc func handleZoomTap(_ tapGesture: UITapGestureRecognizer) {
-        if message?.videoUrl != nil {
-            return
-        }
-        
-        if let imageView = tapGesture.view as? UIImageView {
-            endEditing(true)
-            //PRO Tip: don't perform a lot of custom logic inside of a view class
-            self.chatLogController?.performZoomInForStartingImageView(imageView)
-        }
-    }
-    
     var bubbleWidthAnchor: NSLayoutConstraint?
     var bubbleViewRightAnchor: NSLayoutConstraint?
     var bubbleViewLeftAnchor: NSLayoutConstraint?
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -133,7 +37,6 @@ class ChatMessageCell: UICollectionViewCell {
         messageImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         messageImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
         
-        
         //x,y,w,h
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         profileImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
@@ -141,14 +44,10 @@ class ChatMessageCell: UICollectionViewCell {
         profileImageView.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         //x,y,w,h
-        
         bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
-        
         bubbleViewRightAnchor?.isActive = true
-        
         bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8)
-        //        bubbleViewLeftAnchor?.active = false
-        
+        // bubbleViewLeftAnchor?.active = false
         
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         
@@ -159,16 +58,15 @@ class ChatMessageCell: UICollectionViewCell {
         
         //ios 9 constraints
         //x,y,w,h
-        //        textView.rightAnchor.constraintEqualToAnchor(self.rightAnchor).active = true
+        // textView.rightAnchor.constraintEqualToAnchor(self.rightAnchor).active = true
         textView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
         textView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         
         textView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
-        //        textView.widthAnchor.constraintEqualToConstant(200).active = true
-        
+        // textView.widthAnchor.constraintEqualToConstant(200).active = true
         
         textView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        
+
         bubbleView.addSubview(playButton)
         //x,y,w,h
         playButton.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
@@ -177,6 +75,33 @@ class ChatMessageCell: UICollectionViewCell {
         playButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         bringSubviewToFront(playButton)
     }
+   
+   override func prepareForReuse() {
+       super.prepareForReuse()
+       playerLayer?.removeFromSuperlayer()
+       player?.pause()
+       activityIndicatorView.stopAnimating()
+   }
+    
+    @objc private func handlePlay() {
+        guard let videoUrlString = message?.videoUrl, let url = URL(string: videoUrlString) else { return }
+
+        player = AVPlayer(url: url)
+        playerLayer = AVPlayerLayer(player: player)
+        playerLayer?.frame = bubbleView.bounds
+        bubbleView.layer.addSublayer(playerLayer!)
+        
+        player?.play()
+        activityIndicatorView.startAnimating()
+        playButton.isHidden = true
+   }
+   
+   @objc private func handleZoomTap(_ tapGesture: UITapGestureRecognizer) {
+       guard message?.videoUrl == nil, let imageView = tapGesture.view as? UIImageView else { return }
+       endEditing(true)
+       //PRO Tip: don't perform a lot of custom logic inside of a view class
+       self.chatLogController?.performZoomInForStartingImageView(imageView)
+   }
     
     func setup(message: Message, currentUserId: String?, userImageUrl: String?, widthForText: CGFloat?) {
         self.message = message
@@ -223,12 +148,12 @@ class ChatMessageCell: UICollectionViewCell {
         
         if message.text != "Image" {
             if let widthForText = widthForText {
-                //a text message
+                // A text message
                 bubbleWidthAnchor?.constant = widthForText
                 textView.isHidden = false
             }
         } else if message.imageUrl != nil {
-            //fall in here if its an image message
+            // Fall in here if its an image message
             bubbleWidthAnchor?.constant = 200
             textView.isHidden = true
         }
@@ -236,8 +161,63 @@ class ChatMessageCell: UICollectionViewCell {
         playButton.isHidden = message.videoUrl == nil
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // MARK: - User Interface
+    
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
+        aiv.translatesAutoresizingMaskIntoConstraints = false
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
+    
+    lazy var playButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "play")
+        button.tintColor = UIColor.white
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(handlePlay), for: .touchUpInside)
+        return button
+    }()
+    
+    let textView: UITextView = {
+        let tv = UITextView()
+        tv.text = "SAMPLE TEXT FOR NOW"
+        tv.font = UIFont.systemFont(ofSize: 16)
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.backgroundColor = UIColor.clear
+        tv.textColor = .white
+        tv.isEditable = false
+        return tv
+    }()
+    
+    let bubbleView: UIView = {
+        let view = UIView()
+        view.backgroundColor = pinkColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 16
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    lazy var messageImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
+        return imageView
+    }()
     
 }

@@ -1,29 +1,72 @@
 //
-//  UserBarCell.swift
+//  SchoolTableViewCell.swift
 //  Crusht
 //
-//  Created by William Kelly on 5/4/19.
-//  Copyright © 2019 William Kelly. All rights reserved.
+//  Created by William Kelly on 12/15/18.
+//  Copyright © 2018 William Kelly. All rights reserved.
 //
 
 import UIKit
+import Firebase
 import SDWebImage
 
-class UserBarCell: UITableViewCell {
-
+class SchoolTableViewCell: UITableViewCell {
     var crush: User?
-    
-    var link: UsersInBarTableView?
-    
-    fileprivate var user: User?
-    
+    var link: SchoolCrushController?
     var hasFavoried = Bool()
+    private var user: User?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        accessoryView = starButton
+        addSubview(starButton)
+        addSubview(profileImageView)
+        
+        starButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        starButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        starButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        starButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+     
+        starButton.addTarget(self, action: #selector(handleTapped), for: .touchUpInside)
+        
+        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y + 2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
+    }
+    
+    
+    
+    func setup(crush: User, hasFavorited: Bool) {
+        textLabel?.text = crush.name
+        let imageUrl = crush.imageUrl1!
+        let url = URL(string: imageUrl)
+        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            self.profileImageView.image = image
+        }
+        accessoryView?.tintColor = hasFavorited ? .red : #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
+    }
+    
+    @objc private func handleTapped() {
+        link?.hasTappedCrush(cell: self)
+    }
     
     let starButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "heartIcon3Crusht.png"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        
+
         button.tintColor = .red
         return button
     }()
@@ -36,37 +79,6 @@ class UserBarCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
-        detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y + 2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
-    }
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        accessoryView = starButton
-        
-        addSubview(starButton)
-        addSubview(profileImageView)
-        
-        starButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        starButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        starButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        starButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        
-        starButton.addTarget(self, action: #selector(handleTapped), for: .touchUpInside)
-        
-        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        
-    }
-    
-    
     
     //    fileprivate func setupNameAndProfileImage() {
     //           let school = user?.school ?? "I suck a lot"
@@ -95,27 +107,4 @@ class UserBarCell: UITableViewCell {
     //
     //        }
     //
-    
-    @objc func handleTapped() {
-        link?.hasTappedCrush(cell: self)
-        //starButton.tintColor = .red
-    }
-    
-    func setup(crush: User, hasFavorited: Bool) {
-        textLabel?.text = crush.name
-        let imageUrl = crush.imageUrl1!
-        let url = URL(string: imageUrl)
-        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-            self.profileImageView.image = image
-        }
-        if hasFavorited {
-            accessoryView?.tintColor = .red
-        } else {
-            accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-        }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }

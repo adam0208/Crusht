@@ -308,7 +308,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         case 13:
             return SupportCell(style: .default, reuseIdentifier: nil)
         case 14:
-            return VersionNumber(style: .default, reuseIdentifier: nil)
+            return VersionNumberCell(style: .default, reuseIdentifier: nil)
         default:
             let prefCell = GenderPrefCell(style: .default, reuseIdentifier: nil)
             prefCell.setup(sexPref: user?.sexPref)

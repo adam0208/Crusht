@@ -97,6 +97,14 @@
 		4CA41B43235DFDD600CF8529 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B42235DFDD600CF8529 /* UIColorExtension.swift */; };
 		4CA41B45235DFE0A00CF8529 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B44235DFE0A00CF8529 /* UIImageViewExtension.swift */; };
 		4CA41B47235DFF9A00CF8529 /* FavoritableContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B46235DFF9A00CF8529 /* FavoritableContact.swift */; };
+		4CA41B49235E053200CF8529 /* GenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B48235E053200CF8529 /* GenderCell.swift */; };
+		4CA41B4B235E054B00CF8529 /* GenderPrefCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B4A235E054B00CF8529 /* GenderPrefCell.swift */; };
+		4CA41B4D235E056500CF8529 /* SchoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B4C235E056500CF8529 /* SchoolCell.swift */; };
+		4CA41B50235E0D6800CF8529 /* TermsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B4F235E0D6800CF8529 /* TermsCell.swift */; };
+		4CA41B52235E0D8100CF8529 /* VerificationNumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B51235E0D8100CF8529 /* VerificationNumberCell.swift */; };
+		4CA41B54235E0DA800CF8529 /* SupportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B53235E0DA800CF8529 /* SupportCell.swift */; };
+		4CA41B56235E0DCB00CF8529 /* ContactsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */; };
+		4CA41B58235E0DE700CF8529 /* FbConnectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B57235E0DE700CF8529 /* FbConnectCell.swift */; };
 		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
 		EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */; };
 /* End PBXBuildFile section */
@@ -215,6 +223,14 @@
 		4CA41B42235DFDD600CF8529 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		4CA41B44235DFE0A00CF8529 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		4CA41B46235DFF9A00CF8529 /* FavoritableContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritableContact.swift; sourceTree = "<group>"; };
+		4CA41B48235E053200CF8529 /* GenderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderCell.swift; sourceTree = "<group>"; };
+		4CA41B4A235E054B00CF8529 /* GenderPrefCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderPrefCell.swift; sourceTree = "<group>"; };
+		4CA41B4C235E056500CF8529 /* SchoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCell.swift; sourceTree = "<group>"; };
+		4CA41B4F235E0D6800CF8529 /* TermsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsCell.swift; sourceTree = "<group>"; };
+		4CA41B51235E0D8100CF8529 /* VerificationNumberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationNumberCell.swift; sourceTree = "<group>"; };
+		4CA41B53235E0DA800CF8529 /* SupportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportCell.swift; sourceTree = "<group>"; };
+		4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTextCell.swift; sourceTree = "<group>"; };
+		4CA41B57235E0DE700CF8529 /* FbConnectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FbConnectCell.swift; sourceTree = "<group>"; };
 		5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
 		614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -285,6 +301,7 @@
 				283816F721B8929100B3E4FD /* Controllers */,
 				283816F621B8927D00B3E4FD /* Extensions */,
 				283816F521B8927700B3E4FD /* ModelViews */,
+				4CA41B4E235E057900CF8529 /* Cells */,
 				283816F421B8926F00B3E4FD /* Views */,
 				4C7CF43D2359FD5D0039B0E3 /* Constants.swift */,
 				28857CDF21B9B95900A654A0 /* Bindable.swift */,
@@ -319,27 +336,15 @@
 		283816F421B8926F00B3E4FD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4C60BD6D235630A900B59D35 /* LoadingCell.swift */,
 				2838170021B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift */,
 				2838170221B8A0A700B3E4FD /* CardView.swift */,
 				2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */,
 				28857CDB21B9B82700A654A0 /* CustomTextField.swift */,
-				285A34A521BC7B920086CC95 /* SettingsCells.swift */,
-				28F54070224C163F00EC5062 /* BioCell.swift */,
 				28F54072224C23C600EC5062 /* BioTextView.swift */,
-				28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */,
-				28908D8921C0AB6400391A39 /* ContactsCell.swift */,
-				28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */,
 				287795E521C339CF003A060A /* MatchView.swift */,
 				28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */,
 				28F46D9621C41A7800B7051F /* SendMessageButton.swift */,
-				28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */,
-				280B1ED221CB3FD700A89C5E /* UserCell.swift */,
-				280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */,
-				28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */,
 				287F3A8F225B1C43008F5BD0 /* AnimationView.swift */,
-				28C30331226C02AE002FB145 /* VenueCell.swift */,
-				2895576E227E644F001EFD73 /* UserBarCell.swift */,
 				286B05D622B5C9A40068015E /* InfoView.swift */,
 				4CA41B3E235DECDF00CF8529 /* NameTextField.swift */,
 				4CA41B40235DF2F400CF8529 /* GenderTextField.swift */,
@@ -460,6 +465,33 @@
 				28FD7D1722642D4700B79496 /* EnterPhotoController.swift */,
 			);
 			path = Registration;
+			sourceTree = "<group>";
+		};
+		4CA41B4E235E057900CF8529 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				4CA41B57235E0DE700CF8529 /* FbConnectCell.swift */,
+				4C60BD6D235630A900B59D35 /* LoadingCell.swift */,
+				28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */,
+				28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */,
+				280B1ED221CB3FD700A89C5E /* UserCell.swift */,
+				2895576E227E644F001EFD73 /* UserBarCell.swift */,
+				4CA41B48235E053200CF8529 /* GenderCell.swift */,
+				4CA41B4A235E054B00CF8529 /* GenderPrefCell.swift */,
+				4CA41B4C235E056500CF8529 /* SchoolCell.swift */,
+				285A34A521BC7B920086CC95 /* SettingsCells.swift */,
+				28F54070224C163F00EC5062 /* BioCell.swift */,
+				28908D8921C0AB6400391A39 /* ContactsCell.swift */,
+				28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */,
+				280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */,
+				28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */,
+				28C30331226C02AE002FB145 /* VenueCell.swift */,
+				4CA41B4F235E0D6800CF8529 /* TermsCell.swift */,
+				4CA41B51235E0D8100CF8529 /* VerificationNumberCell.swift */,
+				4CA41B53235E0DA800CF8529 /* SupportCell.swift */,
+				4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		68FD194D3467F67A969E93D2 /* Pods */ = {
@@ -760,6 +792,8 @@
 				287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */,
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
+				4CA41B49235E053200CF8529 /* GenderCell.swift in Sources */,
+				4CA41B4D235E056500CF8529 /* SchoolCell.swift in Sources */,
 				283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
 				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
@@ -770,8 +804,10 @@
 				2895576F227E644F001EFD73 /* UserBarCell.swift in Sources */,
 				4C60BD6E235630A900B59D35 /* LoadingCell.swift in Sources */,
 				28FD7D1022641FB100B79496 /* EnterNameController.swift in Sources */,
+				4CA41B4B235E054B00CF8529 /* GenderPrefCell.swift in Sources */,
 				28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
+				4CA41B56235E0DCB00CF8529 /* ContactsTextCell.swift in Sources */,
 				28FD7D14226425D800B79496 /* EnterSchoolController.swift in Sources */,
 				28FD7D162264282B00B79496 /* BioController.swift in Sources */,
 				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
@@ -787,9 +823,11 @@
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */,
+				4CA41B54235E0DA800CF8529 /* SupportCell.swift in Sources */,
 				4CA41B47235DFF9A00CF8529 /* FavoritableContact.swift in Sources */,
 				2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
+				4CA41B58235E0DE700CF8529 /* FbConnectCell.swift in Sources */,
 				4CA41B43235DFDD600CF8529 /* UIColorExtension.swift in Sources */,
 				28FD7D1822642D4700B79496 /* EnterPhotoController.swift in Sources */,
 				28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */,
@@ -804,6 +842,7 @@
 				28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */,
 				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
 				28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */,
+				4CA41B50235E0D6800CF8529 /* TermsCell.swift in Sources */,
 				2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */,
 				2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
@@ -819,6 +858,7 @@
 				2838171E21B8C90100B3E4FD /* UIViewExtension.swift in Sources */,
 				28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */,
 				2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */,
+				4CA41B52235E0D8100CF8529 /* VerificationNumberCell.swift in Sources */,
 				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,
 				28857CE021B9B95900A654A0 /* Bindable.swift in Sources */,
 				4C7CF43E2359FD5D0039B0E3 /* Constants.swift in Sources */,
