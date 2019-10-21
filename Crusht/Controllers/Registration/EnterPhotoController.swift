@@ -1,5 +1,5 @@
 //
-//  PhotoController.swift
+//  EnterPhotoController.swift
 //  Crusht
 //
 //  Created by William Kelly on 4/14/19.
@@ -11,74 +11,20 @@ import Firebase
 import UserNotifications
 import SDWebImage
 
-extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-  @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    let selectedImage = info[.originalImage] as? UIImage
-    
-    let imageButton = (picker as? CustomImagePickerController)?.imageBttn
-    
-    imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
-    
-    self.imageFull = true
-    
-    dismiss(animated: true)
-    
-    self.errorLabel.text = "Registering, hang tight..."
-    self.errorLabel.isHidden = false
-    self.selectPhotoButton.isEnabled = false
-    
-    let filename = UUID().uuidString
-    let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-    guard let imageData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
-    ref.putData(imageData, metadata: nil) { (nil, err) in
-        
-        if let err = err {
-            print(err)
-            return
-        }
-        ref.downloadURL(completion: { (url, err) in
-            
-            if let err = err {
-                print(err)
-                return
-            }
-            
-            let imageUrl = url?.absoluteString ?? ""
-            
-            self.saveInfoToFirestore(imageUrl: imageUrl)
-        })
-    }
-    
-    }
-}
-
 class EnterPhotoController: UIViewController {
-    
     var imageFull = false
     var selectPhotoButton: UIButton!
-    
-    let label: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.text = "Select Your Profile Picture"
-        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
-        label.textAlignment = .center
-        label.adjustsFontSizeToFitWidth = true
-        return label
-    }()
-    
-    let errorLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Please select a photo"
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
-        label.textAlignment = .center
-        label.adjustsFontSizeToFitWidth = true
-        return label
-    }()
 
-    @objc func handleSelectPhoto() {
+    // MARK: - Life Cycle Methods
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initializeUI()
+    }
+    
+    // MARK: - Logic
+    
+    @objc private func handleSelectPhoto() {
         let alert = UIAlertController(title: "Access your photos", message: "Can Crusht open your photos so you can select a profile picture?", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Yes", style: .default){(UIAlertAction) in
@@ -94,9 +40,20 @@ class EnterPhotoController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         return
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    private func saveInfoToFirestore(imageUrl: String){
+        let uid = Auth.auth().currentUser?.uid ?? ""
+        let docData: [String: Any] = ["ImageUrl1": imageUrl]
+        Firestore.firestore().collection("users").document(uid).setData(docData, merge: true) { (err) in
+            guard err == nil else { return }
+            let customtabController = CustomTabBarController()
+            self.present(customtabController, animated: true)
+        }
+    }
+    
+    // MARK: - User Interface
+    
+    private func initializeUI() {
         view.addGradientSublayer()
         setupButton()
         
@@ -136,16 +93,54 @@ class EnterPhotoController: UIViewController {
         selectPhotoButton.clipsToBounds = true
     }
     
-    private func saveInfoToFirestore(imageUrl: String){
-        let uid = Auth.auth().currentUser?.uid ?? ""
-        let docData: [String: Any] = ["ImageUrl1": imageUrl]
-        Firestore.firestore().collection("users").document(uid).setData(docData, merge: true) { (err) in
-            if let err = err {
-                print(err)
-                return
+    private let label: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.text = "Select Your Profile Picture"
+        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Please select a photo"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
+}
+
+extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let selectedImage = info[.originalImage] as? UIImage
+        let imageButton = (picker as? CustomImagePickerController)?.imageBttn
+        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        self.imageFull = true
+
+        dismiss(animated: true)
+
+        self.errorLabel.text = "Registering, hang tight..."
+        self.errorLabel.isHidden = false
+        self.selectPhotoButton.isEnabled = false
+
+        let filename = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+        guard let imageData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
+        
+        ref.putData(imageData, metadata: nil) { (nil, err) in
+            guard err == nil else { return }
+            ref.downloadURL { (url, err) in
+                guard err == nil else { return }
+                let imageUrl = url?.absoluteString ?? ""
+                self.saveInfoToFirestore(imageUrl: imageUrl)
             }
-            let customtabController = CustomTabBarController()
-            self.present(customtabController, animated: true)
         }
     }
 }

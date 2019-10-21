@@ -5,7 +5,7 @@
 //  Created by William Kelly on 1/11/19.
 //  Copyright © 2019 William Kelly. All rights reserved.
 //
-
+/*
 import UIKit
 
 class Crushes: NSObject {
@@ -20,10 +20,8 @@ class Crushes: NSObject {
     var name: String?
     var timestamp: NSNumber?
     var likes: Int?
-    
 
 init(dictionary: [String: Any]) {
-
     self.crush1 = dictionary["Crush1"] as? String ?? ""
     self.crush2 = dictionary["Crush2"] as? String ?? ""
     self.crush3 = dictionary["Crush3"] as? String ?? ""
@@ -35,7 +33,7 @@ init(dictionary: [String: Any]) {
     self.school = dictionary["School"] as? String ?? ""
     self.timestamp = dictionary["timestamp"] as? NSNumber
     self.likes = dictionary["Likes"] as? Int
-
-    
     }
 }
+*/
+

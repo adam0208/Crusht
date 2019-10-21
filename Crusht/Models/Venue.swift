@@ -11,14 +11,9 @@ import UIKit
 import Firebase
 
 class Venue: NSObject {
-    
     var venueName: String?
     var venueCity: String?
     var venuePhotoUrl: String?
-    
-    var venueLat: String?
-    var venueLong: String?
-    
     var name: String
     
     init(dictionary: [String: Any]) {
@@ -26,10 +21,5 @@ class Venue: NSObject {
         self.venueCity = dictionary["venueCity"] as? String ?? ""
         self.venuePhotoUrl = dictionary["venuePhotoUrl"] as? String ?? ""
         self.name = dictionary["name"] as? String ?? ""
-      
-        
     }
-    
-
-    
 }

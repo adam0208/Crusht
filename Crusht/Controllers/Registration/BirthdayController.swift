@@ -10,35 +10,41 @@ import UIKit
 import Firebase
 
 class BirthdayController: UIViewController {
+    var user: User?
+    var phone: String!
+    var name = String()
+    var birthday = String()
+    var age = Int()
+    var datepicker = UIDatePicker()
     
+    // MARK: - Life Cycle Methods
     
-    @objc func donedatePicker(){
-        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initializeUI()
+    }
+    
+    // MARK: - Logic
+    
+    @objc private func donedatePicker(){
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
         ageTextField.text = formatter.string(from: datepicker.date)
-        
         self.view.endEditing(true)
     }
     
-    @objc func cancelDatePicker(){
+    @objc private func cancelDatePicker(){
         self.view.endEditing(true)
-      
     }
     
-    
-    @objc func dateChanged() {
+    @objc private func dateChanged() {
         let components = Calendar.current.dateComponents([.year, .month, .day], from: datepicker.date)
         if let day = components.day, let month = components.month, let year = components.year {
             ageTextField.text = "\(month)-\(day)-\(year)"
-            
         }
-        
     }
     
-    
-    
-    func calcAge(birthday: String) -> Int {
+    private func calcAge(birthday: String) -> Int {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "MM/dd/yyyy"
         let birthdayDate = dateFormater.date(from: birthday)
@@ -49,115 +55,40 @@ class BirthdayController: UIViewController {
         return age!
     }
     
-
-    let ageTextField: UITextField = {
-        let tf = NameTextField()
-        tf.placeholder = "Birthday"
-        tf.backgroundColor = .white
-        tf.layer.cornerRadius = 15
-        tf.font = UIFont.systemFont(ofSize: 25)
-        tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        
-        return tf
-    }()
-    
-    let label: UILabel = {
-        let label = UILabel()
-        
-        label.text = "Enter your Birthday"
-        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
-        label.textAlignment = .center
-         label.textColor = .white
-        label.adjustsFontSizeToFitWidth = true
-        
-        return label
-    }()
-    
-    let errorLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "Please enter your birthday"
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
-        label.textAlignment = .center
-        label.adjustsFontSizeToFitWidth = true
-        
-        return label
-    }()
-    
-    
-    let doneBttn: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Next", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        
-        button.layer.cornerRadius = 22
-        
-        button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
-        
-        return button
-    }()
-    
-  
-    
-    
-    @objc fileprivate func handleDone() {
+    @objc private func handleDone() {
         let bday = ageTextField.text?.replacingOccurrences(of: "/", with: "-")
-        
         birthday = bday ?? "10-30-1999"
         age = calcAge(birthday: birthday)
-        if ageTextField.text == "" {
-            
+        
+        guard ageTextField.text != "" else {
             errorLabel.isHidden = false
-            
             return
-        
         }
-        else if age < 18 {
-         
+        guard age >= 18 else {
             errorLabel.text = "Must be 18 or older to join"
-            
             return
         }
-        else {
-           let enterSchoolController = EnterSchoolController()
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            let docData: [String: Any] = ["Birthday": birthday,
-                                          "Age": age]
-            Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
-           
-//
-//            enterSchoolController.name = name
-//            enterSchoolController.birthday = birthday
-//            enterSchoolController.age = age
-//            enterSchoolController.phone = phone
-            present(enterSchoolController, animated: true)
-        }
         
+        let enterSchoolController = EnterSchoolController()
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let docData: [String: Any] = ["Birthday": birthday, "Age": age]
+        Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+        present(enterSchoolController, animated: true)
     }
     
-    var user: User?
-    var phone: String!
-    var name = String()
-      var birthday = String()
-    var age = Int()
+    @objc private func handleTapDismiss() {
+        donedatePicker() // Make sure date is saved
+        self.view.endEditing(true) // Dismisses keyboard
+    }
     
-    var datepicker = UIDatePicker()
+    // MARK: - User Interface
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private func initializeUI() {
         datepicker.datePickerMode = .date
         ageTextField.inputView = datepicker
+        
         let toolbar = UIToolbar();
         toolbar.sizeToFit()
-        
-        
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker));
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donedatePicker));
@@ -169,29 +100,74 @@ class BirthdayController: UIViewController {
         
         let stack = UIStackView(arrangedSubviews: [ageTextField, doneBttn])
         view.addSubview(stack)
-        
         stack.axis = .vertical
-        
         view.addSubview(label)
+        label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                     leading: view.leadingAnchor,
+                     bottom: nil,
+                     trailing: view.trailingAnchor,
+                     padding: .init(top: view.bounds.height / 5, left: 30, bottom: 0, right: 30))
         
-        label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
-        
-        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/2.2, right: 30))
+        stack.anchor(top: label.bottomAnchor,
+                     leading: view.leadingAnchor,
+                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                     trailing: view.trailingAnchor,
+                     padding: .init(top: 4, left: 30, bottom: view.bounds.height / 2.2, right: 30))
         
         stack.spacing = 20
         
         view.addSubview(errorLabel)
         errorLabel.isHidden = true
         errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
-        
-        
-        
     }
     
-    @objc fileprivate func handleTapDismiss() {
-        donedatePicker() //make sure date is saved
-        self.view.endEditing(true) // dismisses keyboard
+    private let ageTextField: UITextField = {
+        let tf = NameTextField()
+        tf.placeholder = "Birthday"
+        tf.backgroundColor = .white
+        tf.layer.cornerRadius = 15
+        tf.font = UIFont.systemFont(ofSize: 25)
+        tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-    }
+        return tf
+    }()
+    
+    private let label: UILabel = {
+        let label = UILabel()
+        label.text = "Enter your Birthday"
+        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.textAlignment = .center
+        label.textColor = .white
+        label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Please enter your birthday"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    
+    private let doneBttn: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Next", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.layer.cornerRadius = 22
+        button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
+        
+        return button
+    }()
 
 }

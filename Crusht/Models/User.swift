@@ -9,33 +9,28 @@ import UIKit
 import Firebase
 
 struct User: ProducesCardViewModel {
-// defining our properties for our model layer
     var name: String?
     var age: Int?
     var school: String?
+    
     var imageUrl1: String?
-     var imageUrl2: String?
-     var imageUrl3: String?
+    var imageUrl2: String?
+    var imageUrl3: String?
+    
     var uid: String?
     var bio: String?
     var phoneNumber: String?
-    
     var currentVenue: String?
-    
     var crushScore: Int?
-    
     var g: String?
     
     var minSeekingAge: Int?
     var maxSeekingAge: Int?
-    
-
     var maxDistance: Int?
 
     
     var toId: String?
     var fromId: String?
-    
     var fbid: String?
     
     var lat: String?
@@ -54,8 +49,6 @@ struct User: ProducesCardViewModel {
     var timeLastJoined: NSNumber?
     
     init(dictionary: [String: Any]) {
-        //initialize our user stuff
-       
         self.age = dictionary["Age"] as? Int
         self.name = dictionary["Full Name"] as? String ?? ""
         self.birthday = dictionary["Birthday"] as? String ?? ""
@@ -88,32 +81,28 @@ struct User: ProducesCardViewModel {
         self.timeLastJoined = dictionary["TimeLastJoined"] as? NSNumber
     }
 
-func toCardViewModel() -> CardViewModel {
-    let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
-    
-    let ageSting = age != nil ? "\(age!)" : "N/A"
-    
-    attributedText.append(NSAttributedString(string: "  \(ageSting)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
-    
-    let schoolString = school != nil ? school! : "Not Available"
-    
-    attributedText.append(NSAttributedString(string: "\n\(schoolString)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
-    
-    
-    var imageUrls = [String]()
-    if let url = imageUrl1 { imageUrls.append(url) }
-    if let url = imageUrl2, url != "" { imageUrls.append(url) }
-    if let url = imageUrl3, url != "" { imageUrls.append(url) }
-    
-    return CardViewModel(uid: self.uid ?? "", bio: self.bio ?? "", phone: self.phoneNumber ?? "", imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
-    
+    func toCardViewModel() -> CardViewModel {
+        let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
+        
+        let ageSting = age != nil ? "\(age!)" : "N/A"
+        attributedText.append(NSAttributedString(string: "  \(ageSting)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
+        
+        let schoolString = school != nil ? school! : "Not Available"
+        attributedText.append(NSAttributedString(string: "\n\(schoolString)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
+        
+        var imageUrls = [String]()
+        if let url = imageUrl1 { imageUrls.append(url) }
+        if let url = imageUrl2, url != "" { imageUrls.append(url) }
+        if let url = imageUrl3, url != "" { imageUrls.append(url) }
+        
+        return CardViewModel(uid: self.uid ?? "", bio: self.bio ?? "", phone: self.phoneNumber ?? "", imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     }
     
     func crushPartnerId() -> String? {
         return fromId == Auth.auth().currentUser?.uid ? toId : fromId
     }
     
-    func calcAge(birthday: String) -> Int {
+    func calculateAge(birthday: String) -> Int {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "MM/dd/yyyy"
         let birthdayDate = dateFormater.date(from: birthday)
@@ -127,21 +116,5 @@ func toCardViewModel() -> CardViewModel {
     func hasSamePreferences(user: User) -> Bool {
         return user.maxDistance == maxDistance && user.minSeekingAge == minSeekingAge
             && user.maxSeekingAge == maxSeekingAge && user.school == school && user.currentVenue == currentVenue
-    }
-    
-    
-}
-
-extension Date{
-    var daysInMonth:Int{
-        let calendar = Calendar.current
-        
-        let dateComponents = DateComponents(year: calendar.component(.year, from: self), month: calendar.component(.month, from: self))
-        let date = calendar.date(from: dateComponents)!
-        
-        let range = calendar.range(of: .day, in: .month, for: date)!
-        let numDays = range.count
-        
-        return numDays
     }
 }

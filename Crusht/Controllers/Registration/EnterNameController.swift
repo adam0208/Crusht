@@ -9,23 +9,72 @@
 import UIKit
 import Firebase
 
-class NameTextField: UITextField {
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 24, dy: 0)
-    }
-    
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 24, dy: 0)
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return .init(width: 0, height: 100)
-    }
-}
-
 class EnterNameController: UIViewController, UITextFieldDelegate {
-
-    let nameTF: UITextField = {
+    var user: User?
+    var phone: String!
+    var name = String()
+    
+    // MARK: - Life Cycle Methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        nameTF.delegate = self
+        initializeUI()
+    }
+    
+    // MARK: - Logic
+    
+    @objc private func handleDone() {
+        guard nameTF.text != "" else {
+            errorLabel.isHidden = false
+            return
+        }
+        let birthdayController = BirthdayController()
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let docData: [String: Any] = ["Full Name": nameTF.text ?? ""]
+        Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+        self.present(birthdayController, animated: true)
+    }
+    
+    // MARK: - UITextFieldDelegate
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let maxLength = 40
+        let currentString: NSString = textField.text! as NSString
+        let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
+        return newString.length <= maxLength
+    }
+    
+    // MARK: - User Interface
+    
+    private func initializeUI() {
+        view.addGradientSublayer()
+        
+        let stack = UIStackView(arrangedSubviews: [nameTF, doneButton])
+        view.addSubview(stack)
+        stack.axis = .vertical
+        view.addSubview(label)
+        label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                     leading: view.leadingAnchor,
+                     bottom: nil,
+                     trailing: view.trailingAnchor,
+                     padding: .init(top: view.bounds.height / 5, left: 30, bottom: 0, right: 30))
+        
+        stack.anchor(top: label.bottomAnchor,
+                     leading: view.leadingAnchor,
+                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                     trailing: view.trailingAnchor,
+                     padding: .init(top: 4, left: 30, bottom: view.bounds.height / 2.2, right: 30))
+        
+        stack.spacing = 20
+        view.addSubview(errorLabel)
+        errorLabel.isHidden = true
+        errorLabel.anchor(top: stack.bottomAnchor,
+                          leading: view.leadingAnchor,
+                          bottom: nil,
+                          trailing: view.trailingAnchor,
+                          padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+    }
+    
+    private let nameTF: UITextField = {
         let tf = NameTextField()
         tf.placeholder = "Full Name"
         tf.backgroundColor = .white
@@ -33,14 +82,12 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         tf.font = UIFont.systemFont(ofSize: 25)
         tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        
         return tf
     }()
     
-    let label: UILabel = {
+    private let label: UILabel = {
         let label = UILabel()
         label.text = "Enter Your Full Name"
-        
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
@@ -49,9 +96,8 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    let errorLabel: UILabel = {
+    private let errorLabel: UILabel = {
         let label = UILabel()
-        
         label.text = "Please enter your name"
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
@@ -61,7 +107,7 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    let doneButton: UIButton = {
+    private let doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Next", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -70,76 +116,9 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 60).isActive = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        
         button.layer.cornerRadius = 22
-        
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
         
         return button
     }()
-    
-    
-    @objc fileprivate func handleDone() {
-        if nameTF.text == "" {
-            
-            errorLabel.isHidden = false
-            
-            return
-        }
-        else {
-            
-//            name = nameTF.text ?? ""
-            let birthdayController = BirthdayController()
-//            birthdayController.name = name
-//            birthdayController.phone = phone
-//            self.present(birthdayController, animated: true)
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            let docData: [String: Any] = ["Full Name": nameTF.text ?? ""]
-            Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
-            self.present(birthdayController, animated: true)
-
-            
-        }
-      
-    }
-    
-    var user: User?
-    var phone: String!
-    
-    var name = String()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-     
-        nameTF.delegate = self
-        
-        view.addGradientSublayer()
-        
-        let stack = UIStackView(arrangedSubviews: [nameTF, doneButton])
-        view.addSubview(stack)
-        
-        stack.axis = .vertical
-        
-        view.addSubview(label)
-        
-        label.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
-        
-        stack.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 4, left: 30, bottom: view.bounds.height/2.2, right: 30))
-        
-        stack.spacing = 20
-        view.addSubview(errorLabel)
-        errorLabel.isHidden = true
-        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
-        
-        
-    }
-    
-    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let maxLength = 40
-        let currentString: NSString = textField.text! as NSString
-        let newString: NSString =
-            currentString.replacingCharacters(in: range, with: string) as NSString
-        return newString.length <= maxLength
-    }
-
 }

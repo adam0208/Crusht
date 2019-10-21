@@ -18,12 +18,10 @@ class Reports: NSObject {
     
     init(dictionary: [String: Any]) {
         self.reportNumber = dictionary["number-of-reports"] as? Int
-         self.uid = dictionary["uid"] as? String ?? ""
+        self.uid = dictionary["uid"] as? String ?? ""
         self.offenderName = dictionary["offender-name"] as? String ?? ""
         self.offenderEmail = dictionary["email"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""
-         self.offenderUID = dictionary["reporter-uid"] as? String ?? ""
-        
+        self.offenderUID = dictionary["reporter-uid"] as? String ?? ""
     }
-    
 }
