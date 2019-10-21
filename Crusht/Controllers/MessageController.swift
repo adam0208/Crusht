@@ -184,7 +184,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     }
   
     var messages = [Message]()
-    var messagesDictionary = [String: Message]()
+    var messageDictionary = [String: Message]()
     var messageArray = [Message]()
     
     fileprivate func listenForMessages() {
@@ -225,27 +225,32 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     func observeMessages(received: Bool) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let field = received ? "toId" : "fromId"
-        Firestore.firestore().collection("messages").whereField(field, isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            snapshot?.documents.forEach({ (documentSnapshot) in
+        Firestore.firestore().collection("messages").whereField(field, isEqualTo: uid).getDocuments { (snapshot, err) in
+            if err != nil { return }
+            
+            // Create a dictionary with the newest message for each of the chats
+            snapshot?.documents.forEach { documentSnapshot in
                 let message = Message(dictionary: documentSnapshot.data())
-                self.messages.append(message)
-                
-                if let chatPartnerId = message.chatPartnerId() {
-                    self.messagesDictionary[chatPartnerId] = message
-                    self.messages = Array(self.messagesDictionary.values)
-                    self.messages.sort { $0.timestamp?.int32Value ?? 0 > $1.timestamp?.int32Value ?? 0 }
+                if self.shouldUpdateMessageDictionary(with: message), let chatPartnerId = message.chatPartnerId() {
+                    self.messageDictionary[chatPartnerId] = message
                 }
-                
-                if !received {
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                }
-            })
-        })
+            }
+            
+            // Create an array with the values of the dictionary, sorted by date
+            self.messages = Array(self.messageDictionary.values)
+            self.messages.sort { $0.timestamp?.int32Value ?? 0 > $1.timestamp?.int32Value ?? 0 }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    private func shouldUpdateMessageDictionary(with message: Message) -> Bool {
+        guard let chatPartnerId = message.chatPartnerId(),
+              let timestamp = message.timestamp else { return false }
+        guard let currentMessage = messageDictionary[chatPartnerId],
+              let currentTimestamp = currentMessage.timestamp else { return true }
+        return timestamp.int32Value > currentTimestamp.int32Value
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -349,7 +354,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     
     func setupNavBarWithUser(_ user: User) {
         messages.removeAll()
-        messagesDictionary.removeAll()
+        messageDictionary.removeAll()
         messageArray.removeAll()
         tableView.reloadData()
         
