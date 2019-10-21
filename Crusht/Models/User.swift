@@ -124,6 +124,11 @@ func toCardViewModel() -> CardViewModel {
         return age!
     }
     
+    func hasSamePreferences(user: User) -> Bool {
+        return user.maxDistance == maxDistance && user.minSeekingAge == minSeekingAge
+            && user.maxSeekingAge == maxSeekingAge && user.school == school && user.currentVenue == currentVenue
+    }
+    
     
 }
 

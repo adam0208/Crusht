@@ -21,24 +21,13 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     var lastFetchedDocument: QueryDocumentSnapshot? = nil
     
     func didSaveSettings() {
-        fetchedAllUsers = false
-        lastFetchedDocument = nil
-        barsArray.removeAll()
-        tableView.reloadData()
         fetchCurrentUser()
     }
         
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             navigationController?.navigationBar.prefersLargeTitles = false
-            
-            if user == nil {
-                fetchedAllUsers = false
-                lastFetchedDocument = nil
-                barsArray.removeAll()
-                tableView.reloadData()
-                fetchCurrentUser()
-            }
+            fetchCurrentUser()
         }
     
         //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
@@ -225,16 +214,22 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 }
                 
                 guard let dictionary = snapshot?.data() else {return}
-                self.user = User(dictionary: dictionary)
-                if self.user?.name == "" {
+                let user = User(dictionary: dictionary)
+                if user.name == "" {
                     let namecontroller = EnterNameController()
                     namecontroller.phone = self.user?.phoneNumber ?? ""
                     self.present(namecontroller, animated: true)
                 }
                 
-                
-                //self.fetchSwipes()
-                self.fetchMoreUsersInBar()
+                if self.user == nil || !self.user!.hasSamePreferences(user: user) || self.barsArray.isEmpty {
+                    self.user = user
+                    self.fetchedAllUsers = false
+                    self.lastFetchedDocument = nil
+                    self.barsArray.removeAll()
+                    self.tableView.reloadData()
+                    //self.fetchSwipes()
+                    self.fetchMoreUsersInBar()
+                }
             }
         }
         

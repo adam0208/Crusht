@@ -30,30 +30,16 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
   
-        if user == nil {
-            fetchedAllUsers = false
-            lastFetchedDocument = nil
-            schoolArray.removeAll()
-            tableView.reloadData()
-            fetchCurrentUser()
-        }
+        fetchCurrentUser()
     }
     
     var schoolDelegate: SchoolDelegate?
     
     func didSaveSettings() {
-        fetchedAllUsers = false
-        lastFetchedDocument = nil
-        schoolArray.removeAll()
-        tableView.reloadData()
         fetchCurrentUser()
     }
     
     func didFinishLoggingIn() {
-        fetchedAllUsers = false
-        lastFetchedDocument = nil
-        schoolArray.removeAll()
-        tableView.reloadData()
         fetchCurrentUser()
     }
     
@@ -290,7 +276,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if err != nil {
                 let loginController = LoginViewController()
@@ -298,15 +284,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 return
             }
             guard let dictionary = snapshot?.data() else {return}
+            let user = User(dictionary: dictionary)
             
-            self.user = User(dictionary: dictionary)
-            if self.user?.phoneNumber == ""{
+            if user.phoneNumber == ""{
                 let loginController = LoginViewController()
                 self.present(loginController, animated: true)
                 return
         
             }
-            else if self.user?.name == "" {
+            else if user.name == "" {
                 let namecontroller = EnterNameController()
                 namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
@@ -314,9 +300,16 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
               
             }
             
-            //self.fetchSwipes()
-            self.fetchSchool()
+            if self.user == nil || !self.user!.hasSamePreferences(user: user) || self.schoolArray.isEmpty {
+                self.user = user
+                self.fetchedAllUsers = false
+                self.lastFetchedDocument = nil
+                self.schoolArray.removeAll()
+                self.tableView.reloadData()
+                //self.fetchSwipes()
+                self.fetchSchool()
             }
+        }
       
     }
     
