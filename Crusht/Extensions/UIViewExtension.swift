@@ -6,19 +6,7 @@
 //  Copyright © 2018 William Kelly. All rights reserved.
 //
 
-import Foundation
-
 import UIKit
-
-extension UIColor {
-    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
-    }
-}
-
-struct AnchoredConstraints {
-    var top, leading, bottom, trailing, width, height: NSLayoutConstraint?
-}
 
 // Reference Video: https://youtu.be/iqpAP7s3b-8
 extension UIView {
@@ -108,41 +96,6 @@ extension UIView {
     
 }
 
-
-let imageCache = NSCache<AnyObject, AnyObject>()
-
-extension UIImageView {
-    
-    func loadImageUsingCacheWithUrlString(_ urlString: String) {
-        
-        self.image = nil
-        
-        //check cache for image first
-        if let cachedImage = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
-            self.image = cachedImage
-            return
-        }
-        
-        //otherwise fire off a new download
-        let url = URL(string: urlString)
-        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-            
-            //download hit an error so lets return out
-            if error != nil {
-                print(error ?? "")
-                return
-            }
-            
-            DispatchQueue.main.async(execute: {
-                
-                if let downloadedImage = UIImage(data: data!) {
-                    imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
-                    
-                    self.image = downloadedImage
-                }
-            })
-            
-        }).resume()
-    }
-    
+struct AnchoredConstraints {
+    var top, leading, bottom, trailing, width, height: NSLayoutConstraint?
 }

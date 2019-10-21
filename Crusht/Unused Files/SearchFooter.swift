@@ -6,6 +6,7 @@
 //  Copyright © 2019 William Kelly. All rights reserved.
 //
 
+/*
 import UIKit
 
 class SearchFooter: UIView {
@@ -36,7 +37,7 @@ class SearchFooter: UIView {
         label.frame = self.bounds
     }
     
-    //MARK: - Animation
+    // MARK: - Animation
     
     fileprivate func hideFooter() {
         UIView.animate(withDuration: 0.7) {[unowned self] in
@@ -52,8 +53,6 @@ class SearchFooter: UIView {
 }
 
 extension SearchFooter {
-    //MARK: - Public API
-    
     public func setNotFiltering() {
         label.text = ""
         hideFooter()
@@ -70,6 +69,6 @@ extension SearchFooter {
             showFooter()
         }
     }
-    
 }
+*/
 

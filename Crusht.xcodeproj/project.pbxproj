@@ -27,7 +27,7 @@
 		2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */; };
 		2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */; };
 		2838170F21B8A26400B3E4FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170E21B8A26400B3E4FD /* User.swift */; };
-		2838171E21B8C90100B3E4FD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* Extension.swift */; };
+		2838171E21B8C90100B3E4FD /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* UIViewExtension.swift */; };
 		283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FD3DA227E669000C7760F /* CustomTabBarController.swift */; };
 		2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */; };
 		2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A141224EE4C500A2CEB9 /* Reports.swift */; };
@@ -94,6 +94,9 @@
 		4CA41B3D235DE93800CF8529 /* CrushScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B3C235DE93800CF8529 /* CrushScore.swift */; };
 		4CA41B3F235DECDF00CF8529 /* NameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B3E235DECDF00CF8529 /* NameTextField.swift */; };
 		4CA41B41235DF2F400CF8529 /* GenderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B40235DF2F400CF8529 /* GenderTextField.swift */; };
+		4CA41B43235DFDD600CF8529 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B42235DFDD600CF8529 /* UIColorExtension.swift */; };
+		4CA41B45235DFE0A00CF8529 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B44235DFE0A00CF8529 /* UIImageViewExtension.swift */; };
+		4CA41B47235DFF9A00CF8529 /* FavoritableContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B46235DFF9A00CF8529 /* FavoritableContact.swift */; };
 		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
 		EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */; };
 /* End PBXBuildFile section */
@@ -142,7 +145,7 @@
 		2838170821B8A1A600B3E4FD /* LocationMatchTopStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMatchTopStackView.swift; sourceTree = "<group>"; };
 		2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
 		2838170E21B8A26400B3E4FD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		2838171D21B8C90100B3E4FD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		2838171D21B8C90100B3E4FD /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		283FD3DA227E669000C7760F /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportControllerViewController.swift; sourceTree = "<group>"; };
 		2850A141224EE4C500A2CEB9 /* Reports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reports.swift; sourceTree = "<group>"; };
@@ -209,6 +212,9 @@
 		4CA41B3C235DE93800CF8529 /* CrushScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrushScore.swift; sourceTree = "<group>"; };
 		4CA41B3E235DECDF00CF8529 /* NameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTextField.swift; sourceTree = "<group>"; };
 		4CA41B40235DF2F400CF8529 /* GenderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderTextField.swift; sourceTree = "<group>"; };
+		4CA41B42235DFDD600CF8529 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		4CA41B44235DFE0A00CF8529 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
+		4CA41B46235DFF9A00CF8529 /* FavoritableContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritableContact.swift; sourceTree = "<group>"; };
 		5CCFCACF7EF37835512FB114 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
 		614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -353,11 +359,11 @@
 		283816F621B8927D00B3E4FD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				2838171D21B8C90100B3E4FD /* Extension.swift */,
-				28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */,
+				2838171D21B8C90100B3E4FD /* UIViewExtension.swift */,
 				28744A2021FF8BC800B438A8 /* GeoFire.swift */,
-				28711AAF220BABC400DD82EB /* SearchFooter.swift */,
 				4CA41B3A235DE7C500CF8529 /* DateExtension.swift */,
+				4CA41B42235DFDD600CF8529 /* UIColorExtension.swift */,
+				4CA41B44235DFE0A00CF8529 /* UIImageViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -394,6 +400,8 @@
 				2850A141224EE4C500A2CEB9 /* Reports.swift */,
 				28C3032F226BFE21002FB145 /* Venue.swift */,
 				4CA41B3C235DE93800CF8529 /* CrushScore.swift */,
+				28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */,
+				4CA41B46235DFF9A00CF8529 /* FavoritableContact.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -434,6 +442,7 @@
 				28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */,
 				28FDE2D72216672000896198 /* FacebookCrushCell.swift */,
 				288C87CC21F28C25000B5058 /* SchoolCrushes.swift */,
+				28711AAF220BABC400DD82EB /* SearchFooter.swift */,
 			);
 			path = "Unused Files";
 			sourceTree = "<group>";
@@ -778,8 +787,10 @@
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
 				2838170921B8A1A600B3E4FD /* LocationMatchTopStackView.swift in Sources */,
 				28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */,
+				4CA41B47235DFF9A00CF8529 /* FavoritableContact.swift in Sources */,
 				2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */,
 				288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */,
+				4CA41B43235DFDD600CF8529 /* UIColorExtension.swift in Sources */,
 				28FD7D1822642D4700B79496 /* EnterPhotoController.swift in Sources */,
 				28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */,
 				28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */,
@@ -800,11 +811,12 @@
 				28F54073224C23C600EC5062 /* BioTextView.swift in Sources */,
 				2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */,
 				28FD7D0C2261AFBB00B79496 /* GenderController.swift in Sources */,
+				4CA41B45235DFE0A00CF8529 /* UIImageViewExtension.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
 				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
 				28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */,
 				28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */,
-				2838171E21B8C90100B3E4FD /* Extension.swift in Sources */,
+				2838171E21B8C90100B3E4FD /* UIViewExtension.swift in Sources */,
 				28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */,
 				2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */,
 				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,
