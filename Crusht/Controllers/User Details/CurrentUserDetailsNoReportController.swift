@@ -11,6 +11,25 @@ import Firebase
 
 
 class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelegate {
+    let swipingPhotosController = SwipingPhotosController(isCardViewMode: false)
+    let extraSwipingHeight: CGFloat = 100
+    
+    var crushScore: CrushScore?
+    
+    var cardViewModel: CardViewModel! {
+        didSet {
+            infoLabel.attributedText = cardViewModel.attributedString
+            swipingPhotosController.cardViewModel = cardViewModel
+        }
+    }
+    
+    // MARK: - Life Cycle Methods
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setLabelText()
+        initializeUI()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -18,37 +37,23 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
     
-    var cardViewModel: CardViewModel! {
-        didSet {
-            infoLabel.attributedText = cardViewModel.attributedString
-            
-            swipingPhotosController.cardViewModel = cardViewModel
-        }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let swipingView = swipingPhotosController.view!
+        swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + extraSwipingHeight)
     }
     
-    //lazy var to access self
-    lazy var scrollView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.alwaysBounceVertical = true
-        sv.contentInsetAdjustmentBehavior = .never
-        sv.delegate = self
-        return sv
-    }()
+    // MARK: - Logic
     
-    fileprivate var crushScore: CrushScore?
-    
-    fileprivate func setLabelText() {
-        
+    private func setLabelText() {
         let uid = cardViewModel.uid
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            
-            if snapshot?.exists == true {
+            guard err == nil else { return }
+            if let exists = snapshot?.exists, exists {
                 guard let dictionary = snapshot?.data() else { return }
                 let crushScore = CrushScore(dictionary: dictionary)
                 self.crushScore = CrushScore(dictionary: dictionary)
@@ -58,36 +63,109 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
                 self.crushScoreLabel.text = " Crusht Score: 😊"
             }
         }
-        
     }
     
+    @objc private func handleDismiss() {
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.popToRootViewController(animated: true)
+    }
     
-    let swipingPhotosController = SwipingPhotosController(isCardViewMode: false)
+    @objc private func handleInfo() {
+        let infoView = InfoView()
+        infoView.infoText.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
+        navigationController?.view.addSubview(infoView)
+        infoView.fillSuperview()
+    }
     
-    let infoLabel: UILabel = {
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let changeY = -scrollView.contentOffset.y
+        var width = view.frame.width + changeY * 2
+        width = max(view.frame.width, width)
+        let imageView = swipingPhotosController.view!
+        
+        // changeY is NEGATIVE
+        imageView.frame = CGRect(x: min(0,-changeY), y: min(0, -changeY), width: width, height: width)
+    }
+    
+    // MARK: - User Interface
+    
+    private func initializeUI() {
+        view.backgroundColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.isTranslucent = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
+        
+        let swipingView = swipingPhotosController.view!
+        scrollView.addSubview(swipingView)
+        swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
+        scrollView.addSubview(infoLabel)
+        infoLabel.anchor(top: swipingView.bottomAnchor,
+                         leading: scrollView.leadingAnchor,
+                         bottom: nil,
+                         trailing: scrollView.trailingAnchor,
+                         padding: .init(top: 16, left: 16, bottom: 0, right: 16))
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(crushScoreLabel)
+        
+        bioLabel.text = cardViewModel.bio
+        crushScoreLabel.anchor(top: infoLabel.bottomAnchor,
+                               leading: infoLabel.leadingAnchor,
+                               bottom: nil,
+                               trailing: view.trailingAnchor,
+                               padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+        scrollView.addSubview(bioLabel)
+        
+        bioLabel.anchor(top: crushScoreLabel.bottomAnchor,
+                        leading: crushScoreLabel.leadingAnchor,
+                        bottom: nil,
+                        trailing: view.trailingAnchor,
+                        padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+        
+        scrollView.fillSuperview()
+        setupVisualBlurEffectView()
+    }
+    
+    private func setupVisualBlurEffectView() {
+        let blurEffect = UIBlurEffect(style: .regular)
+        let visualEffectView = UIVisualEffectView(effect: blurEffect)
+        view.addSubview(visualEffectView)
+        visualEffectView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
+    }
+    
+    // Lazy var to access self
+    private lazy var scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.alwaysBounceVertical = true
+        sv.contentInsetAdjustmentBehavior = .never
+        sv.delegate = self
+        return sv
+    }()
+    
+    private let infoLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.numberOfLines = 0
         return label
     }()
     
-    let crushScoreLabel: UILabel = {
+    private let crushScoreLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.numberOfLines = 0
         return label
     }()
     
-    let bioLabel: UILabel = {
+    private let bioLabel: UILabel = {
         let label = UILabel()
         label.text = "No Bio Available"
         label.numberOfLines = 0
         return label
     }()
     
-    
-    
-    let dismissButton: UIButton = {
+    private let dismissButton: UIButton = {
         let button = UIButton(type: .system)
         button.setBackgroundImage(#imageLiteral(resourceName: "icons8-back-filled-30").withRenderingMode(.alwaysOriginal), for: .normal)
         button.backgroundColor = .white
@@ -95,140 +173,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         button.clipsToBounds = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
-        
         return button
     }()
-    
-    
-    
-    //    lazy var dislikeButton = self.createButton(image: #imageLiteral(resourceName: "dismiss_circle"), selector: #selector(handleDislike))
-    //    lazy var superLikeButton = self.createButton(image: #imageLiteral(resourceName: "super_like_circle"), selector: #selector(handleDislike))
-    //    lazy var likeButton = self.createButton(image: #imageLiteral(resourceName: "like_circle"), selector: #selector(handleDislike))
-    
-    @objc fileprivate func handleDislike() {
-    }
-    
-    //    let likeBttn: UIButton = {
-    //        let button = UIButton(type: .system)
-    //        button.titleLabel?.font = UIFont.systemFont(ofSize: 60)
-    //        button.setTitle("👍", for: .normal)
-    //        button.backgroundColor = .white
-    //        button.heightAnchor.constraint(equalToConstant: 50)
-    //        button.widthAnchor.constraint(equalToConstant: 50)
-    //        button.layer.cornerRadius = 50
-    //        return button
-    //    }()
-    //
-    //    let disLikeBttn: UIButton = {
-    //        let button = UIButton(type: .system)
-    //        button.titleLabel?.font = UIFont.systemFont(ofSize: 60)
-    //        button.setTitle("👎", for: .normal)
-    //        button.backgroundColor = .white
-    //        button.heightAnchor.constraint(equalToConstant: 50)
-    //        button.widthAnchor.constraint(equalToConstant: 50)
-    //        button.layer.cornerRadius = 50
-    //
-    //        //button.layer.masksToBounds = true
-    //        return button
-    //    }()
-    
-    //    fileprivate func createButton(image: UIImage, selector: Selector) -> UIButton {
-    //        let button = UIButton(type: .system)
-    //        button.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
-    //        button.addTarget(self, action: selector, for: .touchUpInside)
-    //        button.imageView?.contentMode = .scaleAspectFill
-    //        return button
-    //    }
-    
-    @objc fileprivate func handleDismiss() {
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.popToRootViewController(animated: true)
-    }
-
-    
-    //    fileprivate func setupBottomControls() {
-    //        let stackView = UIStackView(arrangedSubviews: [disLikeBttn, UIView(), likeBttn])
-    //        stackView.distribution = .fillEqually
-    //        stackView.spacing = -32
-    //        view.addSubview(stackView)
-    //        stackView.anchor(top: nil, leading: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 300, height: 80))
-    //        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    //    }
-    
-    fileprivate func setupLayout() {
-        view.backgroundColor = .white
-        self.setLabelText()
-        let swipingView = swipingPhotosController.view!
-        scrollView.addSubview(swipingView)
-        swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
-        
-        scrollView.addSubview(infoLabel)
-        infoLabel.anchor(top: swipingView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
-        
-        view.addSubview(scrollView)
-        
-        scrollView.addSubview(crushScoreLabel)
-        bioLabel.text = cardViewModel.bio
-        crushScoreLabel.anchor(top: infoLabel.bottomAnchor, leading: infoLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
-        scrollView.addSubview(bioLabel)
-        
-        bioLabel.anchor(top: crushScoreLabel.bottomAnchor, leading: crushScoreLabel.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 16, right: 16))
-        
-        scrollView.fillSuperview()
-    }
-    
-    fileprivate let extraSwipingHeight: CGFloat = 100
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        let swipingView = swipingPhotosController.view!
-        swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + extraSwipingHeight)
-    }
-    
-    fileprivate func setupVisualBlurEffectView() {
-        let blurEffect = UIBlurEffect(style: .regular)
-        let visualEffectView = UIVisualEffectView(effect: blurEffect)
-        
-        view.addSubview(visualEffectView)
-        visualEffectView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.isTranslucent = false
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
-       
-        setupLayout()
-        setupVisualBlurEffectView()
-    }
-    
-
-    
-    @objc fileprivate func handleInfo() {
-        let infoView = InfoView()
-        infoView.infoText.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
-        navigationController?.view.addSubview(infoView)
-        infoView.fillSuperview()
-        //hud.textLabel.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
-        //hud.show(in: navigationController!.view)
-        //hud.dismiss(afterDelay: 3)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let  changeY = -scrollView.contentOffset.y
-        var width = view.frame.width + changeY * 2
-        width = max(view.frame.width, width)
-        //changeY is NEGATIVE
-        let imageView = swipingPhotosController.view!
-        
-        imageView.frame = CGRect(x: min(0,-changeY), y: min(0, -changeY), width: width, height: width)
-    }
-    
-
-    //@objc fileprivate func handleTapDismiss () {
-    //    self.dismiss(animated: true)
-    //}
 }

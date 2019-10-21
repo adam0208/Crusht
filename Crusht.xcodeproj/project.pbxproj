@@ -63,7 +63,6 @@
 		28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */; };
 		28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */; };
 		28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */; };
-		28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE624A21BDB76A00EAFFE2 /* LoginController.swift */; };
 		28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */; };
 		28C06E0B22593CE3004F0C1E /* MessageReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C06E0A22593CE3004F0C1E /* MessageReportController.swift */; };
 		28C30330226BFE21002FB145 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C3032F226BFE21002FB145 /* Venue.swift */; };
@@ -179,7 +178,6 @@
 		28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTextFieldDropDown.swift; sourceTree = "<group>"; };
 		28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserDetailsNoReportController.swift; sourceTree = "<group>"; };
 		28BE624221BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
-		28BE624A21BDB76A00EAFFE2 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		28BE625021BE091E00EAFFE2 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
 		28C06E0A22593CE3004F0C1E /* MessageReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageReportController.swift; sourceTree = "<group>"; };
 		28C3032F226BFE21002FB145 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
@@ -404,7 +402,6 @@
 			isa = PBXGroup;
 			children = (
 				28857CCA21B9A91500A654A0 /* LoginViewController.swift */,
-				28BE624A21BDB76A00EAFFE2 /* LoginController.swift */,
 				28857CD021B9A9C200A654A0 /* VerifyViewController.swift */,
 			);
 			path = Login;
@@ -792,7 +789,6 @@
 				28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */,
 				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,
 				28CFC6B521C5B3ED00387129 /* Message.swift in Sources */,
-				28BE624C21BDB76A00EAFFE2 /* LoginController.swift in Sources */,
 				280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */,
 				28A7F9E621BC3C1D00238B7D /* SettingsTableViewController.swift in Sources */,
 				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
