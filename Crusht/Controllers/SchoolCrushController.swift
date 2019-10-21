@@ -16,10 +16,32 @@ protocol SchoolDelegate {
 }
 
 class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
-    
     var fetchedAllUsers = false
     var fetchingMoreUsers = false
     var lastFetchedDocument: QueryDocumentSnapshot? = nil
+    
+    let animationView = AnimationView()
+    let messageController = MessageController()
+    var schoolDelegate: SchoolDelegate?
+    
+    private var crushScore: CrushScore?
+    var hasFavorited = Bool()
+    var locationSwipes = [String: Int]()
+    var sawMessage = Bool()
+    var isRightSex = Bool()
+    var crushScoreID = String()
+    var matchUID = String()
+    
+    let cellId = "cellId"
+    let loadingCellId = "loadingCellId"
+    
+    var user: User?
+    var schoolArray = [User]()
+    var users = [User]()
+    var schoolUserDictionary = [String: User]()
+    var swipes = [String: Int]()
+    
+    // MARK: - Life Cycle Methods
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -33,28 +55,55 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         fetchCurrentUser()
     }
     
-    var schoolDelegate: SchoolDelegate?
-    
-    func didSaveSettings() {
-        fetchCurrentUser()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tabBarController?.delegate = self
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
+        
+        tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
+        
+        let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
+        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
+        
+        listenForMessages()
+        navigationItem.rightBarButtonItems = [swipeButton, infoButton]
+        
+        // Setup the Search Controller
+        view.addSubview(searchController.searchBar)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search School"
+        navigationItem.searchController = self.searchController
+        definesPresentationContext = true
+           
+        // Setup the Scope Bar
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        messageBadge.isHidden = true
+        
+        // Setup the search footer
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        searchController.searchBar.barStyle = .black
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        tabBarController?.view.addSubview(animationView)
+        animationView.fillSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
+            self.animationView.removeFromSuperview()
+        }
     }
     
-    func didFinishLoggingIn() {
-        fetchCurrentUser()
-    }
-    
-    //    CONTACTS EASILY DOABLE IF YOU GET USERS PHONE NUMBER
-  
-    fileprivate var crushScore: CrushScore?
+    // MARK: - Logic
     
     fileprivate func addCrushScore() {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-        
-        
         let cardUID = crushScoreID
-        
+
         Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
             if err != nil {
                 return
@@ -89,81 +138,12 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
     }
     
-    let animationView = AnimationView()
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        let tabBarIndex = tabBarController.selectedIndex
-        if tabBarIndex == 3 {
-            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
-            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
-        }
-    }
-
-   
-    let cellId = "cellId"
-    let loadingCellId = "loadingCellId"
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.tabBarController?.delegate = self
-        
-        
-        //        navigationItem.leftItemsSupplementBackButton = true
-        //        navigationItem.leftBarButtonItem?.title = "👈"
-        //tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
-        //navigationItem.title = "School"
-        tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
-        tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
-        
-        let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
-        
-        listenForMessages()
-        navigationItem.rightBarButtonItems = [swipeButton, infoButton]
-        
-        view.addSubview(searchController.searchBar)
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search School"
-        navigationItem.searchController = self.searchController
-        definesPresentationContext = true
-           
-        
-        // Setup the Scope Bar
-        //self.searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
-        self.searchController.searchBar.delegate = self
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        messageBadge.isHidden = true
-        // Setup the search footer
-        // tableView.tableFooterView = searchFooter
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        searchController.searchBar.barStyle = .black
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        tabBarController?.view.addSubview(animationView)
-        animationView.fillSuperview()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
-            self.animationView.removeFromSuperview()
-        }
-    }
-    
     @objc fileprivate func handleInfo() {
-        
         let infoView = InfoView()
         infoView.infoText.text = "Crush Classmates: Select the heart next to people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
         tabBarController?.view.addSubview(infoView)
-        
-          infoView.fillSuperview()
-//        hud.textLabel.text = "Crush Classmates: Select the heart next people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
-//        hud.show(in: navigationController!.view)
-//        hud.dismiss(afterDelay: 5)
+        infoView.fillSuperview()
     }
-    
-    
-    var sawMessage = Bool()
     
     @objc func handleMessages() {
         let messageController = MessageController()
@@ -175,21 +155,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         //navigationController?.pushViewController(messageController, animated: true)
         
     }
-    
-    let messageBadge: UILabel = {
-        let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
-        label.layer.borderColor = UIColor.clear.cgColor
-        label.layer.borderWidth = 2
-        label.layer.cornerRadius = label.bounds.size.height / 2
-        label.textAlignment = .center
-        label.layer.masksToBounds = true
-        label.font = UIFont.systemFont(ofSize: 10)
-        label.textColor = .white
-        label.backgroundColor = .red
-        label.text = "!"
-        return label
-    }()
-
     
     fileprivate func listenForMessages() {
         guard let toId = Auth.auth().currentUser?.uid else {return}
@@ -222,7 +187,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
-        
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
@@ -236,11 +200,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         } else {
             showSettingsAlert2()
         }
-        
-        
-        
     }
-    
     
     private func showSettingsAlert2() {
         let alert = UIAlertController(title: "Enable Location", message: "Crusht would like to use your location to match you with nearby users.", preferredStyle: .alert)
@@ -252,27 +212,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             return
         })
         present(alert, animated: true)
-    }
-    
-    var user: User?
-    
-    var schoolArray = [User]()
-    
-    var users = [User]()
-    
-    //search bar stuff
-    
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        users = schoolArray.filter({( user : User) -> Bool in
-            return user.name!.lowercased().contains(searchText.lowercased())
-        })
-        
-        tableView.reloadData()
     }
     
     fileprivate func fetchCurrentUser() {
@@ -307,24 +246,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 self.schoolArray.removeAll()
                 self.tableView.reloadData()
                 //self.fetchSwipes()
-                self.fetchSchool()
+                self.fetchSchoolUsers()
             }
         }
       
     }
     
-    //    var indexSchoolNames = [String]()
-    //
-    //    var indexSchoolDictionary = [String: [String]]()
-    //
-    //    var indexSchoolTitles = String()
-    
-    
-    var isRightSex = Bool()
-    
-    var schoolUserDictionary = [String: User]()
-    
-    fileprivate func fetchSchool() {
+    fileprivate func fetchSchoolUsers() {
         guard !fetchedAllUsers, !fetchingMoreUsers else { return }
         fetchingMoreUsers = true
         tableView.reloadSections(IndexSet(integer: 1), with: .none)
@@ -338,7 +266,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name").limit(to: 15)
         }
         
-        //chagne logic where gender variable is just the where field firebase thing
+        // Change logic where gender variable is just the where field firebase thing
         query.getDocuments { (snapshot, err) in
             guard err == nil, let snapshot = snapshot else { return }
             
@@ -370,73 +298,24 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 let minAge = crush.age ?? 18 > ((self.user?.age)! - 5)
                 
                 if isNotCurrentUser && minAge && maxAge && self.isRightSex {
-                    //                    self.indexSchoolNames.append(String(crush.name!.prefix(1)))
-                    //                    for indexSchoolName in self.indexSchoolNames {
-                    //
-                    //                        let nameKey = String(crush.name!.prefix(1))
-                    //                        if var nameValues = self.indexSchoolDictionary[nameKey] {
-                    //                            nameValues.append(indexSchoolName)
-                    //                            self.indexSchoolDictionary[nameKey] = nameValues
-                    //                        }
-                    //                        else {
-                    //                            self.indexSchoolDictionary[nameKey] = [indexSchoolName]
-                    //                        }
-                    //                    }
-                    
-                    
-                    //                self.indexSchoolNames = [String](self.indexSchoolDictionary.keys)
-                    //                self.indexSchoolNames = self.indexSchoolNames.sorted()
-                    
                     self.schoolArray.append(crush)
                 }
-                
-                
-                //                let crushStuff = User(dictionary: userDictionary)
-                //                if let crushPartnerId = crushStuff.crushPartnerId() {
-                //                    self.schoolUserDictionary[crushPartnerId] = user
-                //                    self.users = Array(self.schoolUserDictionary.values)
-                //                }
-                
-                
-                
             })
-            
             DispatchQueue.main.async(execute: {
                 self.fetchingMoreUsers = false
                 self.tableView.reloadData()
             })
-            
             self.fetchSwipes()
         }
         
     }
     
-    //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    //        return indexSchoolNames[section]
-    //    }
-    
-    //    override func numberOfSections(in tableView: UITableView) -> Int {
-    //        // 1
-    //        return indexSchoolNames.count
-    //    }
-    //
-    //
-    //
-    //    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-    //        return indexSchoolNames
-    //    }
-    
-    
     func hasTappedCrush(cell: UITableViewCell) {
-        
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
-        
         let crush = isFiltering() ? users[indexPathTapped.row] : schoolArray[indexPathTapped.row]
-        
         crushScoreID = crush.uid ?? ""
         
         let phoneString = crush.phoneNumber ?? ""
-        
         let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
         let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
         let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
@@ -444,23 +323,13 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         
         matchUID = phoneNoDash
         
-        //tableView.reloadRows(at: [indexPathTapped], with: .fade)
-        
-        //cell.tintColor = .red
-        
         if cell.accessoryView?.tintColor == #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1) {
             handleLike(cell: cell)
         }
         else {
             handleDislike(cell: cell)
         }
-        
     }
-    
-    var crushScoreID = String()
-    
-    var matchUID = String()
-    
     
     func saveSwipeToFireStore(didLike: Int) {
         
@@ -512,23 +381,16 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                         print("Success saved swipe SETDATA")
                     }
                 self.fetchSwipes()
+            }
         }
-
     }
-}
     
     fileprivate func checkIfMatchExists(cardUID: String) {
-        
-        
         Firestore.firestore().collection("phone-swipes").document(cardUID).getDocument { (snapshot, err) in
             if err != nil {
                 return
             }
             guard let data = snapshot?.data() else {return}
-            
-            
-            //guard let uid = Auth.auth().currentUser?.uid else {return}
-            //Firestore.firestore()
             
             let phoneNumber = self.user?.phoneNumber ?? ""
             
@@ -566,49 +428,22 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                     let docData: [String: Any] = ["uid": cardUID, "Full Name": user.name ?? "", "School": user.school ?? "", "ImageUrl1": user.imageUrl1!, "matchName": secondUser.name ?? ""
                     ]
                     
-                    //this is for message controller
+                    // This is for message controller
                     Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
                         if err != nil {
                             return
                         }
                         
-                        
                         if (snapshot?.isEmpty)! {
                             Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
-                            
-                            
                             Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
-                            
                             self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
-                            
-                            
                         }
-                        
                     })
-                    
                 })
-                
-                
-                //                Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: uid).getDocuments(completion: { (snapshot, err) in
-                //                    if let err = err {
-                //                        print(err)
-                //                    }
-                //
-                //                    if (snapshot?.isEmpty)! {
-                //                        Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
-                //                        Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
-                //                    }
-                //                })
-                
-                
-                
-                
-                
             })
         }
     }
-    
-    var swipes = [String: Int]()
     
     fileprivate func fetchSwipes() {
         let phoneID = user?.phoneNumber ?? ""
@@ -624,26 +459,16 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         }
     }
     
-    var locationSwipes = [String: Int]()
-    
     fileprivate func fetchMoreSwipes() {
-        guard let uid = Auth.auth().currentUser?.uid  else {
-            return
-        }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
+            if err != nil { return }
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.locationSwipes = data
-            // self.fetchUsersFromFirestore()
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
-                
             })
-            
         }
-        
     }
     
     @objc func handleSend(cardUID: String, cardName: String) {
@@ -652,231 +477,128 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     fileprivate func sendAutoMessage(_ properties: [String: AnyObject], cardUID: String, cardNAME: String) {
-        
         let toId = cardUID
-        //let toDevice = user?.deviceID!
         let fromId = Auth.auth().currentUser!.uid
-        
         let toName = cardNAME
-        
-        
         let timestamp = Int(Date().timeIntervalSince1970)
-        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         properties.forEach({values[$0] = $1})
         
-        //flip to id and from id to fix message controller query glitch
+        // Flip to id and from id to fix message controller query glitch
         var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
-        
         properties.forEach({otherValues[$0] = $1})
         
-        
-        //let ref = Firestore.firestore().collection("messages")
-        
-        
-        //SOLUTION TO CURRENT ISSUE
-        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        // SOLUTION TO CURRENT ISSUE
+        // If statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            
+            if err != nil { return }
             if (snapshot?.isEmpty)! {
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-                    if err != nil {
-                        return
-                    }
-                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
-                    
+                    if err != nil { return }
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-                        if err != nil {
-                            return
-                        }
-                        
+                        if err != nil { return }
                         snapshot?.documents.forEach({ (documentSnapshot) in
-                            
                             let document = documentSnapshot
                             if document.exists {
                                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
-                                
-                                //need to update the message collum for other user
-                                //just flip toID and Fromi
-                                
-                                
-                            }
-                            else{
+                            } else{
                                 print("DOC DOESN't exist yet")
                             }
                         })
                     })
                 }
-            }
-                
-            else {
-                
+            } else {
                 snapshot?.documents.forEach({ (documentSnapshot) in
-                    
                     let document = documentSnapshot
                     if document.exists {
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        // Message row update fix
                         
-                        
-                        
-                        //message row update fix
-                        
-                        //sort a not to update from id stuff
+                        // Sort a not to update from id stuff
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
                         
-                        //flip it
-                        
+                        // Flip it
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            if err != nil {
-                                return
-                            }
-                            
+                            if err != nil { return }
                             snapshot?.documents.forEach({ (documentSnapshot) in
-                                
                                 let document = documentSnapshot
                                 if document.exists {
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
-                                    
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
-                                    
-                                    
                                 }
-                                
                             })
                         })
-                        
                     }
-                    
                 })
             }
         })
-          //      self.presentMatchView(cardUID: toId)
         self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
-        
     }
     
     fileprivate func sendAutoMessageTWO(_ properties: [String: AnyObject], cardNAME: String, fromId: String, toId: String, toName: String) {
-        
         let toId = toId
-        //let toDevice = user?.deviceID!
         let fromId = fromId
-        
         let toName = toName
-        
-        //        Firestore.firestore().collection("users").document(fromId).getDocument { (snapshot, err) in
-        //            if let err = err {
-        //                print(err)
-        //            }
-        //            let userFromNameDictionary = snapshot?.data()
-        //            let userFromName = User(dictionary: userFromNameDictionary!)
-        //            self.fromName = userFromName.name ?? "loser"
-        //            print(userFromName.name ?? "hi ho yo")
-        //        }
-        //
-        //        print(fromName, "Fuck you bro")
-        
         let timestamp = Int(Date().timeIntervalSince1970)
-        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         properties.forEach({values[$0] = $1})
         
-        //flip to id and from id to fix message controller query glitch
+        // Flip to id and from id to fix message controller query glitch
         var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
-        
         properties.forEach({otherValues[$0] = $1})
         
-        
-        //let ref = Firestore.firestore().collection("messages")
-        
-        
-        //SOLUTION TO CURRENT ISSUE
-        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        // SOLUTION TO CURRENT ISSUE
+        // If statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            
+            if err != nil { return }
             if (snapshot?.isEmpty)! {
                 Firestore.firestore().collection("messages").addDocument(data: values) { (err) in
-                    if err != nil {
-                        return
-                    }
-                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
-                    
+                    if err != nil { return }
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
                         if err != nil {
                             return
                         }
                         
                         snapshot?.documents.forEach({ (documentSnapshot) in
-                            
                             let document = documentSnapshot
                             if document.exists {
                                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
-                                
-                                //need to update the message collum for other user
-                                //just flip toID and Fromi
-                                
-                                
-                            }
-                            else{
+                            } else{
                                 print("DOC DOESN't exist yet")
                             }
                         })
                     })
                 }
-            }
-                
-            else {
-                
+            } else {
                 snapshot?.documents.forEach({ (documentSnapshot) in
-                    
                     let document = documentSnapshot
                     if document.exists {
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        // Message row update fix
                         
-                        
-                        
-                        //message row update fix
-                        
-                        //sort a not to update from id stuff
+                        // Sort a not to update from id stuff
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
                         
-                        //flip it
-                        
+                        // Flip it
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
-                            if err != nil {
-                                return
-                            }
+                            if err != nil { return }
                             
                             snapshot?.documents.forEach({ (documentSnapshot) in
-                                
                                 let document = documentSnapshot
                                 if document.exists {
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
-                                    
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
-                                    
-                                    
                                 }
-                                
                             })
                         })
-                        
                     }
-                    
                 })
             }
         })
-        
         self.presentMatchView(cardUID: fromId)
-        
     }
-    
-    let messageController = MessageController()
     
     func presentMatchView(cardUID: String) {
         let matchView = MatchView()
@@ -885,11 +607,26 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         UIApplication.shared.applicationIconBadgeNumber = 1
-       MessageController.sharedInstance?.didHaveNewMessage = true
+        MessageController.sharedInstance?.didHaveNewMessage = true
 
         self.tabBarController?.view.addSubview(matchView)
         matchView.bringSubviewToFront(view)
         matchView.fillSuperview()
+    }
+    
+    func handleLike(cell: UITableViewCell) {
+        saveSwipeToFireStore(didLike: 1)
+        addCrushScore()
+        cell.accessoryView?.tintColor = .red
+    }
+    
+    func handleDislike(cell: UITableViewCell) {
+        saveSwipeToFireStore(didLike: 0)
+        cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
+    }
+    
+    @objc fileprivate func handleBack() {
+        dismiss(animated: true)
     }
     
     // MARK: - Table view data source
@@ -922,7 +659,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = UIColor.clear
         if schoolArray.count > 0 && indexPath.section == 0 && indexPath.row >= schoolArray.count - 3 && !isFiltering() {
-            fetchSchool()
+            fetchSchoolUsers()
         }
     }
     
@@ -953,17 +690,9 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let crush = isFiltering() ? users[indexPath.row] : schoolArray[indexPath.row]
+        guard let profUID = crush.uid else { return }
         
-        guard let profUID = crush.uid else {
-            return
-        }
-        //
-        //        let userDetailsController = UserDetailsController()
-        //        //userDetailsController.view.backgroundColor = .purple
-        //        userDetailsController.cardViewModel =
-        //        present(userDetailsController, animated: true)
         Firestore.firestore().collection("users").document(profUID).getDocument(completion: { (snapshot, err) in
             guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
             
@@ -973,32 +702,14 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             
             let myBackButton = UIBarButtonItem()
             myBackButton.title = " "
-           self.navigationItem.backBarButtonItem = myBackButton
+            self.navigationItem.backBarButtonItem = myBackButton
             
             userDetailsController.cardViewModel = user.toCardViewModel()
             self.navigationController?.pushViewController(userDetailsController, animated: true)
         })
     }
     
-    var hasFavorited = Bool()
-    // pass cell as a parameter to deal with it turning red
-    
-    func handleLike(cell: UITableViewCell) {
-        saveSwipeToFireStore(didLike: 1)
-        addCrushScore()
-        cell.accessoryView?.tintColor = .red
-    }
-    
-    func handleDislike(cell: UITableViewCell) {
-        saveSwipeToFireStore(didLike: 0)
-        cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-    }
-    
-    @objc fileprivate func handleBack() {
-        dismiss(animated: true)
-    }
-    
-    //Searchbar stuff
+    // MARK: - UISearchBar
     
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -1006,12 +717,60 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         return searchController.isActive && !searchBarIsEmpty()
     }
     
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        users = schoolArray.filter({( user : User) -> Bool in
+            return user.name!.lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
+    }
+    
+    // MARK: - SettingsControllerDelegate
+    
+    func didSaveSettings() {
+        fetchCurrentUser()
+    }
+    
+    // MARK: - LoginControllerDelegate
+
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
+    }
+    
+    // MARK: - UITabBarControllerDelegate
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarIndex = tabBarController.selectedIndex
+        if tabBarIndex == 3 {
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .clear
+        }
+    }
+    
+    // MARK: - User Interface
+    
+    let messageBadge: UILabel = {
+        let label = UILabel(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
+        label.layer.borderColor = UIColor.clear.cgColor
+        label.layer.borderWidth = 2
+        label.layer.cornerRadius = label.bounds.size.height / 2
+        label.textAlignment = .center
+        label.layer.masksToBounds = true
+        label.font = UIFont.systemFont(ofSize: 10)
+        label.textColor = .white
+        label.backgroundColor = .red
+        label.text = "!"
+        return label
+    }()
 }
 
 extension SchoolCrushController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
-        
         filterContentForSearchText(searchController.searchBar.text!)
     }
 }

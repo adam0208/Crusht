@@ -15,6 +15,60 @@ import GeoFire
 import UserNotifications
 
 class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocationManagerDelegate {
+    var cardViewModels = [CardViewModel]()
+    var topCardView: CardView?
+    
+    private var crushScore: CrushScore?
+    var userLat = Double()
+    var userLong = Double()
+    var user: User?
+    var sexPref = String()
+    var userAge = Int()
+    var swipes = [String: Int]()
+    var phoneSwipes = [String: Int]()
+    var lastFetchedUser: User?
+    var radiusInt = Double()
+    var isRightSex = Bool()
+    
+    var reportUID = String()
+    var reportName = String()
+    var reportEmail = String()
+    
+    var lastFetchedDocument: QueryDocumentSnapshot? = nil
+    var fetchingMoreUsers = false
+    var fetchedAllUsers = false
+    
+    let locationManager = CLLocationManager()
+    
+    // MARK: - Life Cicle Methods
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationController?.navigationBar.isHidden = true
+        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        
+        }
+        
+        topStackView.homeButton.addTarget(self, action: #selector(handleHomeBttnTapped), for: .touchUpInside)
+        bottomStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
+        setupLayout()
+                                                     
+        bottomStackView.likeBttn.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+        bottomStackView.reportButton.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
+        bottomStackView.disLikeBttn.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+        topStackView.collegeOnlySwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
+        view.backgroundColor = .white
+        fetchCurrentUser(user: user!)
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -32,7 +86,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         fetchedAllUsers = false
     }
     
-    fileprivate var crushScore: CrushScore?
+    // MARK: - Logic
     
     fileprivate func addCrushScore() {
         guard let uid = Auth.auth().currentUser?.uid, let cardUID = topCardView?.cardViewModel.uid else {
@@ -72,62 +126,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         }
         
     }
-    
-    let bottomStackView = LocationMatchBottomButtonsStackView()
-    let topStackView = LocationMatchTopStackView()
-    let cardDeckView = UIView()
-    
-    var cardViewModels = [CardViewModel]()
-    
-    let locationManager = CLLocationManager()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-       
-        navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        self.locationManager.requestAlwaysAuthorization()
-        
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        
-        }
-        
-        topStackView.homeButton.addTarget(self, action: #selector(handleHomeBttnTapped), for: .touchUpInside)
-        bottomStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
-        setupLayout()
-                                             
-        //topStackView.switchView.isUserInteractionEnabled = false
-        
-        bottomStackView.likeBttn.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
-        bottomStackView.reportButton.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
-        bottomStackView.disLikeBttn.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
-        topStackView.collegeOnlySwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
-        view.backgroundColor = .white
-        fetchCurrentUser(user: user!)
-        //fetchUsersFromFirestore()
-        //fetchUsersOnLoad()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        userLat = locValue.latitude
-        userLong = locValue.longitude
-    }
-    
-    var userLat = Double()
-    var userLong = Double()
-    var user: User?
-    
-    var sexPref = String()
-    
-    var userAge = Int()
-    
+
     fileprivate func fetchCurrentUser(user: User) {
         self.refreshLabel.isHidden = true
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -152,9 +151,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             self.fetchSwipes()
         }
     }
-    
-    
-    var swipes = [String: Int]()
     
     fileprivate func fetchSwipes() {
         guard let uid = Auth.auth().currentUser?.uid  else {
@@ -186,8 +182,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         }
     }
     
-    var phoneSwipes = [String: Int]()
-    
     fileprivate func fetchPhoneSwipes() {
         let phoneID = user?.phoneNumber ?? ""
         
@@ -197,17 +191,10 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             }
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.phoneSwipes = data
-            //do fetchusers on load instead
-          
-            // self.fetchUsersFromFirestore()
+            // Do fetchusers on load instead
             self.fetchUsersOnLoad()
         }
     }
-    
-    var lastFetchedUser: User?
-
-    
-    var radiusInt = Double()
     
     func fetchMoreNearbyUsers() {
         let minAge = user?.minSeekingAge ?? 18
@@ -232,21 +219,14 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     
                     var previousCardView: CardView?
                     snapshot?.documents.forEach({ (documentSnapshot) in
-                        //                    radiusQuery.observe(.documentEntered) { (key, location) in
-                        //                        geoFirestore.getCollectionReference()
-                        
-                        print("hey")
                         let userDictionary = documentSnapshot.data()
                         let user = User(dictionary: userDictionary)
-                        // if user.uid != Auth.auth().currentUser?.uid {
                         let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                         let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                         let hasNotSwipedPhoneBefore = self.phoneSwipes[user.phoneNumber!] == nil
-                        print(user.age, "YoYo")
                         let isInRadius = user.uid == key
                         
                         let isEnabled = user.g != "7zzzzzzzzz"
-                        
                         
                         if self.sexPref == "Female" {
                             self.isRightSex = user.gender == "Female" || user.gender == "Other"
@@ -274,10 +254,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
        self.refreshLabel.isHidden = false
     }
     
-    var reportUID = String()
-    var reportName = String()
-    var reportEmail = String()
-    
     @objc fileprivate func handleReport() {
         let reportController = ReportControllerViewController()
         reportController.reportPhoneNumebr = topCardView?.cardViewModel.phone ?? "1"
@@ -288,13 +264,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         let myBackButton = UIBarButtonItem()
         myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton
-        
-        //let navigatoinController = UINavigationController(rootViewController: reportController)
         navigationController?.pushViewController(reportController, animated: true)
     }
-
-    
-    var isRightSex = Bool()
     
     fileprivate func fetchMoreSchoolUsers() {
         guard !fetchingMoreUsers else { return }
@@ -326,14 +297,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             snapshot.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
-                // if user.uid != Auth.auth().currentUser?.uid {
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                 let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                 
                 let hasNotSwipedPhoneBefore = self.phoneSwipes[user.phoneNumber!] == nil
-                
                 let maxAge = user.age ?? 18  < (self.userAge + 5)
-                
                 let minAge = user.age ?? 18 > (self.userAge - 5)
                 
                 if self.sexPref == "Female" {
@@ -346,10 +314,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     self.isRightSex = user.age ?? 18 > 17
                 }
                 
-               
                 if isNotCurrentUser && minAge && maxAge && hasNotSwipedBefore && hasNotSwipedPhoneBefore && self.isRightSex {
                     let cardView = self.setupCardFromUser(user: user)
-                    
                     previousCardView?.nextCardView = cardView
                     previousCardView = cardView
                     
@@ -365,11 +331,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             }
         }
     }
-    
-    var topCardView: CardView?
-    var lastFetchedDocument: QueryDocumentSnapshot? = nil
-    var fetchingMoreUsers = false
-    var fetchedAllUsers = false
     
     @objc func handleLike() {
         saveSwipeToFireStore(didLike: 1)
@@ -419,42 +380,33 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     fileprivate func checkIfMatchExists(cardUID: String) {
-        
         Firestore.firestore().collection("swipes").document(cardUID).getDocument { (snapshot, err) in
             if err != nil {
                 return
             }
-            guard let data = snapshot?.data() else {return}
+            guard let data = snapshot?.data() else { return }
+            guard let uid = Auth.auth().currentUser?.uid else { return }
             
-            guard let uid = Auth.auth().currentUser?.uid else {return}
             let hasMatched = data[uid] as? Int == 1
             if hasMatched {
-                
                 Firestore.firestore().collection("users").document(cardUID).getDocument(completion: { (snapshot, err) in
                     if err != nil {
                         return
                     }
                     guard let userDictionary = snapshot?.data() else {return}
                     let user = User(dictionary: userDictionary)
-                    
                     let docData: [String: Any] = ["uid": cardUID]
-                    
-                        
                     let otherDocData:  [String: Any] = ["uid": uid]
-                    //this is for message controller
-                    
                     
                     Firestore.firestore().collection("users").document(uid).collection("matches").whereField("uid", isEqualTo: cardUID).getDocuments(completion: { (snapshot, err) in
                         if err != nil {
                             return
                         }
-            
                         if (snapshot?.isEmpty)! {
                             Firestore.firestore().collection("users").document(uid).collection("matches").addDocument(data: docData)
                             Firestore.firestore().collection("users").document(cardUID).collection("matches").addDocument(data: otherDocData)
                         }
                     })
-                    
                     self.handleSend(cardUID: cardUID, cardName: user.name ?? "")
                 })
             }
@@ -467,26 +419,20 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     fileprivate func sendAutoMessage(_ properties: [String: AnyObject], cardUID: String, cardNAME: String) {
-        
         let toId = cardUID
-        //let toDevice = user?.deviceID!
         let fromId = Auth.auth().currentUser!.uid
-        
         let toName = cardNAME
-        
-        
         let timestamp = Int(Date().timeIntervalSince1970)
-        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         properties.forEach({values[$0] = $1})
         
-        //flip to id and from id to fix message controller query glitch
+        // Flip to id and from id to fix message controller query glitch
         var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
-        
         properties.forEach({otherValues[$0] = $1})
         
-        //SOLUTION TO CURRENT ISSUE
-        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        // SOLUTION TO CURRENT ISSUE
+        // if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
             if err != nil {
                 return
@@ -497,20 +443,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     if err != nil {
                         return
                     }
-                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
-                    
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
                         if err != nil {
                             return
                         }
                         
                         snapshot?.documents.forEach({ (documentSnapshot) in
-                            
                             let document = documentSnapshot
                             if document.exists {
                                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
-                                //need to update the message collum for other user
-                                //just flip toID and Fromi
                             }
                             else{
                                 print("DOC DOESN't exist yet")
@@ -518,71 +459,53 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         })
                     })
                 }
-            }
-                
-            else {
+            } else {
                 snapshot?.documents.forEach({ (documentSnapshot) in
-                    
                     let document = documentSnapshot
                     if document.exists {
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
+                        // Message row update fix
                         
-                        //message row update fix
-                        
-                        //sort a not to update from id stuff
+                        // Sort a not to update from id stuff
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
                         
-                        //flip it
-                        
+                        // Flip it
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
                             if err != nil {
                                 return
                             }
                             
                             snapshot?.documents.forEach({ (documentSnapshot) in
-                                
                                 let document = documentSnapshot
                                 if document.exists {
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
-                                    
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
-                                    
-                                    
                                 }
-                                
                             })
                         })
-                        
                     }
-                    
                 })
             }
         })
         
-        //self.presentMatchView(cardUID: toId)
         self.sendAutoMessageTWO(properties, cardNAME: user?.name ?? "", fromId: toId, toId: fromId, toName: toName)
     }
     
     fileprivate func sendAutoMessageTWO(_ properties: [String: AnyObject], cardNAME: String, fromId: String, toId: String, toName: String) {
-        
         let toId = toId
-        //let toDevice = user?.deviceID!
         let fromId = fromId
-        
         let toName = toName
-        
         let timestamp = Int(Date().timeIntervalSince1970)
-        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         
+        var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "fromName": user?.name as AnyObject, "toName": toName as AnyObject, "timestamp": timestamp as AnyObject]
         properties.forEach({values[$0] = $1})
         
-        //flip to id and from id to fix message controller query glitch
+        // Flip to id and from id to fix message controller query glitch
         var otherValues:  [String: AnyObject] = ["toId": fromId as AnyObject, "fromId": toId as AnyObject, "fromName": toName as AnyObject, "toName": user?.name as AnyObject, "timestamp": timestamp as AnyObject]
-        
         properties.forEach({otherValues[$0] = $1})
         
-        //SOLUTION TO CURRENT ISSUE
-        //if statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
+        // SOLUTION TO CURRENT ISSUE
+        // If statement whether this document exists or not and IF It does than user-message thing, if it doesn't then we create a document
         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
             if err != nil {
                 return
@@ -593,57 +516,42 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                     if err != nil {
                         return
                     }
-                    //Firestore.firestore().collection("messages").addDocument(data: otherValues)
-                    
                     Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: fromId).whereField("toId", isEqualTo: toId).getDocuments(completion: { (snapshot, err) in
                         if err != nil {
                             return
                         }
-                        
                         snapshot?.documents.forEach({ (documentSnapshot) in
-                            
                             let document = documentSnapshot
                             if document.exists {
                                 Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
-                                
-                                //need to update the message collum for other user
-                                //just flip toID and Fromi
-                            }
-                            else{
+                            } else{
                                 print("DOC DOESN't exist yet")
                             }
                         })
                     })
                 }
-            }
-                
-            else {
+            } else {
                 snapshot?.documents.forEach({ (documentSnapshot) in
                     let document = documentSnapshot
                     if document.exists {
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: values)
-
-                        //message row update fix
+                        // Message row update fix
                         
-                        //sort a not to update from id stuff
+                        // Sort a not to update from id stuff
                         Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(values)
                         
-                        //flip it
-                        
+                        // Flip it
                         Firestore.firestore().collection("messages").whereField("fromId", isEqualTo: toId).whereField("toId", isEqualTo: fromId).getDocuments(completion: { (snapshot, err) in
                             if err != nil {
                                 return
                             }
                             
                             snapshot?.documents.forEach({ (documentSnapshot) in
-                                
                                 let document = documentSnapshot
                                 if document.exists {
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).updateData(otherValues)
-                                    
                                     Firestore.firestore().collection("messages").document(documentSnapshot.documentID).collection("user-messages").addDocument(data: otherValues)
                                 }
-                                
                             })
                         })
                     }
@@ -670,6 +578,103 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         performSwipeAnimation(translation: -700, angle: -15)
         fetchMoreUsersIfNecessary()
     }
+    
+    private func fetchMoreUsersIfNecessary() {
+        if topCardView?.nextCardView == nil {
+            if topStackView.collegeOnlySwitch.isOn {
+                fetchMoreSchoolUsers()
+            } else {
+                fetchMoreNearbyUsers()
+            }
+        }
+    }
+    
+    fileprivate func setupCardFromUser(user: User) -> CardView {
+        let cardView = CardView(frame: .zero)
+        cardView.delegate = self
+        cardView.cardViewModel = user.toCardViewModel()
+        cardDeckView.addSubview(cardView)
+        cardDeckView.sendSubviewToBack(cardView)
+        
+        cardView.fillSuperview()
+        return cardView
+    }
+    
+    @objc fileprivate func handleRefresh() {
+        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
+        fetchSwipes()
+    }
+    
+    // Func bellow handles fetchusers on load -little improv
+    fileprivate func fetchUsersOnLoad() {
+        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
+        fetchMoreNearbyUsers()
+    }
+    
+    fileprivate func fetchSchoolUsersCall() {
+        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
+        fetchMoreSchoolUsers()
+    }
+    
+    @objc fileprivate func switchValueDidChange() {
+        topCardView = nil
+        lastFetchedDocument = nil
+        fetchedAllUsers = false
+        
+        if topStackView.collegeOnlySwitch.isOn {
+            fetchSchoolUsersCall()
+        } else {
+            fetchUsersOnLoad()
+        }
+    }
+    
+    //MARK: - CardViewDelegate
+    
+    func didTapMoreInfo(cardViewModel: CardViewModel) {
+        let userDetailsController = UserDetailsController()
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = " "
+        self.navigationItem.backBarButtonItem = myBackButton
+        userDetailsController.cardViewModel = cardViewModel
+        navigationController?.pushViewController(userDetailsController, animated: true)
+    }
+    
+    func didRemoveCard(cardView: CardView) {
+        self.topCardView?.removeFromSuperview()
+        self.topCardView = self.topCardView?.nextCardView
+    }
+    
+    // MARK: - CLLocationManagerDelegate
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        userLat = locValue.latitude
+        userLong = locValue.longitude
+    }
+    
+    // MARK: - User Interface
+    
+    fileprivate func setupLayout() {
+        view.backgroundColor = .white
+        view.addSubview(refreshLabel)
+        refreshLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+        
+        cardDeckView.layer.cornerRadius = 40
+        cardDeckView.clipsToBounds = true
+        
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomStackView])
+        overallStackView.axis = .vertical
+        view.addSubview(overallStackView)
+        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+        overallStackView.spacing = 8
+        overallStackView.isLayoutMarginsRelativeArrangement = true
+        overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 8, right: 12)
+        overallStackView.bringSubviewToFront(cardDeckView)
+    }
+    
+    let bottomStackView = LocationMatchBottomButtonsStackView()
+    let topStackView = LocationMatchTopStackView()
+    let cardDeckView = UIView()
     
     let refreshLabel: UILabel = {
         let label = UILabel()
@@ -703,94 +708,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         cardView?.layer.add(translationAnimation, forKey: "translation")
         cardView?.layer.add(rotationAnimation, forKey: "rotation")
-        
         CATransaction.commit()
-    }
-    
-    private func fetchMoreUsersIfNecessary() {
-        if topCardView?.nextCardView == nil {
-            if topStackView.collegeOnlySwitch.isOn {
-                fetchMoreSchoolUsers()
-            } else {
-                fetchMoreNearbyUsers()
-            }
-        }
-    }
-    
-    func didRemoveCard(cardView: CardView) {
-        self.topCardView?.removeFromSuperview()
-        self.topCardView = self.topCardView?.nextCardView
-    }
-    
-    fileprivate func setupCardFromUser(user: User) -> CardView {
-        let cardView = CardView(frame: .zero)
-        cardView.delegate = self
-        cardView.cardViewModel = user.toCardViewModel()
-        //self.reportName = user.name ?? "1"
-        //self.reportUID = user.uid ?? "1"
-        //self.reportEmail = user.email ?? "1"
-        cardDeckView.addSubview(cardView)
-        cardDeckView.sendSubviewToBack(cardView)
-        
-        cardView.fillSuperview()
-        return cardView
-    }
-    
-    func didTapMoreInfo(cardViewModel: CardViewModel) {
-        let userDetailsController = UserDetailsController()
-        //userDetailsController.view.backgroundColor = .purple
-        let myBackButton = UIBarButtonItem()
-        myBackButton.title = " "
-        self.navigationItem.backBarButtonItem = myBackButton
-        userDetailsController.cardViewModel = cardViewModel
-        navigationController?.pushViewController(userDetailsController, animated: true)
-    }
-    
-    @objc fileprivate func handleRefresh() {
-        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchSwipes()
-    }
-    
-    //func bellow handles fetchusers on load -little improv
-    fileprivate func fetchUsersOnLoad() {
-        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchMoreNearbyUsers()
-    }
-    
-    fileprivate func fetchSchoolUsersCall() {
-        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchMoreSchoolUsers()
-    }
-    
-    //MARK:- Fileprivate
-    
-    fileprivate func setupLayout() {
-        view.backgroundColor = .white
-        view.addSubview(refreshLabel)
-        refreshLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-        
-        cardDeckView.layer.cornerRadius = 40
-        cardDeckView.clipsToBounds = true
-        
-        let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomStackView])
-        overallStackView.axis = .vertical
-        view.addSubview(overallStackView)
-        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
-        overallStackView.spacing = 8
-        overallStackView.isLayoutMarginsRelativeArrangement = true
-        overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 8, right: 12)
-        overallStackView.bringSubviewToFront(cardDeckView)
-    }
-    
-    @objc fileprivate func switchValueDidChange() {
-        topCardView = nil
-        lastFetchedDocument = nil
-        fetchedAllUsers = false
-        
-        if topStackView.collegeOnlySwitch.isOn {
-            fetchSchoolUsersCall()
-        } else {
-            fetchUsersOnLoad()
-        }
     }
 }

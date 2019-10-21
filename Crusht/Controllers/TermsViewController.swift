@@ -10,20 +10,8 @@ import UIKit
 import WebKit
 
 class TermsViewController: UIViewController, WKUIDelegate {
-
-    override func viewDidAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.isTranslucent = false
-    }
-    
     var webView: WKWebView!
     
-    override func loadView() {
-        let webConfiguration = WKWebViewConfiguration()
-        webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        webView.uiDelegate = self
-        view = webView
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,4 +20,15 @@ class TermsViewController: UIViewController, WKUIDelegate {
         webView.load(myRequest)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.isTranslucent = false
+    }
+    
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        webView.uiDelegate = self
+        view = webView
+    }
 }
