@@ -9,33 +9,36 @@
 import UIKit
 import Firebase
 
-class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UISearchBarDelegate {
     var user: User?
     var birthday = String()
     var school = String()
     var name = String()
-    var schoolPicker = UIPickerView()
     var age = Int()
     var phone: String!
     
     let myPickerData = Constants.universityList
+    var filteredPickerData = [String]()
+    var filtering = false
+    var selectNextSchool = false
     
     // MARK: - Life Cycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         schoolPicker.delegate = self
+        searchBar.delegate = self
         initializeUI()
     }
     
     // MARK: - Logic
     
     @objc private func handleDone() {
-        guard schoolTF.text != "" else {
+        guard let school = schoolTF.text, school != "" else {
             errorLabel.isHidden = false
             return
         }
-        self.school = self.schoolTF.text ?? ""
+        self.school = school
         let bioController = YourSexController()
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -51,43 +54,88 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return myPickerData.count
+        return filtering ? filteredPickerData.count : myPickerData.count
     }
     
     func pickerView( _ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return myPickerData[row]
+        if selectNextSchool {
+            selectNextSchool = false
+            schoolTF.text = filtering ? filteredPickerData[pickerView.selectedRow(inComponent: 0)] : myPickerData[pickerView.selectedRow(inComponent: 0)]
+        }
+        return filtering ? filteredPickerData[row] : myPickerData[row]
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        schoolTF.text = myPickerData[row]
+        if filtering {
+            schoolTF.text = filteredPickerData.count > 0 ? filteredPickerData[row] : ""
+        } else {
+            schoolTF.text = myPickerData[row]
+        }
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != "" {
+            filteredPickerData = myPickerData.filter { (school: String) -> Bool in
+                school.lowercased().contains(searchText.lowercased())
+            }
+            filtering = true
+            schoolPicker.reloadAllComponents()
+        } else {
+            filtering = false
+            schoolPicker.reloadAllComponents()
+        }
+        selectNextSchool = true
     }
     
     // MARK: - User Interface
     
     private func initializeUI() {
-        schoolTF.inputView = schoolPicker
         view.addGradientSublayer()
         
-        let stack = UIStackView(arrangedSubviews: [schoolTF, doneButton])
-        view.addSubview(stack)
-        stack.axis = .vertical
         view.addSubview(label)
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                      leading: view.leadingAnchor,
                      bottom: nil,
                      trailing: view.trailingAnchor,
-                     padding: .init(top: view.bounds.height / 5, left: 30, bottom: 0, right: 30))
+                     padding: .init(top: 0, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: label.bottomAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: 10, left: 30, bottom: view.bounds.height / 2.2, right: 30))
+        view.addSubview(schoolTF)
+        schoolTF.anchor(top: label.bottomAnchor,
+                        leading: view.leadingAnchor,
+                        bottom: nil,
+                        trailing: view.trailingAnchor,
+                        padding: .init(top: 0, left: 10, bottom: 0, right: 10))
         
-        stack.spacing = 20
+        view.addSubview(searchBar)
+        searchBar.anchor(top: schoolTF.bottomAnchor,
+                         leading: view.leadingAnchor,
+                         bottom: nil,
+                         trailing: view.trailingAnchor,
+                         padding: .init(top: 10, left: 0, bottom: 0, right: 0))
+        
         view.addSubview(errorLabel)
         errorLabel.isHidden = true
-        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+        errorLabel.anchor(top: nil,
+                          leading: view.leadingAnchor,
+                          bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                          trailing: view.trailingAnchor,
+                          padding: .init(top: 0, left: 20, bottom: view.bounds.height / 3, right: 20))
+        
+        view.addSubview(doneButton)
+        doneButton.anchor(top: nil,
+                          leading: view.leadingAnchor,
+                          bottom: errorLabel.topAnchor,
+                          trailing: view.trailingAnchor,
+                          padding: .init(top: 0, left: 30, bottom: 5, right: 30))
+        
+        view.addSubview(schoolPicker)
+        schoolPicker.anchor(top: searchBar.bottomAnchor,
+                            leading: view.leadingAnchor,
+                            bottom: doneButton.topAnchor,
+                            trailing: view.trailingAnchor,
+                            padding: .init(top: 0, left: 0, bottom: 10, right: 0))
     }
     
     private let schoolTF: UITextField = {
@@ -95,16 +143,30 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
         tf.placeholder = "School"
         tf.backgroundColor = .white
         tf.layer.cornerRadius = 15
+        tf.textAlignment = .center
         tf.font = UIFont.systemFont(ofSize: 25)
         tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
+        tf.isUserInteractionEnabled = false
         return tf
+    }()
+    
+    private let searchBar: UISearchBar = {
+        let sb = UISearchBar()
+        sb.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        return sb
+    }()
+    
+    private let schoolPicker: UIPickerView = {
+        let sp = UIPickerView()
+        sp.backgroundColor = UIColor.rgb(red: 191, green: 191, blue: 201)
+        return sp
     }()
     
     private let label: UILabel = {
         let label = UILabel()
         label.text = "Select Your School/Alma Mater"
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.heightAnchor.constraint(equalToConstant: 100).isActive = true
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
@@ -117,6 +179,7 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.text = "Please select your school/alma mater"
         label.textColor = .white
+        label.heightAnchor.constraint(equalToConstant: 40).isActive = true
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -132,6 +195,7 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
         button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.layer.cornerRadius = 22
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
