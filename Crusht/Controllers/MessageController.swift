@@ -257,8 +257,9 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
             }
         } else {
             if messages.isEmpty {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                cell.textLabel?.text = "No matches yet 😬"
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    cell.profileImageView.image = nil
+                    cell.textLabel?.text = "No matches yet 😬"
                 }
             }
         }
@@ -266,6 +267,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard messages.count > 0 else { return }
         let message = messages[indexPath.row]
         
         guard let chatPartnerId = message.chatPartnerId() else {

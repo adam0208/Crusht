@@ -374,6 +374,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if self.barArray.isEmpty {
+                    cell.profileImageView.image = nil
                     cell.textLabel?.text = "No venues in your area 😔"
                 }
             }
@@ -382,6 +383,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard barArray.count > 0 else { return }
         let venue = isFiltering() ? venues[indexPath.row] : barArray[indexPath.row]
         self.handleJoin(barName: venue.venueName ?? "Venue")
     }

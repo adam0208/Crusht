@@ -635,6 +635,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard barsArray.count > 0 else { return }
         let crush = isFiltering() ? users[indexPath.row] : barsArray[indexPath.row]
         guard let profUID = crush.uid else { return }
 

@@ -676,6 +676,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     if self.schoolArray.isEmpty {
+                        cell.profileImageView.image = nil
                         cell.textLabel?.text = "No classmates to show 😔"
                         cell.accessoryView?.isHidden = true
                     }
@@ -690,6 +691,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard schoolArray.count > 0 else { return }
         let crush = isFiltering() ? users[indexPath.row] : schoolArray[indexPath.row]
         guard let profUID = crush.uid else { return }
         
