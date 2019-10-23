@@ -63,13 +63,13 @@ class AgeRangeTableViewCell: UITableViewCell {
         var maxValue = Int(maxSlider.value)
         maxValue = max(minValue, maxValue)
         maxSlider.value = Float(maxValue)
-        maxLabel.text = "Max Age \(maxValue)"
+        maxLabel.text = " Max Age \(maxValue)"
         return maxValue
     }
     
     func evaluateMin() -> Int {
         let minValue = Int(minSlider.value)
-        minLabel.text = "Min Age \(minValue)"
+        minLabel.text = " Min Age \(minValue)"
         return minValue
     }
     
