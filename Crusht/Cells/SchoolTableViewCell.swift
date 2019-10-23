@@ -50,6 +50,11 @@ class SchoolTableViewCell: UITableViewCell {
     
     func setup(crush: User, hasFavorited: Bool) {
         textLabel?.text = crush.name
+        
+        // This is needed to avoid showing the wrong image while the actual one is being downloaded.
+        // The problem is caused by cell reuse.
+        self.profileImageView.image = nil
+        
         let imageUrl = crush.imageUrl1!
         let url = URL(string: imageUrl)
         SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in

@@ -35,6 +35,11 @@ class VenueCell: UITableViewCell {
 
     func setup(venue: Venue) {
         textLabel?.text = venue.venueName
+        
+        // This is needed to avoid showing the wrong image while the actual one is being downloaded.
+        // The problem is caused by cell reuse.
+        self.profileImageView.image = nil
+        
         let imageUrl = venue.venuePhotoUrl!
         let url = URL(string: imageUrl)
         SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in

@@ -65,6 +65,11 @@ class UserCell: UITableViewCell {
     }
     
     private func setupNameAndProfileImage() {
+        
+        // This is needed to avoid showing the wrong image while the actual one is being downloaded.
+        // The problem is caused by cell reuse.
+        self.profileImageView.image = nil
+        
         guard let uid = message?.chatPartnerId() else { return }
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             guard err == nil else { return }

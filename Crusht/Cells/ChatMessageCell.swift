@@ -107,6 +107,10 @@ class ChatMessageCell: UICollectionViewCell {
         self.message = message
         textView.text = message.text
         
+        // This is needed to avoid showing the wrong image while the actual one is being downloaded.
+        // The problem is caused by cell reuse.
+        self.profileImageView.image = nil
+        
         if let userImageUrl = userImageUrl {
             let url = URL(string: userImageUrl)
             SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
