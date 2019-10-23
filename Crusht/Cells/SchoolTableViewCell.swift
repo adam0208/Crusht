@@ -60,6 +60,7 @@ class SchoolTableViewCell: UITableViewCell {
         SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
             self.profileImageView.image = image
         }
+        accessoryView?.isHidden = false
         accessoryView?.tintColor = hasFavorited ? .red : #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
     }
     
