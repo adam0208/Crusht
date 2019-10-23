@@ -326,9 +326,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             })
             
             self.fetchingMoreUsers = false
-            if self.topCardView == nil, snapshot.documents.count > 0 {
-                self.fetchMoreSchoolUsers()
-            }
+            self.fetchMoreUsersIfNecessary()
         }
     }
     
@@ -580,11 +578,9 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     private func fetchMoreUsersIfNecessary() {
-        if topCardView?.nextCardView == nil {
+        if topCardView?.nextCardView?.nextCardView == nil {
             if topStackView.collegeOnlySwitch.isOn {
                 fetchMoreSchoolUsers()
-            } else {
-                fetchMoreNearbyUsers()
             }
         }
     }
