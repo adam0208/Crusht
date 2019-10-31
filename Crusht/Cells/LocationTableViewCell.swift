@@ -55,6 +55,7 @@ class LocationTableViewCell: UITableViewCell {
         maxSlider.value = Float(maxDistance ?? 50)
         layer.cornerRadius = 16
         layer.masksToBounds = true
+        selectionStyle = .none
     }
     
     func evaluateMaxDistance() -> Int {

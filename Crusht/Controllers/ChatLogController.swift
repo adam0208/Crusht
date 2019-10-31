@@ -236,6 +236,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         self.inputContainerView.alpha = 0
         self.navigationController?.setToolbarHidden(true, animated: true)
         self.dismiss(animated: true)
+
     }
     
     @objc fileprivate func handleStubTapped() {
@@ -632,16 +633,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         containerView.backgroundColor = UIColor.white
         
         let uploadImageView = UIImageView()
-        uploadImageView.isUserInteractionEnabled = true
-        uploadImageView.image = UIImage(named: "upload_image_icon")
+        uploadImageView.isUserInteractionEnabled = false
+        uploadImageView.image = UIImage(named: "icons8-communication-30")
         uploadImageView.translatesAutoresizingMaskIntoConstraints = false
-        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
+//        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
         containerView.addSubview(uploadImageView)
         
         //x,y,w,h
         uploadImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
         uploadImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        uploadImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        uploadImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
         uploadImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
         let sendButton = UIButton(type: .system)

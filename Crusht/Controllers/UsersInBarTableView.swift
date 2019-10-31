@@ -51,7 +51,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         super.viewDidLoad()
         tableView.register(UserBarCell.self, forCellReuseIdentifier: cellId)
         tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
-        
+       
         listenForMessages()
         
         view.addSubview(searchController.searchBar)
@@ -134,6 +134,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
     

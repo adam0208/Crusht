@@ -32,6 +32,7 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let docData: [String: Any] = ["Full Name": nameTF.text ?? ""]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+        birthdayController.modalPresentationStyle = .fullScreen
         self.present(birthdayController, animated: true)
     }
     

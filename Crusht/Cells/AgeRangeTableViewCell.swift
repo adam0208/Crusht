@@ -56,6 +56,7 @@ class AgeRangeTableViewCell: UITableViewCell {
         maxSlider.value = Float(maxSeekingAge ?? 50)
         layer.cornerRadius = 22
         layer.masksToBounds = true
+        selectionStyle = .none
     }
     
     func evaluateMax() -> Int {

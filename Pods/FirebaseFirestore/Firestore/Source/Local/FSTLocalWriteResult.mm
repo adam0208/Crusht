@@ -16,22 +16,20 @@
 
 #import "Firestore/Source/Local/FSTLocalWriteResult.h"
 
-using firebase::firestore::model::BatchId;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FSTLocalWriteResult ()
-- (instancetype)initWithBatchID:(BatchId)batchID
+- (instancetype)initWithBatchID:(FSTBatchID)batchID
                         changes:(FSTMaybeDocumentDictionary *)changes NS_DESIGNATED_INITIALIZER;
 @end
 
 @implementation FSTLocalWriteResult
 
-+ (instancetype)resultForBatchID:(BatchId)batchID changes:(FSTMaybeDocumentDictionary *)changes {
++ (instancetype)resultForBatchID:(FSTBatchID)batchID changes:(FSTMaybeDocumentDictionary *)changes {
   return [[FSTLocalWriteResult alloc] initWithBatchID:batchID changes:changes];
 }
 
-- (instancetype)initWithBatchID:(BatchId)batchID changes:(FSTMaybeDocumentDictionary *)changes {
+- (instancetype)initWithBatchID:(FSTBatchID)batchID changes:(FSTMaybeDocumentDictionary *)changes {
   self = [super init];
   if (self) {
     _batchID = batchID;

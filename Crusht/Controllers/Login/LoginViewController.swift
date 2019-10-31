@@ -39,6 +39,7 @@ class LoginViewController: UIViewController, UINavigationControllerDelegate {
     
     @objc private func handleLogin () {
         let phoneNumberViewController = PhoneNumberViewController()
+        phoneNumberViewController.modalPresentationStyle = .fullScreen
         present(phoneNumberViewController, animated: true)
     }
     

@@ -19,6 +19,7 @@ private class SettingsHeaderLabel: UILabel {
     override func drawText(in rect: CGRect) {
         super.drawText(in: rect.insetBy(dx: 16, dy: 0))
     }
+    
 }
 
 class CustomImagePickerController: UIImagePickerController  {
@@ -44,10 +45,13 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         setupGradientLayer()
         setUpNavItems()
         navigationController?.navigationBar.isTranslucent = false
-        tableView.keyboardDismissMode = .onDrag
         
+        self.tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        self.tableView.separatorStyle = .none
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        tableView.keyboardDismissMode = .onDrag
 
         let bioCell = BioCell()
         bioCell.textView.delegate = self
@@ -265,6 +269,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         let firebaseAuth = Auth.auth()
         let loginViewController = LoginViewController()
         let navController = UINavigationController(rootViewController: loginViewController)
+        navController.modalPresentationStyle = .fullScreen
         do {
             try firebaseAuth.signOut()
         } catch { }
@@ -329,26 +334,27 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             return header
         }
         let headerLabel = SettingsHeaderLabel()
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 18)
         
+        headerLabel.font = UIFont.boldSystemFont(ofSize: 18)
         switch section {
         case 1:
-            headerLabel.text = ""
+            headerLabel.text = "Name"
         case 2 :
-            headerLabel.text = ""
+            headerLabel.text = "School"
         case 3:
-            headerLabel.text = ""
+            headerLabel.text = "Age"
         case 4:
-             headerLabel.text = ""
+             headerLabel.text = "Bio"
         case 5:
-            headerLabel.text = ""
+            headerLabel.text = "Your Gender"
         case 6:
-            headerLabel.text = ""
+            headerLabel.text = "Gender Preference"
         case 7:
             headerLabel.text = "Match by Location Preferences"
         default:
             headerLabel.text = ""
         }
+        
         
         return headerLabel
     }
@@ -362,7 +368,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         } else if section == 9 || section == 10 {
             return 20
         } else {
-            return 15
+            return 20
         }
     }
     
@@ -396,6 +402,8 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             let bioCell = BioCell(style: .default, reuseIdentifier: nil)
             bioCell.setup(text: user?.bio, textViewDelegate: self)
             textViewDidChange(bioCell.textView)
+            bioCell.textView.layer.masksToBounds = true
+            bioCell.textView.layer.cornerRadius = 18
             return bioCell
         case 5:
             let gcell = GenderCell(style: .default, reuseIdentifier: nil)
@@ -483,7 +491,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleBack))
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))
-        let profileButton = UIBarButtonItem(title: "Profile", style: .plain, target: self, action: #selector(goToProfile))
+        let profileButton = UIBarButtonItem(title: "Preview", style: .plain, target: self, action: #selector(goToProfile))
         navigationItem.rightBarButtonItems = [saveButton, profileButton]
     }
     

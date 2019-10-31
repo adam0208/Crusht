@@ -52,11 +52,13 @@ class VerifyViewController: UIViewController {
                 if (snapshot?.isEmpty)! {
                     Firestore.firestore().collection("users").document(uid).setData(docData)
                     let enterName = EnterNameController()
+                    enterName.modalPresentationStyle = .fullScreen
                     enterName.phone = self.phoneNumber ?? ""
                     self.present(enterName, animated: true)
                 }
                 else {
                     let profileController = CustomTabBarController()
+                    profileController.modalPresentationStyle = .fullScreen
                     self.present(profileController, animated: true)
                 }
             }

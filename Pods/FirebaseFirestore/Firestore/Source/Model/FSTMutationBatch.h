@@ -18,14 +18,14 @@
 
 #include <unordered_map>
 
+#import "Firestore/Source/Core/FSTTypes.h"
+
 #include "Firestore/core/src/firebase/firestore/model/document_key.h"
 #include "Firestore/core/src/firebase/firestore/model/document_key_set.h"
 #include "Firestore/core/src/firebase/firestore/model/snapshot_version.h"
-#include "Firestore/core/src/firebase/firestore/model/types.h"
 
-@class FIRTimestamp;
-@class FSTMaybeDocument;
 @class FSTMutation;
+@class FIRTimestamp;
 @class FSTMutationResult;
 @class FSTMutationBatchResult;
 
@@ -46,9 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
  * A BatchID that was searched for and not found or a batch ID value known to be before all known
  * batches.
  *
- * BatchId values from the local store are non-negative so this value is before all batches.
+ * FSTBatchID values from the local store are non-negative so this value is before all batches.
  */
-extern const firebase::firestore::model::BatchId kFSTBatchIDUnknown;
+extern const FSTBatchID kFSTBatchIDUnknown;
 
 /**
  * A batch of mutations that will be sent as one unit to the backend. Batches can be marked as a
@@ -58,15 +58,14 @@ extern const firebase::firestore::model::BatchId kFSTBatchIDUnknown;
 @interface FSTMutationBatch : NSObject
 
 /** Initializes a mutation batch with the given batchID, localWriteTime, and mutations. */
-- (instancetype)initWithBatchID:(firebase::firestore::model::BatchId)batchID
+- (instancetype)initWithBatchID:(FSTBatchID)batchID
                  localWriteTime:(FIRTimestamp *)localWriteTime
                       mutations:(NSArray<FSTMutation *> *)mutations NS_DESIGNATED_INITIALIZER;
 
 - (id)init NS_UNAVAILABLE;
 
 /**
- * Applies all the mutations in this FSTMutationBatch to the specified document to create a new
- * remote document.
+ * Applies all the mutations in this FSTMutationBatch to the specified document.
  *
  * @param maybeDoc The document to apply mutations to.
  * @param documentKey The key of the document to apply mutations to.
@@ -74,23 +73,33 @@ extern const firebase::firestore::model::BatchId kFSTBatchIDUnknown;
  *   it's assumed that this is a local (latency-compensated) application and documents will have
  *   their hasLocalMutations flag set.
  */
-- (FSTMaybeDocument *_Nullable)
-    applyToRemoteDocument:(FSTMaybeDocument *_Nullable)maybeDoc
-              documentKey:(const firebase::firestore::model::DocumentKey &)documentKey
-      mutationBatchResult:(FSTMutationBatchResult *_Nullable)mutationBatchResult;
+- (FSTMaybeDocument *_Nullable)applyTo:(FSTMaybeDocument *_Nullable)maybeDoc
+                           documentKey:(const firebase::firestore::model::DocumentKey &)documentKey
+                   mutationBatchResult:(FSTMutationBatchResult *_Nullable)mutationBatchResult;
 
 /**
  * A helper version of applyTo for applying mutations locally (without a mutation batch result from
  * the backend).
  */
-- (FSTMaybeDocument *_Nullable)
-    applyToLocalDocument:(FSTMaybeDocument *_Nullable)maybeDoc
-             documentKey:(const firebase::firestore::model::DocumentKey &)documentKey;
+- (FSTMaybeDocument *_Nullable)applyTo:(FSTMaybeDocument *_Nullable)maybeDoc
+                           documentKey:(const firebase::firestore::model::DocumentKey &)documentKey;
+
+/**
+ * Returns YES if this mutation batch has already been removed from the mutation queue.
+ *
+ * Note that not all implementations of the FSTMutationQueue necessarily use tombstones as a part
+ * of their implementation and generally speaking no code outside the mutation queues should really
+ * care about this.
+ */
+- (BOOL)isTombstone;
+
+/** Converts this batch to a tombstone. */
+- (FSTMutationBatch *)toTombstone;
 
 /** Returns the set of unique keys referenced by all mutations in the batch. */
 - (firebase::firestore::model::DocumentKeySet)keys;
 
-@property(nonatomic, assign, readonly) firebase::firestore::model::BatchId batchID;
+@property(nonatomic, assign, readonly) FSTBatchID batchID;
 @property(nonatomic, strong, readonly) FIRTimestamp *localWriteTime;
 @property(nonatomic, strong, readonly) NSArray<FSTMutation *> *mutations;
 

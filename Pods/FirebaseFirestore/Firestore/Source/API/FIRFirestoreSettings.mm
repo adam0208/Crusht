@@ -23,8 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 static NSString *const kDefaultHost = @"firestore.googleapis.com";
 static const BOOL kDefaultSSLEnabled = YES;
 static const BOOL kDefaultPersistenceEnabled = YES;
-static const int64_t kDefaultCacheSizeBytes = 100 * 1024 * 1024;
-static const int64_t kMinimumCacheSizeBytes = 1 * 1024 * 1024;
 // TODO(b/73820332): flip the default.
 static const BOOL kDefaultTimestampsInSnapshotsEnabled = NO;
 
@@ -37,7 +35,6 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = NO;
     _dispatchQueue = dispatch_get_main_queue();
     _persistenceEnabled = kDefaultPersistenceEnabled;
     _timestampsInSnapshotsEnabled = kDefaultTimestampsInSnapshotsEnabled;
-    _cacheSizeBytes = kDefaultCacheSizeBytes;
   }
   return self;
 }
@@ -54,8 +51,7 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = NO;
          self.isSSLEnabled == otherSettings.isSSLEnabled &&
          self.dispatchQueue == otherSettings.dispatchQueue &&
          self.isPersistenceEnabled == otherSettings.isPersistenceEnabled &&
-         self.timestampsInSnapshotsEnabled == otherSettings.timestampsInSnapshotsEnabled &&
-         self.cacheSizeBytes == otherSettings.cacheSizeBytes;
+         self.timestampsInSnapshotsEnabled == otherSettings.timestampsInSnapshotsEnabled;
 }
 
 - (NSUInteger)hash {
@@ -64,7 +60,6 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = NO;
   // Ignore the dispatchQueue to avoid having to deal with sizeof(dispatch_queue_t).
   result = 31 * result + (self.isPersistenceEnabled ? 1231 : 1237);
   result = 31 * result + (self.timestampsInSnapshotsEnabled ? 1231 : 1237);
-  result = 31 * result + (NSUInteger)self.cacheSizeBytes;
   return result;
 }
 
@@ -75,7 +70,6 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = NO;
   copy.dispatchQueue = _dispatchQueue;
   copy.persistenceEnabled = _persistenceEnabled;
   copy.timestampsInSnapshotsEnabled = _timestampsInSnapshotsEnabled;
-  copy.cacheSizeBytes = _cacheSizeBytes;
   return copy;
 }
 
@@ -97,14 +91,6 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = NO;
          "(which is the main queue, returned from dispatch_get_main_queue())");
   }
   _dispatchQueue = dispatchQueue;
-}
-
-- (void)setCacheSizeBytes:(int64_t)cacheSizeBytes {
-  if (cacheSizeBytes != kFIRFirestoreCacheSizeUnlimited &&
-      cacheSizeBytes < kMinimumCacheSizeBytes) {
-    FSTThrowInvalidArgument(@"Cache size must be set to at least %i bytes", kMinimumCacheSizeBytes);
-  }
-  _cacheSizeBytes = cacheSizeBytes;
 }
 
 @end

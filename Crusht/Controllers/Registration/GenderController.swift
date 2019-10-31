@@ -44,6 +44,7 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
         let photoCnotroller = BioController()
         let docData: [String: Any] = ["Gender-Preference": self.sexYouLike]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+        photoCnotroller.modalPresentationStyle = .fullScreen
         self.present(photoCnotroller, animated: true)
     }
     

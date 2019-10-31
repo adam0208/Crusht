@@ -34,6 +34,7 @@ class VersionNumberCell: UITableViewCell {
             version.text = "Crusht Version \(v)"
         }
         addSubview(version)
+        selectionStyle = .none
         version.fillSuperview()
     }
     

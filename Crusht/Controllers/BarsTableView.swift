@@ -31,7 +31,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
-
+       
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
@@ -135,6 +135,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
     
@@ -183,15 +184,15 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             self.user = User(dictionary: dictionary)
-            if self.user?.phoneNumber == ""{
-                let loginController = LoginViewController()
-                self.present(loginController, animated: true)
-            }
-            else if self.user?.name == "" {
-                let namecontroller = EnterNameController()
-                namecontroller.phone = self.user?.phoneNumber ?? ""
-                self.present(namecontroller, animated: true)
-            }
+//            if self.user?.phoneNumber == ""{
+//                let loginController = LoginViewController()
+//                self.present(loginController, animated: true)
+//            }
+//            else if self.user?.name == "" {
+//                let namecontroller = EnterNameController()
+//                namecontroller.phone = self.user?.phoneNumber ?? ""
+//                self.present(namecontroller, animated: true)
+//            }
             
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
@@ -375,7 +376,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if self.barArray.isEmpty {
                     cell.profileImageView.image = nil
-                    cell.textLabel?.text = "No venues in your area 😔"
+                    cell.textLabel?.text = "This feature is coming to your area soon!"
                 }
             }
         }

@@ -47,7 +47,9 @@ class EnterPhotoController: UIViewController {
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true) { (err) in
             guard err == nil else { return }
             let customtabController = CustomTabBarController()
+            customtabController.modalPresentationStyle = .fullScreen
             self.present(customtabController, animated: true)
+            
         }
     }
     

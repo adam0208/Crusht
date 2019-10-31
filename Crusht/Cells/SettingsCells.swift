@@ -52,6 +52,7 @@ class SettingsCells: UITableViewCell {
         self.isUserInteractionEnabled = isUserInteractionEnabled
         layer.cornerRadius = 16
         layer.masksToBounds = true
+        selectionStyle = .none
     }
     
     let textField: UITextField = {

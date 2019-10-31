@@ -182,6 +182,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         settingsController.delegate = self
         
         let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
         
     }
@@ -225,19 +226,19 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             guard let dictionary = snapshot?.data() else {return}
             let user = User(dictionary: dictionary)
             
-            if user.phoneNumber == ""{
-                let loginController = LoginViewController()
-                self.present(loginController, animated: true)
-                return
-        
-            }
-            else if user.name == "" {
-                let namecontroller = EnterNameController()
-                namecontroller.phone = self.user?.phoneNumber ?? ""
-                self.present(namecontroller, animated: true)
-                return
-              
-            }
+//            if user.phoneNumber == ""{
+//                let loginController = LoginViewController()
+//                self.present(loginController, animated: true)
+//                return
+//        
+//            }
+//            else if user.name == "" {
+//                let namecontroller = EnterNameController()
+//                namecontroller.phone = self.user?.phoneNumber ?? ""
+//                self.present(namecontroller, animated: true)
+//                return
+//              
+//            }
             
             if self.user == nil || !self.user!.hasSamePreferences(user: user) || self.schoolArray.isEmpty {
                 self.user = user

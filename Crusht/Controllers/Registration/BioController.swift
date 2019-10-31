@@ -40,6 +40,7 @@ class BioController: UIViewController, UITextViewDelegate {
             guard let uid = Auth.auth().currentUser?.uid else {return}
             let docData: [String: Any] = ["Bio": self.bio]
             Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+            enterSexController.modalPresentationStyle = .fullScreen
             self.present(enterSexController, animated: true)
         }
     }

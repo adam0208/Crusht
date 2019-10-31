@@ -67,6 +67,7 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
     
     @objc private func handleDismiss() {
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.popToRootViewController(animated: true)
     }
     

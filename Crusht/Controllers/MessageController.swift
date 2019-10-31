@@ -32,7 +32,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         MessageController.sharedInstance = self
         super.viewDidLoad()
         self.tabBarController?.delegate = self
-
+        
         fetchCurrentUser()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
@@ -41,7 +41,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         navigationController?.isNavigationBarHidden = false
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
-
+        
         navigationItem.title = "Messages"
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -82,6 +82,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
     
@@ -125,17 +126,17 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             
-            if self.user?.phoneNumber == ""{
-                let loginController = LoginViewController()
-                self.present(loginController, animated: true)
-                
-            }
-            else if self.user?.name == "" {
-                let namecontroller = EnterNameController()
-                namecontroller.phone = self.user?.phoneNumber ?? ""
-                self.present(namecontroller, animated: true)
-                
-            }
+//            if self.user?.phoneNumber == ""{
+//                let loginController = LoginViewController()
+//                self.present(loginController, animated: true)
+//                
+//            }
+//            else if self.user?.name == "" {
+//                let namecontroller = EnterNameController()
+//                namecontroller.phone = self.user?.phoneNumber ?? ""
+//                self.present(namecontroller, animated: true)
+//
+//            }
           
             self.fromName = self.user?.name ?? "Match"
             self.setupNavBarWithUser(self.user!)
@@ -246,7 +247,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
-        
+        cell.selectionStyle = .none
         if !messages.isEmpty {
             if isFiltering() {
                 let message = messages[indexPath.row]
@@ -257,7 +258,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
             }
         } else {
             if messages.isEmpty {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     cell.profileImageView.image = nil
                     cell.textLabel?.text = "No matches yet 😬"
                 }

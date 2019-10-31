@@ -36,8 +36,8 @@ class BioCell: UITableViewCell {
         textView.delegate = textViewDelegate
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.text = text
-        layer.cornerRadius = 22
         layer.masksToBounds = true
+        layer.cornerRadius = 22
     }
     
     let textView: UITextView = {

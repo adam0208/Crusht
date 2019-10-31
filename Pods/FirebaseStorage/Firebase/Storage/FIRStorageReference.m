@@ -167,7 +167,6 @@
   FIRStorageUploadTask *task =
       [[FIRStorageUploadTask alloc] initWithReference:self
                                        fetcherService:_storage.fetcherServiceForApp
-                                        dispatchQueue:_storage.dispatchQueue
                                                  data:uploadData
                                              metadata:metadata];
 
@@ -215,7 +214,6 @@
   FIRStorageUploadTask *task =
       [[FIRStorageUploadTask alloc] initWithReference:self
                                        fetcherService:_storage.fetcherServiceForApp
-                                        dispatchQueue:_storage.dispatchQueue
                                                  file:fileURL
                                              metadata:metadata];
 
@@ -249,7 +247,6 @@
   FIRStorageDownloadTask *task =
       [[FIRStorageDownloadTask alloc] initWithReference:self
                                          fetcherService:_storage.fetcherServiceForApp
-                                          dispatchQueue:_storage.dispatchQueue
                                                    file:nil];
 
   dispatch_queue_t callbackQueue = _storage.fetcherServiceForApp.callbackQueue;
@@ -275,9 +272,10 @@
             handler:^(FIRStorageTaskSnapshot *_Nonnull snapshot) {
               FIRStorageDownloadTask *task = snapshot.task;
               if (task.progress.totalUnitCount > size || task.progress.completedUnitCount > size) {
-                NSDictionary *infoDictionary =
-                    @{@"totalSize" : @(task.progress.totalUnitCount),
-                      @"maxAllowedSize" : @(size)};
+                NSDictionary *infoDictionary = @{
+                  @"totalSize" : @(task.progress.totalUnitCount),
+                  @"maxAllowedSize" : @(size)
+                };
                 NSError *error =
                     [FIRStorageErrors errorWithCode:FIRStorageErrorCodeDownloadSizeExceeded
                                      infoDictionary:infoDictionary];
@@ -297,7 +295,6 @@
   FIRStorageDownloadTask *task =
       [[FIRStorageDownloadTask alloc] initWithReference:self
                                          fetcherService:_storage.fetcherServiceForApp
-                                          dispatchQueue:_storage.dispatchQueue
                                                    file:fileURL];
   if (completion) {
     dispatch_queue_t callbackQueue = _storage.fetcherServiceForApp.callbackQueue;
@@ -326,7 +323,6 @@
   FIRStorageGetDownloadURLTask *task =
       [[FIRStorageGetDownloadURLTask alloc] initWithReference:self
                                                fetcherService:_storage.fetcherServiceForApp
-                                                dispatchQueue:_storage.dispatchQueue
                                                    completion:completion];
   [task enqueue];
 }
@@ -337,7 +333,6 @@
   FIRStorageGetMetadataTask *task =
       [[FIRStorageGetMetadataTask alloc] initWithReference:self
                                             fetcherService:_storage.fetcherServiceForApp
-                                             dispatchQueue:_storage.dispatchQueue
                                                 completion:completion];
   [task enqueue];
 }
@@ -347,7 +342,6 @@
   FIRStorageUpdateMetadataTask *task =
       [[FIRStorageUpdateMetadataTask alloc] initWithReference:self
                                                fetcherService:_storage.fetcherServiceForApp
-                                                dispatchQueue:_storage.dispatchQueue
                                                      metadata:metadata
                                                    completion:completion];
   [task enqueue];
@@ -359,7 +353,6 @@
   FIRStorageDeleteTask *task =
       [[FIRStorageDeleteTask alloc] initWithReference:self
                                        fetcherService:_storage.fetcherServiceForApp
-                                        dispatchQueue:_storage.dispatchQueue
                                            completion:completion];
   [task enqueue];
 }

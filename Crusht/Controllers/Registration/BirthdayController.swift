@@ -73,6 +73,7 @@ class BirthdayController: UIViewController {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let docData: [String: Any] = ["Birthday": birthday, "Age": age]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+        enterSchoolController.modalPresentationStyle = .fullScreen
         present(enterSchoolController, animated: true)
     }
     

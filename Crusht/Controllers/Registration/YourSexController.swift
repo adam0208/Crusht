@@ -36,7 +36,9 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let docData: [String: Any] = ["User-Gender": self.gender]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+        genderPreference.modalPresentationStyle = .fullScreen
         self.present(genderPreference, animated: true)
+      
     }
     
     // MARK: - UIPickerViewDelegate, UIPickerViewDataSource

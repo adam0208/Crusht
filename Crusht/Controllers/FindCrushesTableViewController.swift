@@ -143,36 +143,42 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             
             if self.user?.phoneNumber == ""{
                 let loginController = LoginViewController()
+                loginController.modalPresentationStyle = .fullScreen
                 self.present(loginController, animated: true)
-            
             }
             else if self.user?.name == "" {
                 let namecontroller = EnterNameController()
+                namecontroller.modalPresentationStyle = .fullScreen
                 self.present(namecontroller, animated: true)
             }
             
             else if self.user?.birthday == "" {
                 let namecontroller = BirthdayController()
+                namecontroller.modalPresentationStyle = .fullScreen
                 self.present(namecontroller, animated: true)
             }
             
             else if self.user?.school == "" {
                 let namecontroller = EnterSchoolController()
+                namecontroller.modalPresentationStyle = .fullScreen
                 self.present(namecontroller, animated: true)
             }
             
             else if self.user?.bio == "" {
                 let namecontroller = BioController()
+                namecontroller.modalPresentationStyle = .fullScreen
                 self.present(namecontroller, animated: true)
             }
             
             else if self.user?.gender == "" {
                 let namecontroller = YourSexController()
+                namecontroller.modalPresentationStyle = .fullScreen
                 self.present(namecontroller, animated: true)
             }
             
             else if self.user?.sexPref == "" {
                 let namecontroller = GenderController()
+                namecontroller.modalPresentationStyle = .fullScreen
                 self.present(namecontroller, animated: true)
             }
             
@@ -672,6 +678,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let settingsController = SettingsTableViewController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
     

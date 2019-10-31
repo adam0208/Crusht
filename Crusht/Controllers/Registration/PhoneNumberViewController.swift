@@ -69,6 +69,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         verifyController.phoneNumber = "\(countryCodeTF.text ?? "")\(phoneNumberTextField.text ?? "")"
         let registerViewModel = RegistrationViewModel()
         registerViewModel.phone = phoneNumberTextField.text
+        verifyController.modalPresentationStyle = .fullScreen
         present(verifyController, animated: true)
     }
     

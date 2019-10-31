@@ -44,6 +44,7 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let docData: [String: Any] = ["School": self.school]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+        bioController.modalPresentationStyle = .fullScreen
         self.present(bioController, animated: true)
     }
     
