@@ -8,8 +8,7 @@
 
 import UIKit
 import Firebase
-import SDWebImage
-
+import Nuke
 import CoreLocation
 import GeoFire
 import UserNotifications

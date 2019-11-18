@@ -12,7 +12,7 @@ target 'Crusht' do
   pod 'Firebase/Messaging'
 
   pod 'GoogleAppMeasurement'
-  pod 'SDWebImage', '~>4.4.2’
+  pod 'Nuke', '~>8.1’
   #  pod 'JGProgressHUD', '~>2.0.3'
   pod 'CountryPickerSwift'  
   pod 'Geofirestore'

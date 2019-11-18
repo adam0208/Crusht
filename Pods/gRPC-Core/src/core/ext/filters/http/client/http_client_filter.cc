@@ -36,33 +36,12 @@
 #define EXPECTED_CONTENT_TYPE "application/grpc"
 #define EXPECTED_CONTENT_TYPE_LENGTH sizeof(EXPECTED_CONTENT_TYPE) - 1
 
-/* default maximum size of payload eligible for GET request */
-static constexpr size_t kMaxPayloadSizeForGet = 2048;
-
-static void recv_initial_metadata_ready(void* user_data, grpc_error* error);
-static void recv_trailing_metadata_ready(void* user_data, grpc_error* error);
-static void on_send_message_next_done(void* arg, grpc_error* error);
-static void send_message_on_complete(void* arg, grpc_error* error);
+/* default maximum size of payload eligable for GET request */
+static const size_t kMaxPayloadSizeForGet = 2048;
 
 namespace {
 struct call_data {
-  call_data(grpc_call_element* elem, const grpc_call_element_args& args)
-      : call_combiner(args.call_combiner) {
-    GRPC_CLOSURE_INIT(&recv_initial_metadata_ready,
-                      ::recv_initial_metadata_ready, elem,
-                      grpc_schedule_on_exec_ctx);
-    GRPC_CLOSURE_INIT(&recv_trailing_metadata_ready,
-                      ::recv_trailing_metadata_ready, elem,
-                      grpc_schedule_on_exec_ctx);
-    GRPC_CLOSURE_INIT(&on_send_message_next_done, ::on_send_message_next_done,
-                      elem, grpc_schedule_on_exec_ctx);
-    GRPC_CLOSURE_INIT(&send_message_on_complete, ::send_message_on_complete,
-                      elem, grpc_schedule_on_exec_ctx);
-  }
-
-  ~call_data() { GRPC_ERROR_UNREF(recv_initial_metadata_error); }
-
-  grpc_core::CallCombiner* call_combiner;
+  grpc_call_combiner* call_combiner;
   // State for handling send_initial_metadata ops.
   grpc_linked_mdelem method;
   grpc_linked_mdelem scheme;
@@ -72,18 +51,15 @@ struct call_data {
   grpc_linked_mdelem user_agent;
   // State for handling recv_initial_metadata ops.
   grpc_metadata_batch* recv_initial_metadata;
-  grpc_error* recv_initial_metadata_error = GRPC_ERROR_NONE;
-  grpc_closure* original_recv_initial_metadata_ready = nullptr;
+  grpc_closure* original_recv_initial_metadata_ready;
   grpc_closure recv_initial_metadata_ready;
   // State for handling recv_trailing_metadata ops.
   grpc_metadata_batch* recv_trailing_metadata;
   grpc_closure* original_recv_trailing_metadata_ready;
   grpc_closure recv_trailing_metadata_ready;
-  grpc_error* recv_trailing_metadata_error = GRPC_ERROR_NONE;
-  bool seen_recv_trailing_metadata_ready = false;
   // State for handling send_message ops.
   grpc_transport_stream_op_batch* send_message_batch;
-  size_t send_message_bytes_read = 0;
+  size_t send_message_bytes_read;
   grpc_core::ManualConstructor<grpc_core::ByteStreamCache> send_message_cache;
   grpc_core::ManualConstructor<grpc_core::ByteStreamCache::CachingByteStream>
       send_message_caching_stream;
@@ -102,14 +78,8 @@ struct channel_data {
 static grpc_error* client_filter_incoming_metadata(grpc_call_element* elem,
                                                    grpc_metadata_batch* b) {
   if (b->idx.named.status != nullptr) {
-    /* If both gRPC status and HTTP status are provided in the response, we
-     * should prefer the gRPC status code, as mentioned in
-     * https://github.com/grpc/grpc/blob/master/doc/http-grpc-status-mapping.md.
-     */
-    if (b->idx.named.grpc_status != nullptr ||
-        grpc_mdelem_static_value_eq(b->idx.named.status->md,
-                                    GRPC_MDELEM_STATUS_200)) {
-      grpc_metadata_batch_remove(b, GRPC_BATCH_STATUS);
+    if (grpc_mdelem_eq(b->idx.named.status->md, GRPC_MDELEM_STATUS_200)) {
+      grpc_metadata_batch_remove(b, b->idx.named.status);
     } else {
       char* val = grpc_dump_slice(GRPC_MDVALUE(b->idx.named.status->md),
                                   GPR_DUMP_ASCII);
@@ -141,9 +111,8 @@ static grpc_error* client_filter_incoming_metadata(grpc_call_element* elem,
   }
 
   if (b->idx.named.content_type != nullptr) {
-    if (!grpc_mdelem_static_value_eq(
-            b->idx.named.content_type->md,
-            GRPC_MDELEM_CONTENT_TYPE_APPLICATION_SLASH_GRPC)) {
+    if (!grpc_mdelem_eq(b->idx.named.content_type->md,
+                        GRPC_MDELEM_CONTENT_TYPE_APPLICATION_SLASH_GRPC)) {
       if (grpc_slice_buf_start_eq(GRPC_MDVALUE(b->idx.named.content_type->md),
                                   EXPECTED_CONTENT_TYPE,
                                   EXPECTED_CONTENT_TYPE_LENGTH) &&
@@ -167,7 +136,7 @@ static grpc_error* client_filter_incoming_metadata(grpc_call_element* elem,
         gpr_free(val);
       }
     }
-    grpc_metadata_batch_remove(b, GRPC_BATCH_CONTENT_TYPE);
+    grpc_metadata_batch_remove(b, b->idx.named.content_type);
   }
 
   return GRPC_ERROR_NONE;
@@ -178,39 +147,21 @@ static void recv_initial_metadata_ready(void* user_data, grpc_error* error) {
   call_data* calld = static_cast<call_data*>(elem->call_data);
   if (error == GRPC_ERROR_NONE) {
     error = client_filter_incoming_metadata(elem, calld->recv_initial_metadata);
-    calld->recv_initial_metadata_error = GRPC_ERROR_REF(error);
   } else {
     GRPC_ERROR_REF(error);
   }
-  grpc_closure* closure = calld->original_recv_initial_metadata_ready;
-  calld->original_recv_initial_metadata_ready = nullptr;
-  if (calld->seen_recv_trailing_metadata_ready) {
-    GRPC_CALL_COMBINER_START(
-        calld->call_combiner, &calld->recv_trailing_metadata_ready,
-        calld->recv_trailing_metadata_error, "continue recv_trailing_metadata");
-  }
-  GRPC_CLOSURE_RUN(closure, error);
+  GRPC_CLOSURE_RUN(calld->original_recv_initial_metadata_ready, error);
 }
 
 static void recv_trailing_metadata_ready(void* user_data, grpc_error* error) {
   grpc_call_element* elem = static_cast<grpc_call_element*>(user_data);
   call_data* calld = static_cast<call_data*>(elem->call_data);
-  if (calld->original_recv_initial_metadata_ready != nullptr) {
-    calld->recv_trailing_metadata_error = GRPC_ERROR_REF(error);
-    calld->seen_recv_trailing_metadata_ready = true;
-    GRPC_CALL_COMBINER_STOP(calld->call_combiner,
-                            "deferring recv_trailing_metadata_ready until "
-                            "after recv_initial_metadata_ready");
-    return;
-  }
   if (error == GRPC_ERROR_NONE) {
     error =
         client_filter_incoming_metadata(elem, calld->recv_trailing_metadata);
   } else {
     GRPC_ERROR_REF(error);
   }
-  error = grpc_error_add_child(
-      error, GRPC_ERROR_REF(calld->recv_initial_metadata_error));
   GRPC_CLOSURE_RUN(calld->original_recv_trailing_metadata_ready, error);
 }
 
@@ -304,7 +255,7 @@ static grpc_error* update_path_for_get(grpc_call_element* elem,
   estimated_len += grpc_base64_estimate_encoded_size(
       batch->payload->send_message.send_message->length(), true /* url_safe */,
       false /* multi_line */);
-  grpc_core::UnmanagedMemorySlice path_with_query_slice(estimated_len);
+  grpc_slice path_with_query_slice = GRPC_SLICE_MALLOC(estimated_len);
   /* memcopy individual pieces into this slice */
   char* write_ptr =
       reinterpret_cast<char*> GRPC_SLICE_START_PTR(path_with_query_slice);
@@ -336,7 +287,7 @@ static grpc_error* update_path_for_get(grpc_call_element* elem,
 static void remove_if_present(grpc_metadata_batch* batch,
                               grpc_metadata_batch_callouts_index idx) {
   if (batch->idx.array[idx] != nullptr) {
-    grpc_metadata_batch_remove(batch, idx);
+    grpc_metadata_batch_remove(batch, batch->idx.array[idx]);
   }
 }
 
@@ -433,25 +384,23 @@ static void hc_start_transport_stream_op_batch(
        layer headers. */
     error = grpc_metadata_batch_add_head(
         batch->payload->send_initial_metadata.send_initial_metadata,
-        &calld->method, method, GRPC_BATCH_METHOD);
+        &calld->method, method);
     if (error != GRPC_ERROR_NONE) goto done;
     error = grpc_metadata_batch_add_head(
         batch->payload->send_initial_metadata.send_initial_metadata,
-        &calld->scheme, channeld->static_scheme, GRPC_BATCH_SCHEME);
+        &calld->scheme, channeld->static_scheme);
     if (error != GRPC_ERROR_NONE) goto done;
     error = grpc_metadata_batch_add_tail(
         batch->payload->send_initial_metadata.send_initial_metadata,
-        &calld->te_trailers, GRPC_MDELEM_TE_TRAILERS, GRPC_BATCH_TE);
+        &calld->te_trailers, GRPC_MDELEM_TE_TRAILERS);
     if (error != GRPC_ERROR_NONE) goto done;
     error = grpc_metadata_batch_add_tail(
         batch->payload->send_initial_metadata.send_initial_metadata,
-        &calld->content_type, GRPC_MDELEM_CONTENT_TYPE_APPLICATION_SLASH_GRPC,
-        GRPC_BATCH_CONTENT_TYPE);
+        &calld->content_type, GRPC_MDELEM_CONTENT_TYPE_APPLICATION_SLASH_GRPC);
     if (error != GRPC_ERROR_NONE) goto done;
     error = grpc_metadata_batch_add_tail(
         batch->payload->send_initial_metadata.send_initial_metadata,
-        &calld->user_agent, GRPC_MDELEM_REF(channeld->user_agent),
-        GRPC_BATCH_USER_AGENT);
+        &calld->user_agent, GRPC_MDELEM_REF(channeld->user_agent));
     if (error != GRPC_ERROR_NONE) goto done;
   }
 
@@ -467,17 +416,25 @@ done:
 /* Constructor for call_data */
 static grpc_error* init_call_elem(grpc_call_element* elem,
                                   const grpc_call_element_args* args) {
-  new (elem->call_data) call_data(elem, *args);
+  call_data* calld = static_cast<call_data*>(elem->call_data);
+  calld->call_combiner = args->call_combiner;
+  GRPC_CLOSURE_INIT(&calld->recv_initial_metadata_ready,
+                    recv_initial_metadata_ready, elem,
+                    grpc_schedule_on_exec_ctx);
+  GRPC_CLOSURE_INIT(&calld->recv_trailing_metadata_ready,
+                    recv_trailing_metadata_ready, elem,
+                    grpc_schedule_on_exec_ctx);
+  GRPC_CLOSURE_INIT(&calld->send_message_on_complete, send_message_on_complete,
+                    elem, grpc_schedule_on_exec_ctx);
+  GRPC_CLOSURE_INIT(&calld->on_send_message_next_done,
+                    on_send_message_next_done, elem, grpc_schedule_on_exec_ctx);
   return GRPC_ERROR_NONE;
 }
 
 /* Destructor for call_data */
 static void destroy_call_elem(grpc_call_element* elem,
                               const grpc_call_final_info* final_info,
-                              grpc_closure* ignored) {
-  call_data* calld = static_cast<call_data*>(elem->call_data);
-  calld->~call_data();
-}
+                              grpc_closure* ignored) {}
 
 static grpc_mdelem scheme_from_args(const grpc_channel_args* args) {
   unsigned i;
@@ -516,12 +473,13 @@ static size_t max_payload_size_from_args(const grpc_channel_args* args) {
   return kMaxPayloadSizeForGet;
 }
 
-static grpc_core::ManagedMemorySlice user_agent_from_args(
-    const grpc_channel_args* args, const char* transport_name) {
+static grpc_slice user_agent_from_args(const grpc_channel_args* args,
+                                       const char* transport_name) {
   gpr_strvec v;
   size_t i;
   int is_first = 1;
   char* tmp;
+  grpc_slice result;
 
   gpr_strvec_init(&v);
 
@@ -559,7 +517,7 @@ static grpc_core::ManagedMemorySlice user_agent_from_args(
 
   tmp = gpr_strvec_flatten(&v, nullptr);
   gpr_strvec_destroy(&v);
-  grpc_core::ManagedMemorySlice result(tmp);
+  result = grpc_slice_intern(grpc_slice_from_static_string(tmp));
   gpr_free(tmp);
 
   return result;

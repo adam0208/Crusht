@@ -8,8 +8,7 @@
 
 import UIKit
 import Firebase
-
-import SDWebImage
+import Nuke
 import WebKit
 
 protocol LoginControllerDelegate {

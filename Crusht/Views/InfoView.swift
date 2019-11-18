@@ -25,15 +25,20 @@ class InfoView: UIView {
     }()
     
     let infoText: UILabel = {
-        let label = UILabel()
         
+        var fontClass = UILabelFontClass()
+        fontClass.DynamicFontSize = 20.0
+        var dynamicFontSize = fontClass.DynamicFontSize
+        
+        let label = UILabel()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: dynamicFontSize, weight: .medium)
+        //label.font = UIFont.systemFont(ofSize: self.dynamicFontSize(20.0), weight: .medium)
         label.textAlignment = .center
         label.textColor = .white
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
-        
+        label.minimumScaleFactor = 0.5
         return label
     }()
     
@@ -88,11 +93,14 @@ class InfoView: UIView {
     @objc fileprivate func handleDismiss() {
         self.removeFromSuperview()
     }
-
-    
    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+//    func dynamicFontSize(_ FontSize: CGFloat) -> CGFloat {
+//        let screenWidth = UIScreen.main.bounds.size.width
+//        let calculatedFontSize = screenWidth / 375 * FontSize
+//        return calculatedFontSize
+//    }
 }

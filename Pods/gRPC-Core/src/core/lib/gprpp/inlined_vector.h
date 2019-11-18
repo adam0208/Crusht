@@ -97,25 +97,14 @@ class InlinedVector {
     return data()[offset];
   }
 
-  bool operator==(const InlinedVector& other) const {
-    if (size_ != other.size_) return false;
-    for (size_t i = 0; i < size_; ++i) {
-      // Note that this uses == instead of != so that the data class doesn't
-      // have to implement !=.
-      if (!(data()[i] == other.data()[i])) return false;
-    }
-    return true;
-  }
-
   void reserve(size_t capacity) {
     if (capacity > capacity_) {
-      T* new_dynamic =
-          std::alignment_of<T>::value == 0
-              ? static_cast<T*>(gpr_malloc(sizeof(T) * capacity))
-              : static_cast<T*>(gpr_malloc_aligned(
-                    sizeof(T) * capacity, std::alignment_of<T>::value));
-      move_elements(data(), new_dynamic, size_);
-      free_dynamic();
+      T* new_dynamic = static_cast<T*>(gpr_malloc(sizeof(T) * capacity));
+      for (size_t i = 0; i < size_; ++i) {
+        new (&new_dynamic[i]) T(std::move(data()[i]));
+        data()[i].~T();
+      }
+      gpr_free(dynamic_);
       dynamic_ = new_dynamic;
       capacity_ = capacity;
     }
@@ -134,12 +123,31 @@ class InlinedVector {
 
   void push_back(T&& value) { emplace_back(std::move(value)); }
 
-  void pop_back() {
-    assert(!empty());
-    size_t s = size();
-    T& value = data()[s - 1];
-    value.~T();
-    size_--;
+  void copy_from(const InlinedVector& v) {
+    // if v is allocated, copy over the buffer.
+    if (v.dynamic_ != nullptr) {
+      reserve(v.capacity_);
+      memcpy(dynamic_, v.dynamic_, v.size_ * sizeof(T));
+    } else {
+      memcpy(inline_, v.inline_, v.size_ * sizeof(T));
+    }
+    // copy over metadata
+    size_ = v.size_;
+    capacity_ = v.capacity_;
+  }
+
+  void move_from(InlinedVector& v) {
+    // if v is allocated, then we steal its buffer, else we copy it.
+    if (v.dynamic_ != nullptr) {
+      dynamic_ = v.dynamic_;
+    } else {
+      memcpy(inline_, v.inline_, v.size_ * sizeof(T));
+    }
+    // copy over metadata
+    size_ = v.size_;
+    capacity_ = v.capacity_;
+    // null out the original
+    v.init_data();
   }
 
   size_t size() const { return size_; }
@@ -153,42 +161,6 @@ class InlinedVector {
   }
 
  private:
-  void copy_from(const InlinedVector& v) {
-    // if v is allocated, make sure we have enough capacity.
-    if (v.dynamic_ != nullptr) {
-      reserve(v.capacity_);
-    }
-    // copy over elements
-    for (size_t i = 0; i < v.size_; ++i) {
-      new (&(data()[i])) T(v[i]);
-    }
-    // copy over metadata
-    size_ = v.size_;
-    capacity_ = v.capacity_;
-  }
-
-  void move_from(InlinedVector& v) {
-    // if v is allocated, then we steal its dynamic array; otherwise, we
-    // move the elements individually.
-    if (v.dynamic_ != nullptr) {
-      dynamic_ = v.dynamic_;
-    } else {
-      move_elements(v.data(), data(), v.size_);
-    }
-    // copy over metadata
-    size_ = v.size_;
-    capacity_ = v.capacity_;
-    // null out the original
-    v.init_data();
-  }
-
-  static void move_elements(T* src, T* dst, size_t num_elements) {
-    for (size_t i = 0; i < num_elements; ++i) {
-      new (&dst[i]) T(std::move(src[i]));
-      src[i].~T();
-    }
-  }
-
   void init_data() {
     dynamic_ = nullptr;
     size_ = 0;
@@ -200,17 +172,7 @@ class InlinedVector {
       T& value = data()[i];
       value.~T();
     }
-    free_dynamic();
-  }
-
-  void free_dynamic() {
-    if (dynamic_ != nullptr) {
-      if (std::alignment_of<T>::value == 0) {
-        gpr_free(dynamic_);
-      } else {
-        gpr_free_aligned(dynamic_);
-      }
-    }
+    gpr_free(dynamic_);
   }
 
   typename std::aligned_storage<sizeof(T)>::type inline_[N];
