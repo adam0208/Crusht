@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Nuke
 
 class MatchView: UIView {
     
@@ -29,13 +30,16 @@ class MatchView: UIView {
                 guard let dictionary = snapshot?.data() else { return }
                 let user = User(dictionary: dictionary)
                 guard let url = URL(string: user.imageUrl1 ?? "") else { return }
-                self.cardUserImageView.sd_setImage(with: url)
+               // self.cardUserImageView.sd_setImage(with: url)
+                Nuke.loadImage(with: url, into: self.cardUserImageView)
+
                 
                 guard let currentUserImageUrl = URL(string: self.currentUser.imageUrl1 ?? "") else { return }
                 
-                self.currentUserImageView.sd_setImage(with: currentUserImageUrl, completed: { (_, _, _, _) in
-                    
-                })
+                Nuke.loadImage(with: currentUserImageUrl, into: self.currentUserImageView)
+//                self.currentUserImageView.sd_setImage(with: currentUserImageUrl, completed: { (_, _, _, _) in
+//
+//                })
                 
                 // setup the description label text correctly somewhere inside of here
                 self.descriptionLabel.text = "You and \(user.name ?? "") have liked\neach other."

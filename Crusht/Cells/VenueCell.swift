@@ -8,7 +8,8 @@
 
 import UIKit
 import Firebase
-import SDWebImage
+import Nuke
+//import SDWebImage
 
 class VenueCell: UITableViewCell {
     var venue: Venue?
@@ -42,9 +43,10 @@ class VenueCell: UITableViewCell {
         
         let imageUrl = venue.venuePhotoUrl!
         let url = URL(string: imageUrl)
-        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-            self.profileImageView.image = image
-        }
+        Nuke.loadImage(with: url!, into: self.profileImageView)
+//        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+//            self.profileImageView.image = image
+//        }
     }
     
     let profileImageView: UIImageView = {

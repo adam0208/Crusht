@@ -53,10 +53,10 @@ class UserBarCell: UITableViewCell {
         
         let imageUrl = crush.imageUrl1!
         let url = URL(string: imageUrl)
-        Nuke.loadImage(with: <#T##ImageRequest#>, options: <#T##ImageLoadingOptions#>, into: <#T##ImageDisplayingView#>, progress: <#T##ImageTask.ProgressHandler?##ImageTask.ProgressHandler?##(ImageResponse?, Int64, Int64) -> Void#>, completion: <#T##ImageTask.Completion?##ImageTask.Completion?##(Result<ImageResponse, ImagePipeline.Error>) -> Void#>)
-        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-            self.profileImageView.image = image
-        }
+        Nuke.loadImage(with: url!, into: self.profileImageView)
+//        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+//            self.profileImageView.image = image
+//        }
         accessoryView?.tintColor = hasFavorited ? .red : #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
     }
     

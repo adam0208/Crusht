@@ -8,7 +8,9 @@
 
 import UIKit
 import Firebase
-import SDWebImage
+import Nuke
+//import SDWebImage
+
 
 class SchoolTableViewCell: UITableViewCell {
     var crush: User?
@@ -57,9 +59,10 @@ class SchoolTableViewCell: UITableViewCell {
         
         let imageUrl = crush.imageUrl1!
         let url = URL(string: imageUrl)
-        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-            self.profileImageView.image = image
-        }
+        Nuke.loadImage(with: url!, into: self.profileImageView)
+//        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+//            self.profileImageView.image = image
+//        }
         accessoryView?.isHidden = false
         accessoryView?.tintColor = hasFavorited ? .red : #colorLiteral(red: 0.8666666667, green: 0.8666666667, blue: 0.8666666667, alpha: 1)
     }

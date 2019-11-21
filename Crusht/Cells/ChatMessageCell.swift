@@ -8,7 +8,9 @@
 
 import UIKit
 import AVFoundation
-import SDWebImage
+import Nuke
+//import SDWebImage
+
 
 class ChatMessageCell: UICollectionViewCell {
     static let pinkColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
@@ -113,9 +115,10 @@ class ChatMessageCell: UICollectionViewCell {
         
         if let userImageUrl = userImageUrl {
             let url = URL(string: userImageUrl)
-            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                self.profileImageView.image = image
-            }
+            Nuke.loadImage(with: url!, into: self.profileImageView)
+//            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+//                self.profileImageView.image = image
+//            }
             
             if message.fromId == currentUserId {
                 //outgoing pink
@@ -138,12 +141,18 @@ class ChatMessageCell: UICollectionViewCell {
             if let messageImageUrl = message.imageUrl {
                 if message.text == "Image" {
                     let url = URL(string: messageImageUrl)
-                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                        self.messageImageView.image = image
-                        self.textView.text = ""
-                        self.messageImageView.isHidden = false
-                        self.bubbleView.backgroundColor = UIColor.clear
-                    }
+                    
+                    Nuke.loadImage(with: url!, into: self.messageImageView)
+                    self.textView.text = ""
+                    self.messageImageView.isHidden = false
+                    self.bubbleView.backgroundColor = UIColor.clear
+                    
+//                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+//                        self.messageImageView.image = image
+//                        self.textView.text = ""
+//                        self.messageImageView.isHidden = false
+//                        self.bubbleView.backgroundColor = UIColor.clear
+//                    }
                 }
             } else {
                 messageImageView.isHidden = true
