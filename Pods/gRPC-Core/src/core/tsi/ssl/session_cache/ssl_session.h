@@ -21,10 +21,16 @@
 
 #include <grpc/support/port_platform.h>
 
+#include "src/core/tsi/grpc_shadow_boringssl.h"
+
 #include <grpc/slice.h>
 
 extern "C" {
-#include <openssl/ssl.h>
+#if COCOAPODS==1
+  #include <openssl_grpc/ssl.h>
+#else
+  #include <openssl/ssl.h>
+#endif
 }
 
 #include "src/core/lib/gprpp/ref_counted.h"
@@ -60,9 +66,7 @@ class SslCachedSession {
   virtual ~SslCachedSession() = default;
 
   /// Returns a copy of previously cached session.
-  virtual SslSessionPtr CopySession() const GRPC_ABSTRACT;
-
-  GRPC_ABSTRACT_BASE_CLASS
+  virtual SslSessionPtr CopySession() const = 0;
 
  protected:
   SslCachedSession() = default;

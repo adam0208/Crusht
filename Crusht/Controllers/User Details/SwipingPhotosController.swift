@@ -7,7 +7,10 @@
 //
 
 import UIKit
-import Nuke
+//import Nuke
+import SDWebImage
+
+
 
 class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     let isCardViewMode: Bool
@@ -129,15 +132,16 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
     }
 }
 
-import Nuke
+//import Nuke
+import SDWebImage
 
 private class PhotoController: UIViewController {
     let imageView = UIImageView(image: #imageLiteral(resourceName: "CrushtLogoLiam"))
     
     init(imageUrl: String) {
         if let url = URL(string: imageUrl) {
-            Nuke.loadImage(with: url, into: imageView)
-            //imageView.sd_setImage(with: url)
+           // Nuke.loadImage(with: url, into: imageView)
+            imageView.sd_setImage(with: url)
         }
         super.init(nibName: nil, bundle: nil)
     }

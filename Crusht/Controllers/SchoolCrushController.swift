@@ -16,6 +16,8 @@ protocol SchoolDelegate {
 }
 
 class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
+
+    
     var fetchedAllUsers = false
     var fetchingMoreUsers = false
     var lastFetchedDocument: QueryDocumentSnapshot? = nil
@@ -27,11 +29,12 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     private var crushScore: CrushScore?
     var hasFavorited = Bool()
     var locationSwipes = [String: Int]()
+    var blocks = [String: Int]()
     var sawMessage = Bool()
     var isRightSex = Bool()
     var crushScoreID = String()
     var matchUID = String()
-    
+
     let cellId = "cellId"
     let loadingCellId = "loadingCellId"
     
@@ -51,9 +54,11 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
-  
+        
         fetchCurrentUser()
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -247,13 +252,33 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 self.schoolArray.removeAll()
                 self.tableView.reloadData()
                 //self.fetchSwipes()
-                self.fetchSchoolUsers()
+               // self.fetchSchoolUsers()
+                self.fetchBlocks()
             }
         }
       
     }
     
+    fileprivate func fetchBlocks() {
+        print("lololo")
+        Firestore.firestore().collection("blocks").document(user?.uid ?? "").getDocument { (snapshot, err) in
+                 if err != nil {
+                    print(err, "fuckmeman")
+                     return
+                 }
+            if snapshot!.exists {
+                 guard let data = snapshot?.data() as? [String: Int] else {return}
+                 self.blocks = data
+                self.fetchSchoolUsers()
+            }
+            //print("kikiki")
+                self.fetchSchoolUsers()
+            }
+          
+    }
+    
     fileprivate func fetchSchoolUsers() {
+        print("hi hi")
         guard !fetchedAllUsers, !fetchingMoreUsers else { return }
         fetchingMoreUsers = true
         tableView.reloadSections(IndexSet(integer: 1), with: .none)
@@ -283,6 +308,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 let userDictionary = documentSnapshot.data()
                 let crush = User(dictionary: userDictionary)
                 let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+                let hasBlocked = self.blocks[crush.uid ?? ""] == nil
                 
                 let sexPref = self.user?.sexPref
                 if sexPref == "Female" {
@@ -298,7 +324,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 let maxAge = crush.age ?? 18 < ((self.user?.age)! + 5)
                 let minAge = crush.age ?? 18 > ((self.user?.age)! - 5)
                 
-                if isNotCurrentUser && minAge && maxAge && self.isRightSex {
+                if hasBlocked && isNotCurrentUser && minAge && maxAge && self.isRightSex {
                     self.schoolArray.append(crush)
                 }
             })
@@ -708,6 +734,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
             self.navigationItem.backBarButtonItem = myBackButton
             
             userDetailsController.cardViewModel = user.toCardViewModel()
+            //userDetailsController.delegate = self
             self.navigationController?.pushViewController(userDetailsController, animated: true)
         })
     }

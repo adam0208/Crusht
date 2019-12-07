@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import Nuke
+//import Nuke
+import SDWebImage
+
 
 // Reference Video: https://youtu.be/iqpAP7s3b-8
 extension UIView {
@@ -101,8 +103,8 @@ struct AnchoredConstraints {
     var top, leading, bottom, trailing, width, height: NSLayoutConstraint?
 }
 
-extension UIButton: Nuke_ImageDisplaying {
-    public func nuke_display(image: Nuke.Image?) {
-        self.setImage(image, for: .normal)
-    }
-}
+//extension UIButton: Nuke_ImageDisplaying {
+//    public func nuke_display(image: Nuke.Image?) {
+//        self.setImage(image, for: .normal)
+//    }
+//}

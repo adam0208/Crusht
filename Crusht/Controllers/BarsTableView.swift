@@ -376,7 +376,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if self.barArray.isEmpty {
                     cell.profileImageView.image = nil
-                    cell.textLabel?.text = "This feature is coming to your area soon!"
+                    cell.textLabel?.text = "Coming to your area soon!"
+                    cell.textLabel?.adjustsFontSizeToFitWidth = true
                 }
             }
         }

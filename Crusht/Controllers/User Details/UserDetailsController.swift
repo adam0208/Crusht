@@ -45,6 +45,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + extraSwipingHeight)
     }
     
+    let schoolController = SchoolCrushController()
+    
     // MARK: - Logic
     
     private func setLabelText() {
@@ -82,6 +84,29 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         navigationController?.pushViewController(reportController, animated: true)
     }
     
+    @objc private func handleBlock() {
+        
+        let alert = UIAlertController(title: "Block User", message: "Block this user? This action is permanent", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Block", style: .default){(UIAlertAction) in
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+                 
+        let documentData = [self.cardViewModel.uid: 1]
+        
+                 Firestore.firestore().collection("blocks").document(uid).setData(documentData, merge: true) { (err) in
+                 if err != nil {
+                     return
+                     }
+                     self.handleDismiss()
+                 }
+        }
+        let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        alert.addAction(action)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+        return
+        
+    }
+    
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -99,7 +124,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     private func initializeUI() {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport))
+        
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-hide-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBlock))]
+        
         view.backgroundColor = .white
         
         let swipingView = swipingPhotosController.view!

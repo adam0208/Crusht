@@ -24,7 +24,6 @@
 #include "Firestore/core/src/firebase/firestore/model/document_key.h"
 
 using firebase::firestore::model::DocumentKey;
-using firebase::firestore::model::TargetId;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -81,17 +80,17 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FSTExistenceFilterWatchChange ()
 
 - (instancetype)initWithFilter:(FSTExistenceFilter *)filter
-                      targetID:(TargetId)targetID NS_DESIGNATED_INITIALIZER;
+                      targetID:(FSTTargetID)targetID NS_DESIGNATED_INITIALIZER;
 
 @end
 
 @implementation FSTExistenceFilterWatchChange
 
-+ (instancetype)changeWithFilter:(FSTExistenceFilter *)filter targetID:(TargetId)targetID {
++ (instancetype)changeWithFilter:(FSTExistenceFilter *)filter targetID:(FSTTargetID)targetID {
   return [[FSTExistenceFilterWatchChange alloc] initWithFilter:filter targetID:targetID];
 }
 
-- (instancetype)initWithFilter:(FSTExistenceFilter *)filter targetID:(TargetId)targetID {
+- (instancetype)initWithFilter:(FSTExistenceFilter *)filter targetID:(FSTTargetID)targetID {
   self = [super init];
   if (self) {
     _filter = filter;

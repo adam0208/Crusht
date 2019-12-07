@@ -24,6 +24,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     var users = [User]()
     var swipes = [String: Int]()
     var locationSwipes = [String: Int]()
+    var blocks = [String: Int]()
     
     var isRightSex = Bool()
     var barName = String()
@@ -189,10 +190,26 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 self.barsArray.removeAll()
                 self.tableView.reloadData()
                 //self.fetchSwipes()
-                self.fetchMoreUsersInBar()
+                self.fetchBlocks()
             }
         }
     }
+    
+    fileprivate func fetchBlocks() {
+        print("lololo")
+        Firestore.firestore().collection("blocks").document(user?.uid ?? "").getDocument { (snapshot, err) in
+                 if err != nil {
+                    print(err, "fuckmeman")
+                     return
+                 }
+                 guard let data = snapshot?.data() as? [String: Int] else {return}
+                 self.blocks = data
+            print("kikiki")
+                self.fetchMoreUsersInBar()
+            }
+          
+    }
+    
     
     private func fetchMoreUsersInBar() {
         guard !fetchedAllUsers, !fetchingMoreUsers else { return }
@@ -224,7 +241,8 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 let userDictionary = documentSnapshot.data()
                 let crush = User(dictionary: userDictionary)
                 let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
-                
+                let hasBlocked = self.blocks[crush.uid ?? ""] == nil
+
                 let sexPref = self.user?.sexPref
                 
                 if sexPref == "Female" {
@@ -240,7 +258,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 let maxAge = crush.age ?? 18 < ((self.user?.age)! + 5)
                 let minAge = crush.age ?? 18 > ((self.user?.age)! - 5)
                 
-                if isNotCurrentUser && minAge && maxAge && self.isRightSex {
+                if hasBlocked && isNotCurrentUser && minAge && maxAge && self.isRightSex {
                     self.barsArray.append(crush)
                 }
             })

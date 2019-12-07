@@ -258,10 +258,10 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
             }
         } else {
             if messages.isEmpty {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+               
                     cell.profileImageView.image = nil
                     cell.textLabel?.text = "No matches yet 😬"
-                }
+                
             }
         }
         return cell

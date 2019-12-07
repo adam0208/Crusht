@@ -35,7 +35,7 @@ class ContactsTextCell: UITableViewCell {
     
     let privacyText: UILabel = {
         let label = UILabel()
-        label.text = "If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
+        label.text = "We take safety seriously. Please refrain from abusing other users on this platform."
         label.font = UIFont.systemFont(ofSize: 15, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true

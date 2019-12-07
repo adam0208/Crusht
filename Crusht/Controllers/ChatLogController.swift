@@ -99,7 +99,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     // MARK: - Logic
     
     @objc fileprivate func deleteConvo() {
-        let alert = UIAlertController(title: "Delete Match", message: "Delete your match with \(navigationItem.title ?? "this user")?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Delete Match", message: "Delete your match with \(navigationItem.title ?? "this user")? By deleting this match, you are also blocking \(navigationItem.title ?? "this user") permanently.", preferredStyle: .alert)
         let action = UIAlertAction(title: "Delete", style: .default){(UIAlertAction) in
             let toId = self.user!.uid!
             let fromId = Auth.auth().currentUser!.uid
@@ -135,6 +135,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
             snapshot?.documents.forEach({ (documentSnapshot) in
                     let docID = documentSnapshot.documentID
                     Firestore.firestore().collection("messages").document(docID).delete()
+                    MessageController.sharedInstance?.didHaveNewMessage = true
+
                     self.handleback()
                 })
             })
@@ -209,6 +211,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         myBackButton.title = " "
         navigationItem.backBarButtonItem = myBackButton
         userDetailsController.cardViewModel = user!.toCardViewModel()
+        //userDetailsController.navigationItem.rightBarButtonItems.
         navigationController?.pushViewController(userDetailsController, animated: true)
     }
     

@@ -8,8 +8,8 @@
 
 import UIKit
 import Firebase
-import Nuke
-//import SDWebImage
+//import Nuke
+import SDWebImage
 
 protocol SettingsControllerDelegate {
     func didSaveSettings()
@@ -96,24 +96,24 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         // Maybe refactor this
         if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
             
-            Nuke.loadImage(with: url, into: self.image1Button)
-//            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-//                self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
+          //  Nuke.loadImage(with: url, into: self.image1Button)
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
         if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl) {
             
-            Nuke.loadImage(with: url, into: self.image2Button)
-//            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-//                self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
+       //     Nuke.loadImage(with: url, into: self.image2Button)
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
         if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl) {
-            Nuke.loadImage(with: url, into: self.image3Button)
+           // Nuke.loadImage(with: url, into: self.image3Button)
             
-//            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-//                self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
          self.tableView.reloadData()
     }

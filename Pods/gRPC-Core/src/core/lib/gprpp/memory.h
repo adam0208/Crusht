@@ -22,55 +22,58 @@
 #include <grpc/support/port_platform.h>
 
 #include <grpc/support/alloc.h>
+#include <grpc/support/log.h>
 
 #include <limits>
 #include <memory>
 #include <utility>
 
-// Add this to a class that want to use Delete(), but has a private or
-// protected destructor.
-#define GPRC_ALLOW_CLASS_TO_USE_NON_PUBLIC_DELETE \
-  template <typename T>                           \
-  friend void grpc_core::Delete(T*);
-// Add this to a class that want to use New(), but has a private or
-// protected constructor.
-#define GPRC_ALLOW_CLASS_TO_USE_NON_PUBLIC_NEW \
-  template <typename T, typename... Args>      \
-  friend T* grpc_core::New(Args&&...);
-
 namespace grpc_core {
 
-// The alignment of memory returned by gpr_malloc().
-constexpr size_t kAlignmentForDefaultAllocationInBytes = 8;
-
-// Alternative to new, since we cannot use it (for fear of libstdc++)
+// Alternative to new, to ensure memory allocation being wrapped to gpr_malloc
 template <typename T, typename... Args>
 inline T* New(Args&&... args) {
-  void* p = alignof(T) > kAlignmentForDefaultAllocationInBytes
-                ? gpr_malloc_aligned(sizeof(T), alignof(T))
-                : gpr_malloc(sizeof(T));
+  void* p = gpr_malloc(sizeof(T));
   return new (p) T(std::forward<Args>(args)...);
 }
 
-// Alternative to delete, since we cannot use it (for fear of libstdc++)
+// Gets the base pointer of any class, in case of multiple inheritance.
+// Used by Delete and friends.
+template <typename T, bool isPolymorphic>
+struct BasePointerGetter {
+  static void* get(T* p) { return p; }
+};
+
+template <typename T>
+struct BasePointerGetter<T, true> {
+  static void* get(T* p) { return dynamic_cast<void*>(p); }
+};
+
+// Alternative to delete, to ensure memory allocation being wrapped to gpr_free
 template <typename T>
 inline void Delete(T* p) {
   if (p == nullptr) return;
+  void* basePtr = BasePointerGetter<T, std::is_polymorphic<T>::value>::get(p);
   p->~T();
-  if (alignof(T) > kAlignmentForDefaultAllocationInBytes) {
-    gpr_free_aligned(p);
-  } else {
-    gpr_free(p);
-  }
+  gpr_free(basePtr);
 }
 
-template <typename T>
 class DefaultDelete {
  public:
-  void operator()(T* p) { Delete(p); }
+  template <typename T>
+  void operator()(T* p) {
+    // Delete() checks whether the value is null, but std::unique_ptr<> is
+    // guaranteed not to call the deleter if the pointer is nullptr
+    // (i.e., it already does this check for us), and we don't want to
+    // do the check twice.  So, instead of calling Delete() here, we
+    // manually call the object's dtor and free it.
+    void* basePtr = BasePointerGetter<T, std::is_polymorphic<T>::value>::get(p);
+    p->~T();
+    gpr_free(basePtr);
+  }
 };
 
-template <typename T, typename Deleter = DefaultDelete<T>>
+template <typename T, typename Deleter = DefaultDelete>
 using UniquePtr = std::unique_ptr<T, Deleter>;
 
 template <typename T, typename... Args>
@@ -96,13 +99,18 @@ class Allocator {
   };
   typedef std::true_type is_always_equal;
 
+  Allocator() = default;
+
+  template <class U>
+  Allocator(const Allocator<U>&) {}
+
   pointer address(reference x) const { return &x; }
   const_pointer address(const_reference x) const { return &x; }
   pointer allocate(std::size_t n,
-                   std::allocator<void>::const_pointer hint = nullptr) {
+                   std::allocator<void>::const_pointer /*hint*/ = nullptr) {
     return static_cast<pointer>(gpr_malloc(n * sizeof(T)));
   }
-  void deallocate(T* p, std::size_t n) { gpr_free(p); }
+  void deallocate(T* p, std::size_t /* n */) { gpr_free(p); }
   size_t max_size() const {
     return std::numeric_limits<size_type>::max() / sizeof(value_type);
   }
@@ -117,6 +125,16 @@ class Allocator {
     p->~U();
   }
 };
+
+template <class T, class U>
+bool operator==(Allocator<T> const&, Allocator<U> const&) noexcept {
+  return true;
+}
+
+template <class T, class U>
+bool operator!=(Allocator<T> const& /*x*/, Allocator<U> const& /*y*/) noexcept {
+  return false;
+}
 
 }  // namespace grpc_core
 

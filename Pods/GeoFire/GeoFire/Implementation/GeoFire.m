@@ -91,26 +91,17 @@ withCompletionBlock:(GFCompletionBlock)block
         NSNumber *lng = [NSNumber numberWithDouble:location.coordinate.longitude];
         NSString *geoHash = [GFGeoHash newWithLocation:location.coordinate].geoHashValue;
         value = @{ @"l": @[ lat, lng ], @"g": geoHash };
-
-        [[self firebaseRefForLocationKey:key] updateChildValues:value
-                                            withCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
-            if (block != nil) {
-                dispatch_async(self.callbackQueue, ^{
-                    block(error);
-                });
-            }
-        }];
     } else {
-        [[self firebaseRefForLocationKey:key] removeValueWithCompletionBlock:^(NSError *error,
-                                                                               FIRDatabaseReference *ref) {
-            if (block != nil) {
-                dispatch_async(self.callbackQueue, ^{
-                    block(error);
-                });
-            }
-        }];
+        value = nil;
     }
-
+    [[self firebaseRefForLocationKey:key] updateChildValues:value
+                                        withCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+        if (block != nil) {
+            dispatch_async(self.callbackQueue, ^{
+                block(error);
+            });
+        }
+    }];
 }
 
 - (void)removeKey:(NSString *)key

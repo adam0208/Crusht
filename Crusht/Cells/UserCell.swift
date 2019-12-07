@@ -8,8 +8,8 @@
 
 import UIKit
 import Firebase
-import Nuke
-//import SDWebImage
+//import Nuke
+import SDWebImage
 
 class UserCell: UITableViewCell {
 
@@ -83,11 +83,11 @@ class UserCell: UITableViewCell {
             let imageUrl = profileImageUrl
             let url = URL(string: imageUrl)
             
-            Nuke.loadImage(with: url!, into: self.profileImageView)
+          //  Nuke.loadImage(with: url!, into: self.profileImageView)
             
-//            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-//                self.profileImageView.image = image
-//            }
+            SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.profileImageView.image = image
+            }
         }
     }
     
