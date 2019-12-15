@@ -44,7 +44,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.prefersLargeTitles = true
         fetchCurrentUser()
     }
         
@@ -55,26 +55,43 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
        
         listenForMessages()
         
-        view.addSubview(searchController.searchBar)
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search School"
-        navigationItem.searchController = self.searchController
+//        view.addSubview(searchController.searchBar)
+//        // Setup the Search Controller
+//        searchController.searchResultsUpdater = self
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        searchController.searchBar.placeholder = "Search Venue"
+//        navigationItem.searchController = self.searchController
         definesPresentationContext = true
         
+        //refresh controll
+        self.tableView.refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(reloadBar), for: .valueChanged)
+        refreshControl?.tintColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
+        let attributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)]
+        let attributedTitle = NSAttributedString(string: "Reloading", attributes: attributes)
+        refreshControl?.attributedTitle = attributedTitle
+        
         // Setup the Scope Bar
-        self.searchController.searchBar.delegate = self
-        self.navigationItem.hidesSearchBarWhenScrolling = false
+       // self.searchController.searchBar.delegate = self
+      // self.navigationItem.hidesSearchBarWhenScrolling = false
         // Setup the search footer
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        searchController.searchBar.barStyle = .black
+       // searchController.searchBar.barStyle = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
     // MARK: - Logic
+    
+    @objc fileprivate func reloadBar () {
+        print("fuck me man")
+        barsArray.removeAll()
+        fetchCurrentUser()
+        DispatchQueue.main.async {
+             self.tableView.refreshControl?.endRefreshing()
+          }
+    }
     
     private func addCrushScore() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -202,16 +219,18 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                     print(err, "fuckmeman")
                      return
                  }
-                 guard let data = snapshot?.data() as? [String: Int] else {return}
-                 self.blocks = data
-            print("kikiki")
+                   if snapshot!.exists {
+                              guard let data = snapshot?.data() as? [String: Int] else {return}
+                              self.blocks = data
                 self.fetchMoreUsersInBar()
             }
-          
+             self.fetchMoreUsersInBar()
+        }
     }
     
     
     private func fetchMoreUsersInBar() {
+        print("Hi Ho")
         guard !fetchedAllUsers, !fetchingMoreUsers else { return }
         fetchingMoreUsers = true
         tableView.reloadSections(IndexSet(integer: 1), with: .none)
@@ -252,7 +271,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                     self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
                 }
                 else {
-                    self.isRightSex = crush.school == self.user?.school
+                    self.isRightSex = crush.currentVenue == self.user?.currentVenue
                 }
                 
                 let maxAge = crush.age ?? 18 < ((self.user?.age)! + 5)
@@ -260,6 +279,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 
                 if hasBlocked && isNotCurrentUser && minAge && maxAge && self.isRightSex {
                     self.barsArray.append(crush)
+                    print(crush)
                 }
             })
             
@@ -635,7 +655,11 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                 cell.setup(crush: crush, hasFavorited: hasFavorited)
             } else {
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                       if self.barsArray.isEmpty {
+                                cell.profileImageView.image = nil
+                                cell.textLabel?.text = "Share the app!"
+                                cell.accessoryView?.isHidden = true
+                        }
                 }
             }
             return cell

@@ -76,22 +76,31 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         navigationItem.rightBarButtonItems = [swipeButton, infoButton]
         
         // Setup the Search Controller
-        view.addSubview(searchController.searchBar)
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search School"
-        navigationItem.searchController = self.searchController
+        //view.addSubview(searchController.searchBar)
+//        searchController.searchResultsUpdater = self
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        searchController.searchBar.placeholder = "Search School"
+       // navigationItem.searchController = self.searchController
         definesPresentationContext = true
            
         // Setup the Scope Bar
-        self.searchController.searchBar.delegate = self
-        self.navigationItem.hidesSearchBarWhenScrolling = false
+//        self.searchController.searchBar.delegate = self
+//        self.navigationItem.hidesSearchBarWhenScrolling = false
         messageBadge.isHidden = true
         
+        //refresh controll
+        self.tableView.refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(reloadSchool), for: .valueChanged)
+        refreshControl?.tintColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
+        let attributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)]
+        let attributedTitle = NSAttributedString(string: "Reloading", attributes: attributes)
+        refreshControl?.attributedTitle = attributedTitle
+        
+
         // Setup the search footer
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        searchController.searchBar.barStyle = .black
+        //searchController.searchBar.barStyle = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         tabBarController?.view.addSubview(animationView)
@@ -102,6 +111,15 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     // MARK: - Logic
+    
+    @objc fileprivate func reloadSchool () {
+        print("fuck me man")
+        schoolArray.removeAll()
+        fetchCurrentUser()
+        DispatchQueue.main.async {
+             self.tableView.refreshControl?.endRefreshing()
+          }
+    }
     
     fileprivate func addCrushScore() {
         guard let uid = Auth.auth().currentUser?.uid else {
@@ -759,6 +777,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         tableView.reloadData()
     }
     
+
     // MARK: - SettingsControllerDelegate
     
     func didSaveSettings() {

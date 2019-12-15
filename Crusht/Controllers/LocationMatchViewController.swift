@@ -161,13 +161,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             if err != nil {
                 return
             }
+            if snapshot!.exists {
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.swipes = data
             // self.fetchUsersFromFirestore()
             self.fetchPhoneSwipes()
-            
+            } else {
+            self.fetchPhoneSwipes()
         }
-        
+        }
     }
     
     @objc func handleHomeBttnTapped() {
@@ -190,10 +192,15 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
             if err != nil {
                 return
             }
+            if snapshot!.exists {
             guard let data = snapshot?.data() as? [String: Int] else {return}
             self.phoneSwipes = data
+                self.fetchUsersOnLoad()
+            }
+            else {
             // Do fetchusers on load instead
             self.fetchUsersOnLoad()
+            }
         }
     }
     
@@ -208,6 +215,8 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         
         let userCenter = CLLocation(latitude: userLat, longitude: userLong)
         
+         var previousCardView = self.topCardView?.lastCardView
+        
         let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: radiusInt)
 
         let _ = radiusQuery.observe(.documentEntered) { (key, location) in
@@ -218,7 +227,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         return
                     }
                     
-                    var previousCardView: CardView?
+                    //var previousCardView: CardView?
                     snapshot?.documents.forEach({ (documentSnapshot) in
                         let userDictionary = documentSnapshot.data()
                         let user = User(dictionary: userDictionary)
@@ -240,13 +249,13 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
                         }
                         
                         if isNotCurrentUser && hasNotSwipedBefore && hasNotSwipedPhoneBefore && isInRadius && isEnabled && self.isRightSex {
-                            let cardView = self.setupCardFromUser(user: user)
-                            previousCardView?.nextCardView = cardView
-                            previousCardView = cardView
-                            
-                            if self.topCardView == nil {
-                                self.topCardView = cardView
-                            }
+                             let cardView = self.setupCardFromUser(user: user)
+                                         previousCardView?.nextCardView = cardView
+                                         previousCardView = cardView
+                                         
+                                         if self.topCardView == nil {
+                                             self.topCardView = cardView
+                                         }
                         }
                     })
                 }
@@ -332,6 +341,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     @objc func handleLike() {
+        print("like")
         saveSwipeToFireStore(didLike: 1)
         addCrushScore()
         performSwipeAnimation(translation: 700, angle: 15)
@@ -344,6 +354,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         }
         
         guard let cardUID = topCardView?.cardViewModel.uid  else {
+            print("NA")
             return
         }
         
@@ -619,9 +630,11 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
         fetchedAllUsers = false
         
         if topStackView.collegeOnlySwitch.isOn {
+            //fetchSwipes()
             fetchSchoolUsersCall()
         } else {
-            fetchUsersOnLoad()
+            fetchSwipes()
+            //fetchUsersOnLoad()
         }
     }
     

@@ -56,6 +56,14 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         navigationItem.searchController = self.searchController
         definesPresentationContext = true
         
+        //refresh controll
+             self.tableView.refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(reloadMessages), for: .valueChanged)
+             refreshControl?.tintColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
+             let attributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)]
+             let attributedTitle = NSAttributedString(string: "Reloading", attributes: attributes)
+             refreshControl?.attributedTitle = attributedTitle
+        
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.searchController.searchBar.tintColor = .white
@@ -72,6 +80,15 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     }
     
     // MARK: - Logic
+    
+    @objc fileprivate func reloadMessages () {
+        print("fuck me man")
+        messages.removeAll()
+        fetchCurrentUser()
+        DispatchQueue.main.async {
+             self.tableView.refreshControl?.endRefreshing()
+          }
+    }
     
     func didSendNewMessage() {
         messages.removeAll()
