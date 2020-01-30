@@ -102,7 +102,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     
     @objc fileprivate func handleInfo() {
         let infoView = InfoView()
-        infoView.infoText.text = "Crush People at Venues: Join the venue you're attending to see who is present there at the time. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
+        infoView.infoText.text = "Crush People at Venues: Join a venue to see who else is there. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
         tabBarController?.view.addSubview(infoView)
         infoView.fillSuperview()
     }

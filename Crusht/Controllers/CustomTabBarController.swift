@@ -39,6 +39,6 @@ class CustomTabBarController: UITabBarController {
     
         tabBarController?.tabBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         
-        viewControllers = [contactsNav, schoolNave, venueNav, messageNave]
+        viewControllers = [venueNav, schoolNave, contactsNav, messageNave]
     }
 }
