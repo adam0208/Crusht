@@ -85,7 +85,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     // MARK: - Logic
     
     @objc fileprivate func reloadBar () {
-        print("fuck me man")
+       // print("fuck me man")
         barsArray.removeAll()
         fetchCurrentUser()
         DispatchQueue.main.async {

@@ -24,6 +24,20 @@ class InfoView: UIView {
         return button
     }()
     
+    let peekButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Peek", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.setTitleColor(.white, for: .normal)
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 200) .isActive = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+        return button
+    }()
+    
     let infoText: UILabel = {
         
         var fontClass = UILabelFontClass()
@@ -59,7 +73,7 @@ class InfoView: UIView {
         textView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 150, left: 15, bottom: 150, right: 15))
 
         
-        let stack = UIStackView(arrangedSubviews: [infoText, closeButton])
+        let stack = UIStackView(arrangedSubviews: [infoText, peekButton, closeButton])
         
         stack.spacing = 20
         

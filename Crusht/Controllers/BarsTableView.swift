@@ -26,10 +26,15 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     var userLat = Double()
     var userLong = Double()
     
+    let animationView = AnimationView()
+    
     // MARK: Life Cycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
+          self.tabBarController?.tabBar.isTranslucent = false
+         tabBarController?.view.addSubview(animationView)
+        animationView.fillSuperview()
         self.tabBarController?.delegate = self
        
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -68,7 +73,11 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
-        fetchCurrentUser()
+       
+          
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
+                self.animationView.removeFromSuperview()
+            }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,6 +113,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         let infoView = InfoView()
         infoView.infoText.text = "Crush People at Venues: Join a venue to see who else is there. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
         tabBarController?.view.addSubview(infoView)
+        infoView.peekButton.isHidden = true
         infoView.fillSuperview()
     }
     
@@ -183,16 +193,127 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
-            self.user = User(dictionary: dictionary)
-//            if self.user?.phoneNumber == ""{
-//                let loginController = LoginViewController()
-//                self.present(loginController, animated: true)
-//            }
-//            else if self.user?.name == "" {
-//                let namecontroller = EnterNameController()
-//                namecontroller.phone = self.user?.phoneNumber ?? ""
-//                self.present(namecontroller, animated: true)
-//            }
+           if self.user?.phoneNumber == ""{
+                       let loginController = LoginViewController()
+                       loginController.modalPresentationStyle = .fullScreen
+                       self.present(loginController, animated: true)
+                   }
+                   else if self.user?.name == "" {
+                       let namecontroller = EnterNameController()
+                       namecontroller.modalPresentationStyle = .fullScreen
+                       self.present(namecontroller, animated: true)
+                   }
+                   
+                   else if self.user?.birthday == "" {
+                       let namecontroller = BirthdayController()
+                       namecontroller.modalPresentationStyle = .fullScreen
+                       self.present(namecontroller, animated: true)
+                   }
+                   
+                   else if self.user?.school == "" {
+                       let namecontroller = EnterSchoolController()
+                       namecontroller.modalPresentationStyle = .fullScreen
+                       self.present(namecontroller, animated: true)
+                   }
+                   
+                   else if self.user?.bio == "" {
+                       let namecontroller = BioController()
+                       namecontroller.modalPresentationStyle = .fullScreen
+                       self.present(namecontroller, animated: true)
+                   }
+                   
+                   else if self.user?.gender == "" {
+                       let namecontroller = YourSexController()
+                       namecontroller.modalPresentationStyle = .fullScreen
+                       self.present(namecontroller, animated: true)
+                   }
+                   
+                   else if self.user?.sexPref == "" {
+                       let namecontroller = GenderController()
+                       namecontroller.modalPresentationStyle = .fullScreen
+                       self.present(namecontroller, animated: true)
+                   }
+                   
+                   let timestamp = Int(Date().timeIntervalSince1970)
+                   
+                   if Int(truncating: self.user?.timeLastJoined ?? 5000) < timestamp - 64800 {
+                       var docData = [String: Any]()
+                       guard let uid = Auth.auth().currentUser?.uid else { return}
+                       if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 != "" {
+                           docData = [
+                               "uid": uid,
+                               "Full Name": self.user?.name ?? "",
+                               "ImageUrl1": self.user?.imageUrl1 ?? "",
+                               "ImageUrl2": self.user?.imageUrl2 ?? "",
+                               "ImageUrl3": self.user?.imageUrl3 ?? "",
+                               "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                               "Birthday": self.user?.birthday ?? "",
+                               "School": self.user?.school ?? "",
+                               "Bio": self.user?.bio ?? "",
+                               "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                               "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                               "maxDistance": self.user?.maxDistance ?? 3,
+                               "email": self.user?.email ?? "",
+                               "fbid": self.user?.fbid ?? "",
+                               "PhoneNumber": self.user?.phoneNumber ?? "",
+                               "deviceID": Messaging.messaging().fcmToken ?? "",
+                               "Gender-Preference": self.user?.sexPref ?? "",
+                               "User-Gender": self.user?.gender ?? "",
+                               "CurrentVenue": "",
+                               "TimeLastJoined": timestamp - 3600
+                           ]
+                       } else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 == "" {
+                           docData = [
+                               "uid": uid,
+                               "Full Name": self.user?.name ?? "",
+                               "ImageUrl1": self.user?.imageUrl1 ?? "",
+                               "ImageUrl2": self.user?.imageUrl2 ?? "",
+                               "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                               "Birthday": self.user?.birthday ?? "",
+                               "School": self.user?.school ?? "",
+                               "Bio": self.user?.bio ?? "",
+                               "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                               "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                               "maxDistance": self.user?.maxDistance ?? 3,
+                               "email": self.user?.email ?? "",
+                               "fbid": self.user?.fbid ?? "",
+                               "PhoneNumber": self.user?.phoneNumber ?? "",
+                               "deviceID": Messaging.messaging().fcmToken ?? "",
+                               "Gender-Preference": self.user?.sexPref ?? "",
+                               "User-Gender": self.user?.gender ?? "",
+                               "CurrentVenue": "",
+                               "TimeLastJoined": timestamp - 3600
+                           ]
+                       }
+                       else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 == "" && self.user?.imageUrl3 == "" {
+                           docData = [
+                               "uid": uid,
+                               "Full Name": self.user?.name ?? "",
+                               "ImageUrl1": self.user?.imageUrl1 ?? "",
+                               "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
+                               "Birthday": self.user?.birthday ?? "",
+                               "School": self.user?.school ?? "",
+                               "Bio": self.user?.bio ?? "",
+                               "minSeekingAge": self.user?.minSeekingAge ?? 18,
+                               "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
+                               "maxDistance": self.user?.maxDistance ?? 3,
+                               "email": self.user?.email ?? "",
+                               "fbid": self.user?.fbid ?? "",
+                               "PhoneNumber": self.user?.phoneNumber ?? "",
+                               "deviceID": Messaging.messaging().fcmToken ?? "",
+                               "Gender-Preference": self.user?.sexPref ?? "",
+                               "User-Gender": self.user?.gender ?? "",
+                               "CurrentVenue": "",
+                               "TimeLastJoined": timestamp - 3600
+                           ]
+                       }
+                       Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
+                           if err != nil {
+                               return
+                           }
+                       }
+                   }
+
             
             let geoFirestoreRef = Firestore.firestore().collection("users")
             let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
@@ -243,9 +364,11 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         }
     }
     
+    var peekBarName = String()
+    
     private func handleJoin(barName: String) {
         let timestamp = Int(Date().timeIntervalSince1970)
-        
+        peekBarName = barName
         if user?.currentVenue == barName {
             let userbarController = UsersInBarTableView()
             userbarController.barName = barName
@@ -345,12 +468,24 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             return
         } else {
             let infoView = InfoView()
-            infoView.infoText.text = "You can only join one venue every 30 minutes"
+            infoView.infoText.text = "You can only join one venue every 30 minutes, but you can peek to see who's there."
             tabBarController?.view.addSubview(infoView)
+            infoView.peekButton.addTarget(self, action: #selector(handlePeek), for: .touchUpInside)
             infoView.fillSuperview()
             return
         }
     }
+    
+    @objc fileprivate func handlePeek() {
+        let peekController = PeekController()
+        peekController.barName = peekBarName
+        peekController.user = self.user
+        let myBackButton = UIBarButtonItem()
+        myBackButton.title = " "
+        self.navigationItem.backBarButtonItem = myBackButton
+        self.navigationController?.pushViewController(peekController, animated: true)
+    }
+
     
     private func calcAge(birthday: String) -> Int {
         let dateFormater = DateFormatter()

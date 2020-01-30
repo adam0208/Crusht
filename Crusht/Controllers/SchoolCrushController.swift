@@ -22,7 +22,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     var fetchingMoreUsers = false
     var lastFetchedDocument: QueryDocumentSnapshot? = nil
     
-    let animationView = AnimationView()
+  
     let messageController = MessageController()
     var schoolDelegate: SchoolDelegate?
     
@@ -103,11 +103,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         //searchController.searchBar.barStyle = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        tabBarController?.view.addSubview(animationView)
-        animationView.fillSuperview()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
-            self.animationView.removeFromSuperview()
-        }
+    
     }
     
     // MARK: - Logic
@@ -165,6 +161,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         let infoView = InfoView()
         infoView.infoText.text = "Crush Classmates: Select the heart next to people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
         tabBarController?.view.addSubview(infoView)
+        infoView.peekButton.isHidden = true
         infoView.fillSuperview()
     }
     

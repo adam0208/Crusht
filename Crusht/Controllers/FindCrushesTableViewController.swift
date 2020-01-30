@@ -38,7 +38,6 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
     override func viewDidLoad() {
          super.viewDidLoad()
-         self.tabBarController?.tabBar.isTranslucent = false
          self.tabBarController?.delegate = self
 
          
@@ -141,126 +140,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             guard let dictionary = snapshot?.data() else {return}
             self.user = User(dictionary: dictionary)
             
-            if self.user?.phoneNumber == ""{
-                let loginController = LoginViewController()
-                loginController.modalPresentationStyle = .fullScreen
-                self.present(loginController, animated: true)
-            }
-            else if self.user?.name == "" {
-                let namecontroller = EnterNameController()
-                namecontroller.modalPresentationStyle = .fullScreen
-                self.present(namecontroller, animated: true)
-            }
-            
-            else if self.user?.birthday == "" {
-                let namecontroller = BirthdayController()
-                namecontroller.modalPresentationStyle = .fullScreen
-                self.present(namecontroller, animated: true)
-            }
-            
-            else if self.user?.school == "" {
-                let namecontroller = EnterSchoolController()
-                namecontroller.modalPresentationStyle = .fullScreen
-                self.present(namecontroller, animated: true)
-            }
-            
-            else if self.user?.bio == "" {
-                let namecontroller = BioController()
-                namecontroller.modalPresentationStyle = .fullScreen
-                self.present(namecontroller, animated: true)
-            }
-            
-            else if self.user?.gender == "" {
-                let namecontroller = YourSexController()
-                namecontroller.modalPresentationStyle = .fullScreen
-                self.present(namecontroller, animated: true)
-            }
-            
-            else if self.user?.sexPref == "" {
-                let namecontroller = GenderController()
-                namecontroller.modalPresentationStyle = .fullScreen
-                self.present(namecontroller, animated: true)
-            }
-            
-            let timestamp = Int(Date().timeIntervalSince1970)
-            
-            if Int(truncating: self.user?.timeLastJoined ?? 5000) < timestamp - 64800 {
-                var docData = [String: Any]()
-                guard let uid = Auth.auth().currentUser?.uid else { return}
-                if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 != "" {
-                    docData = [
-                        "uid": uid,
-                        "Full Name": self.user?.name ?? "",
-                        "ImageUrl1": self.user?.imageUrl1 ?? "",
-                        "ImageUrl2": self.user?.imageUrl2 ?? "",
-                        "ImageUrl3": self.user?.imageUrl3 ?? "",
-                        "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
-                        "Birthday": self.user?.birthday ?? "",
-                        "School": self.user?.school ?? "",
-                        "Bio": self.user?.bio ?? "",
-                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
-                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
-                        "maxDistance": self.user?.maxDistance ?? 3,
-                        "email": self.user?.email ?? "",
-                        "fbid": self.user?.fbid ?? "",
-                        "PhoneNumber": self.user?.phoneNumber ?? "",
-                        "deviceID": Messaging.messaging().fcmToken ?? "",
-                        "Gender-Preference": self.user?.sexPref ?? "",
-                        "User-Gender": self.user?.gender ?? "",
-                        "CurrentVenue": "",
-                        "TimeLastJoined": timestamp - 3600
-                    ]
-                } else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 != "" && self.user?.imageUrl3 == "" {
-                    docData = [
-                        "uid": uid,
-                        "Full Name": self.user?.name ?? "",
-                        "ImageUrl1": self.user?.imageUrl1 ?? "",
-                        "ImageUrl2": self.user?.imageUrl2 ?? "",
-                        "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
-                        "Birthday": self.user?.birthday ?? "",
-                        "School": self.user?.school ?? "",
-                        "Bio": self.user?.bio ?? "",
-                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
-                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
-                        "maxDistance": self.user?.maxDistance ?? 3,
-                        "email": self.user?.email ?? "",
-                        "fbid": self.user?.fbid ?? "",
-                        "PhoneNumber": self.user?.phoneNumber ?? "",
-                        "deviceID": Messaging.messaging().fcmToken ?? "",
-                        "Gender-Preference": self.user?.sexPref ?? "",
-                        "User-Gender": self.user?.gender ?? "",
-                        "CurrentVenue": "",
-                        "TimeLastJoined": timestamp - 3600
-                    ]
-                }
-                else if self.user?.imageUrl1 != "" && self.user?.imageUrl2 == "" && self.user?.imageUrl3 == "" {
-                    docData = [
-                        "uid": uid,
-                        "Full Name": self.user?.name ?? "",
-                        "ImageUrl1": self.user?.imageUrl1 ?? "",
-                        "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
-                        "Birthday": self.user?.birthday ?? "",
-                        "School": self.user?.school ?? "",
-                        "Bio": self.user?.bio ?? "",
-                        "minSeekingAge": self.user?.minSeekingAge ?? 18,
-                        "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
-                        "maxDistance": self.user?.maxDistance ?? 3,
-                        "email": self.user?.email ?? "",
-                        "fbid": self.user?.fbid ?? "",
-                        "PhoneNumber": self.user?.phoneNumber ?? "",
-                        "deviceID": Messaging.messaging().fcmToken ?? "",
-                        "Gender-Preference": self.user?.sexPref ?? "",
-                        "User-Gender": self.user?.gender ?? "",
-                        "CurrentVenue": "",
-                        "TimeLastJoined": timestamp - 3600
-                    ]
-                }
-                Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
-                    if err != nil {
-                        return
-                    }
-                }
-            }
+        
            self.fetchSwipes()
         }
     }
@@ -645,6 +525,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let infoView = InfoView()
         infoView.infoText.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
         tabBarController?.view.addSubview(infoView)
+        infoView.peekButton.isHidden = true
         infoView.fillSuperview()
     }
     

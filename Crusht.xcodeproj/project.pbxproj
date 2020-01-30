@@ -42,6 +42,8 @@
 		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
+		28795C4C23E2A6FB00503FB2 /* PeekController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28795C4B23E2A6FB00503FB2 /* PeekController.swift */; };
+		28795C4E23E2B02400503FB2 /* PartyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28795C4D23E2B02400503FB2 /* PartyListController.swift */; };
 		287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F3A8F225B1C43008F5BD0 /* AnimationView.swift */; };
 		28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCA21B9A91500A654A0 /* LoginViewController.swift */; };
 		28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CD021B9A9C200A654A0 /* VerifyViewController.swift */; };
@@ -171,6 +173,8 @@
 		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		28795C4B23E2A6FB00503FB2 /* PeekController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeekController.swift; sourceTree = "<group>"; };
+		28795C4D23E2B02400503FB2 /* PartyListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyListController.swift; sourceTree = "<group>"; };
 		287F3A8F225B1C43008F5BD0 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		28857CCA21B9A91500A654A0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		28857CD021B9A9C200A654A0 /* VerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyViewController.swift; sourceTree = "<group>"; };
@@ -401,6 +405,8 @@
 				2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */,
 				2864C4EF228E6FC500E3165F /* TermsViewController.swift */,
 				2864C4F1228E743B00E3165F /* PrivacyController.swift */,
+				28795C4B23E2A6FB00503FB2 /* PeekController.swift */,
+				28795C4D23E2B02400503FB2 /* PartyListController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -813,6 +819,7 @@
 				287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */,
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
+				28795C4C23E2A6FB00503FB2 /* PeekController.swift in Sources */,
 				4CA41B49235E053200CF8529 /* GenderCell.swift in Sources */,
 				4CA41B4D235E056500CF8529 /* SchoolCell.swift in Sources */,
 				283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */,
@@ -858,6 +865,7 @@
 				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
 				4CA41B5A235E1FB900CF8529 /* ReportTextView.swift in Sources */,
 				28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */,
+				28795C4E23E2B02400503FB2 /* PartyListController.swift in Sources */,
 				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,
 				28CFC6B521C5B3ED00387129 /* Message.swift in Sources */,
 				EBAC1438237913A70081A95A /* UILabelFontClass.swift in Sources */,
