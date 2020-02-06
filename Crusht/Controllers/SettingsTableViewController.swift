@@ -254,10 +254,16 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
             if err != nil {
                 return
             }
+            print("hi")
+            
             self.dismiss(animated: true, completion: {
                 self.delegate?.didSaveSettings()
             })
         }
+    }
+    
+    fileprivate func saveAndDismiss() {
+        
     }
     
     func calcAge(birthday: String) -> Int {

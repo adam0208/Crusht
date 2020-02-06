@@ -523,7 +523,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     
     @objc fileprivate func handleInfo() {
         let infoView = InfoView()
-        infoView.infoText.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! If one of your contacts doesn't have Crusht and you heart them, an anonymous message will be sent to their device informing them that \"someone\" has a crush on them."
+        infoView.infoText.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab!"
         tabBarController?.view.addSubview(infoView)
         infoView.peekButton.isHidden = true
         infoView.fillSuperview()

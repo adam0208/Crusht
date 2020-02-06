@@ -22,6 +22,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     var user: User?
     var barsArray = [User]()
     var users = [User]()
+
     var swipes = [String: Int]()
     var locationSwipes = [String: Int]()
     var blocks = [String: Int]()
@@ -86,7 +87,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     
     @objc fileprivate func reloadBar () {
        // print("fuck me man")
-        barsArray.removeAll()
         fetchCurrentUser()
         DispatchQueue.main.async {
              self.tableView.refreshControl?.endRefreshing()
@@ -227,14 +227,14 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
              self.fetchMoreUsersInBar()
         }
     }
-    
+    var verb = String()
     
     private func fetchMoreUsersInBar() {
         print("Hi Ho")
         guard !fetchedAllUsers, !fetchingMoreUsers else { return }
         fetchingMoreUsers = true
         tableView.reloadSections(IndexSet(integer: 1), with: .none)
-        navigationItem.title = "\(barName) (Joined)"
+        navigationItem.title = "\(barName) \(verb)"
         
         var query: Query
         if let lastFetchedDocument = lastFetchedDocument {
@@ -271,7 +271,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
                     self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
                 }
                 else {
-                    self.isRightSex = crush.currentVenue == self.user?.currentVenue
+                    self.isRightSex = self.user?.currentVenue == self.user?.currentVenue
                 }
                 
                 let maxAge = crush.age ?? 18 < ((self.user?.age)! + 5)

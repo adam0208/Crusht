@@ -42,7 +42,6 @@
 		28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28711AAF220BABC400DD82EB /* SearchFooter.swift */; };
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
-		28795C4C23E2A6FB00503FB2 /* PeekController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28795C4B23E2A6FB00503FB2 /* PeekController.swift */; };
 		28795C4E23E2B02400503FB2 /* PartyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28795C4D23E2B02400503FB2 /* PartyListController.swift */; };
 		287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F3A8F225B1C43008F5BD0 /* AnimationView.swift */; };
 		28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCA21B9A91500A654A0 /* LoginViewController.swift */; };
@@ -74,6 +73,7 @@
 		28CFC6B521C5B3ED00387129 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Message.swift */; };
 		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
 		28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */; };
+		28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */; };
 		28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */; };
 		28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */; };
 		28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */; };
@@ -173,7 +173,6 @@
 		28711AAF220BABC400DD82EB /* SearchFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
-		28795C4B23E2A6FB00503FB2 /* PeekController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeekController.swift; sourceTree = "<group>"; };
 		28795C4D23E2B02400503FB2 /* PartyListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyListController.swift; sourceTree = "<group>"; };
 		287F3A8F225B1C43008F5BD0 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		28857CCA21B9A91500A654A0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +204,7 @@
 		28CFC6B421C5B3ED00387129 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionCrushesController.swift; sourceTree = "<group>"; };
+		28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-confetti-30.png"; sourceTree = "<group>"; };
 		28F1121921F522A900A1CD73 /* Crusht.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crusht.entitlements; sourceTree = "<group>"; };
 		28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterMorePhoneInfoViewController.swift; sourceTree = "<group>"; };
@@ -319,6 +319,7 @@
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
 				28AFA7782391155400DF2255 /* icons8-hide-30.png */,
+				28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */,
 				283816CD21B8925F00B3E4FD /* Assets.xcassets */,
 				283816D221B8925F00B3E4FD /* Info.plist */,
 				289224BB21B9C1B20047E29B /* GoogleService-Info.plist */,
@@ -405,7 +406,6 @@
 				2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */,
 				2864C4EF228E6FC500E3165F /* TermsViewController.swift */,
 				2864C4F1228E743B00E3165F /* PrivacyController.swift */,
-				28795C4B23E2A6FB00503FB2 /* PeekController.swift */,
 				28795C4D23E2B02400503FB2 /* PartyListController.swift */,
 			);
 			path = Controllers;
@@ -648,6 +648,7 @@
 			files = (
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
+				28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
 				28AFA7792391155400DF2255 /* icons8-hide-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
@@ -819,7 +820,6 @@
 				287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */,
 				28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */,
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
-				28795C4C23E2A6FB00503FB2 /* PeekController.swift in Sources */,
 				4CA41B49235E053200CF8529 /* GenderCell.swift in Sources */,
 				4CA41B4D235E056500CF8529 /* SchoolCell.swift in Sources */,
 				283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */,
@@ -1090,7 +1090,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.9;
+				MARKETING_VERSION = 1.9.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1113,7 +1113,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.9;
+				MARKETING_VERSION = 1.9.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

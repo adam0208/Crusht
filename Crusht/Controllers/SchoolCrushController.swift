@@ -109,8 +109,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     // MARK: - Logic
     
     @objc fileprivate func reloadSchool () {
-        print("fuck me man")
-        schoolArray.removeAll()
+
         fetchCurrentUser()
         DispatchQueue.main.async {
              self.tableView.refreshControl?.endRefreshing()

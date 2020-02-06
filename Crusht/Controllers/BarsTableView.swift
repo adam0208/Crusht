@@ -111,7 +111,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     
     @objc fileprivate func handleInfo() {
         let infoView = InfoView()
-        infoView.infoText.text = "Crush People at Venues: Join a venue to see who else is there. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
+        infoView.infoText.text = "Crush People at Venues: Join a venue to see who else will be there. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
         tabBarController?.view.addSubview(infoView)
         infoView.peekButton.isHidden = true
         infoView.fillSuperview()
@@ -233,6 +233,12 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                        namecontroller.modalPresentationStyle = .fullScreen
                        self.present(namecontroller, animated: true)
                    }
+            
+                    else if self.user?.imageUrl1 == "" {
+                                 let photoController = EnterPhotoController()
+                                 photoController.modalPresentationStyle = .fullScreen
+                                 self.present(photoController, animated: true)
+                             }
                    
                    let timestamp = Int(Date().timeIntervalSince1970)
                    
@@ -373,6 +379,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             let userbarController = UsersInBarTableView()
             userbarController.barName = barName
             userbarController.user = user
+            userbarController.verb = "(Joined)"
             let myBackButton = UIBarButtonItem()
             myBackButton.title = " "
             self.navigationItem.backBarButtonItem = myBackButton
@@ -455,6 +462,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                 let userbarController = UsersInBarTableView()
                 userbarController.barName = barName
                 userbarController.user = self.user
+                userbarController.verb = "(Joined)"
                 
                 let myBackButton = UIBarButtonItem()
                 myBackButton.title = " "
@@ -477,15 +485,18 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     @objc fileprivate func handlePeek() {
-        let peekController = PeekController()
+        
+        let peekController = UsersInBarTableView()
         peekController.barName = peekBarName
         peekController.user = self.user
+        peekController.verb = "(Peeking)"
         let myBackButton = UIBarButtonItem()
         myBackButton.title = " "
         self.navigationItem.backBarButtonItem = myBackButton
         self.navigationController?.pushViewController(peekController, animated: true)
     }
 
+    
     
     private func calcAge(birthday: String) -> Int {
         let dateFormater = DateFormatter()

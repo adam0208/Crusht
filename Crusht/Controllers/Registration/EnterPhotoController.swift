@@ -48,6 +48,7 @@ class EnterPhotoController: UIViewController {
             guard err == nil else { return }
             let customtabController = CustomTabBarController()
             customtabController.modalPresentationStyle = .fullScreen
+            
             self.present(customtabController, animated: true)
             
         }
@@ -121,7 +122,7 @@ class EnterPhotoController: UIViewController {
 extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let selectedImage = info[.originalImage] as? UIImage
+        weak var selectedImage = info[.originalImage] as? UIImage
         let imageButton = (picker as? CustomImagePickerController)?.imageBttn
         imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
         self.imageFull = true
@@ -141,6 +142,10 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
             ref.downloadURL { (url, err) in
                 guard err == nil else { return }
                 let imageUrl = url?.absoluteString ?? ""
+                if imageUrl == "" {
+                    print("fuck me man")
+                }
+                
                 self.saveInfoToFirestore(imageUrl: imageUrl)
             }
         }

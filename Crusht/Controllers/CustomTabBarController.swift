@@ -14,6 +14,7 @@ class CustomTabBarController: UITabBarController {
     let schoolController = SchoolCrushController()
     let venueController = BarsTableView()
     let messageController = MessageController()
+    let partyController = PartyListController()
     
    override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,11 @@ class CustomTabBarController: UITabBarController {
         messageNave.tabBarItem.image = #imageLiteral(resourceName: "icons8-communication-30").withRenderingMode(.alwaysOriginal)
         messageNave.tabBarController?.tabBar.isTranslucent = false
     
-        tabBarController?.tabBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+//        let partyNav = UINavigationController(rootViewController: partyController)
+//          partyNav.tabBarItem.title = "Parties"
+//          partyNav.tabBarItem.image = #imageLiteral(resourceName: "icons8-confetti-30").withRenderingMode(.alwaysOriginal)
+//          partyNav.tabBarController?.tabBar.isTranslucent = false
+//        tabBarController?.tabBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         
         viewControllers = [venueNav, schoolNave, contactsNav, messageNave]
     }
