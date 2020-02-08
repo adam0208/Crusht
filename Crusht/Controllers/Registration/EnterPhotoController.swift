@@ -48,7 +48,6 @@ class EnterPhotoController: UIViewController {
             guard err == nil else { return }
             let customtabController = CustomTabBarController()
             customtabController.modalPresentationStyle = .fullScreen
-            
             self.present(customtabController, animated: true)
             
         }
@@ -84,13 +83,13 @@ class EnterPhotoController: UIViewController {
     private func setupButton() {
         selectPhotoButton = UIButton(type: .system)
         selectPhotoButton.backgroundColor = .white
-        selectPhotoButton.setBackgroundImage(#imageLiteral(resourceName: "CrushtLogoLiam"), for: .normal)
+        selectPhotoButton.setImage(#imageLiteral(resourceName: "icons8-photo-gallery-100").withRenderingMode(.alwaysOriginal), for: .normal)
         selectPhotoButton.setTitleColor(.black, for: .normal)
         selectPhotoButton.heightAnchor.constraint(equalToConstant: 300).isActive = true
         selectPhotoButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        selectPhotoButton.imageView?.contentMode = .scaleAspectFill
-        selectPhotoButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        selectPhotoButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        selectPhotoButton.imageView?.contentMode = .scaleAspectFit
+       // selectPhotoButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+      //  selectPhotoButton.titleLabel?.adjustsFontSizeToFitWidth = true
         selectPhotoButton.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
         selectPhotoButton.layer.cornerRadius = 70
         selectPhotoButton.clipsToBounds = true
@@ -123,8 +122,9 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         weak var selectedImage = info[.originalImage] as? UIImage
+        let selectedImage2 = selectedImage?.resizeImage(targetSize: CGSize(width: 540, height: 500))
         let imageButton = (picker as? CustomImagePickerController)?.imageBttn
-        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        imageButton?.setImage(selectedImage2?.withRenderingMode(.alwaysOriginal), for: .normal)
         self.imageFull = true
 
         dismiss(animated: true)
@@ -135,8 +135,8 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
 
         let filename = UUID().uuidString
         let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-        guard let imageData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
-        
+        guard let imageData = selectedImage2?.jpegData(compressionQuality: 0.9) else { return }
+
         ref.putData(imageData, metadata: nil) { (nil, err) in
             guard err == nil else { return }
             ref.downloadURL { (url, err) in
@@ -150,4 +150,22 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
             }
         }
     }
+}
+
+extension UIImage {
+  func resizeImage(targetSize: CGSize) -> UIImage {
+    //print("hi")
+    let size = self.size
+    let widthRatio  = targetSize.width  / size.width
+    let heightRatio = targetSize.height / size.height
+    let newSize = widthRatio > heightRatio ?  CGSize(width: size.width * heightRatio, height: size.height * heightRatio) : CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+    let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+    self.draw(in: rect)
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+
+    return newImage!
+  }
 }

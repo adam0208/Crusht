@@ -262,9 +262,7 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         }
     }
     
-    fileprivate func saveAndDismiss() {
-        
-    }
+  
     
     func calcAge(birthday: String) -> Int {
         let dateFormater = DateFormatter()
@@ -310,13 +308,15 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedImage = info[.originalImage] as? UIImage
+        let selectedImage2 = selectedImage?.resizeImage(targetSize: CGSize(width: 540, height: 500))
+
         let imageButton = (picker as? CustomImagePickerController)?.imageBttn
-        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        imageButton?.setImage(selectedImage2?.withRenderingMode(.alwaysOriginal), for: .normal)
         dismiss(animated: true)
        
         let filename = UUID().uuidString
         let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
+        guard let uploadData = selectedImage2?.jpegData(compressionQuality: 0.9) else {return}
         ref.putData(uploadData, metadata: nil) { (nil, err) in
             if err != nil {
                 return
@@ -509,9 +509,9 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
     
     func createBttn(selector: Selector) -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle("Select Photo", for: .normal)
+        //button.setTitle("Select Photo", for: .normal)
         button.backgroundColor = .white
-        
+        button.setImage(#imageLiteral(resourceName: "icons8-photo-gallery-100").withRenderingMode(.alwaysOriginal), for: .normal)
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         button.addTarget(self, action: selector, for: .touchUpInside)
@@ -536,3 +536,5 @@ class SettingsTableViewController: UITableViewController, UIImagePickerControlle
         return header
     }()
 }
+
+
