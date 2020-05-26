@@ -10,6 +10,9 @@
 		010542B5D9B31A23047DD86E /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */; };
 		28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2D21C0C18D001F6BC5 /* MessageController.swift */; };
 		28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */; };
+		2809D581247D7B7D0006C163 /* GoogleApiHelper+Nearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2809D580247D7B7D0006C163 /* GoogleApiHelper+Nearby.swift */; };
+		2809D583247D7BB60006C163 /* GoogleApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2809D582247D7BB60006C163 /* GoogleApi.swift */; };
+		2809D585247D7BF40006C163 /* NearByEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2809D584247D7BF40006C163 /* NearByEnum.swift */; };
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
 		280B78B123EF72C30084D745 /* icons8-photo-gallery-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */; };
@@ -152,6 +155,9 @@
 		2182C956AD04B83592705450 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28067D2D21C0C18D001F6BC5 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		2809D580247D7B7D0006C163 /* GoogleApiHelper+Nearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleApiHelper+Nearby.swift"; sourceTree = "<group>"; };
+		2809D582247D7BB60006C163 /* GoogleApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApi.swift; sourceTree = "<group>"; };
+		2809D584247D7BF40006C163 /* NearByEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearByEnum.swift; sourceTree = "<group>"; };
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-photo-gallery-100.png"; sourceTree = "<group>"; };
@@ -327,6 +333,9 @@
 		2809D57F247D7A510006C163 /* Google Helper Api */ = {
 			isa = PBXGroup;
 			children = (
+				2809D580247D7B7D0006C163 /* GoogleApiHelper+Nearby.swift */,
+				2809D582247D7BB60006C163 /* GoogleApi.swift */,
+				2809D584247D7BF40006C163 /* NearByEnum.swift */,
 			);
 			path = "Google Helper Api";
 			sourceTree = "<group>";
@@ -889,6 +898,7 @@
 				28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */,
 				4CA41B41235DF2F400CF8529 /* GenderTextField.swift in Sources */,
 				28EDA72A23FF96D500450BA7 /* Post.swift in Sources */,
+				2809D583247D7BB60006C163 /* GoogleApi.swift in Sources */,
 				2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
 				2895576F227E644F001EFD73 /* UserBarCell.swift in Sources */,
@@ -930,6 +940,7 @@
 				28C06E0B22593CE3004F0C1E /* MessageReportController.swift in Sources */,
 				28C30330226BFE21002FB145 /* Venue.swift in Sources */,
 				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
+				2809D585247D7BF40006C163 /* NearByEnum.swift in Sources */,
 				4CA41B5A235E1FB900CF8529 /* ReportTextView.swift in Sources */,
 				285D435523FBABA10043198A /* InviteContactsCell.swift in Sources */,
 				28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */,
@@ -952,6 +963,7 @@
 				28FD7D0C2261AFBB00B79496 /* GenderController.swift in Sources */,
 				4CA41B45235DFE0A00CF8529 /* UIImageViewExtension.swift in Sources */,
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
+				2809D581247D7B7D0006C163 /* GoogleApiHelper+Nearby.swift in Sources */,
 				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
 				28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */,
 				28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */,

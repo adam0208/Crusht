@@ -342,47 +342,26 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     
     //Places instead of geofirestore
     
+    var nearbyBarResults = [GApiResponse.NearBy]()
+        
     fileprivate func fetchBars () {
         
         print("yoyo")
         
         var input = GInput()
-        input.keyword = "Restaurants"
+        input.keyword = "Bars"
         input.radius = 20000
         var location = GLocation()
-        location.latitude = 26.273178
-        location.longitude = 73.009545
+        location.latitude = userLat
+        location.longitude = userLong
         input.destinationCoordinate = location
         GoogleApi.shared.callApi(.nearBy, input: input) { (response) in
-            if let data = response.data as? [GApiResponse.NearBy], response.isValidFor(.nearBy){
+            if let data = response.data as? [GApiResponse.NearBy], response.isValidFor(.nearBy) {
                 // all nearby places
+                self.nearbyBarResults.append(contentsOf: data)
             }
         }
-        
-//    let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.types.rawValue) |
-//                                                  UInt(GMSPlaceField.placeID.rawValue))!
-//
-//        placesClient?.findPlaceLikelihoodsFromCurrentLocation(withPlaceFields: fields, callback: {
-//          (placeLikelihoodList: Array<GMSPlaceLikelihood>?, error: Error?) in
-//          if let error = error {
-//            print("An error occurred: \(error.localizedDescription)")
-//            return
-//          }
-//
-//          if let placeLikelihoodList = placeLikelihoodList {
-//            for likelihood in placeLikelihoodList {
-//              let place = likelihood.place
-//                if (place.types?.contains("bar"))! {
-//              print("Current Place name \(String(describing: place.name)) at likelihood \(likelihood.likelihood)")
-//              print("Current PlaceID \(String(describing: place.placeID))")
-//                }
-//                else {
-//                    print("kill me")
-//                }
-//            }
-//          }
-//        })
-        }
+    }
     
     
 //    fileprivate func fetchBars () {

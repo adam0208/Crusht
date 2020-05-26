@@ -59,6 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         db.settings = settings
         
         GMSPlacesClient.provideAPIKey("AIzaSyAckZAj7XWUiaXNDxGw-k8A2wrrMp7El2g")
+        GoogleApi.shared.initialiseWithKey("AIzaSyAckZAj7XWUiaXNDxGw-k8A2wrrMp7El2g")
         
         if #available(iOS 12, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {(granted, error) in})
