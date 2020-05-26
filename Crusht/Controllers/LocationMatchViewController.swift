@@ -10,9 +10,8 @@ import UIKit
 import Firebase
 //import Nuke
 import SDWebImage
-
+import Geofirestore
 import CoreLocation
-import GeoFire
 import UserNotifications
 
 class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocationManagerDelegate {

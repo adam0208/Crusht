@@ -88,7 +88,6 @@ class SchoolTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    
     //    fileprivate func setupNameAndProfileImage() {
     //           let school = user?.school ?? "I suck a lot"
     //        //if let uid = ?.chatPartnerId() {

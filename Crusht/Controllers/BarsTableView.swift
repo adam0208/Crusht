@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import GeoFire
 import CoreLocation
+import GooglePlaces
 
 //This Controller shows venues around a users location
 
@@ -27,6 +28,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     var userLong = Double()
     
     let animationView = AnimationView()
+    var placesClient: GMSPlacesClient!
+
     
     // MARK: Life Cycle Methods
     
@@ -36,7 +39,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
          tabBarController?.view.addSubview(animationView)
         animationView.fillSuperview()
         self.tabBarController?.delegate = self
-       
+        placesClient = GMSPlacesClient.shared()
+
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
@@ -336,39 +340,84 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
    
     }
     
+    //Places instead of geofirestore
+    
     fileprivate func fetchBars () {
-        let geoFirestoreRef = Firestore.firestore().collection("venues")
-        let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
-        let userCenter = CLLocation(latitude: userLat, longitude: userLong)
-        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 20)
         
-        let _ = radiusQuery.observe(.documentEntered) { (key, location) in
-            if let key = key, location != nil {
-                Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: key).order(by: "name").getDocuments(completion: { (snapshot, err) in
-                    if let err = err {
-                        print(err)
-                        return
-                    }
-                    if snapshot?.isEmpty ?? true { return }
-                    
-                    snapshot?.documents.forEach({ (documentSnapshot) in
-                        let barDictionary = documentSnapshot.data()
-                        let bar = Venue(dictionary: barDictionary)
-                        self.barArray.append(bar)
-                    })
-                    
-                    DispatchQueue.main.async {
-                        self.barArray.sort { (bar1, bar2) in
-                            guard let venueName1 = bar1.venueName else { return false }
-                            guard let venueName2 = bar2.venueName else { return true }
-                            return venueName1 < venueName2
-                        }
-                        self.tableView.reloadData()
-                    }
-                })
+        print("yoyo")
+        
+        var input = GInput()
+        input.keyword = "Restaurants"
+        input.radius = 20000
+        var location = GLocation()
+        location.latitude = 26.273178
+        location.longitude = 73.009545
+        input.destinationCoordinate = location
+        GoogleApi.shared.callApi(.nearBy, input: input) { (response) in
+            if let data = response.data as? [GApiResponse.NearBy], response.isValidFor(.nearBy){
+                // all nearby places
             }
         }
-    }
+        
+//    let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.types.rawValue) |
+//                                                  UInt(GMSPlaceField.placeID.rawValue))!
+//
+//        placesClient?.findPlaceLikelihoodsFromCurrentLocation(withPlaceFields: fields, callback: {
+//          (placeLikelihoodList: Array<GMSPlaceLikelihood>?, error: Error?) in
+//          if let error = error {
+//            print("An error occurred: \(error.localizedDescription)")
+//            return
+//          }
+//
+//          if let placeLikelihoodList = placeLikelihoodList {
+//            for likelihood in placeLikelihoodList {
+//              let place = likelihood.place
+//                if (place.types?.contains("bar"))! {
+//              print("Current Place name \(String(describing: place.name)) at likelihood \(likelihood.likelihood)")
+//              print("Current PlaceID \(String(describing: place.placeID))")
+//                }
+//                else {
+//                    print("kill me")
+//                }
+//            }
+//          }
+//        })
+        }
+    
+    
+//    fileprivate func fetchBars () {
+//        let geoFirestoreRef = Firestore.firestore().collection("venues")
+//        let geoFirestore = GeoFirestore(collectionRef: geoFirestoreRef)
+//        let userCenter = CLLocation(latitude: userLat, longitude: userLong)
+//        let radiusQuery = geoFirestore.query(withCenter: userCenter, radius: 20)
+//
+//        let _ = radiusQuery.observe(.documentEntered) { (key, location) in
+//            if let key = key, location != nil {
+//                Firestore.firestore().collection("venues").whereField("venueName", isEqualTo: key).order(by: "name").getDocuments(completion: { (snapshot, err) in
+//                    if let err = err {
+//                        print(err)
+//                        return
+//                    }
+//                    if snapshot?.isEmpty ?? true { return }
+//
+//                    snapshot?.documents.forEach({ (documentSnapshot) in
+//                        let barDictionary = documentSnapshot.data()
+//                        let bar = Venue(dictionary: barDictionary)
+//                        self.barArray.append(bar)
+//                    })
+//
+//                    DispatchQueue.main.async {
+//                        self.barArray.sort { (bar1, bar2) in
+//                            guard let venueName1 = bar1.venueName else { return false }
+//                            guard let venueName2 = bar2.venueName else { return true }
+//                            return venueName1 < venueName2
+//                        }
+//                        self.tableView.reloadData()
+//                    }
+//                })
+//            }
+//        }
+//    }
     
     var peekBarName = String()
     

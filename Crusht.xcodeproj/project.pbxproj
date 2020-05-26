@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010542B5D9B31A23047DD86E /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */; };
 		28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2D21C0C18D001F6BC5 /* MessageController.swift */; };
 		28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */; };
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
@@ -29,6 +30,8 @@
 		2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */; };
 		2838170F21B8A26400B3E4FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838170E21B8A26400B3E4FD /* User.swift */; };
 		2838171E21B8C90100B3E4FD /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2838171D21B8C90100B3E4FD /* UIViewExtension.swift */; };
+		283B5E5E23FDD3BB006F5ED4 /* PartyPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283B5E5D23FDD3BB006F5ED4 /* PartyPageController.swift */; };
+		283B5E6023FF23ED006F5ED4 /* PartyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283B5E5F23FF23ED006F5ED4 /* PartyPageCell.swift */; };
 		283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FD3DA227E669000C7760F /* CustomTabBarController.swift */; };
 		2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */; };
 		2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2850A141224EE4C500A2CEB9 /* Reports.swift */; };
@@ -36,6 +39,12 @@
 		2859707622026EF800EB83CE /* FacebookPhoneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707522026EF800EB83CE /* FacebookPhoneController.swift */; };
 		2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */; };
 		285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285A34A521BC7B920086CC95 /* SettingsCells.swift */; };
+		285D434D23FB35D30043198A /* Party.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D434C23FB35D30043198A /* Party.swift */; };
+		285D434F23FB37BF0043198A /* PartyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D434E23FB37BF0043198A /* PartyCell.swift */; };
+		285D435123FB3C7A0043198A /* NewPartyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D435023FB3C7A0043198A /* NewPartyController.swift */; };
+		285D435323FBA8410043198A /* InviteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D435223FBA8410043198A /* InviteController.swift */; };
+		285D435523FBABA10043198A /* InviteContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D435423FBABA10043198A /* InviteContactsCell.swift */; };
+		285D435723FBACFB0043198A /* icons8-plus-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 285D435623FBACFA0043198A /* icons8-plus-50.png */; };
 		286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */; };
 		2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4EF228E6FC500E3165F /* TermsViewController.swift */; };
 		2864C4F2228E743B00E3165F /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4F1228E743B00E3165F /* PrivacyController.swift */; };
@@ -74,7 +83,15 @@
 		28CFC6B521C5B3ED00387129 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Message.swift */; };
 		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
 		28D25FF321F6CAAB00E69069 /* TransitionCrushesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */; };
+		28D339072405BC9900764EE8 /* InviteTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D339062405BC9900764EE8 /* InviteTabController.swift */; };
+		28D339092405BCFC00764EE8 /* SchoolInviteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D339082405BCFC00764EE8 /* SchoolInviteController.swift */; };
+		28D3390B2405C3A700764EE8 /* InviteSchoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D3390A2405C3A700764EE8 /* InviteSchoolCell.swift */; };
 		28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */; };
+		28EDA72A23FF96D500450BA7 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72923FF96D500450BA7 /* Post.swift */; };
+		28EDA72C23FFBEC100450BA7 /* GuestsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72B23FFBEC100450BA7 /* GuestsController.swift */; };
+		28EDA72E23FFC73E00450BA7 /* GuestListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72D23FFC73E00450BA7 /* GuestListCell.swift */; };
+		28EDA73023FFCF4200450BA7 /* EditPartyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72F23FFCF4200450BA7 /* EditPartyController.swift */; };
+		28EDA732240208B500450BA7 /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA731240208B400450BA7 /* PostController.swift */; };
 		28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */; };
 		28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */; };
 		28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */; };
@@ -91,7 +108,6 @@
 		28FD7D162264282B00B79496 /* BioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D152264282B00B79496 /* BioController.swift */; };
 		28FD7D1822642D4700B79496 /* EnterPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D1722642D4700B79496 /* EnterPhotoController.swift */; };
 		28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE2D72216672000896198 /* FacebookCrushCell.swift */; };
-		3346C346E45B8D6FA6B59A62 /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */; };
 		4C60BD6E235630A900B59D35 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60BD6D235630A900B59D35 /* LoadingCell.swift */; };
 		4C7CF43E2359FD5D0039B0E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7CF43D2359FD5D0039B0E3 /* Constants.swift */; };
 		4CA41B3B235DE7C500CF8529 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B3A235DE7C500CF8529 /* DateExtension.swift */; };
@@ -110,8 +126,8 @@
 		4CA41B56235E0DCB00CF8529 /* ContactsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */; };
 		4CA41B58235E0DE700CF8529 /* FbConnectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B57235E0DE700CF8529 /* FbConnectCell.swift */; };
 		4CA41B5A235E1FB900CF8529 /* ReportTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B59235E1FB900CF8529 /* ReportTextView.swift */; };
-		967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */; };
-		EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */; };
+		6A37B84FFE52859206742E37 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA4A2A215E63437CC19ED654 /* Pods_CrushtTests.framework */; };
+		86B290450FD22753B66197B2 /* Pods_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2182C956AD04B83592705450 /* Pods_CrushtUITests.framework */; };
 		EBAC1438237913A70081A95A /* UILabelFontClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAC1437237913A70081A95A /* UILabelFontClass.swift */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +149,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2182C956AD04B83592705450 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28067D2D21C0C18D001F6BC5 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
@@ -161,6 +178,8 @@
 		2838170A21B8A1F300B3E4FD /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
 		2838170E21B8A26400B3E4FD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2838171D21B8C90100B3E4FD /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		283B5E5D23FDD3BB006F5ED4 /* PartyPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyPageController.swift; sourceTree = "<group>"; };
+		283B5E5F23FF23ED006F5ED4 /* PartyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyPageCell.swift; sourceTree = "<group>"; };
 		283FD3DA227E669000C7760F /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		2850A13F224EC79700A2CEB9 /* ReportControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportControllerViewController.swift; sourceTree = "<group>"; };
 		2850A141224EE4C500A2CEB9 /* Reports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reports.swift; sourceTree = "<group>"; };
@@ -168,6 +187,12 @@
 		2859707522026EF800EB83CE /* FacebookPhoneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookPhoneController.swift; sourceTree = "<group>"; };
 		2859707D2202C73800EB83CE /* CheckVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckVerificationViewController.swift; sourceTree = "<group>"; };
 		285A34A521BC7B920086CC95 /* SettingsCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCells.swift; sourceTree = "<group>"; };
+		285D434C23FB35D30043198A /* Party.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Party.swift; sourceTree = "<group>"; };
+		285D434E23FB37BF0043198A /* PartyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyCell.swift; sourceTree = "<group>"; };
+		285D435023FB3C7A0043198A /* NewPartyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPartyController.swift; sourceTree = "<group>"; };
+		285D435223FBA8410043198A /* InviteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteController.swift; sourceTree = "<group>"; };
+		285D435423FBABA10043198A /* InviteContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteContactsCell.swift; sourceTree = "<group>"; };
+		285D435623FBACFA0043198A /* icons8-plus-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-plus-50.png"; sourceTree = "<group>"; };
 		286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
 		2864C4EF228E6FC500E3165F /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2864C4F1228E743B00E3165F /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
@@ -206,7 +231,15 @@
 		28CFC6B421C5B3ED00387129 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		28D25FF221F6CAAB00E69069 /* TransitionCrushesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionCrushesController.swift; sourceTree = "<group>"; };
+		28D339062405BC9900764EE8 /* InviteTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteTabController.swift; sourceTree = "<group>"; };
+		28D339082405BCFC00764EE8 /* SchoolInviteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolInviteController.swift; sourceTree = "<group>"; };
+		28D3390A2405C3A700764EE8 /* InviteSchoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteSchoolCell.swift; sourceTree = "<group>"; };
 		28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-confetti-30.png"; sourceTree = "<group>"; };
+		28EDA72923FF96D500450BA7 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		28EDA72B23FFBEC100450BA7 /* GuestsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestsController.swift; sourceTree = "<group>"; };
+		28EDA72D23FFC73E00450BA7 /* GuestListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestListCell.swift; sourceTree = "<group>"; };
+		28EDA72F23FFCF4200450BA7 /* EditPartyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPartyController.swift; sourceTree = "<group>"; };
+		28EDA731240208B400450BA7 /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
 		28F1121921F522A900A1CD73 /* Crusht.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crusht.entitlements; sourceTree = "<group>"; };
 		28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterMorePhoneInfoViewController.swift; sourceTree = "<group>"; };
@@ -224,7 +257,7 @@
 		28FD7D152264282B00B79496 /* BioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioController.swift; sourceTree = "<group>"; };
 		28FD7D1722642D4700B79496 /* EnterPhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPhotoController.swift; sourceTree = "<group>"; };
 		28FDE2D72216672000896198 /* FacebookCrushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushCell.swift; sourceTree = "<group>"; };
-		3C40A31E4D95EAA2FC80B76F /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
+		44530FC6002BA7EA8E6E16C3 /* Pods-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.release.xcconfig"; path = "Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4C60BD6D235630A900B59D35 /* LoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		4C7CF43D2359FD5D0039B0E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4CA41B3A235DE7C500CF8529 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -243,15 +276,14 @@
 		4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTextCell.swift; sourceTree = "<group>"; };
 		4CA41B57235E0DE700CF8529 /* FbConnectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FbConnectCell.swift; sourceTree = "<group>"; };
 		4CA41B59235E1FB900CF8529 /* ReportTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportTextView.swift; sourceTree = "<group>"; };
-		5585EC17B57ACD3F96A941E5 /* Pods-CrushtTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtTests/Pods-CrushtTests.release.xcconfig"; sourceTree = "<group>"; };
-		614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		664B956C2EDB3DBDE3BACDE0 /* Pods-Crusht.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Crusht/Pods-Crusht.debug.xcconfig"; sourceTree = "<group>"; };
-		69D8C5A65524B68F1C2803C2 /* Pods-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
-		814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7074375EB38846FAE0F3820 /* Pods-Crusht.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.release.xcconfig"; path = "Pods/Target Support Files/Pods-Crusht/Pods-Crusht.release.xcconfig"; sourceTree = "<group>"; };
-		EA0D20087E3D22908C87F2D4 /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		64833AB1BC80200DDEE3B561 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
+		69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F894DA439ED2820A9D9F768 /* Pods-Crusht.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.release.xcconfig"; path = "Target Support Files/Pods-Crusht/Pods-Crusht.release.xcconfig"; sourceTree = "<group>"; };
+		9F2CDFB52A04A8C208B9809A /* Pods-CrushtTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.release.xcconfig"; path = "Target Support Files/Pods-CrushtTests/Pods-CrushtTests.release.xcconfig"; sourceTree = "<group>"; };
+		D86843720101E2EB6A894FE8 /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		EA4A2A215E63437CC19ED654 /* Pods_CrushtTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBAC1437237913A70081A95A /* UILabelFontClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelFontClass.swift; sourceTree = "<group>"; };
+		F9F358249431986AA0434164 /* Pods-Crusht.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.debug.xcconfig"; path = "Target Support Files/Pods-Crusht/Pods-Crusht.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,7 +291,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				967A23947BBDB930079FE191 /* Pods_Crusht.framework in Frameworks */,
+				010542B5D9B31A23047DD86E /* Pods_Crusht.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +299,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB6D63BED389D5F72A7C63D2 /* Pods_CrushtTests.framework in Frameworks */,
+				6A37B84FFE52859206742E37 /* Pods_CrushtTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,13 +307,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3346C346E45B8D6FA6B59A62 /* Pods_CrushtUITests.framework in Frameworks */,
+				86B290450FD22753B66197B2 /* Pods_CrushtUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		121717C67710771DB0F4688C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */,
+				EA4A2A215E63437CC19ED654 /* Pods_CrushtTests.framework */,
+				2182C956AD04B83592705450 /* Pods_CrushtUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2809D57F247D7A510006C163 /* Google Helper Api */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Google Helper Api";
+			sourceTree = "<group>";
+		};
 		283816BA21B8925C00B3E4FD = {
 			isa = PBXGroup;
 			children = (
@@ -289,8 +338,8 @@
 				283816DA21B8925F00B3E4FD /* CrushtTests */,
 				283816E521B8925F00B3E4FD /* CrushtUITests */,
 				283816C421B8925C00B3E4FD /* Products */,
-				99FB963EE69DD78ACD5EE5B4 /* Frameworks */,
-				9BD491E7266F226FDA91BB6E /* Pods */,
+				409A6F96A7F6E8E67850A6B9 /* Pods */,
+				121717C67710771DB0F4688C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -307,6 +356,7 @@
 		283816C521B8925C00B3E4FD /* Crusht */ = {
 			isa = PBXGroup;
 			children = (
+				2809D57F247D7A510006C163 /* Google Helper Api */,
 				28F1121921F522A900A1CD73 /* Crusht.entitlements */,
 				4C7CF43B2359EF610039B0E3 /* Unused Files */,
 				2838170D21B8A24B00B3E4FD /* Models */,
@@ -320,6 +370,7 @@
 				283816C621B8925C00B3E4FD /* AppDelegate.swift */,
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
+				285D435623FBACFA0043198A /* icons8-plus-50.png */,
 				28AFA7782391155400DF2255 /* icons8-hide-30.png */,
 				28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */,
 				280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */,
@@ -393,6 +444,7 @@
 		283816F721B8929100B3E4FD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				28EDA733240208BD00450BA7 /* Party */,
 				4C7CF43C2359F0C80039B0E3 /* Registration */,
 				28BE624F21BE08F300EAFFE2 /* User Details */,
 				28BE624821BDB76A00EAFFE2 /* Login */,
@@ -409,7 +461,6 @@
 				2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */,
 				2864C4EF228E6FC500E3165F /* TermsViewController.swift */,
 				2864C4F1228E743B00E3165F /* PrivacyController.swift */,
-				28795C4D23E2B02400503FB2 /* PartyListController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -425,6 +476,8 @@
 				4CA41B3C235DE93800CF8529 /* CrushScore.swift */,
 				28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */,
 				4CA41B46235DFF9A00CF8529 /* FavoritableContact.swift */,
+				285D434C23FB35D30043198A /* Party.swift */,
+				28EDA72923FF96D500450BA7 /* Post.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -446,6 +499,35 @@
 				28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */,
 			);
 			path = "User Details";
+			sourceTree = "<group>";
+		};
+		28EDA733240208BD00450BA7 /* Party */ = {
+			isa = PBXGroup;
+			children = (
+				28795C4D23E2B02400503FB2 /* PartyListController.swift */,
+				285D435023FB3C7A0043198A /* NewPartyController.swift */,
+				285D435223FBA8410043198A /* InviteController.swift */,
+				283B5E5D23FDD3BB006F5ED4 /* PartyPageController.swift */,
+				28EDA72B23FFBEC100450BA7 /* GuestsController.swift */,
+				28EDA72F23FFCF4200450BA7 /* EditPartyController.swift */,
+				28EDA731240208B400450BA7 /* PostController.swift */,
+				28D339062405BC9900764EE8 /* InviteTabController.swift */,
+				28D339082405BCFC00764EE8 /* SchoolInviteController.swift */,
+			);
+			path = Party;
+			sourceTree = "<group>";
+		};
+		409A6F96A7F6E8E67850A6B9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F9F358249431986AA0434164 /* Pods-Crusht.debug.xcconfig */,
+				8F894DA439ED2820A9D9F768 /* Pods-Crusht.release.xcconfig */,
+				64833AB1BC80200DDEE3B561 /* Pods-CrushtTests.debug.xcconfig */,
+				9F2CDFB52A04A8C208B9809A /* Pods-CrushtTests.release.xcconfig */,
+				D86843720101E2EB6A894FE8 /* Pods-CrushtUITests.debug.xcconfig */,
+				44530FC6002BA7EA8E6E16C3 /* Pods-CrushtUITests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		4C7CF43B2359EF610039B0E3 /* Unused Files */ = {
@@ -508,31 +590,13 @@
 				4CA41B51235E0D8100CF8529 /* VerificationNumberCell.swift */,
 				4CA41B53235E0DA800CF8529 /* SupportCell.swift */,
 				4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */,
+				285D434E23FB37BF0043198A /* PartyCell.swift */,
+				285D435423FBABA10043198A /* InviteContactsCell.swift */,
+				283B5E5F23FF23ED006F5ED4 /* PartyPageCell.swift */,
+				28EDA72D23FFC73E00450BA7 /* GuestListCell.swift */,
+				28D3390A2405C3A700764EE8 /* InviteSchoolCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		99FB963EE69DD78ACD5EE5B4 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				814CD0ADD102CD94B1335B02 /* Pods_Crusht.framework */,
-				A64961FC134A67A653448ED7 /* Pods_CrushtTests.framework */,
-				614C84EF0A63EDCD1C07A729 /* Pods_CrushtUITests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		9BD491E7266F226FDA91BB6E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				664B956C2EDB3DBDE3BACDE0 /* Pods-Crusht.debug.xcconfig */,
-				E7074375EB38846FAE0F3820 /* Pods-Crusht.release.xcconfig */,
-				3C40A31E4D95EAA2FC80B76F /* Pods-CrushtTests.debug.xcconfig */,
-				5585EC17B57ACD3F96A941E5 /* Pods-CrushtTests.release.xcconfig */,
-				EA0D20087E3D22908C87F2D4 /* Pods-CrushtUITests.debug.xcconfig */,
-				69D8C5A65524B68F1C2803C2 /* Pods-CrushtUITests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -542,12 +606,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816EB21B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "Crusht" */;
 			buildPhases = (
-				90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */,
+				35AD4C2468730FF298E35D66 /* [CP] Check Pods Manifest.lock */,
 				283816BF21B8925C00B3E4FD /* Sources */,
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
-				8F8FB095B6A6F6F5BCF6FED7 /* [CP] Embed Pods Frameworks */,
+				91E2D9F30293F78EF9E1C466 /* [CP] Embed Pods Frameworks */,
+				383E66AFA688E871248FC000 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -562,7 +627,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816EE21B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "CrushtTests" */;
 			buildPhases = (
-				205815491933167ADC528E57 /* [CP] Check Pods Manifest.lock */,
+				E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */,
 				283816D321B8925F00B3E4FD /* Sources */,
 				283816D421B8925F00B3E4FD /* Frameworks */,
 				283816D521B8925F00B3E4FD /* Resources */,
@@ -581,7 +646,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816F121B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "CrushtUITests" */;
 			buildPhases = (
-				D059AFD861FB853CFF6CD407 /* [CP] Check Pods Manifest.lock */,
+				23A5DFB4B203144BF09D1C5D /* [CP] Check Pods Manifest.lock */,
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
@@ -653,6 +718,7 @@
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
 				28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */,
 				280B78B123EF72C30084D745 /* icons8-photo-gallery-100.png in Resources */,
+				285D435723FBACFB0043198A /* icons8-plus-50.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
 				28AFA7792391155400DF2255 /* icons8-hide-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
@@ -676,7 +742,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		205815491933167ADC528E57 /* [CP] Check Pods Manifest.lock */ = {
+		23A5DFB4B203144BF09D1C5D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -691,7 +757,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CrushtTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-CrushtUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -715,53 +781,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
-		8F8FB095B6A6F6F5BCF6FED7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/CountryPickerSwift/CountryPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountryPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		90CFE3DC434F1A450236A4BE /* [CP] Check Pods Manifest.lock */ = {
+		35AD4C2468730FF298E35D66 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -783,7 +803,41 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D059AFD861FB853CFF6CD407 /* [CP] Check Pods Manifest.lock */ = {
+		383E66AFA688E871248FC000 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		91E2D9F30293F78EF9E1C466 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -798,7 +852,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CrushtUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-CrushtTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -813,12 +867,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2838170F21B8A26400B3E4FD /* User.swift in Sources */,
+				283B5E5E23FDD3BB006F5ED4 /* PartyPageController.swift in Sources */,
 				28F54071224C163F00EC5062 /* BioCell.swift in Sources */,
 				2838170721B8A11000B3E4FD /* Advertiser.swift in Sources */,
 				28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */,
+				28EDA72C23FFBEC100450BA7 /* GuestsController.swift in Sources */,
 				28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */,
 				285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */,
 				28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */,
+				283B5E6023FF23ED006F5ED4 /* PartyPageCell.swift in Sources */,
 				28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */,
 				4CA41B3F235DECDF00CF8529 /* NameTextField.swift in Sources */,
 				287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */,
@@ -831,6 +888,7 @@
 				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
 				28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */,
 				4CA41B41235DF2F400CF8529 /* GenderTextField.swift in Sources */,
+				28EDA72A23FF96D500450BA7 /* Post.swift in Sources */,
 				2850A140224EC79700A2CEB9 /* ReportControllerViewController.swift in Sources */,
 				283816C921B8925C00B3E4FD /* LocationMatchViewController.swift in Sources */,
 				2895576F227E644F001EFD73 /* UserBarCell.swift in Sources */,
@@ -838,18 +896,23 @@
 				28FD7D1022641FB100B79496 /* EnterNameController.swift in Sources */,
 				4CA41B4B235E054B00CF8529 /* GenderPrefCell.swift in Sources */,
 				28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */,
+				285D434F23FB37BF0043198A /* PartyCell.swift in Sources */,
+				285D434D23FB35D30043198A /* Party.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
 				4CA41B56235E0DCB00CF8529 /* ContactsTextCell.swift in Sources */,
 				28FD7D14226425D800B79496 /* EnterSchoolController.swift in Sources */,
 				28FD7D162264282B00B79496 /* BioController.swift in Sources */,
 				283816FF21B8A02900B3E4FD /* CardViewModel.swift in Sources */,
 				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
+				285D435323FBA8410043198A /* InviteController.swift in Sources */,
 				4CA41B3D235DE93800CF8529 /* CrushScore.swift in Sources */,
 				2857DF0A226BF9CE0072C952 /* BarsTableView.swift in Sources */,
 				2895576D227E62B5001EFD73 /* UsersInBarTableView.swift in Sources */,
 				28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */,
+				28EDA73023FFCF4200450BA7 /* EditPartyController.swift in Sources */,
 				28C30332226C02AE002FB145 /* VenueCell.swift in Sources */,
 				28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */,
+				28D3390B2405C3A700764EE8 /* InviteSchoolCell.swift in Sources */,
 				4CA41B3B235DE7C500CF8529 /* DateExtension.swift in Sources */,
 				28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */,
 				287795E621C339CF003A060A /* MatchView.swift in Sources */,
@@ -868,8 +931,10 @@
 				28C30330226BFE21002FB145 /* Venue.swift in Sources */,
 				28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */,
 				4CA41B5A235E1FB900CF8529 /* ReportTextView.swift in Sources */,
+				285D435523FBABA10043198A /* InviteContactsCell.swift in Sources */,
 				28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */,
 				28795C4E23E2B02400503FB2 /* PartyListController.swift in Sources */,
+				28EDA732240208B500450BA7 /* PostController.swift in Sources */,
 				28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */,
 				28CFC6B521C5B3ED00387129 /* Message.swift in Sources */,
 				EBAC1438237913A70081A95A /* UILabelFontClass.swift in Sources */,
@@ -892,6 +957,7 @@
 				28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */,
 				2838171E21B8C90100B3E4FD /* UIViewExtension.swift in Sources */,
 				28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */,
+				28D339092405BCFC00764EE8 /* SchoolInviteController.swift in Sources */,
 				2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */,
 				4CA41B52235E0D8100CF8529 /* VerificationNumberCell.swift in Sources */,
 				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,
@@ -901,9 +967,12 @@
 				2838170321B8A0A700B3E4FD /* CardView.swift in Sources */,
 				2864C4F2228E743B00E3165F /* PrivacyController.swift in Sources */,
 				283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */,
+				285D435123FB3C7A0043198A /* NewPartyController.swift in Sources */,
+				28EDA72E23FFC73E00450BA7 /* GuestListCell.swift in Sources */,
 				28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */,
 				28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */,
 				28FD7D0E2261BA8900B79496 /* YourSexController.swift in Sources */,
+				28D339072405BC9900764EE8 /* InviteTabController.swift in Sources */,
 				286B05D722B5C9A40068015E /* InfoView.swift in Sources */,
 				28711AB0220BABC400DD82EB /* SearchFooter.swift in Sources */,
 			);
@@ -1080,7 +1149,7 @@
 		};
 		283816EC21B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 664B956C2EDB3DBDE3BACDE0 /* Pods-Crusht.debug.xcconfig */;
+			baseConfigurationReference = F9F358249431986AA0434164 /* Pods-Crusht.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Crusht/Crusht.entitlements;
@@ -1088,13 +1157,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Crusht/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.1;
+				MARKETING_VERSION = 1.9.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1104,20 +1174,21 @@
 		};
 		283816ED21B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7074375EB38846FAE0F3820 /* Pods-Crusht.release.xcconfig */;
+			baseConfigurationReference = 8F894DA439ED2820A9D9F768 /* Pods-Crusht.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Crusht/Crusht.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Crusht/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.1;
+				MARKETING_VERSION = 1.9.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1127,7 +1198,7 @@
 		};
 		283816EF21B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C40A31E4D95EAA2FC80B76F /* Pods-CrushtTests.debug.xcconfig */;
+			baseConfigurationReference = 64833AB1BC80200DDEE3B561 /* Pods-CrushtTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1149,7 +1220,7 @@
 		};
 		283816F021B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5585EC17B57ACD3F96A941E5 /* Pods-CrushtTests.release.xcconfig */;
+			baseConfigurationReference = 9F2CDFB52A04A8C208B9809A /* Pods-CrushtTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1171,7 +1242,7 @@
 		};
 		283816F221B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA0D20087E3D22908C87F2D4 /* Pods-CrushtUITests.debug.xcconfig */;
+			baseConfigurationReference = D86843720101E2EB6A894FE8 /* Pods-CrushtUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1192,7 +1263,7 @@
 		};
 		283816F321B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 69D8C5A65524B68F1C2803C2 /* Pods-CrushtUITests.release.xcconfig */;
+			baseConfigurationReference = 44530FC6002BA7EA8E6E16C3 /* Pods-CrushtUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

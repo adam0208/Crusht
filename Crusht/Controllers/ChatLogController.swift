@@ -639,7 +639,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         uploadImageView.isUserInteractionEnabled = false
         uploadImageView.image = UIImage(named: "icons8-communication-30")
         uploadImageView.translatesAutoresizingMaskIntoConstraints = false
-//        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
+        //uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
         containerView.addSubview(uploadImageView)
         
         //x,y,w,h

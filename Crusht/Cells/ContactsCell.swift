@@ -31,7 +31,12 @@ class ContactsCell: UITableViewCell {
         selectionStyle = .none
         textLabel?.text = favoritableContact.name
         textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        detailTextLabel?.text = favoritableContact.contact.phoneNumbers.first?.value.stringValue
+        let phoneString = favoritableContact.phoneCell
+                 let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+                 let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+                 let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+                 let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        detailTextLabel?.text = phoneNoDash
         accessoryView?.tintColor = hasLiked ? .red : #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
     }
         
@@ -39,5 +44,7 @@ class ContactsCell: UITableViewCell {
        // print("Marking as favorite")
        link?.someMethodIWantToCall(cell: self)
    }
+    
+    
 }
 

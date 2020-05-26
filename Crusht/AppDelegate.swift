@@ -13,6 +13,7 @@ import UserNotifications
 import CoreLocation
 import Fabric
 import Crashlytics
+import GooglePlaces
 
 
 @UIApplicationMain
@@ -56,6 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings = db.settings
         settings.areTimestampsInSnapshotsEnabled = true
         db.settings = settings
+        
+        GMSPlacesClient.provideAPIKey("AIzaSyAckZAj7XWUiaXNDxGw-k8A2wrrMp7El2g")
         
         if #available(iOS 12, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {(granted, error) in})

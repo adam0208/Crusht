@@ -17,13 +17,11 @@ class RegistrationViewModel {
     
     var gender = String()
     var sexYouLike = String()
-    var email: String? { didSet { checkFormValidity() } }
     var password: String? { didSet { checkFormValidity() } }
     var school: String?
     var age: Int?
     var bio: String? { didSet {checkFormValidity() }}
     var phone: String!
-    var fbid: String?
     var birthday: String?
     
     var fullName: String? {
@@ -67,7 +65,7 @@ class RegistrationViewModel {
     }
     
     private func checkFormValidity() {
-        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && bio?.isEmpty == false && bindableImage.value != nil
+        let isFormValid = fullName?.isEmpty == false && bio?.isEmpty == false && bindableImage.value != nil
         bindableIsFormValid.value = isFormValid
     }
 }

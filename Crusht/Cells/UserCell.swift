@@ -91,7 +91,7 @@ class UserCell: UITableViewCell {
         }
     }
     
-    let profileImageView: UIImageView = {
+       let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 24

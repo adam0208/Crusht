@@ -9,6 +9,7 @@
 import UIKit
 //import Nuke
 import SDWebImage
+//import LBTAComponents
 
 class UserBarCell: UITableViewCell {
     var crush: User?

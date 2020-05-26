@@ -203,12 +203,23 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     func saveSwipeLocally(contact: FavoritableContact, didLike: Int) {
-        swipes[contact.phoneCell] = didLike
+        let phoneString = contact.phoneCell
+        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        swipes[phoneNoDash] = didLike
     }
     
     func saveSwipeToFireStore(contact: FavoritableContact, didLike: Int) {
         let phoneNumber = user?.phoneNumber ?? ""
-        let cardUID = contact.phoneCell
+        
+        let phoneString = contact.phoneCell
+                 let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+                 let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+                 let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+                 let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        let cardUID = phoneNoDash
         let twilioPhoneData: [String: Any] = ["phoneToInvite": phoneFinal]
         let documentData = [cardUID: didLike]
         
