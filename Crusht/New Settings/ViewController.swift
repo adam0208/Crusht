@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import Firebase
 
 private let reuseIdentifier = "SettingsCell"
 
@@ -39,14 +40,15 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.rowHeight = 60
         
+        
         tableView.register(SettingsCell.self, forCellReuseIdentifier: reuseIdentifier)
         view.addSubview(tableView)
         
         
-        tableView.frame = view.frame
+        tableView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 800)
         
         
-        let frame = CGRect(x: 0, y: 88, width: view.frame.width, height: 85)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 85)
         userInfoHeader = UserInfoHeader(frame: frame)
         userInfoHeader.usernameLabel.text = user?.name
         userInfoHeader.schoolLabel.text = user?.school
@@ -106,6 +108,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             return SocialOptions.allCases.count
         case .Communications:
             return CommunicationOptions.allCases.count
+        case .About:
+            return AboutOptions.allCases.count
         }
     }
     
@@ -137,13 +141,52 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                case .Communications:
                 let communications = CommunicationOptions(rawValue: indexPath.row)
                 cell.sectionType = communications
+        case .About:
+            let about = AboutOptions(rawValue: indexPath.row)
+            cell.sectionType = about
                }
-        
+        cell.selectionStyle = .none
         return cell
     }
     
-    
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let section = SettingsSection(rawValue: indexPath.section) else {return}
+
+        switch section {
+                case .Social:
+                  let social = SocialOptions(rawValue: indexPath.row)
+                  if social?.description == "Edit Profile" {
+                    let settingsController = SettingsTableViewController()
+                    let navController = UINavigationController(rootViewController: settingsController)
+                    navController.modalPresentationStyle = .fullScreen
+                    present(navController, animated: true)
+                }
+                  else if social?.description == "Logout" {
+                    let firebaseAuth = Auth.auth()
+                        let loginViewController = LoginViewController()
+                        let navController = UINavigationController(rootViewController: loginViewController)
+                        navController.modalPresentationStyle = .fullScreen
+                        do {
+                            try firebaseAuth.signOut()
+                        } catch { }
+                        present(navController, animated: true)
+                  }
+        
+                case .Communications:
+                 let communications = CommunicationOptions(rawValue: indexPath.row)
+        case .About:
+            let about = AboutOptions(rawValue: indexPath.row)
+            if about?.description == "Privacy" {
+                let privacyCon = PrivacyController()
+                self.navigationController?.pushViewController(privacyCon, animated: true)
+            }
+            else if about?.description == "Terms of Use" {
+                let termsController = TermsViewController()
+                self.navigationController?.pushViewController(termsController, animated: true)
+            }
+        }
+    }
+ 
     
 }
 

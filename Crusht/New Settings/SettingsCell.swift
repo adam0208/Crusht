@@ -16,12 +16,15 @@ protocol SectionType: CustomStringConvertible {
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     case Social
     case Communications
+    case About
     
     var description: String {
         switch self {
         case .Social:
             return "Social"
         case .Communications: return "Communications"
+        case .About:
+            return "About"
         }
     }
 }
@@ -50,18 +53,61 @@ enum CommunicationOptions: Int, CaseIterable, SectionType {
         case .location:
             return true
         }
+    
+        
     }
     
     case notifications
     case location
+  
     var description: String {
     switch self {
     case .notifications:
         return "Notifications"
     case .location: return "Location"
+   
         }
     }
 }
+
+enum AboutOptions: Int, CaseIterable, SectionType {
+
+    var containSwitch: Bool {
+       switch self {
+            case .companyInfo:
+             return false
+       case .versionType:
+            return false
+       case .privacy:
+        return false
+       case .terms:
+        return false
+        }
+    }
+    
+    case privacy
+    case terms
+    case companyInfo
+    case versionType
+    
+    
+    var description: String{
+    
+    switch self {
+        
+    case .privacy:
+        return "Privacy"
+    case .terms:
+        return "Terms of Use"
+    
+    case .companyInfo:
+        return "Copyright © 2020 Crusht LLC"
+    case .versionType:
+           return "Crusht \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?)"
+        }
+    
+        }
+    }
 
 class SettingsCell: UITableViewCell {
     
