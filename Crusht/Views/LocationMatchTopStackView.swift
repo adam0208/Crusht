@@ -14,7 +14,7 @@ class LocationMatchTopStackView: UIStackView {
     let collegeOnlySwitch: UISwitch = {
         let button = UISwitch()
         button.isOn = false
-        button.onTintColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        button.onTintColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
         return button
     }()
     

@@ -146,8 +146,9 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     @objc func handleSettings() {
-        let settingsController = SettingsTableViewController()
-        settingsController.delegate = self
+        let settingsController = ViewController()
+       // settingsController.delegate = self
+        settingsController.user = user
         let navController = UINavigationController(rootViewController: settingsController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
