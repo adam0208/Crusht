@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 import SDWebImage
+import FirebaseStorage
+import FirebaseAuth
+import FirebaseFirestore
 
 class EditPartyController: UIViewController {
 

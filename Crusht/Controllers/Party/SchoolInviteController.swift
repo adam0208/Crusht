@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import SDWebImage
+import FirebaseFirestore
+import FirebaseAuth
 
 class SchoolInviteController: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate {
     

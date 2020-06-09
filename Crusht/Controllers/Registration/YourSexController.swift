@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     var genderPicker = UIPickerView()

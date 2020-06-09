@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 //import Nuke
 import SDWebImage
+import FirebaseFirestore
 
 
 class MatchView: UIView {

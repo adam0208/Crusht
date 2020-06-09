@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import CoreLocation
 import GeoFire
+import FirebaseFirestore
+import FirebaseAuth
 
 class MessageController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate, SchoolDelegate {
     
@@ -95,13 +97,19 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         fetchCurrentUser()
     }
     
-    @objc func handleSettings() {
-        let settingsController = SettingsTableViewController()
-        settingsController.delegate = self
-        let navController = UINavigationController(rootViewController: settingsController)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
-    }
+      @objc func handleSettings() {
+           let settingsController = ViewController()
+          // settingsController.delegate = self
+        
+        //beware of settings delegate
+        
+           settingsController.user = user
+    
+           let navController = UINavigationController(rootViewController: settingsController)
+           navController.modalPresentationStyle = .fullScreen
+           present(navController, animated: true)
+       }
+       
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
         if CLLocationManager.locationServicesEnabled() {

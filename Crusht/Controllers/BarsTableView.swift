@@ -11,14 +11,16 @@ import Firebase
 import GeoFire
 import CoreLocation
 import GooglePlaces
-
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseMessaging
 //This Controller shows venues around a users location
 
 class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
     
     var user: User?
-    var barArray = [Venue]()
-    var venues = [Venue]()
+    var barArray = [Place]()
+    var venues = [Place]()
 
     let cellId = "cellId"
     
@@ -77,8 +79,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
-       
-          
+       fetchCurrentUser()
             DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
                 self.animationView.removeFromSuperview()
             }
@@ -102,9 +103,6 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             showSettingsAlert2()
         }
         
-        barArray.removeAll()
-        fetchCurrentUser()
-        tableView.reloadData()
     }
     
     // MARK: - Logic
@@ -147,7 +145,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     
     @objc func handleSettings() {
         let settingsController = ViewController()
-       // settingsController.delegate = self
+        //settingsController.delegate = self
         settingsController.user = user
  
         let navController = UINavigationController(rootViewController: settingsController)
@@ -337,33 +335,65 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                     print("Saved location successfully!")
                 }
             }
-            self.fetchBars()
+            var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
+            var locationName : String = "bar"
+            var searchRadius : Int = 1000
+            self.fetchGoogleData(forLocation: currentLocation, locationName: locationName, searchRadius: searchRadius )
         }
    
     }
     
     //Places instead of geofirestore
     
-    var nearbyBarResults = [GApiResponse.NearBy]()
         
-    fileprivate func fetchBars () {
+    lazy var googleClient: GoogleClientRequest = GoogleClient()
+     
+            
+    func fetchGoogleData(forLocation: CLLocation, locationName: String, searchRadius: Int) {
+      var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
+      var locationName : String = "bar"
+      var searchRadius : Int = 1000
+         googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: 2500) { (response) in
+            self.fetchBars(places: response.results)
+         
+        }
+    }
+    
+//    var barsDictionary = [String: [String]]()
+//    var  barSectionTitles = [String]()
+//    var bars = [String]()
         
-        print("yoyo")
-        
-        var input = GInput()
-        input.keyword = "Bars"
-        input.radius = 20000
-        var location = GLocation()
-        location.latitude = userLat
-        location.longitude = userLong
-        input.destinationCoordinate = location
-        GoogleApi.shared.callApi(.nearBy, input: input) { (response) in
-            if let data = response.data as? [GApiResponse.NearBy], response.isValidFor(.nearBy) {
-                // all nearby places
-                self.nearbyBarResults.append(contentsOf: data)
+    fileprivate func fetchBars(places: [Place]) {
+        for place in places {
+        let name = place.name
+        let address = place.address
+        let location = ("lat: \(place.geometry.location.latitude), lng: \(place.geometry.location.longitude)")
+            self.barArray.append(place)
+              
+            print(barArray)
+            DispatchQueue.main.async {
+        self.barArray.sort { (bar1, bar2) in
+             let venueName1 = bar1.name
+             let venueName2 = bar2.name
+            return venueName1 < venueName2
+        }
+//                for bar in self.barArray {
+//                    let barKey = String(bar.name.prefix(1))
+//                    if var barValues = self.barsDictionary[barKey] {
+//                        barValues.append(bar.name)
+//                        self.barsDictionary[barKey] = barValues
+//                         } else {
+//                        self.barsDictionary[barKey] = [bar.name]
+//                         }
+//                 }
+//                self.barSectionTitles = [String](self.barsDictionary.keys)
+//                self.barSectionTitles = self.barSectionTitles.sorted(by: { $0 < $1 })
+                self.tableView.reloadData()
             }
         }
     }
+        
+    
     
     
 //    fileprivate func fetchBars () {
@@ -547,7 +577,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         
         if !barArray.isEmpty {
             let venue = isFiltering() ? venues[indexPath.row] : barArray[indexPath.row]
-            cell.setup(venue: venue)
+            cell.setup(place: venue)
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if self.barArray.isEmpty {
@@ -563,7 +593,27 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard barArray.count > 0 else { return }
         let venue = isFiltering() ? venues[indexPath.row] : barArray[indexPath.row]
-        self.handleJoin(barName: venue.venueName ?? "Venue")
+
+        Firestore.firestore().collection("venues").document(venue.id).getDocument { (snapshot, err) in
+            if let err = err {
+                return
+            }
+            if snapshot!.exists {
+                self.handleJoin(barName: venue.name ?? "Venue")
+            }
+            else {
+                let docData: [String: Any] =
+                    ["name": venue.name,
+                     "id": venue.id
+                    ]
+                Firestore.firestore().collection("venues").document(venue.id).setData(docData) { (err) in
+                    if let err = err {
+                        return
+                    }
+                     self.handleJoin(barName: venue.name ?? "Venue")
+                }
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -572,19 +622,27 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if isFiltering() {
             return venues.count
         }
-        
+
         if barArray.isEmpty == true {
             return 1
         }
-        
+
         return barArray.count
     }
+    
+//     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//
+//        return barSectionTitles
+//
+//    }
     
     // MARK: - UISearchBar
     
@@ -596,8 +654,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        venues = barArray.filter({( venue : Venue) -> Bool in
-            return venue.venueName!.lowercased().contains(searchText.lowercased())
+        venues = barArray.filter({( venue : Place) -> Bool in
+            return venue.name.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()
     }
@@ -615,7 +673,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     // MARK: - LoginControllerDelegate
     
     func didFinishLoggingIn() {
-         barArray.removeAll()
+        barArray.removeAll()
         fetchCurrentUser()
     }
     

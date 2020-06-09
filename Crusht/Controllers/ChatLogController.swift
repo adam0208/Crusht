@@ -9,6 +9,9 @@ import UIKit
 import Firebase
 import MobileCoreServices
 import AVFoundation
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseStorage
 
 private let reuseIdentifier = "Cell"
 

@@ -24,7 +24,7 @@ private class GenderPrefCellTextField: UITextField {
 
 class GenderPrefCell: UITableViewCell, UIPickerViewDataSource, UIPickerViewDelegate {
     let myPickerData = [String](arrayLiteral: "Male", "Female", "All Humans")
-    var settings = SettingsTableViewController()
+    var settings = EditProfileController()
     var genderPrefPicker = UIPickerView()
     var sexPrefSwitch = String()
     

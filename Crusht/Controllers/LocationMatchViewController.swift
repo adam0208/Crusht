@@ -13,6 +13,8 @@ import SDWebImage
 import Geofirestore
 import CoreLocation
 import UserNotifications
+import FirebaseAuth
+import FirebaseFirestore
 
 class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocationManagerDelegate {
     var cardViewModels = [CardViewModel]()

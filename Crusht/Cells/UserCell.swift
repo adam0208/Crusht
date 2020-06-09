@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 //import Nuke
 import SDWebImage
+import FirebaseAuth
+import FirebaseFirestore
 
 class UserCell: UITableViewCell {
 

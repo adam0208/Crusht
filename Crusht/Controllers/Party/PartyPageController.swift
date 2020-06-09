@@ -11,6 +11,10 @@ import Firebase
 import SDWebImage
 import MobileCoreServices
 import AVFoundation
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
+
 
 private let reuseIdentifier = "Cell"
 

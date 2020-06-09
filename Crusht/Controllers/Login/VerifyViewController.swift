@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 import UserNotifications
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseMessaging
 
 class VerifyViewController: UIViewController {
     var phoneNumber: String!

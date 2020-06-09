@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 class UserDetailsController: UIViewController, UIScrollViewDelegate {
     let swipingPhotosController = SwipingPhotosController(isCardViewMode: false)

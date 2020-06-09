@@ -9,6 +9,8 @@
 import UIKit
 import SDWebImage
 import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 private let reuseIdentifier = "SettingsCell"
 
@@ -156,7 +158,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 case .Social:
                   let social = SocialOptions(rawValue: indexPath.row)
                   if social?.description == "Edit Profile" {
-                    let settingsController = SettingsTableViewController()
+                    let settingsController = EditProfileController()
+                    settingsController.user = user
                     let navController = UINavigationController(rootViewController: settingsController)
                     navController.modalPresentationStyle = .fullScreen
                     present(navController, animated: true)

@@ -11,6 +11,8 @@ import UIKit
 import Firebase
 import CoreLocation
 import GeoFire
+import FirebaseFirestore
+import FirebaseAuth
 
 //This controller shows users in bar which they have joined
 
@@ -148,13 +150,24 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         }
     }
     
-    @objc private func handleSettings() {
-        let settingsController = SettingsTableViewController()
-        settingsController.delegate = self
-        let navController = UINavigationController(rootViewController: settingsController)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
-    }
+//    @objc private func handleSettings() {
+//        let settingsController = EditProfileController()
+//        settingsController.delegate = self
+//        let navController = UINavigationController(rootViewController: settingsController)
+//        navController.modalPresentationStyle = .fullScreen
+//        present(navController, animated: true)
+//    }
+    
+       @objc func handleSettings() {
+           let settingsController = ViewController()
+          // settingsController.delegate = self
+           settingsController.user = user
+    
+           let navController = UINavigationController(rootViewController: settingsController)
+           navController.modalPresentationStyle = .fullScreen
+           present(navController, animated: true)
+       }
+       
     
     @objc private func handleMatchByLocationBttnTapped() {
         if CLLocationManager.locationServicesEnabled() {

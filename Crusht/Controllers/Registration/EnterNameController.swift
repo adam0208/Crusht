@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 class EnterNameController: UIViewController, UITextFieldDelegate {
     var user: User?

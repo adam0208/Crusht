@@ -10,6 +10,8 @@ import Firebase
 
 import CoreLocation
 import GeoFire
+import FirebaseAuth
+import FirebaseFirestore
 
 protocol SchoolDelegate {
     func didSendNewMessage()
@@ -196,15 +198,18 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         }
     }
     
-    @objc func handleSettings() {
-        let settingsController = SettingsTableViewController()
-        settingsController.delegate = self
+        @objc func handleSettings() {
+               let settingsController = ViewController()
+              // settingsController.delegate = self
+               settingsController.user = user
         
-        let navController = UINavigationController(rootViewController: settingsController)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
+               let navController = UINavigationController(rootViewController: settingsController)
+               navController.modalPresentationStyle = .fullScreen
+               present(navController, animated: true)
+           }
+           
         
-    }
+    
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
         if CLLocationManager.locationServicesEnabled() {

@@ -14,6 +14,11 @@ import CoreLocation
 import Fabric
 import Crashlytics
 import GooglePlaces
+import FirebaseMessaging
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseInstanceID
 
 
 @UIApplicationMain
@@ -57,9 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings = db.settings
         settings.areTimestampsInSnapshotsEnabled = true
         db.settings = settings
-        
         GMSPlacesClient.provideAPIKey("AIzaSyAckZAj7XWUiaXNDxGw-k8A2wrrMp7El2g")
-        GoogleApi.shared.initialiseWithKey("AIzaSyAckZAj7XWUiaXNDxGw-k8A2wrrMp7El2g")
         
         if #available(iOS 12, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {(granted, error) in})

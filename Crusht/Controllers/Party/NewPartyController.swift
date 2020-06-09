@@ -8,6 +8,9 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
+import FirebaseFirestore
+import FirebaseAuth
 
 class NewPartyController: UIViewController {
     

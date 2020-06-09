@@ -49,7 +49,7 @@ class UserInfoHeader: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let profileImageDimension: CGFloat = 60
+        let profileImageDimension: CGFloat = 70
         
         addSubview(profileImageView)
         profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true

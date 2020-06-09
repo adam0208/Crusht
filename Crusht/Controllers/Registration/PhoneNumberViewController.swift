@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import UserNotifications
 import CountryPicker
+import FirebaseAuth
+import FirebaseFirestore
 
 private class PhoneNumberText: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {

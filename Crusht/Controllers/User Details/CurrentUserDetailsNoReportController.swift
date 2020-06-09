@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import FirebaseFirestore
 
 class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelegate {
     let swipingPhotosController = SwipingPhotosController(isCardViewMode: false)

@@ -8,6 +8,9 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseMessaging
+import FirebaseFirestore
 
 class Message {
     var fromId: String?

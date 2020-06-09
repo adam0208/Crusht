@@ -7,6 +7,10 @@
 //
 import UIKit
 import Firebase
+import FirebaseMessaging
+import FirebaseStorage
+import FirebaseFirestore
+import FirebaseAuth
 
 class RegistrationViewModel {
     let token = Messaging.messaging().fcmToken

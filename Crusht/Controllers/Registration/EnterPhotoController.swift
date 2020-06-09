@@ -10,6 +10,9 @@ import UIKit
 import Firebase
 import UserNotifications
 //import SDWebImage
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseFirestore
 
 class EnterPhotoController: UIViewController {
     var imageFull = false

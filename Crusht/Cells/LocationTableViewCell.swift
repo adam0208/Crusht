@@ -70,7 +70,7 @@ class LocationTableViewCell: UITableViewCell {
     
     let minSlider: UISlider = {
         let slider = UISlider()
-        slider.tintColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
+        slider.tintColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
         slider.minimumValue = 1
         slider.maximumValue = 99
         return slider
@@ -78,7 +78,7 @@ class LocationTableViewCell: UITableViewCell {
     
     let maxSlider: UISlider = {
         let slider = UISlider()
-        slider.tintColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
+        slider.tintColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
         slider.minimumValue = 1
         slider.maximumValue = 99
         return slider

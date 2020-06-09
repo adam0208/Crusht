@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 import SDWebImage
+import FirebaseStorage
+import FirebaseFirestore
+import FirebaseAuth
 
 class GuestsController: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate {
 

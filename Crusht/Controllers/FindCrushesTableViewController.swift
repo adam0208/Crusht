@@ -12,6 +12,8 @@ import Contacts
 
 import CoreLocation
 import GeoFire
+import FirebaseFirestore
+import FirebaseAuth
 
 
 class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate, UITabBarControllerDelegate {
@@ -566,13 +568,24 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         }
     }
     
-    @objc func handleSettings() {
-        let settingsController = SettingsTableViewController()
-        settingsController.delegate = self
-        let navController = UINavigationController(rootViewController: settingsController)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
-    }
+//    @objc func handleSettings() {
+//        let settingsController = EditProfileController()
+//        settingsController.delegate = self
+//        let navController = UINavigationController(rootViewController: settingsController)
+//        navController.modalPresentationStyle = .fullScreen
+//        present(navController, animated: true)
+//    }
+//
+       @objc func handleSettings() {
+           let settingsController = ViewController()
+          // settingsController.delegate = self
+           settingsController.user = user
+    
+           let navController = UINavigationController(rootViewController: settingsController)
+           navController.modalPresentationStyle = .fullScreen
+           present(navController, animated: true)
+       }
+       
     
     @objc fileprivate func handleMatchByLocationBttnTapped() {
         if CLLocationManager.locationServicesEnabled() {

@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 
+import FirebaseFirestore
+import FirebaseAuth
+
 class BirthdayController: UIViewController {
     var user: User?
     var phone: String!

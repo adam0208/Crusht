@@ -12,7 +12,8 @@ import Firebase
 import SDWebImage
 
 class VenueCell: UITableViewCell {
-    var venue: Venue?
+    
+    var place: Place?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,15 +35,18 @@ class VenueCell: UITableViewCell {
         detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y + 2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
     }
 
-    func setup(venue: Venue) {
-        textLabel?.text = venue.venueName
-        
+    func setup(place: Place) {
+        textLabel?.text = place.name
+        guard let imageUrl = place.photos.first?.photoReference else {return}
         // This is needed to avoid showing the wrong image while the actual one is being downloaded.
         // The problem is caused by cell reuse.
         self.profileImageView.image = nil
         
-        let imageUrl = venue.venuePhotoUrl!
-        let url = URL(string: imageUrl)
+        let photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=\(imageUrl)&key=AIzaSyAckZAj7XWUiaXNDxGw-k8A2wrrMp7El2g"
+        
+        print(photoUrl, "Not good")
+        
+        let url = URL(string: photoUrl )
         //Nuke.loadImage(with: url!, into: self.profileImageView)
         SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
             self.profileImageView.image = image

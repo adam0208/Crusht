@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 class BioController: UIViewController, UITextViewDelegate {
     var user: User?

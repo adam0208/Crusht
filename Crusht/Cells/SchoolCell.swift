@@ -24,7 +24,7 @@ private class SchoolCellTF: UITextField {
 
 class SchoolCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
     let myPickerData = Constants.universityList
-    var settings = SettingsTableViewController()
+    var settings = EditProfileController()
     var schoolChange = String()
     var schoolPicker = UIPickerView()
     

@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 import CoreLocation
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseMessaging
+
 
 class PartyListController: UITableViewController, SettingsControllerDelegate, UISearchBarDelegate {
     func didSaveSettings() {
@@ -99,7 +103,7 @@ class PartyListController: UITableViewController, SettingsControllerDelegate, UI
     }
     
     @objc func handleSettings() {
-        let settingsController = SettingsTableViewController()
+        let settingsController = EditProfileController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
 //        let myBackButton = UIBarButtonItem()

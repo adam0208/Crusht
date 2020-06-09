@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import Contacts
+import FirebaseAuth
+import FirebaseFirestore
 
 class InviteController: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate {
 
