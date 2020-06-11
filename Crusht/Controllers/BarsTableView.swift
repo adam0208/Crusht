@@ -59,6 +59,10 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         }
         self.locationManager.requestAlwaysAuthorization()
         
+        self.tableView.refreshControl = UIRefreshControl()
+            refreshControl?.addTarget(self, action: #selector(reloadBars), for: .valueChanged)
+            refreshControl?.tintColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
+        
         // For use in foreground
         self.locationManager.requestWhenInUseAuthorization()
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
@@ -106,6 +110,14 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     // MARK: - Logic
+    
+   @objc fileprivate func reloadBars() {
+        self.barArray.removeAll()
+        fetchCurrentUser()
+        DispatchQueue.main.async {
+                  self.tableView.refreshControl?.endRefreshing()
+               }
+    }
     
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
@@ -337,7 +349,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             }
             var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
             var locationName : String = "bar"
-            var searchRadius : Int = 1000
+            var searchRadius : Int = 5000
             self.fetchGoogleData(forLocation: currentLocation, locationName: locationName, searchRadius: searchRadius )
         }
    
@@ -350,11 +362,14 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
      
             
     func fetchGoogleData(forLocation: CLLocation, locationName: String, searchRadius: Int) {
+        print("hi")
       var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
       var locationName : String = "bar"
-      var searchRadius : Int = 1000
-         googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: 2500) { (response) in
+    var searchRadius : Int = 2000
+         googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: 5000) { (response) in
+            print(response.results, "yo")
             self.fetchBars(places: response.results)
+            
          
         }
     }
@@ -364,13 +379,15 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
 //    var bars = [String]()
         
     fileprivate func fetchBars(places: [Place]) {
+        print("sup")
         for place in places {
         let name = place.name
         let address = place.address
         let location = ("lat: \(place.geometry.location.latitude), lng: \(place.geometry.location.longitude)")
+           
             self.barArray.append(place)
               
-            print(barArray)
+            print(barArray, "sup")
             DispatchQueue.main.async {
         self.barArray.sort { (bar1, bar2) in
              let venueName1 = bar1.name

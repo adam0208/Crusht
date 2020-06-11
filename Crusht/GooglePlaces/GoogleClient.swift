@@ -52,7 +52,7 @@ class GoogleClient : GoogleClientRequest {
         let baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
         let locationString = "location=" + String(location.coordinate.latitude) + "," + String(location.coordinate.longitude)
         let rankby = "rankby=distance"
-        let keywrd = "keyword=" + keyword
+        let keywrd = "type=" + keyword
         let key = "key=" + apiKey
         
         return URL(string: baseURL + locationString + "&" + rankby + "&" + keywrd + "&" + key)!
