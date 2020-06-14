@@ -366,7 +366,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
       var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
       var locationName : String = "bar"
     var searchRadius : Int = 2000
-         googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: 5000) { (response) in
+         googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: searchRadius) { (response) in
             print(response.results, "yo")
             self.fetchBars(places: response.results)
             
@@ -387,7 +387,6 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
            
             self.barArray.append(place)
               
-            print(barArray, "sup")
             DispatchQueue.main.async {
         self.barArray.sort { (bar1, bar2) in
              let venueName1 = bar1.name

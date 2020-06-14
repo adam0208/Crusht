@@ -82,7 +82,7 @@ class ViewController: UIViewController {
     func configureUI() {
         configureTableView()
         
-        navigationController?.navigationBar.isTranslucent = false
+//      navigationController?.navigationBar.isTranslucent = false
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
 
@@ -158,11 +158,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 case .Social:
                   let social = SocialOptions(rawValue: indexPath.row)
                   if social?.description == "Edit Profile" {
-                    let settingsController = EditProfileController()
+                    let settingsController = NiceEditProfile()
                     settingsController.user = user
-                    let navController = UINavigationController(rootViewController: settingsController)
-                    navController.modalPresentationStyle = .fullScreen
-                    present(navController, animated: true)
+                    let myBackButton = UIBarButtonItem()
+                    myBackButton.title = " "
+                    self.navigationItem.backBarButtonItem = myBackButton
+                    self.navigationController?.pushViewController(settingsController, animated: true)
                 }
                   else if social?.description == "Logout" {
                     let firebaseAuth = Auth.auth()

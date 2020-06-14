@@ -27,9 +27,9 @@ private class SettingsHeaderLabel: UILabel {
     
 }
 
-class CustomImagePickerController: UIImagePickerController  {
-    var imageBttn: UIButton?
-}
+//class CustomImagePickerController: UIImagePickerController  {
+//    var imageBttn: UIButton?
+//}
 
 class EditProfileController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UIPickerViewDelegate, UITextFieldDelegate {
     

@@ -14,6 +14,7 @@ struct User: ProducesCardViewModel {
     var name: String?
     var age: Int?
     var school: String?
+    var occupation: String?
     
     var imageUrl1: String?
     var imageUrl2: String?
@@ -29,6 +30,8 @@ struct User: ProducesCardViewModel {
     var minSeekingAge: Int?
     var maxSeekingAge: Int?
     var maxDistance: Int?
+    
+    var maxVenueDistance: Int?
 
     
     var toId: String?
@@ -55,6 +58,7 @@ struct User: ProducesCardViewModel {
         self.name = dictionary["Full Name"] as? String ?? ""
         self.birthday = dictionary["Birthday"] as? String ?? ""
         self.school = dictionary["School"] as? String ?? ""
+        self.occupation = dictionary["Occupation"] as? String ?? ""
         self.imageUrl1 = dictionary["ImageUrl1"] as? String
         self.imageUrl2 = dictionary["ImageUrl2"] as? String
         self.imageUrl3 = dictionary["ImageUrl3"] as? String
@@ -72,6 +76,9 @@ struct User: ProducesCardViewModel {
         self.deviceID = dictionary["deviceID"] as? String ?? ""
         
         self.maxDistance = dictionary["maxDistance"] as? Int
+        
+        self.maxVenueDistance = dictionary["maxVenueDistance"] as? Int
+        
         self.email = dictionary["email"] as? String ?? ""
         self.verified = dictionary["verified"] as? String ?? ""
         self.sexPref = dictionary["Gender-Preference"] as? String ?? ""

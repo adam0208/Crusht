@@ -85,6 +85,7 @@ class SchoolTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 24
         imageView.layer.masksToBounds = true
+        imageView.backgroundColor = .lightGray
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()

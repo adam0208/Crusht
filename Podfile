@@ -7,7 +7,7 @@ target 'Crusht' do
 
   # Pods for Crusht
 
- pod 'Firebase/Firestore'
+pod 'Firebase/Firestore'
      pod 'Firebase/Auth'
      pod 'Firebase/Storage'
      pod 'Firebase/Core', '~> 6.0'
@@ -27,6 +27,7 @@ pod 'Geofirestore', :git => 'https://github.com/patpatchpatrick/GeoFirestore-iOS
      pod 'Fabric', '~> 1.9.0'
      pod 'Crashlytics', '~> 3.12.0'
      pod 'GooglePlaces'
+
 
   target 'CrushtTests' do
     inherit! :search_paths

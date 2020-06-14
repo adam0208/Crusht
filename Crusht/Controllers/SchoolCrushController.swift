@@ -720,9 +720,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                 hasFavorited = hasLiked || swipeLike
                 cell.setup(crush: crush, hasFavorited: hasFavorited)
             } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     if self.schoolArray.isEmpty {
                         cell.profileImageView.image = nil
+                        cell.profileImageView.backgroundColor = .white
                         cell.textLabel?.text = "No classmates to show 😔"
                         cell.accessoryView?.isHidden = true
                     }

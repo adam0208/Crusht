@@ -23,6 +23,7 @@ class AgeRangeTableViewCell: UITableViewCell {
         set (newFrame) {
             var frame = newFrame
             frame.origin.x += 10
+            frame.origin.y += -10
             frame.size.width -= 2 * 12
             super.frame = frame
         }
@@ -32,14 +33,14 @@ class AgeRangeTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let overallStackView = UIStackView(arrangedSubviews: [
-            UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 6)),
+            UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 30)),
             UIStackView(arrangedSubviews: [minLabel, minSlider]),
             UIStackView(arrangedSubviews: [maxLabel, maxSlider]),
             ])
         overallStackView.axis = .vertical
-        overallStackView.spacing = 5
+        overallStackView.spacing = 8
         addSubview(overallStackView)
-        overallStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 20, left: 16, bottom: 16, right: 16))
+        overallStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 10, right: 16))
         overallStackView.fillSuperview()
     }
     
