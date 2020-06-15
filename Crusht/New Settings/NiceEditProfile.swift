@@ -31,6 +31,8 @@ private let reuseIdentifier = "NiceEditProfileCell"
     var user: User?
     
     // MARK: - Init
+    
+  
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,6 +182,7 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
                  let profile = ProfileOptions(rawValue: indexPath.row)
                  cell.sectionType = profile
+                cell.selectionStyle = .none
                  switch indexPath.row {
                 case 0:
                     cell.titleText.text = "Name"
@@ -242,6 +245,7 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
             cell.sectionType = venue
             return cell
                }
+        
      return UITableViewCell()
     }
     
@@ -276,15 +280,17 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = EditSection(rawValue: indexPath.section) else {return}
 
-        switch section {
-                case .Profile:
-                 let profile = ProfileOptions(rawValue: indexPath.row)
-        case .Location:
-            let location = LocationMatchingOptions(rawValue: indexPath.row)
-    
-        case .VenueLocation:
-            let venueLocation = VenueOptions(rawValue: indexPath.row)
+        if indexPath.row == 0 {
+            let nameController = EditNameController()
+            nameController.user = user
+//            let myBackButton = UIBarButtonItem()
+//            myBackButton.title = " "
+//            self.navigationItem.backBarButtonItem = myBackButton
+//
+//            self.navigationController?.navigationBar.prefersLargeTitles = false
+            self.navigationController?.pushViewController(nameController, animated: true)
         }
+    
     }
  
     

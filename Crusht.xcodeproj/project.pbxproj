@@ -14,6 +14,8 @@
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
 		280B78B123EF72C30084D745 /* icons8-photo-gallery-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */; };
 		282300EC2494106200215F5A /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282300EB2494106200215F5A /* PhotoView.swift */; };
+		282300EF2495C47800215F5A /* EditNameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282300EE2495C47800215F5A /* EditNameController.swift */; };
+		282300F12495C49A00215F5A /* EditSchoolController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282300F02495C49A00215F5A /* EditSchoolController.swift */; };
 		28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */; };
 		28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */; };
 		283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C621B8925C00B3E4FD /* AppDelegate.swift */; };
@@ -164,6 +166,8 @@
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-photo-gallery-100.png"; sourceTree = "<group>"; };
 		282300EB2494106200215F5A /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
+		282300EE2495C47800215F5A /* EditNameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameController.swift; sourceTree = "<group>"; };
+		282300F02495C49A00215F5A /* EditSchoolController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSchoolController.swift; sourceTree = "<group>"; };
 		28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewCell.swift; sourceTree = "<group>"; };
 		28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSeniorFivePostTableViewController.swift; sourceTree = "<group>"; };
 		283816C321B8925C00B3E4FD /* Crusht.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crusht.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -344,6 +348,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		282300ED2495C44D00215F5A /* Edit Specific Detail */ = {
+			isa = PBXGroup;
+			children = (
+				282300EE2495C47800215F5A /* EditNameController.swift */,
+				282300F02495C49A00215F5A /* EditSchoolController.swift */,
+			);
+			path = "Edit Specific Detail";
+			sourceTree = "<group>";
+		};
 		283816BA21B8925C00B3E4FD = {
 			isa = PBXGroup;
 			children = (
@@ -509,6 +522,7 @@
 		284E69D8248E969F005E7D12 /* New Settings */ = {
 			isa = PBXGroup;
 			children = (
+				282300ED2495C44D00215F5A /* Edit Specific Detail */,
 				284E69DD248E96FC005E7D12 /* UserInfoHeader.swift */,
 				284E69DA248E96BE005E7D12 /* ViewController.swift */,
 				28425A862493F46800983ED0 /* NiceEditProfile.swift */,
@@ -984,6 +998,7 @@
 				28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */,
 				285D434F23FB37BF0043198A /* PartyCell.swift in Sources */,
 				285D434D23FB35D30043198A /* Party.swift in Sources */,
+				282300EF2495C47800215F5A /* EditNameController.swift in Sources */,
 				284E69DE248E96FC005E7D12 /* UserInfoHeader.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
 				4CA41B56235E0DCB00CF8529 /* ContactsTextCell.swift in Sources */,
@@ -1050,6 +1065,7 @@
 				28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */,
 				28D339092405BCFC00764EE8 /* SchoolInviteController.swift in Sources */,
 				284E69DC248E96BE005E7D12 /* ViewController.swift in Sources */,
+				282300F12495C49A00215F5A /* EditSchoolController.swift in Sources */,
 				2838170121B8A05E00B3E4FD /* LocationMatchBottomButtonsStackView.swift in Sources */,
 				4CA41B52235E0D8100CF8529 /* VerificationNumberCell.swift in Sources */,
 				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,
