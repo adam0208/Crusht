@@ -84,8 +84,7 @@ class ViewController: UIViewController {
         
 //      navigationController?.navigationBar.isTranslucent = false
         navigationItem.title = "Settings"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
-
+         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-chevron-left-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBack))
     }
     
     @objc fileprivate func handleBack() {
@@ -116,18 +115,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45
+        return 50
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        view.backgroundColor = .white
         let title = UILabel()
-        title.font = UIFont.boldSystemFont(ofSize: 16)
-        title.textColor = .white
+        title.font = UIFont.boldSystemFont(ofSize: 22)
+        title.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         title.text = SettingsSection(rawValue: section)?.description
         view.addSubview(title)
-        title.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: nil, padding: .init(top: 3, left: 5, bottom: 5, right: 0))
+        title.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: nil, padding: .init(top: 2, left: 10, bottom: 2, right: 0))
         return view
     }
     

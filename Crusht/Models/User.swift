@@ -12,6 +12,8 @@ import FirebaseFirestore
 
 struct User: ProducesCardViewModel {
     var name: String?
+    var firstName: String?
+    var lastName: String?
     var age: Int?
     var school: String?
     var occupation: String?
@@ -56,6 +58,8 @@ struct User: ProducesCardViewModel {
     init(dictionary: [String: Any]) {
         self.age = dictionary["Age"] as? Int
         self.name = dictionary["Full Name"] as? String ?? ""
+        self.firstName = dictionary["First Name"] as? String ?? ""
+        self.lastName = dictionary["Last Name"] as? String ?? ""
         self.birthday = dictionary["Birthday"] as? String ?? ""
         self.school = dictionary["School"] as? String ?? ""
         self.occupation = dictionary["Occupation"] as? String ?? ""

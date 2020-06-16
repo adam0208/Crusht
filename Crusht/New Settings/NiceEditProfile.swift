@@ -129,7 +129,7 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45
+        return 50
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -160,16 +160,15 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
         }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        let title = UILabel()
-        title.font = UIFont.boldSystemFont(ofSize: 16)
-        title.textColor = .white
-       
-        title.text = EditSection(rawValue: section)?.description
-        view.addSubview(title)
-        title.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: nil, padding: .init(top: 3, left: 5, bottom: 5, right: 0))
-        return view
+            let view = UIView()
+              view.backgroundColor = .white
+              let title = UILabel()
+              title.font = UIFont.boldSystemFont(ofSize: 22)
+              title.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+              title.text = EditSection(rawValue: section)?.description
+              view.addSubview(title)
+              title.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: nil, padding: .init(top: 2, left: 10, bottom: 2, right: 0))
+              return view
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -186,7 +185,7 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
                  switch indexPath.row {
                 case 0:
                     cell.titleText.text = "Name"
-                    cell.userText.text = user?.name ?? "Edit Name"
+                    cell.userText.text = "\(user?.firstName ?? "Edit") \(user?.lastName ?? "Name")"
                      return cell
                         case 1:
                             cell.titleText.text = "School"
@@ -283,13 +282,23 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             let nameController = EditNameController()
             nameController.user = user
-//            let myBackButton = UIBarButtonItem()
-//            myBackButton.title = " "
-//            self.navigationItem.backBarButtonItem = myBackButton
-//
-//            self.navigationController?.navigationBar.prefersLargeTitles = false
             self.navigationController?.pushViewController(nameController, animated: true)
         }
+        else if indexPath.row == 1 {
+            let editSchoolController = EditSchoolController()
+            editSchoolController.user = user
+            self.navigationController?.pushViewController(editSchoolController, animated: true)
+        }
+        else if indexPath.row == 2 {
+             let occupationController = EditOccupationController()
+            occupationController.user = user
+            self.navigationController?.pushViewController(occupationController, animated: true)
+        }
+        else if indexPath.row == 4 {
+                   let editbio = EditBioController()
+                  editbio.user = user
+                  self.navigationController?.pushViewController(editbio, animated: true)
+              }
     
     }
  

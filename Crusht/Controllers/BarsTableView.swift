@@ -44,14 +44,17 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         placesClient = GMSPlacesClient.shared()
 
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
-        searchController.searchBar.barStyle = .black
+        //searchController.searchBar.barStyle = .black
+//        searchController.searchBar.barTintColor = .clear
+//        searchController.searchBar.backgroundColor = .clear
+            
+        searchController.searchBar.searchTextField.backgroundColor = .clear
+      
         navigationController?.isNavigationBarHidden = false
         tableView.register(VenueCell.self, forCellReuseIdentifier: cellId)
-        navigationItem.title = "Join Venues"
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        navigationItem.title = "Venues"
+       
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -65,8 +68,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         
         // For use in foreground
         self.locationManager.requestWhenInUseAuthorization()
-        let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
+        let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-near-me-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
+        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-32"), style: .plain, target: self, action: #selector(handleInfo))
         
         navigationItem.rightBarButtonItems = [swipeButton, infoButton]
 
@@ -79,7 +82,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         definesPresentationContext = true
         listenForMessages()
         messageBadge.isHidden = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-5").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
         
         self.searchController.searchBar.delegate = self
         self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -265,12 +268,15 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                            docData = [
                                "uid": uid,
                                "Full Name": self.user?.name ?? "",
+                               "First Name": self.user?.firstName ?? "",
+                               "Last Name": self.user?.lastName ?? "",
                                "ImageUrl1": self.user?.imageUrl1 ?? "",
                                "ImageUrl2": self.user?.imageUrl2 ?? "",
                                "ImageUrl3": self.user?.imageUrl3 ?? "",
                                "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
                                "Birthday": self.user?.birthday ?? "",
                                "School": self.user?.school ?? "",
+                               "Occupation": self.user?.occupation ?? "",
                                "Bio": self.user?.bio ?? "",
                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
@@ -288,11 +294,14 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                            docData = [
                                "uid": uid,
                                "Full Name": self.user?.name ?? "",
+                               "First Name": self.user?.firstName ?? "",
+                               "Last Name": self.user?.lastName ?? "",
                                "ImageUrl1": self.user?.imageUrl1 ?? "",
                                "ImageUrl2": self.user?.imageUrl2 ?? "",
                                "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
                                "Birthday": self.user?.birthday ?? "",
                                "School": self.user?.school ?? "",
+                               "Occupation": self.user?.occupation ?? "",
                                "Bio": self.user?.bio ?? "",
                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
@@ -311,10 +320,13 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                            docData = [
                                "uid": uid,
                                "Full Name": self.user?.name ?? "",
+                               "First Name": self.user?.firstName ?? "",
+                               "Last Name": self.user?.lastName ?? "",
                                "ImageUrl1": self.user?.imageUrl1 ?? "",
                                "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
                                "Birthday": self.user?.birthday ?? "",
                                "School": self.user?.school ?? "",
+                               "Occupation": self.user?.occupation ?? "",
                                "Bio": self.user?.bio ?? "",
                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
@@ -380,11 +392,10 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         
     fileprivate func fetchBars(places: [Place]) {
         print("sup")
-        for place in places {
+        places.forEach({ (place) in
         let name = place.name
         let address = place.address
         let location = ("lat: \(place.geometry.location.latitude), lng: \(place.geometry.location.longitude)")
-           
             self.barArray.append(place)
               
             DispatchQueue.main.async {
@@ -392,22 +403,13 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
              let venueName1 = bar1.name
              let venueName2 = bar2.name
             return venueName1 < venueName2
-        }
-//                for bar in self.barArray {
-//                    let barKey = String(bar.name.prefix(1))
-//                    if var barValues = self.barsDictionary[barKey] {
-//                        barValues.append(bar.name)
-//                        self.barsDictionary[barKey] = barValues
-//                         } else {
-//                        self.barsDictionary[barKey] = [bar.name]
-//                         }
-//                 }
-//                self.barSectionTitles = [String](self.barsDictionary.keys)
-//                self.barSectionTitles = self.barSectionTitles.sorted(by: { $0 < $1 })
-                self.tableView.reloadData()
             }
+                self.tableView.reloadData()
+                }
+            })
         }
-    }
+        
+    
         
     
     
@@ -471,9 +473,12 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                     docData = [
                         "uid": uid,
                         "Full Name": self.user?.name ?? "",
+                        "First Name": self.user?.firstName ?? "",
+                        "Last Name": self.user?.lastName ?? "",
                         "ImageUrl1": self.user?.imageUrl1 ?? "",
                         "ImageUrl2": self.user?.imageUrl2 ?? "",
                         "ImageUrl3": self.user?.imageUrl3 ?? "",
+                        "Occupation": self.user?.occupation ?? "",
                         "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
                         "Birthday": self.user?.birthday ?? "",
                         "School": self.user?.school ?? "",
@@ -493,11 +498,14 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                     docData = [
                         "uid": uid,
                         "Full Name": self.user?.name ?? "",
+                        "First Name": self.user?.firstName ?? "",
+                        "Last Name": self.user?.lastName ?? "",
                         "ImageUrl1": self.user?.imageUrl1 ?? "",
                         "ImageUrl2": self.user?.imageUrl2 ?? "",
                         "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
                         "Birthday": self.user?.birthday ?? "",
                         "School": self.user?.school ?? "",
+                        "Occupation": self.user?.occupation ?? "",
                         "Bio": self.user?.bio ?? "",
                         "minSeekingAge": self.user?.minSeekingAge ?? 18,
                         "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
@@ -515,10 +523,13 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                     docData = [
                         "uid": uid,
                         "Full Name": self.user?.name ?? "",
+                        "First Name": self.user?.firstName ?? "",
+                        "Last Name": self.user?.lastName ?? "",
                         "ImageUrl1": self.user?.imageUrl1 ?? "",
                         "Age": self.calcAge(birthday: self.user?.birthday ?? "10-31-1995"),
                         "Birthday": self.user?.birthday ?? "",
                         "School": self.user?.school ?? "",
+                        "Occupation": self.user?.occupation ?? "",
                         "Bio": self.user?.bio ?? "",
                         "minSeekingAge": self.user?.minSeekingAge ?? 18,
                         "maxSeekingAge": self.user?.maxSeekingAge ?? 50,

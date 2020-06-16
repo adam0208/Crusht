@@ -16,6 +16,12 @@
 		282300EC2494106200215F5A /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282300EB2494106200215F5A /* PhotoView.swift */; };
 		282300EF2495C47800215F5A /* EditNameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282300EE2495C47800215F5A /* EditNameController.swift */; };
 		282300F12495C49A00215F5A /* EditSchoolController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282300F02495C49A00215F5A /* EditSchoolController.swift */; };
+		282300F3249739FB00215F5A /* EditOccupationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282300F2249739FB00215F5A /* EditOccupationController.swift */; };
+		282300F52497552400215F5A /* icons8-settings-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300F42497552400215F5A /* icons8-settings-30-2.png */; };
+		282300F72497566E00215F5A /* icons8-settings-30-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300F62497566E00215F5A /* icons8-settings-30-3.png */; };
+		282300F92497589B00215F5A /* icons8-near-me-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300F82497589B00215F5A /* icons8-near-me-30.png */; };
+		282300FB2497590B00215F5A /* icons8-information-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300FA2497590B00215F5A /* icons8-information-30.png */; };
+		282300FD249759C100215F5A /* icons8-chevron-left-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300FC249759C100215F5A /* icons8-chevron-left-30.png */; };
 		28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */; };
 		28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */; };
 		283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C621B8925C00B3E4FD /* AppDelegate.swift */; };
@@ -38,6 +44,9 @@
 		283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FD3DA227E669000C7760F /* CustomTabBarController.swift */; };
 		28425A872493F46800983ED0 /* NiceEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28425A862493F46800983ED0 /* NiceEditProfile.swift */; };
 		28425A8C2493F4F800983ED0 /* NiceEditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28425A8B2493F4F800983ED0 /* NiceEditProfileCell.swift */; };
+		284645902498640800674D3F /* EditBioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846458F2498640800674D3F /* EditBioController.swift */; };
+		2846459224986CE900674D3F /* EditGenderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846459124986CE900674D3F /* EditGenderController.swift */; };
+		2846459424986CFC00674D3F /* EditSexPrefController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846459324986CFC00674D3F /* EditSexPrefController.swift */; };
 		284E69DB248E96BE005E7D12 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284E69D9248E96BB005E7D12 /* SettingsCell.swift */; };
 		284E69DC248E96BE005E7D12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284E69DA248E96BE005E7D12 /* ViewController.swift */; };
 		284E69DE248E96FC005E7D12 /* UserInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284E69DD248E96FC005E7D12 /* UserInfoHeader.swift */; };
@@ -168,6 +177,12 @@
 		282300EB2494106200215F5A /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		282300EE2495C47800215F5A /* EditNameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameController.swift; sourceTree = "<group>"; };
 		282300F02495C49A00215F5A /* EditSchoolController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSchoolController.swift; sourceTree = "<group>"; };
+		282300F2249739FB00215F5A /* EditOccupationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOccupationController.swift; sourceTree = "<group>"; };
+		282300F42497552400215F5A /* icons8-settings-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-settings-30-2.png"; sourceTree = "<group>"; };
+		282300F62497566E00215F5A /* icons8-settings-30-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-settings-30-3.png"; sourceTree = "<group>"; };
+		282300F82497589B00215F5A /* icons8-near-me-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-near-me-30.png"; sourceTree = "<group>"; };
+		282300FA2497590B00215F5A /* icons8-information-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-information-30.png"; sourceTree = "<group>"; };
+		282300FC249759C100215F5A /* icons8-chevron-left-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-chevron-left-30.png"; sourceTree = "<group>"; };
 		28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewCell.swift; sourceTree = "<group>"; };
 		28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSeniorFivePostTableViewController.swift; sourceTree = "<group>"; };
 		283816C321B8925C00B3E4FD /* Crusht.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crusht.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,6 +211,9 @@
 		283FD3DA227E669000C7760F /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		28425A862493F46800983ED0 /* NiceEditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NiceEditProfile.swift; sourceTree = "<group>"; };
 		28425A8B2493F4F800983ED0 /* NiceEditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NiceEditProfileCell.swift; sourceTree = "<group>"; };
+		2846458F2498640800674D3F /* EditBioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBioController.swift; sourceTree = "<group>"; };
+		2846459124986CE900674D3F /* EditGenderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGenderController.swift; sourceTree = "<group>"; };
+		2846459324986CFC00674D3F /* EditSexPrefController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSexPrefController.swift; sourceTree = "<group>"; };
 		284E69D9248E96BB005E7D12 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		284E69DA248E96BE005E7D12 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		284E69DD248E96FC005E7D12 /* UserInfoHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoHeader.swift; sourceTree = "<group>"; };
@@ -353,6 +371,10 @@
 			children = (
 				282300EE2495C47800215F5A /* EditNameController.swift */,
 				282300F02495C49A00215F5A /* EditSchoolController.swift */,
+				282300F2249739FB00215F5A /* EditOccupationController.swift */,
+				2846458F2498640800674D3F /* EditBioController.swift */,
+				2846459124986CE900674D3F /* EditGenderController.swift */,
+				2846459324986CFC00674D3F /* EditSexPrefController.swift */,
 			);
 			path = "Edit Specific Detail";
 			sourceTree = "<group>";
@@ -397,6 +419,11 @@
 				283816C621B8925C00B3E4FD /* AppDelegate.swift */,
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
+				282300FC249759C100215F5A /* icons8-chevron-left-30.png */,
+				282300FA2497590B00215F5A /* icons8-information-30.png */,
+				282300F82497589B00215F5A /* icons8-near-me-30.png */,
+				282300F62497566E00215F5A /* icons8-settings-30-3.png */,
+				282300F42497552400215F5A /* icons8-settings-30-2.png */,
 				285D435623FBACFA0043198A /* icons8-plus-50.png */,
 				28AFA7782391155400DF2255 /* icons8-hide-30.png */,
 				28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */,
@@ -672,8 +699,8 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
-				70B48AA68F8B1112A6B9C970 /* [CP] Embed Pods Frameworks */,
-				A7833558E5F2A608F2FDBC21 /* [CP] Copy Pods Resources */,
+				898B24CFDBF2CF046EF88D49 /* [CP] Embed Pods Frameworks */,
+				F0041D2D48496BE30E410C7A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -711,8 +738,8 @@
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
-				FCE89636B8D0F6C2E5E8571C /* [CP] Embed Pods Frameworks */,
-				61443B0301293CC3E71A81D7 /* [CP] Copy Pods Resources */,
+				3C67BC0760DF310AF20FC88F /* [CP] Embed Pods Frameworks */,
+				944F024E24B3828E48D7B3F8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -777,12 +804,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282300F72497566E00215F5A /* icons8-settings-30-3.png in Resources */,
+				282300FD249759C100215F5A /* icons8-chevron-left-30.png in Resources */,
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
 				28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */,
 				280B78B123EF72C30084D745 /* icons8-photo-gallery-100.png in Resources */,
+				282300F52497552400215F5A /* icons8-settings-30-2.png in Resources */,
+				282300F92497589B00215F5A /* icons8-near-me-30.png in Resources */,
 				285D435723FBACFB0043198A /* icons8-plus-50.png in Resources */,
 				284E69E0248EABBE005E7D12 /* icons8-chevron-right-30.png in Resources */,
+				282300FB2497590B00215F5A /* icons8-information-30.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
 				28AFA7792391155400DF2255 /* icons8-hide-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
@@ -867,24 +899,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		61443B0301293CC3E71A81D7 /* [CP] Copy Pods Resources */ = {
+		3C67BC0760DF310AF20FC88F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		70B48AA68F8B1112A6B9C970 /* [CP] Embed Pods Frameworks */ = {
+		898B24CFDBF2CF046EF88D49 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -901,21 +933,21 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A7833558E5F2A608F2FDBC21 /* [CP] Copy Pods Resources */ = {
+		944F024E24B3828E48D7B3F8 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */ = {
@@ -940,21 +972,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FCE89636B8D0F6C2E5E8571C /* [CP] Embed Pods Frameworks */ = {
+		F0041D2D48496BE30E410C7A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -972,6 +1004,7 @@
 				28EDA72C23FFBEC100450BA7 /* GuestsController.swift in Sources */,
 				28857CDC21B9B82700A654A0 /* CustomTextField.swift in Sources */,
 				285A34A621BC7B920086CC95 /* SettingsCells.swift in Sources */,
+				282300F3249739FB00215F5A /* EditOccupationController.swift in Sources */,
 				28BE625121BE091E00EAFFE2 /* UserDetailsController.swift in Sources */,
 				283B5E6023FF23ED006F5ED4 /* PartyPageCell.swift in Sources */,
 				28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */,
@@ -1008,6 +1041,7 @@
 				286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */,
 				285D435323FBA8410043198A /* InviteController.swift in Sources */,
 				4CA41B3D235DE93800CF8529 /* CrushScore.swift in Sources */,
+				284645902498640800674D3F /* EditBioController.swift in Sources */,
 				28425A872493F46800983ED0 /* NiceEditProfile.swift in Sources */,
 				2857DF0A226BF9CE0072C952 /* BarsTableView.swift in Sources */,
 				2895576D227E62B5001EFD73 /* UsersInBarTableView.swift in Sources */,
@@ -1050,6 +1084,7 @@
 				4CA41B50235E0D6800CF8529 /* TermsCell.swift in Sources */,
 				28A293CF248F3528009203FA /* GoogleClient.swift in Sources */,
 				2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */,
+				2846459224986CE900674D3F /* EditGenderController.swift in Sources */,
 				2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
@@ -1060,6 +1095,7 @@
 				28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */,
 				2838170B21B8A1F300B3E4FD /* ProfilePageViewController.swift in Sources */,
 				28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */,
+				2846459424986CFC00674D3F /* EditSexPrefController.swift in Sources */,
 				28FD7D122264238A00B79496 /* BirthdayController.swift in Sources */,
 				2838171E21B8C90100B3E4FD /* UIViewExtension.swift in Sources */,
 				28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */,
@@ -1268,7 +1304,7 @@
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Crusht/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1293,7 +1329,7 @@
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Crusht/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
