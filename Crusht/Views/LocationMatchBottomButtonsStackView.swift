@@ -10,9 +10,9 @@ import UIKit
 
 class LocationMatchBottomButtonsStackView: UIStackView {
     let refreshButton = createButton(image: #imageLiteral(resourceName: "icons8-refresh-30"))
-    let disLikeBttn = createButton(image: #imageLiteral(resourceName: "icons8-cancel-30"))
+    let disLikeBttn = createButton(image: #imageLiteral(resourceName: "icons8-cancel-31"))
     let likeBttn = createButton(image: #imageLiteral(resourceName: "icons8-love-30"))
-    let reportButton = createButton(image: #imageLiteral(resourceName: "icons8-box-important-30"))
+    let reportButton = createButton(image: #imageLiteral(resourceName: "icons8-box-important-30-2"))
     let blueView = UIView()
     let blue = UIView()
     let moreblue = UIView()
@@ -21,9 +21,7 @@ class LocationMatchBottomButtonsStackView: UIStackView {
         super.init(frame: frame)
         distribution = .fillEqually
         heightAnchor.constraint(equalToConstant: 30).isActive = true
-        blueView.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        blue.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        moreblue.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+      
         spacing = 0
         
         [refreshButton, disLikeBttn, likeBttn, reportButton ].forEach { (button) in

@@ -10,6 +10,8 @@
 		010542B5D9B31A23047DD86E /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */; };
 		28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2D21C0C18D001F6BC5 /* MessageController.swift */; };
 		28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */; };
+		2808A483249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 2808A482249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png */; };
+		28091B6C249E8FD5007C1DF2 /* VenueDistanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28091B6B249E8FD5007C1DF2 /* VenueDistanceCell.swift */; };
 		280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED221CB3FD700A89C5E /* UserCell.swift */; };
 		280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */; };
 		280B78B123EF72C30084D745 /* icons8-photo-gallery-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */; };
@@ -63,6 +65,8 @@
 		285D435323FBA8410043198A /* InviteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D435223FBA8410043198A /* InviteController.swift */; };
 		285D435523FBABA10043198A /* InviteContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D435423FBABA10043198A /* InviteContactsCell.swift */; };
 		285D435723FBACFB0043198A /* icons8-plus-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 285D435623FBACFA0043198A /* icons8-plus-50.png */; };
+		285DDC7D249F0C04000688E8 /* icons8-cancel-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 285DDC7C249F0C04000688E8 /* icons8-cancel-30.png */; };
+		285F65E7249F0F8300E9C695 /* icons8-high-importance-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 285F65E6249F0F8300E9C695 /* icons8-high-importance-30-2.png */; };
 		286458CB21BF2A3D00401029 /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */; };
 		2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4EF228E6FC500E3165F /* TermsViewController.swift */; };
 		2864C4F2228E743B00E3165F /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2864C4F1228E743B00E3165F /* PrivacyController.swift */; };
@@ -71,6 +75,7 @@
 		28744A2121FF8BC800B438A8 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28744A2021FF8BC800B438A8 /* GeoFire.swift */; };
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
 		28795C4E23E2B02400503FB2 /* PartyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28795C4D23E2B02400503FB2 /* PartyListController.swift */; };
+		287F2065249E8CB400F04BC2 /* icons8-remove-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 287F2064249E8CB400F04BC2 /* icons8-remove-30-2.png */; };
 		287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F3A8F225B1C43008F5BD0 /* AnimationView.swift */; };
 		28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCA21B9A91500A654A0 /* LoginViewController.swift */; };
 		28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CD021B9A9C200A654A0 /* VerifyViewController.swift */; };
@@ -87,6 +92,7 @@
 		2895576F227E644F001EFD73 /* UserBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895576E227E644F001EFD73 /* UserBarCell.swift */; };
 		28A293CD248F3441009203FA /* ResponseModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A293CC248F3441009203FA /* ResponseModels.swift */; };
 		28A293CF248F3528009203FA /* GoogleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A293CE248F3528009203FA /* GoogleClient.swift */; };
+		28A5AB1C249F0D3100315726 /* icons8-exclamation-mark-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A5AB1B249F0D3100315726 /* icons8-exclamation-mark-30-2.png */; };
 		28A7F9E621BC3C1D00238B7D /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A7F9E521BC3C1D00238B7D /* EditProfileController.swift */; };
 		28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */; };
 		28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */; };
@@ -99,6 +105,7 @@
 		28C06E0B22593CE3004F0C1E /* MessageReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C06E0A22593CE3004F0C1E /* MessageReportController.swift */; };
 		28C30330226BFE21002FB145 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C3032F226BFE21002FB145 /* Venue.swift */; };
 		28C30332226C02AE002FB145 /* VenueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C30331226C02AE002FB145 /* VenueCell.swift */; };
+		28C71CF7249E8E06009E3E84 /* icons8-customer-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C71CF6249E8E06009E3E84 /* icons8-customer-30.png */; };
 		28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */; };
 		28CFC6B521C5B3ED00387129 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Message.swift */; };
 		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
@@ -106,6 +113,7 @@
 		28D339072405BC9900764EE8 /* InviteTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D339062405BC9900764EE8 /* InviteTabController.swift */; };
 		28D339092405BCFC00764EE8 /* SchoolInviteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D339082405BCFC00764EE8 /* SchoolInviteController.swift */; };
 		28D3390B2405C3A700764EE8 /* InviteSchoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D3390A2405C3A700764EE8 /* InviteSchoolCell.swift */; };
+		28E0FF18249F10EC00070769 /* icons8-box-important-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28E0FF17249F10EB00070769 /* icons8-box-important-30-2.png */; };
 		28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */; };
 		28EDA72A23FF96D500450BA7 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72923FF96D500450BA7 /* Post.swift */; };
 		28EDA72C23FFBEC100450BA7 /* GuestsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72B23FFBEC100450BA7 /* GuestsController.swift */; };
@@ -116,6 +124,7 @@
 		28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */; };
 		28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */; };
 		28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */; };
+		28F38718249F0E60006079D1 /* icons8-high-importance-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F38717249F0E60006079D1 /* icons8-high-importance-30.png */; };
 		28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */; };
 		28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F46D9621C41A7800B7051F /* SendMessageButton.swift */; };
 		28F54071224C163F00EC5062 /* BioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F54070224C163F00EC5062 /* BioCell.swift */; };
@@ -171,6 +180,8 @@
 /* Begin PBXFileReference section */
 		28067D2D21C0C18D001F6BC5 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		2808A482249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-exclamation-mark-30.png"; sourceTree = "<group>"; };
+		28091B6B249E8FD5007C1DF2 /* VenueDistanceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDistanceCell.swift; sourceTree = "<group>"; };
 		280B1ED221CB3FD700A89C5E /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		280B1ED421CB407C00A89C5E /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-photo-gallery-100.png"; sourceTree = "<group>"; };
@@ -230,6 +241,8 @@
 		285D435223FBA8410043198A /* InviteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteController.swift; sourceTree = "<group>"; };
 		285D435423FBABA10043198A /* InviteContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteContactsCell.swift; sourceTree = "<group>"; };
 		285D435623FBACFA0043198A /* icons8-plus-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-plus-50.png"; sourceTree = "<group>"; };
+		285DDC7C249F0C04000688E8 /* icons8-cancel-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-cancel-30.png"; sourceTree = "<group>"; };
+		285F65E6249F0F8300E9C695 /* icons8-high-importance-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-high-importance-30-2.png"; sourceTree = "<group>"; };
 		286458CA21BF2A3D00401029 /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
 		2864C4EF228E6FC500E3165F /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2864C4F1228E743B00E3165F /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
@@ -238,6 +251,7 @@
 		28744A2021FF8BC800B438A8 /* GeoFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		28795C4D23E2B02400503FB2 /* PartyListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyListController.swift; sourceTree = "<group>"; };
+		287F2064249E8CB400F04BC2 /* icons8-remove-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-remove-30-2.png"; sourceTree = "<group>"; };
 		287F3A8F225B1C43008F5BD0 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		28857CCA21B9A91500A654A0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		28857CD021B9A9C200A654A0 /* VerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyViewController.swift; sourceTree = "<group>"; };
@@ -254,6 +268,7 @@
 		2895576E227E644F001EFD73 /* UserBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBarCell.swift; sourceTree = "<group>"; };
 		28A293CC248F3441009203FA /* ResponseModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModels.swift; sourceTree = "<group>"; };
 		28A293CE248F3528009203FA /* GoogleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleClient.swift; sourceTree = "<group>"; };
+		28A5AB1B249F0D3100315726 /* icons8-exclamation-mark-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-exclamation-mark-30-2.png"; sourceTree = "<group>"; };
 		28A7F9E521BC3C1D00238B7D /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 		28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutBttnCell.swift; sourceTree = "<group>"; };
 		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
@@ -266,6 +281,7 @@
 		28C06E0A22593CE3004F0C1E /* MessageReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageReportController.swift; sourceTree = "<group>"; };
 		28C3032F226BFE21002FB145 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		28C30331226C02AE002FB145 /* VenueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueCell.swift; sourceTree = "<group>"; };
+		28C71CF6249E8E06009E3E84 /* icons8-customer-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-customer-30.png"; sourceTree = "<group>"; };
 		28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTableViewCell.swift; sourceTree = "<group>"; };
 		28CFC6B421C5B3ED00387129 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
@@ -273,6 +289,7 @@
 		28D339062405BC9900764EE8 /* InviteTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteTabController.swift; sourceTree = "<group>"; };
 		28D339082405BCFC00764EE8 /* SchoolInviteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolInviteController.swift; sourceTree = "<group>"; };
 		28D3390A2405C3A700764EE8 /* InviteSchoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteSchoolCell.swift; sourceTree = "<group>"; };
+		28E0FF17249F10EB00070769 /* icons8-box-important-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-box-important-30-2.png"; sourceTree = "<group>"; };
 		28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-confetti-30.png"; sourceTree = "<group>"; };
 		28EDA72923FF96D500450BA7 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		28EDA72B23FFBEC100450BA7 /* GuestsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestsController.swift; sourceTree = "<group>"; };
@@ -284,6 +301,7 @@
 		28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterMorePhoneInfoViewController.swift; sourceTree = "<group>"; };
 		28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFivePostsTableViewCell.swift; sourceTree = "<group>"; };
 		28F369E121E9A2F20007FBC6 /* SeniorFiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveModel.swift; sourceTree = "<group>"; };
+		28F38717249F0E60006079D1 /* icons8-high-importance-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-high-importance-30.png"; sourceTree = "<group>"; };
 		28F46D9421C41A2E00B7051F /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		28F46D9621C41A7800B7051F /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		28F54070224C163F00EC5062 /* BioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioCell.swift; sourceTree = "<group>"; };
@@ -419,6 +437,14 @@
 				283816C621B8925C00B3E4FD /* AppDelegate.swift */,
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
+				28E0FF17249F10EB00070769 /* icons8-box-important-30-2.png */,
+				285F65E6249F0F8300E9C695 /* icons8-high-importance-30-2.png */,
+				28F38717249F0E60006079D1 /* icons8-high-importance-30.png */,
+				28A5AB1B249F0D3100315726 /* icons8-exclamation-mark-30-2.png */,
+				285DDC7C249F0C04000688E8 /* icons8-cancel-30.png */,
+				28C71CF6249E8E06009E3E84 /* icons8-customer-30.png */,
+				287F2064249E8CB400F04BC2 /* icons8-remove-30-2.png */,
+				2808A482249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png */,
 				282300FC249759C100215F5A /* icons8-chevron-left-30.png */,
 				282300FA2497590B00215F5A /* icons8-information-30.png */,
 				282300F82497589B00215F5A /* icons8-near-me-30.png */,
@@ -572,7 +598,6 @@
 			isa = PBXGroup;
 			children = (
 				28857CCA21B9A91500A654A0 /* LoginViewController.swift */,
-				28857CD021B9A9C200A654A0 /* VerifyViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -644,6 +669,7 @@
 			isa = PBXGroup;
 			children = (
 				28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */,
+				28857CD021B9A9C200A654A0 /* VerifyViewController.swift */,
 				28FD7D0F22641FB100B79496 /* EnterNameController.swift */,
 				28FD7D112264238A00B79496 /* BirthdayController.swift */,
 				28FD7D13226425D800B79496 /* EnterSchoolController.swift */,
@@ -683,6 +709,7 @@
 				283B5E5F23FF23ED006F5ED4 /* PartyPageCell.swift */,
 				28EDA72D23FFC73E00450BA7 /* GuestListCell.swift */,
 				28D3390A2405C3A700764EE8 /* InviteSchoolCell.swift */,
+				28091B6B249E8FD5007C1DF2 /* VenueDistanceCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -699,8 +726,8 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
-				898B24CFDBF2CF046EF88D49 /* [CP] Embed Pods Frameworks */,
-				F0041D2D48496BE30E410C7A /* [CP] Copy Pods Resources */,
+				484E0E1D42D0000A5287EDA6 /* [CP] Embed Pods Frameworks */,
+				57C765D3871951BB9D11D432 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -738,8 +765,8 @@
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
-				3C67BC0760DF310AF20FC88F /* [CP] Embed Pods Frameworks */,
-				944F024E24B3828E48D7B3F8 /* [CP] Copy Pods Resources */,
+				879AF523615360FC8AADED52 /* [CP] Embed Pods Frameworks */,
+				0E33BED48436BFCCA5B65524 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -808,14 +835,22 @@
 				282300FD249759C100215F5A /* icons8-chevron-left-30.png in Resources */,
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
+				28F38718249F0E60006079D1 /* icons8-high-importance-30.png in Resources */,
 				28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */,
 				280B78B123EF72C30084D745 /* icons8-photo-gallery-100.png in Resources */,
 				282300F52497552400215F5A /* icons8-settings-30-2.png in Resources */,
+				287F2065249E8CB400F04BC2 /* icons8-remove-30-2.png in Resources */,
+				2808A483249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png in Resources */,
+				285F65E7249F0F8300E9C695 /* icons8-high-importance-30-2.png in Resources */,
+				28C71CF7249E8E06009E3E84 /* icons8-customer-30.png in Resources */,
 				282300F92497589B00215F5A /* icons8-near-me-30.png in Resources */,
 				285D435723FBACFB0043198A /* icons8-plus-50.png in Resources */,
 				284E69E0248EABBE005E7D12 /* icons8-chevron-right-30.png in Resources */,
+				28A5AB1C249F0D3100315726 /* icons8-exclamation-mark-30-2.png in Resources */,
 				282300FB2497590B00215F5A /* icons8-information-30.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
+				28E0FF18249F10EC00070769 /* icons8-box-important-30-2.png in Resources */,
+				285DDC7D249F0C04000688E8 /* icons8-cancel-30.png in Resources */,
 				28AFA7792391155400DF2255 /* icons8-hide-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
 			);
@@ -838,6 +873,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0E33BED48436BFCCA5B65524 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		23A5DFB4B203144BF09D1C5D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -899,24 +951,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3C67BC0760DF310AF20FC88F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		898B24CFDBF2CF046EF88D49 /* [CP] Embed Pods Frameworks */ = {
+		484E0E1D42D0000A5287EDA6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -933,21 +968,38 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		944F024E24B3828E48D7B3F8 /* [CP] Copy Pods Resources */ = {
+		57C765D3871951BB9D11D432 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		879AF523615360FC8AADED52 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */ = {
@@ -970,23 +1022,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F0041D2D48496BE30E410C7A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1044,6 +1079,7 @@
 				284645902498640800674D3F /* EditBioController.swift in Sources */,
 				28425A872493F46800983ED0 /* NiceEditProfile.swift in Sources */,
 				2857DF0A226BF9CE0072C952 /* BarsTableView.swift in Sources */,
+				28091B6C249E8FD5007C1DF2 /* VenueDistanceCell.swift in Sources */,
 				2895576D227E62B5001EFD73 /* UsersInBarTableView.swift in Sources */,
 				28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */,
 				28EDA73023FFCF4200450BA7 /* EditPartyController.swift in Sources */,

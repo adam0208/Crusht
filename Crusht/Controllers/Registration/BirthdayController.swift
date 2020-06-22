@@ -88,6 +88,7 @@ class BirthdayController: UIViewController {
     // MARK: - User Interface
     
     private func initializeUI() {
+        view.backgroundColor = .white
         datepicker.datePickerMode = .date
         ageTextField.inputView = datepicker
         
@@ -99,31 +100,34 @@ class BirthdayController: UIViewController {
         toolbar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         
         ageTextField.inputAccessoryView = toolbar
-        
-        view.addGradientSublayer()
-        
-        let stack = UIStackView(arrangedSubviews: [ageTextField, doneBttn])
-        view.addSubview(stack)
-        stack.axis = .vertical
+                
         view.addSubview(label)
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: nil,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: view.bounds.height / 5, left: 30, bottom: 0, right: 30))
+                            leading: view.leadingAnchor,
+                            bottom: nil,
+                            trailing: view.trailingAnchor,
+                            padding: .init(top: 12, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: label.bottomAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: 4, left: 30, bottom: view.bounds.height / 2.2, right: 30))
+        view.addSubview(ageTextField)
+        ageTextField.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 60, bottom: 0, right: 60))
         
-        stack.spacing = 20
+        view.addSubview(underline)
+        underline.anchor(top: ageTextField.bottomAnchor, leading: ageTextField.leadingAnchor, bottom: nil, trailing: ageTextField.trailingAnchor)
+        
+        view.addSubview(doneBttn)
+        doneBttn.anchor(top: underline.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 120, bottom: 0, right: 120))
         
         view.addSubview(errorLabel)
         errorLabel.isHidden = true
-        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+        errorLabel.anchor(top: doneBttn.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
     }
+    
+    let underline: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6705882353, alpha: 1)
+        return view
+    }()
     
     private let ageTextField: UITextField = {
         let tf = NameTextField()
@@ -138,10 +142,10 @@ class BirthdayController: UIViewController {
     
     private let label: UILabel = {
         let label = UILabel()
-        label.text = "Enter your Birthday"
-        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.text = "Enter Your Birthday"
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
-        label.textColor = .white
         label.adjustsFontSizeToFitWidth = true
         
         return label
@@ -150,8 +154,8 @@ class BirthdayController: UIViewController {
     private let errorLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Please enter your birthday"
-        label.textColor = .white
+        label.text = "Please Enter Your Birthday"
+        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -161,14 +165,14 @@ class BirthdayController: UIViewController {
     
     private let doneBttn: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Next", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 22
+            button.setTitle("Next", for: .normal)
+            button.setTitleColor(.white, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+            button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+            button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+            button.widthAnchor.constraint(equalToConstant: 60).isActive = true
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
         
         return button

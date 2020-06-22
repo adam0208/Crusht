@@ -47,7 +47,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         self.locationManager.requestAlwaysAuthorization()
         
         // For use in foreground
@@ -79,7 +79,7 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         refreshLabel.isHidden = true
         navigationController?.isNavigationBarHidden = true
         

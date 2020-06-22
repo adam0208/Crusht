@@ -37,7 +37,7 @@ class EditSexPrefController: UIViewController, UIPickerViewDelegate, UIPickerVie
          
          private let label: UILabel = {
              let label = UILabel()
-             label.text = "Your Occupation"
+             label.text = "Your Gender Preference"
              label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
              label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
              label.textAlignment = .center
@@ -48,7 +48,7 @@ class EditSexPrefController: UIViewController, UIPickerViewDelegate, UIPickerVie
          
          private let errorLabel: UILabel = {
              let label = UILabel()
-             label.text = "Please enter your occupation"
+             label.text = "Please enter your gender preference"
              label.textColor = .black
              label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
              label.textAlignment = .center
@@ -90,6 +90,7 @@ class EditSexPrefController: UIViewController, UIPickerViewDelegate, UIPickerVie
              view.backgroundColor = .white
              genderPicker.delegate = self
              genderTF.text = user?.gender ?? ""
+            genderTF.inputView = genderPicker
        
              view.addSubview(label)
              label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
@@ -154,4 +155,4 @@ class EditSexPrefController: UIViewController, UIPickerViewDelegate, UIPickerVie
      func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
          genderTF.text = myPickerData[row]
      }
-     }
+}

@@ -209,7 +209,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             let user = User(dictionary: dictionary)
             if user.name == "" {
                 let namecontroller = EnterNameController()
-                namecontroller.phone = self.user?.phoneNumber ?? ""
+                //namecontroller.phone = self.user?.phoneNumber ?? ""
                 self.present(namecontroller, animated: true)
             }
             

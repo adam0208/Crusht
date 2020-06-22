@@ -63,7 +63,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         
         navigationController?.navigationBar.prefersLargeTitles = false
         
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-back-filled-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleback)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-remove-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(deleteConvo))]
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-chevron-left-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleback)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-remove-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(deleteConvo))]
                 
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
         collectionView?.alwaysBounceVertical = true
@@ -71,7 +71,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.keyboardDismissMode = .onDrag
         
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-user-male-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(goToProfile))]
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-32").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-customer-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(goToProfile))]
 
         setupKeyboardObservers()
         collectionView.bringSubviewToFront(inputContainerView)
@@ -80,9 +80,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIText
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated);
         self.navigationController?.setToolbarHidden(false, animated: animated)
-        self.navigationController?.toolbar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        self.navigationController?.toolbar.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         self.navigationController?.toolbar.isTranslucent = false
-        self.navigationController?.toolbar.barTintColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
+        self.navigationController?.toolbar.barTintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

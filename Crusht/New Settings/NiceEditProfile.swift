@@ -225,11 +225,13 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
                     ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinChanged), for: .valueChanged)
                     ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChanged), for: .valueChanged)
                     ageRangeCell.setup(minSeekingAge: user?.minSeekingAge, maxSeekingAge: user?.maxSeekingAge)
+                     ageRangeCell.selectionStyle = .none
                     return ageRangeCell
                 case 1:
                     let locationRangeCell = LocationTableViewCell(style: .default, reuseIdentifier: nil)
                     locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
                     locationRangeCell.setup(maxDistance: user?.maxDistance)
+                     locationRangeCell.selectionStyle = .none
                     return locationRangeCell
                 default:
                     let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
@@ -239,13 +241,37 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
             
 
         case .VenueLocation:
-            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
-            let venue = VenueOptions(rawValue: indexPath.row)
-            cell.sectionType = venue
-            return cell
+//            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
+//                       let venue = VenueOptions(rawValue: indexPath.row)
+//                       cell.sectionType = venue
+//            cell.selectionStyle = .none
+            
+            switch indexPath.row {
+            case 0:
+                let locationRangeCell = VenueDistanceCell(style: .default, reuseIdentifier: nil)
+                locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
+                locationRangeCell.setup(maxDistance: user?.maxVenueDistance)
+                locationRangeCell.selectionStyle = .none
+                return locationRangeCell
+            case 1:
+                let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
+                           let venue = VenueOptions(rawValue: indexPath.row)
+                           cell.sectionType = venue
+                cell.selectionStyle = .none
+                cell.titleText.text = "Current Venue"
+//                if user?.currentVenue != nil{
+                cell.userText.text = user?.currentVenue ?? "None"
+                //}
+//                else {
+//                    cell.userText.text = "None"
+//                }
+                return cell
+            default:
+                let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
+                cell.textLabel?.text = "Edit"
+                return cell
+            }
                }
-        
-     return UITableViewCell()
     }
     
     @objc fileprivate func handleMaxChangedDistance (slider: UISlider) {
@@ -279,30 +305,71 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = EditSection(rawValue: indexPath.section) else {return}
 
-        if indexPath.row == 0 {
-            let nameController = EditNameController()
-            nameController.user = user
-            self.navigationController?.pushViewController(nameController, animated: true)
+        switch section {
+
+           case .Profile:
+             switch indexPath.row {
+            case 0:
+                   let nameController = EditNameController()
+                         nameController.user = user
+                         self.navigationController?.pushViewController(nameController, animated: true)
+                    case 1:
+                        let editSchoolController = EditSchoolController()
+                        editSchoolController.user = user
+                        self.navigationController?.pushViewController(editSchoolController, animated: true)
+                    case 2:
+                          let occupationController = EditOccupationController()
+                        occupationController.user = user
+                        self.navigationController?.pushViewController(occupationController, animated: true)
+                    case 4:
+                        let editbio = EditBioController()
+                        editbio.user = user
+                        self.navigationController?.pushViewController(editbio, animated: true)
+                    case 5:
+                        let editGender = EditGenderController()
+                        editGender.user = user
+                        self.navigationController?.pushViewController(editGender, animated: true)
+                    case 6:
+                    let editSexPref = EditSexPrefController()
+                    editSexPref.user = user
+                    self.navigationController?.pushViewController(editSexPref, animated: true)
+                                        
+             default:
+                print("No")
         }
-        else if indexPath.row == 1 {
-            let editSchoolController = EditSchoolController()
-            editSchoolController.user = user
-            self.navigationController?.pushViewController(editSchoolController, animated: true)
-        }
-        else if indexPath.row == 2 {
-             let occupationController = EditOccupationController()
-            occupationController.user = user
-            self.navigationController?.pushViewController(occupationController, animated: true)
-        }
-        else if indexPath.row == 4 {
-                   let editbio = EditBioController()
-                  editbio.user = user
-                  self.navigationController?.pushViewController(editbio, animated: true)
-              }
+
     
-    }
+        case .Location:
+            
+        switch indexPath.row {
+            case 0:
+                print("Yo")
+            case 1:
+                print("Hi")
+            default:
+                print("Yo")
+            }
+        case .VenueLocation:
+            switch indexPath.row {
+            case 0:
+               print("yo")
+            case 1:
+                 if user?.currentVenue != "" {
+                               let userbarController = UsersInBarTableView()
+                               userbarController.barName = user?.currentVenue ?? ""
+                               userbarController.user = user
+                               userbarController.verb = "(Joined)"
+                               let myBackButton = UIBarButtonItem()
+                               myBackButton.title = " "
+                               self.navigationItem.backBarButtonItem = myBackButton
+                               self.navigationController?.pushViewController(userbarController, animated: true)
+                               }
+            default:
+                print("Yo")
+            }
+        }
  
-    
+    }
+
+
 }
-
-

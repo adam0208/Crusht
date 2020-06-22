@@ -36,10 +36,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         self.tabBarController?.delegate = self
         
         fetchCurrentUser()
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
+
         navigationController?.isNavigationBarHidden = false
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
@@ -250,6 +247,7 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
         chatLogController.user = user
         chatLogController.fromName = fromName
         let navigC = UINavigationController(rootViewController: chatLogController)
+        navigC.modalPresentationStyle = .fullScreen
         present(navigC, animated: true)
     }
     

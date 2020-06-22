@@ -64,16 +64,11 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
          navigationItem.searchController = self.searchController
          definesPresentationContext = true
          navigationController?.isNavigationBarHidden = false
-    
-         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-         let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
          
          listenForMessages()
-         navigationItem.rightBarButtonItems = [swipeButton, infoButton]
          messageBadge.isHidden = true
-         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
+         
          navigationController?.navigationBar.isTranslucent = false
-         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
          
          // Setup the Scope Bar
          self.searchController.searchBar.delegate = self

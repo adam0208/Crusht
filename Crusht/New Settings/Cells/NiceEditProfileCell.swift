@@ -100,14 +100,13 @@ enum LocationMatchingOptions: Int, CaseIterable, SectionType2 {
     case maxDistance
     
     var description: String {
-        var user: User?
         switch self {
         case .minAge:
-            return "\(user?.minSeekingAge ?? 18)"
+            return ""
         case .maxAge:
-            return "\(user?.maxSeekingAge ?? 50)"
+            return ""
         case .maxDistance:
-            return "\(user?.maxDistance ?? 10)"
+            return ""
         }
     }
     
@@ -129,13 +128,12 @@ enum VenueOptions: Int, CaseIterable, SectionType2 {
     case currentVenue
     
     var description: String {
-        var user: User?
 
         switch self {
-        case .currentVenue:
-            return user?.currentVenue ?? "Edit"
         case .maxDistance:
-            return "\(user?.maxVenueDistance ?? 4)"
+            return ""
+        case .currentVenue:
+            return ""
             
         }
     }

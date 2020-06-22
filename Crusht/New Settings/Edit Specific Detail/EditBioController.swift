@@ -33,7 +33,7 @@ class EditBioController: UIViewController {
         
         private let label: UILabel = {
             let label = UILabel()
-            label.text = "Your Occupation"
+            label.text = "Your Bio"
             label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
             label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
             label.textAlignment = .center

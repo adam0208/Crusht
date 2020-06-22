@@ -32,7 +32,6 @@ class LocationTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let overallStackView = UIStackView(arrangedSubviews: [
-            UIView(),
             UIStackView(arrangedSubviews: [maxLabel, maxSlider]),
             ])
         overallStackView.axis = .vertical

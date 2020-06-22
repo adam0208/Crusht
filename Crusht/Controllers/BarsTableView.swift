@@ -177,6 +177,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                 let locationViewController = LocationMatchViewController()
                 locationViewController.user = user
                 let navigationController = UINavigationController(rootViewController: locationViewController)
+                navigationController.modalPresentationStyle = .fullScreen
                 present(navigationController, animated: true)
             }
         } else {
@@ -281,6 +282,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
                                "maxDistance": self.user?.maxDistance ?? 3,
+                               "maxVenueDistance": self.user?.maxVenueDistance ?? 4,
                                "email": self.user?.email ?? "",
                                "fbid": self.user?.fbid ?? "",
                                "PhoneNumber": self.user?.phoneNumber ?? "",
@@ -306,6 +308,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
                                "maxDistance": self.user?.maxDistance ?? 3,
+                               "maxVenueDistance": self.user?.maxVenueDistance ?? 4,
                                "email": self.user?.email ?? "",
                                "fbid": self.user?.fbid ?? "",
                                "PhoneNumber": self.user?.phoneNumber ?? "",
@@ -331,6 +334,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                                "minSeekingAge": self.user?.minSeekingAge ?? 18,
                                "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
                                "maxDistance": self.user?.maxDistance ?? 3,
+                               "maxVenueDistance": self.user?.maxVenueDistance ?? 4,
                                "email": self.user?.email ?? "",
                                "fbid": self.user?.fbid ?? "",
                                "PhoneNumber": self.user?.phoneNumber ?? "",
@@ -380,8 +384,12 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     var searchRadius : Int = 2000
          googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: searchRadius) { (response) in
             print(response.results, "yo")
+            if response.results.isEmpty == false {
             self.fetchBars(places: response.results)
-            
+            }
+            else {
+                print("No bars")
+            }
          
         }
     }
@@ -486,7 +494,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                         "minSeekingAge": self.user?.minSeekingAge ?? 18,
                         "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
                         "maxDistance": self.user?.maxDistance ?? 3,
-                        
+                        "maxVenueDistance": self.user?.maxVenueDistance ?? 4,
                         "PhoneNumber": self.user?.phoneNumber ?? "",
                         "deviceID": Messaging.messaging().fcmToken ?? "",
                         "Gender-Preference": self.user?.sexPref ?? "",
@@ -510,7 +518,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                         "minSeekingAge": self.user?.minSeekingAge ?? 18,
                         "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
                         "maxDistance": self.user?.maxDistance ?? 3,
-                        
+                        "maxVenueDistance": self.user?.maxVenueDistance ?? 4,
                         "PhoneNumber": self.user?.phoneNumber ?? "",
                         "deviceID": Messaging.messaging().fcmToken ?? "",
                         "Gender-Preference": self.user?.sexPref ?? "",
@@ -534,7 +542,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                         "minSeekingAge": self.user?.minSeekingAge ?? 18,
                         "maxSeekingAge": self.user?.maxSeekingAge ?? 50,
                         "maxDistance": self.user?.maxDistance ?? 3,
-                        
+                        "maxVenueDistance": self.user?.maxVenueDistance ?? 4,
                         "PhoneNumber": self.user?.phoneNumber ?? "",
                         "deviceID": Messaging.messaging().fcmToken ?? "",
                         "Gender-Preference": self.user?.sexPref ?? "",

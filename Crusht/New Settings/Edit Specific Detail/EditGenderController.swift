@@ -37,7 +37,7 @@ class EditGenderController: UIViewController, UIPickerViewDelegate, UIPickerView
         
         private let label: UILabel = {
             let label = UILabel()
-            label.text = "Your Occupation"
+            label.text = "Your Gender"
             label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
             label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
             label.textAlignment = .center
@@ -90,6 +90,7 @@ class EditGenderController: UIViewController, UIPickerViewDelegate, UIPickerView
             view.backgroundColor = .white
             genderPicker.delegate = self
             genderTF.text = user?.gender ?? ""
+            genderTF.inputView = genderPicker
       
             view.addSubview(label)
             label.anchor(top: view.safeAreaLayoutGuide.topAnchor,

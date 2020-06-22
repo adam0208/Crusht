@@ -85,50 +85,43 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
     // MARK: - User Interface
 
     private func initializeUI() {
-        view.addGradientSublayer()
+        view.backgroundColor = .white
+        
         view.addSubview(label)
+        label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                            leading: view.leadingAnchor,
+                            bottom: nil,
+                            trailing: view.trailingAnchor,
+                            padding: .init(top: 12, left: 30, bottom: 0, right: 30))
+        
         let horizontalStack = UIStackView(arrangedSubviews: [countryCodeTF, phoneNumberTextField])
         horizontalStack.axis = .horizontal
         horizontalStack.spacing = 11
-        let stack = UIStackView(arrangedSubviews: [horizontalStack, sendButton])
-        view.addSubview(stack)
-        stack.axis = .vertical
         
-        label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: nil,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: view.bounds.height / 5, left: 30, bottom: 0, right: 30))
+        view.addSubview(horizontalStack)
+        horizontalStack.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: label.bottomAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: 4, left: 30, bottom: view.bounds.height / 2.2, right: 30))
+        view.addSubview(underline)
+        underline.anchor(top: countryCodeTF.bottomAnchor, leading: countryCodeTF.leadingAnchor, bottom: nil, trailing: countryCodeTF.trailingAnchor)
         
-        stack.spacing = 20
+        view.addSubview(underline2)
+        underline2.anchor(top: phoneNumberTextField.bottomAnchor, leading: phoneNumberTextField.leadingAnchor, bottom: nil, trailing: phoneNumberTextField.trailingAnchor)
+        
+        view.addSubview(sendButton)
+        sendButton.anchor(top: underline2.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 35, bottom: 0, right: 35))
+        
+        
     }
-    
-    private let label: UILabel = {
-        let label = UILabel()
-        label.text = "Enter Phone Number"
-        label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
-        label.textAlignment = .center
-        label.adjustsFontSizeToFitWidth = true
-        label.textColor = .white
-        label.numberOfLines = 0
-        
-        return label
-    }()
     
     private let phoneNumberTextField: UITextField = {
         let tf = PhoneNumberText()
         tf.keyboardType = UIKeyboardType.phonePad
-        tf.placeholder = "3138886434"
+        tf.placeholder = "1231231234"
         tf.backgroundColor = .white
-        tf.layer.cornerRadius = 15
-        tf.font = UIFont.systemFont(ofSize: 25)
-        tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        tf.font = UIFont.systemFont(ofSize: 27)
+        tf.adjustsFontSizeToFitWidth = true
+        tf.adjustsFontForContentSizeCategory = true
+        tf.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         return tf
     }()
@@ -138,10 +131,11 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         tf.keyboardType = UIKeyboardType.phonePad
         tf.text = "🇺🇸"
         tf.backgroundColor = .white
-        tf.layer.cornerRadius = 15
-        tf.font = UIFont.systemFont(ofSize: 25)
+        tf.font = UIFont.systemFont(ofSize: 27)
+        tf.textAlignment = .center
+       // tf.adjustsFontSizeToFitWidth = true
         tf.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        tf.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         return tf
     }()
@@ -151,12 +145,37 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         button.setTitle("Get Verification Code", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+   
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 22
+        button.layer.cornerRadius = 18
         
         button.addTarget(self, action: #selector(handleEnterPhone), for: .touchUpInside)
         return button
     }()
+    
+    private let label: UILabel = {
+           let label = UILabel()
+           label.text = "Enter Phone Number"
+           label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+           label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+           label.textAlignment = .center
+           label.adjustsFontSizeToFitWidth = true
+           
+           return label
+       }()
+    
+    let underline: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6705882353, alpha: 1)
+        return view
+    }()
+    
+    let underline2: UIView = {
+          let view = UIView()
+          view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+          view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
+          return view
+      }()
 }

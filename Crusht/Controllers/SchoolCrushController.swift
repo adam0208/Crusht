@@ -65,29 +65,23 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-settings-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSettings))
-        
+   
         tableView.register(SchoolTableViewCell.self, forCellReuseIdentifier: cellId)
         tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
         
-        let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-swipe-right-gesture-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
-        
         listenForMessages()
-        navigationItem.rightBarButtonItems = [swipeButton, infoButton]
         
         // Setup the Search Controller
-        //view.addSubview(searchController.searchBar)
-//        searchController.searchResultsUpdater = self
-//        searchController.obscuresBackgroundDuringPresentation = false
-//        searchController.searchBar.placeholder = "Search School"
-       // navigationItem.searchController = self.searchController
+        view.addSubview(searchController.searchBar)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search School"
+        navigationItem.searchController = self.searchController
         definesPresentationContext = true
            
         // Setup the Scope Bar
-//        self.searchController.searchBar.delegate = self
-//        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         messageBadge.isHidden = true
         
         //refresh controll
@@ -99,10 +93,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         refreshControl?.attributedTitle = attributedTitle
         
 
-        // Setup the search footer
+        //Setup the search footer
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
-        //searchController.searchBar.barStyle = .black
+        searchController.searchBar.barStyle = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     
@@ -355,6 +349,57 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         }
         
     }
+    
+    fileprivate func fetchAllSchools() {
+        var query: Query
+        let school = user?.school ?? "Your School"
+        if let lastFetchedDocument = lastFetchedDocument {
+        query = Firestore.firestore().collection("users").whereField("School", isEqualTo: school).order(by: "Full Name")
+        
+        query.getDocuments { (snapshot, err) in
+            guard err == nil, let snapshot = snapshot else { return }
+            
+//            if snapshot.documents.count == 0 {
+//                self.fetchedAllUsers = true
+//                self.fetchingMoreUsers = false
+//                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+//                return
+//            }
+            
+            //self.lastFetchedDocument = snapshot.documents.last
+            snapshot.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let crush = User(dictionary: userDictionary)
+                let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+                let hasBlocked = self.blocks[crush.uid ?? ""] == nil
+                
+                let sexPref = self.user?.sexPref
+                if sexPref == "Female" {
+                    self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
+                }
+                else if sexPref == "Male" {
+                    self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
+                }
+                else {
+                    self.isRightSex = crush.school == self.user?.school
+                }
+                
+                let maxAge = crush.age ?? 18 < ((self.user?.age)! + 5)
+                let minAge = crush.age ?? 18 > ((self.user?.age)! - 5)
+                
+                if hasBlocked && isNotCurrentUser && minAge && maxAge && self.isRightSex {
+                    self.schoolArray.append(crush)
+                }
+            })
+        
+        DispatchQueue.main.async(execute: {
+            //self.fetchingMoreUsers = false
+            self.tableView.reloadData()
+        })
+            self.fetchSwipes()
+        }
+    }
+}
     
     func hasTappedCrush(cell: UITableViewCell) {
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
@@ -772,11 +817,17 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+       
         users = schoolArray.filter({( user : User) -> Bool in
             return user.name!.lowercased().contains(searchText.lowercased())
         })
         
         tableView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        schoolArray.removeAll()
+        fetchAllSchools()
     }
     
 
