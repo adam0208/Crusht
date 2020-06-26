@@ -176,7 +176,7 @@ class EnterNameController: UIViewController, UITextFieldDelegate {
         
         private let errorLabel: UILabel = {
             let label = UILabel()
-            label.text = "Please enter your name"
+            label.text = "Enter Your Name"
             label.textColor = .black
             label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
             label.textAlignment = .center

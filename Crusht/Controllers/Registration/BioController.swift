@@ -57,26 +57,34 @@ class BioController: UIViewController, UITextViewDelegate {
     // MARK: - User Interface
     
     private func initializeUI() {
-        view.addGradientSublayer()
-        let stack = UIStackView(arrangedSubviews: [bioTF, doneButton])
-        view.addSubview(stack)
-        stack.axis = .vertical
+        view.backgroundColor = .white
+
         view.addSubview(label)
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                      leading: view.leadingAnchor,
-                     bottom: nil, trailing: view.trailingAnchor,
-                     padding: .init(top: view.bounds.height / 5, left: 30, bottom: 0, right: 30))
+                     bottom: nil, trailing: view.trailingAnchor)
         
-        stack.anchor(top: label.bottomAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: 10, left: 30, bottom: view.bounds.height / 2.2, right: 30))
-        
-        stack.spacing = 20
-        view.addSubview(errorLabel)
-        errorLabel.isHidden = true
-        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+           view.addSubview(bioTF)
+             bioTF.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+                  
+                  view.addSubview(underline)
+             underline.anchor(top: bioTF.bottomAnchor, leading: bioTF.leadingAnchor, bottom: nil, trailing: bioTF.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+             
+                  view.addSubview(doneButton)
+             doneButton.anchor(top: underline.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 120, bottom: 0, right: 120))
+                    
+                    view.addSubview(errorLabel)
+                    errorLabel.isHidden = true
+                    errorLabel.anchor(top: doneButton.bottomAnchor,
+                                      leading: view.leadingAnchor,
+                                      bottom: nil,
+                                      trailing: view.trailingAnchor,
+                                      padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+             // Do any additional setup after loading the view.
+             
+             if bioTF.text.count > 139 {
+                 errorLabel.isHidden = false
+             }
     }
     
     private let bioTF: UITextView = {
@@ -91,10 +99,17 @@ class BioController: UIViewController, UITextViewDelegate {
         return tf
     }()
     
+    let underline: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
+        return view
+    }()
+    
     private let label: UILabel = {
         let label = UILabel()
-        label.text = "Enter Your Bio Below"
-        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.text = "Enter Your Bio"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.textColor = .white
@@ -104,8 +119,8 @@ class BioController: UIViewController, UITextViewDelegate {
     
     private let errorLabel: UILabel = {
         let label = UILabel()
-        label.text = "Please enter your bio"
-        label.textColor = .white
+        label.text = "Enter Your Bio"
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -118,11 +133,11 @@ class BioController: UIViewController, UITextViewDelegate {
         button.setTitle("Next", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6745098039, blue: 0.7215686275, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.widthAnchor.constraint(equalToConstant: 60).isActive = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 22
+        button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
         
         return button

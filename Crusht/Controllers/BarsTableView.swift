@@ -31,6 +31,54 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     
     let animationView = AnimationView()
     var placesClient: GMSPlacesClient!
+    
+    let barLabel: UILabel = {
+        let label = UILabel()
+            label.text = "Bars"
+            label.textAlignment = .center
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+            return label
+    }()
+    
+    let gymLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Gyms"
+        label.textAlignment = .center
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+
+        return label
+        
+    }()
+    
+    lazy var barView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+       
+        return view
+    }()
+    lazy var gymView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        
+        return view
+    }()
+    
+    
+    let underline: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6705882353, alpha: 1)
+        return view
+    }()
+    
+    let underline2: UIView = {
+          let view = UIView()
+          view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+          view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
+          return view
+      }()
 
     
     // MARK: Life Cycle Methods
@@ -48,7 +96,26 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         //searchController.searchBar.barStyle = .black
 //        searchController.searchBar.barTintColor = .clear
 //        searchController.searchBar.backgroundColor = .clear
-            
+        
+        //SET UP HEADER VIEW
+        gymView.addSubview(underline)
+        underline.anchor(top: nil, leading: gymView.leadingAnchor, bottom: gymView.bottomAnchor, trailing: gymView.trailingAnchor, padding: .init(top: 0, left: 30, bottom: 0, right: 30))
+        underline.isHidden = true
+        barView.addSubview(underline2)
+        underline2.anchor(top: nil, leading: barView.leadingAnchor, bottom: barView.bottomAnchor, trailing: barView.trailingAnchor, padding: .init(top: 0, left: 30, bottom: 0, right: 30))
+        
+        gymView.addSubview(gymLabel)
+        gymLabel.anchor(top: gymView.topAnchor, leading: gymView.leadingAnchor, bottom: gymView.bottomAnchor, trailing: gymView.trailingAnchor)
+        
+        let gymGesture = UITapGestureRecognizer(target: self, action: #selector(handleGymPressed))
+        let barGesture = UITapGestureRecognizer(target: self, action: #selector(handleBarsPressed))
+        gymView.addGestureRecognizer(gymGesture)
+        
+        barView.addSubview(barLabel)
+        barLabel.anchor(top: barView.topAnchor, leading: barView.leadingAnchor, bottom: barView.bottomAnchor, trailing: barView.trailingAnchor)
+        
+        barView.addGestureRecognizer(barGesture)
+        
         searchController.searchBar.searchTextField.backgroundColor = .clear
       
         navigationController?.isNavigationBarHidden = false
@@ -372,10 +439,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     }
     
     //Places instead of geofirestore
-    
-        
+
     lazy var googleClient: GoogleClientRequest = GoogleClient()
-     
             
     func fetchGoogleData(forLocation: CLLocation, locationName: String, searchRadius: Int) {
         print("hi")
@@ -384,6 +449,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     var searchRadius : Int = 2000
          googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: searchRadius) { (response) in
             print(response.results, "yo")
+            
             if response.results.isEmpty == false {
             self.fetchBars(places: response.results)
             }
@@ -393,17 +459,15 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
          
         }
     }
-    
-//    var barsDictionary = [String: [String]]()
-//    var  barSectionTitles = [String]()
-//    var bars = [String]()
         
     fileprivate func fetchBars(places: [Place]) {
         print("sup")
+        
         places.forEach({ (place) in
         let name = place.name
         let address = place.address
         let location = ("lat: \(place.geometry.location.latitude), lng: \(place.geometry.location.longitude)")
+      //      if place.openingHours?.isOpen == true && place.openingHours?.isOpen == false {
             self.barArray.append(place)
               
             DispatchQueue.main.async {
@@ -414,10 +478,62 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             }
                 self.tableView.reloadData()
                 }
+       //     }
             })
+            
         }
         
     
+    // GYM FUNCTIONALITY
+    
+    @objc fileprivate func handleBarsPressed() {
+        if underline2.isHidden == true {
+            self.barArray.removeAll()
+            underline2.isHidden = false
+            underline.isHidden = true
+            var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
+                    var locationName : String = "gym"
+                    var searchRadius : Int = 5000
+            self.fetchGoogleData(forLocation: currentLocation, locationName: locationName, searchRadius: searchRadius )
+        }
+        else {
+            return
+        }
+    }
+    
+    @objc fileprivate func handleGymPressed() {
+        if underline.isHidden == true {
+            barArray.removeAll()
+            underline.isHidden = false
+            underline2.isHidden = true
+            var currentLocation: CLLocation =  CLLocation(latitude: self.userLat, longitude: self.userLong)
+                    var locationName : String = "gym"
+                    var searchRadius : Int = 30000
+            self.fetchGoogleDataGyms(forLocation: currentLocation, locationName: locationName, searchRadius: searchRadius )
+        }
+        else {
+            return
+        }
+    }
+    
+    func fetchGoogleDataGyms(forLocation: CLLocation, locationName: String, searchRadius: Int) {
+        print("hi")
+        self.barArray.removeAll()
+      var currentLocation: CLLocation = CLLocation(latitude: 26.918510, longitude: -80.115290)
+      var locationName : String = "gym"
+    var searchRadius : Int = 30000
+         googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: searchRadius) { (response) in
+            print(response.results, "yo")
+            if response.results.isEmpty == false {
+            self.fetchBars(places: response.results)
+            }
+            else {
+                print("No gyms")
+            }
+            
+         
+        }
+    }
         
     
     
@@ -672,6 +788,22 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
 
         return barArray.count
     }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIStackView(arrangedSubviews: [barView, gymView])
+        headerView.axis = .horizontal
+        headerView.distribution = .fillEqually
+        headerView.spacing = 0
+        headerView.backgroundColor = .white
+        return headerView
+    }
+    
+    
     
 //     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
 //

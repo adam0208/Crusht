@@ -29,11 +29,11 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     // MARK: - Logic
     
     @objc private func handleDone() {
-        guard yourSexField.text != "" else {
+        guard genderTF.text != "" else {
             errorLabel.isHidden = false
             return
         }
-        self.gender = self.yourSexField.text ?? ""
+        self.gender = self.genderTF.text ?? ""
         let genderPreference = GenderController()
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let docData: [String: Any] = ["User-Gender": self.gender]
@@ -58,37 +58,46 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        yourSexField.text = myPickerData[row]
+        genderTF.text = myPickerData[row]
     }
     
     // MARK: - User Interface
     
     private func initializeUI() {
-        view.addGradientSublayer()
-        let stack = UIStackView(arrangedSubviews: [self.yourSexField, self.doneButton])
-        self.view.addSubview(stack)
-        stack.axis = .vertical
-        self.view.addSubview(self.label)
-        self.label.anchor(top: self.view.safeAreaLayoutGuide.topAnchor,
-                          leading: self.view.leadingAnchor,
-                          bottom: nil,
-                          trailing: self.view.trailingAnchor,
-                          padding: .init(top: self.view.bounds.height / 5, left: 30, bottom: 0, right: 30))
-        
-        stack.anchor(top: self.label.bottomAnchor,
-                     leading: self.view.leadingAnchor,
-                     bottom: self.view.safeAreaLayoutGuide.bottomAnchor,
-                     trailing: self.view.trailingAnchor,
-                     padding: .init(top: 4, left: 30, bottom: self.view.bounds.height / 2.2, right: 30))
-        
-        stack.spacing = 20
-        self.yourSexField.inputView = self.genderPicker
-        view.addSubview(errorLabel)
-        errorLabel.isHidden = true
-        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+        view.backgroundColor = .white
+        view.backgroundColor = .white
+                   genderPicker.delegate = self
+                   genderTF.text = user?.gender ?? ""
+                   genderTF.inputView = genderPicker
+             
+                   view.addSubview(label)
+                   label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                                       leading: view.leadingAnchor,
+                                       bottom: nil,
+                                       trailing: view.trailingAnchor,
+                                       padding: .init(top: 12, left: 30, bottom: 0, right: 30))
+                   
+                          
+                        view.addSubview(genderTF)
+                   genderTF.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+                        
+                        view.addSubview(underline)
+                   underline.anchor(top: genderTF.bottomAnchor, leading: genderTF.leadingAnchor, bottom: nil, trailing: genderTF.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+                   
+                        view.addSubview(doneButton)
+                   doneButton.anchor(top: underline.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 120, bottom: 0, right: 120))
+                          
+                          view.addSubview(errorLabel)
+                          errorLabel.isHidden = true
+                          errorLabel.anchor(top: doneButton.bottomAnchor,
+                                            leading: view.leadingAnchor,
+                                            bottom: nil,
+                                            trailing: view.trailingAnchor,
+                                            padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+                   // Do any additional setup after loading the view.
     }
     
-    private let yourSexField: UITextField = {
+    private let genderTF: UITextField = {
         let tf = GenderTextField()
         tf.placeholder = "Select"
         tf.backgroundColor = .white
@@ -99,14 +108,20 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         return tf
     }()
     
+    private let underline: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
+        return view
+    }()
     private let label: UILabel = {
         let label = UILabel()
         
         label.text = "Select Your Sex"
-        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
-        label.textColor = .white
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         return label
     }()
     
@@ -126,11 +141,11 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         button.setTitle("Next", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.widthAnchor.constraint(equalToConstant: 60).isActive = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 22
+        button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
         
         return button

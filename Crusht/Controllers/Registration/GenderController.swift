@@ -36,13 +36,13 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     // MARK: - Logic
     
     @objc private func handleDone() {
-        guard genderTextField.text != "" else {
+        guard genderTF.text != "" else {
             errorLabel.isHidden = false
             return
         }
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        self.sexYouLike = self.genderTextField.text ?? ""
+        self.sexYouLike = self.genderTF.text ?? ""
         let photoCnotroller = BioController()
         let docData: [String: Any] = ["Gender-Preference": self.sexYouLike]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
@@ -65,38 +65,45 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        genderTextField.text = myPickerData[row]
+        genderTF.text = myPickerData[row]
         
     }
     
     // MARK: - User Interface
     
     private func initializeUI() {
-        view.addGradientSublayer()
-        let stack = UIStackView(arrangedSubviews: [genderTextField, doneButton])
-        view.addSubview(stack)
-        stack.axis = .vertical
-        view.addSubview(label)
-        label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: nil,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: view.bounds.height / 5, left: 30, bottom: 0, right: 30))
-        
-        stack.anchor(top: label.bottomAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: 4, left: 30, bottom: view.bounds.height / 2.2, right: 30))
-        
-        stack.spacing = 20
-        genderTextField.inputView = genderPicker
-        view.addSubview(errorLabel)
-        errorLabel.isHidden = true
-        errorLabel.anchor(top: stack.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+         view.backgroundColor = .white
+                   genderPicker.delegate = self
+                   genderTF.text = user?.gender ?? ""
+                  genderTF.inputView = genderPicker
+             
+                   view.addSubview(label)
+                   label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                                       leading: view.leadingAnchor,
+                                       bottom: nil,
+                                       trailing: view.trailingAnchor,
+                                       padding: .init(top: 12, left: 30, bottom: 0, right: 30))
+                          
+                        view.addSubview(genderTF)
+                   genderTF.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+                        
+                        view.addSubview(underline)
+                   underline.anchor(top: genderTF.bottomAnchor, leading: genderTF.leadingAnchor, bottom: nil, trailing: genderTF.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+                   
+                        view.addSubview(doneButton)
+                   doneButton.anchor(top: underline.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 120, bottom: 0, right: 120))
+                          
+                          view.addSubview(errorLabel)
+                          errorLabel.isHidden = true
+                          errorLabel.anchor(top: doneButton.bottomAnchor,
+                                            leading: view.leadingAnchor,
+                                            bottom: nil,
+                                            trailing: view.trailingAnchor,
+                                            padding: .init(top: 40, left: 20, bottom: 0, right: 20))
+                   // Do any additional setup after loading the view.
     }
     
-    private let genderTextField: UITextField = {
+    private let genderTF: UITextField = {
         let tf = GenderTextField()
         tf.placeholder = "Select"
         tf.backgroundColor = .white
@@ -107,10 +114,17 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
         return tf
     }()
     
+    private let underline: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        view.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
+        return view
+    }()
+    
     private let label: UILabel = {
         let label = UILabel()
         label.text = "Select Sex Preference"
-        label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.textColor = .white

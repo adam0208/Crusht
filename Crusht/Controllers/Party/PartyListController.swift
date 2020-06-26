@@ -271,15 +271,11 @@ class PartyListController: UITableViewController, SettingsControllerDelegate, UI
             guard let dictionary = snapshot?.data() as [String: AnyObject]? else {return}
             
             let party = Party(dictionary: dictionary)
-            let layout = UICollectionViewFlowLayout()
-            layout.scrollDirection = .vertical
-            let partyController = PartyPageController(collectionViewLayout: layout)
+           
+            let partyController = PartyInfoController()
             partyController.party = party
             partyController.user = self.user
-            let myBackButton = UIBarButtonItem()
-            myBackButton.title = " "
-            self.navigationItem.backBarButtonItem = myBackButton
-
+           
             //userDetailsController.delegate = self
             self.navigationController?.pushViewController(partyController, animated: true)
         })

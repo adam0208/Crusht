@@ -246,8 +246,8 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
             
             private let errorLabel: UILabel = {
                 let label = UILabel()
-                label.text = "Please enter your school"
-                label.textColor = .black
+                label.text = "Enter Your School"
+                label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
                 label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
                 label.textAlignment = .center
                 label.adjustsFontSizeToFitWidth = true
@@ -314,11 +314,19 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
             }
         
+        
          
 
             override func viewDidLoad() {
                 super.viewDidLoad()
                 view.backgroundColor = .white
+                
+                let toolbar = UIToolbar();
+                     toolbar.sizeToFit()
+                     let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPicker));
+                     let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+                     let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donePicker));
+                     toolbar.setItems([cancelButton, spaceButton, doneButton], animated: false)
                 
                 UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).clearButtonMode = .never
                 UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
@@ -375,6 +383,8 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
             @objc fileprivate func handleDone() {
                 
+                print("Selected this button")
+                
                 guard let school = schoolTF.text, school != "" else {
                     errorLabel.isHidden = false
                     return
@@ -420,6 +430,13 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 searchBar.searchTextField.text = myPickerData[row]
               }
           }
+    
+    @objc private func cancelPicker(){
+        self.view.endEditing(true)
+    }
+    @objc private func donePicker(){
+        self.view.endEditing(true)
+    }
         
            // MARK: - UISearchBarDelegate
         
