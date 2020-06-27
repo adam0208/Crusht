@@ -103,7 +103,7 @@ enum AboutOptions: Int, CaseIterable, SectionType {
     case .companyInfo:
         return "Copyright © 2020 Crusht LLC"
     case .versionType:
-           return "Crusht \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?)"
+        return "Crusht \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject? ?? "" as AnyObject)"
         }
     
         }

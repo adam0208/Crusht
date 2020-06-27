@@ -50,12 +50,12 @@ class GuestsController: UITableViewController, UISearchBarDelegate, UITabBarCont
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
-        
+        self.navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "\(party?.partyName ?? "") Guests"
         if UIApplication.shared.applicationIconBadgeNumber == 1 {
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
             self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
-        
         fetchCurrentUser()
     }
     
@@ -68,6 +68,7 @@ class GuestsController: UITableViewController, UISearchBarDelegate, UITabBarCont
         tableView.register(GuestListCell.self, forCellReuseIdentifier: cellId)
         tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-32"), style: .plain, target: self, action: #selector(handleInfo))
         
         listenForMessages()
         
@@ -95,14 +96,22 @@ class GuestsController: UITableViewController, UISearchBarDelegate, UITabBarCont
 
         // Setup the search footer
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 0, green: 0.1882352941, blue: 0.4588235294, alpha: 1)
         //searchController.searchBar.barStyle = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
     
     }
     
     // MARK: - Logic
+    
+    @objc fileprivate func handleInfo() {
+        let partyController = PartyInfoController()
+              partyController.party = party
+              partyController.user = self.user
+              //userDetailsController.delegate = self
+              self.navigationController?.pushViewController(partyController, animated: true)
+    }
     
     @objc fileprivate func reloadGuests () {
 
@@ -150,14 +159,6 @@ class GuestsController: UITableViewController, UISearchBarDelegate, UITabBarCont
             }
         }
         
-    }
-    
-    @objc fileprivate func handleInfo() {
-        let infoView = InfoView()
-        infoView.infoText.text = "Crush Guests: Select the heart next to people at your party. If they select the heart on your name as well, you'll be matched in the chats tab!"
-        tabBarController?.view.addSubview(infoView)
-        infoView.peekButton.isHidden = true
-        infoView.fillSuperview()
     }
     
     @objc func handleMessages() {
@@ -228,87 +229,160 @@ class GuestsController: UITableViewController, UISearchBarDelegate, UITabBarCont
             if snapshot!.exists {
                  guard let data = snapshot?.data() as? [String: Int] else {return}
                  self.blocks = data
-                self.fetchGuests()
+                self.newfetchGuests()
             }
             //print("kikiki")
-                self.fetchGuests()
+                self.newfetchGuests()
             }
           
     }
     
+    //JUST MAKE GUESTS JUST LIKE USERS
+        //STORE UID PHOTO ETC
     
+    fileprivate func newfetchGuests() {
+        Firestore.firestore().collection("parties").document(party?.partyUID ?? "").collection("guests").getDocuments { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            snapshot?.documents.forEach({ (docSnapshot) in
+                let guestDictionary = docSnapshot.data()
+                let phone = Guest(dictionary: guestDictionary)
+                print(phone.phoneNumber, "queen")
+                self.phoneNumbers.append(phone.phoneNumber ?? "")
+                print(self.phoneNumbers, "usher")
+            })
+        self.fetchGuestPartTwo()
+        }
+      }
     
-    fileprivate func fetchGuests() {
-        print("hi hi")
+    fileprivate func fetchGuestPartTwo() {
         guard !fetchedAllUsers, !fetchingMoreUsers else { return }
         fetchingMoreUsers = true
         tableView.reloadSections(IndexSet(integer: 1), with: .none)
-        
-        let partyUID = self.party?.partyUID ?? ""
-        navigationItem.title = "\(party?.partyName ?? "") Guests"
-        
-        Firestore.firestore().collection("parties").document(partyUID).getDocument { (snap, err) in
-            if let err = err {
-                print(err, "fook")
-            }
-            guard let partyDict = snap?.data() else {return}
-            let party = Party(dictionary: partyDict)
-            
-            self.phoneNumbers = party.guestPhoneNumbers as! [String]
-            print(self.phoneNumbers)
-        
-        
         var query: Query
-            if let lastFetchedNumber = self.lastFetchedNumber {
-                query = Firestore.firestore().collection("users").whereField("PhoneNumber", in: self.phoneNumbers).order(by: "Full Name").start(after: [lastFetchedNumber]).limit(to: 9)
-                
-        } else {
-            query = Firestore.firestore().collection("users").whereField("PhoneNumber", in: self.phoneNumbers).order(by: "Full Name").limit(to: 9)
-        }
-        
-        // Change logic where gender variable is just the where field firebase thing
+         if let lastFetchedDocument = lastFetchedDocument {
+             query = Firestore.firestore().collection("users").whereField("PhoneNumber", in: self.phoneNumbers).order(by: "Full Name").start(afterDocument: lastFetchedDocument).limit(to: 10)
+         } else {
+             query = Firestore.firestore().collection("users").whereField("PhoneNumber", in: self.phoneNumbers).order(by: "Full Name").limit(to: 10)
+         }
         query.getDocuments { (snapshot, err) in
-            guard err == nil, let snapshot = snapshot else { return }
-            
-            if snapshot.documents.count == 0 {
-                self.fetchedAllUsers = true
-                self.fetchingMoreUsers = false
-                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+            if let err = err {
+                print(err)
                 return
             }
-            
-            self.lastFetchedNumber = snapshot.documents.last
-            snapshot.documents.forEach({ (documentSnapshot) in
-                let userDictionary = documentSnapshot.data()
-                let crush = User(dictionary: userDictionary)
-                print(crush.name ?? "puck")
-                let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
-                let hasBlocked = self.blocks[crush.uid ?? ""] == nil
-                
-                let sexPref = self.user?.sexPref
-                if sexPref == "Female" {
-                    self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
-                }
-                else if sexPref == "Male" {
-                    self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
-                }
-                else {
-                    self.isRightSex = crush.school == self.user?.school
-                }
-                
-                if hasBlocked && isNotCurrentUser && self.isRightSex {
-                    self.guestArray.append(crush)
-                }
-            })
-            DispatchQueue.main.async(execute: {
-                self.fetchingMoreUsers = false
-                self.tableView.reloadData()
-            })
-            self.fetchSwipes()
-            }
-        }
-        
-    }
+            guard err == nil, let snapshot = snapshot else { return }
+                  
+                  if snapshot.documents.count == 0 {
+                      self.fetchedAllUsers = true
+                      self.fetchingMoreUsers = false
+                      self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+                      return
+                  }
+           self.lastFetchedNumber = snapshot.documents.last
+                       snapshot.documents.forEach({ (documentSnapshot) in
+                           let userDictionary = documentSnapshot.data()
+                           let crush = User(dictionary: userDictionary)
+                           print(crush.name ?? "puck")
+                           let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+                           let hasBlocked = self.blocks[crush.uid ?? ""] == nil
+                           
+                           let sexPref = self.user?.sexPref
+                           if sexPref == "Female" {
+                               self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
+                           }
+                           else if sexPref == "Male" {
+                               self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
+                           }
+                           else {
+                               self.isRightSex = crush.school == self.user?.school
+                           }
+                           
+                           if hasBlocked && isNotCurrentUser {
+                               self.guestArray.append(crush)
+                           }
+                       })
+                       DispatchQueue.main.async(execute: {
+                           self.fetchingMoreUsers = false
+                           self.tableView.reloadData()
+                       })
+                       self.fetchSwipes()
+                       }
+                   }
+    
+    
+//    fileprivate func fetchGuests() {
+//        print("hi hi")
+//        guard !fetchedAllUsers, !fetchingMoreUsers else { return }
+//        fetchingMoreUsers = true
+//        tableView.reloadSections(IndexSet(integer: 1), with: .none)
+//
+//        let partyUID = self.party?.partyUID ?? ""
+//        navigationItem.title = "\(party?.partyName ?? "") Guests"
+//
+//        Firestore.firestore().collection("parties").document(partyUID).getDocument { (snap, err) in
+//            if let err = err {
+//                print(err, "fook")
+//            }
+//            guard let partyDict = snap?.data() else {return}
+//            let party = Party(dictionary: partyDict)
+//
+//            self.phoneNumbers = party.guestPhoneNumbers as! [String]
+//            print(self.phoneNumbers)
+//
+//
+//        var query: Query
+//            if let lastFetchedNumber = self.lastFetchedNumber {
+//                query = Firestore.firestore().collection("users").whereField("PhoneNumber", in: self.phoneNumbers).order(by: "Full Name").start(after: [lastFetchedNumber]).limit(to: 9)
+//
+//        } else {
+//            query = Firestore.firestore().collection("users").whereField("PhoneNumber", in: self.phoneNumbers).order(by: "Full Name").limit(to: 9)
+//        }
+//
+//        // Change logic where gender variable is just the where field firebase thing
+//        query.getDocuments { (snapshot, err) in
+//            guard err == nil, let snapshot = snapshot else { return }
+//
+//            if snapshot.documents.count == 0 {
+//                self.fetchedAllUsers = true
+//                self.fetchingMoreUsers = false
+//                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+//                return
+//            }
+//
+//            self.lastFetchedNumber = snapshot.documents.last
+//            snapshot.documents.forEach({ (documentSnapshot) in
+//                let userDictionary = documentSnapshot.data()
+//                let crush = User(dictionary: userDictionary)
+//                print(crush.name ?? "puck")
+//                let isNotCurrentUser = crush.uid != Auth.auth().currentUser?.uid
+//                let hasBlocked = self.blocks[crush.uid ?? ""] == nil
+//
+//                let sexPref = self.user?.sexPref
+//                if sexPref == "Female" {
+//                    self.isRightSex = crush.gender == "Female" || crush.gender == "Other"
+//                }
+//                else if sexPref == "Male" {
+//                    self.isRightSex = crush.gender == "Male" || crush.gender == "Other"
+//                }
+//                else {
+//                    self.isRightSex = crush.school == self.user?.school
+//                }
+//
+//                if hasBlocked && isNotCurrentUser && self.isRightSex {
+//                    self.guestArray.append(crush)
+//                }
+//            })
+//            DispatchQueue.main.async(execute: {
+//                self.fetchingMoreUsers = false
+//                self.tableView.reloadData()
+//            })
+//            self.fetchSwipes()
+//            }
+//        }
+//
+//    }
     
     func hasTappedCrush(cell: UITableViewCell) {
         guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
@@ -659,7 +733,7 @@ class GuestsController: UITableViewController, UISearchBarDelegate, UITabBarCont
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = UIColor.clear
         if guestArray.count > 0 && indexPath.section == 0 && indexPath.row >= guestArray.count - 3 && !isFiltering() {
-            fetchGuests()
+            newfetchGuests()
         }
     }
     

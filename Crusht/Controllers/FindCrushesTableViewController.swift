@@ -212,11 +212,14 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         let phoneNumber = user?.phoneNumber ?? ""
         
         let phoneString = contact.phoneCell
-                 let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
-                 let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
-                 let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
-                 let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
         let cardUID = phoneNoDash
+        
+        print(cardUID, "Maya did it right")
+        
         let twilioPhoneData: [String: Any] = ["phoneToInvite": phoneFinal]
         let documentData = [cardUID: didLike]
         

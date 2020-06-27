@@ -109,7 +109,7 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return 7
         case 1:
-            return 2
+            return 3
         case 2:
             return 2
         default:
@@ -133,29 +133,8 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-         let section = EditSection(rawValue: indexPath.section)
-
-        switch section {
-        case .Profile:
+ 
             return 60
-        case .Location:
-            if indexPath.row == 0 {
-                return 100
-            }
-            else {
-                return 70
-            }
-        case .VenueLocation:
-                 if indexPath.row == 0 {
-                       return 70
-                   }
-                   else {
-                       return 60
-                   }
-        default:
-            return 0
-            }
 
         }
     
@@ -218,21 +197,24 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
             }
 
                case .Location:
+                let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
+                    let location = LocationMatchingOptions(rawValue: indexPath.row)
+                    cell.sectionType = location
+                    cell.selectionStyle = .none
           
                 switch indexPath.row {
                 case 0:
-                    let ageRangeCell = AgeRangeTableViewCell(style: .default, reuseIdentifier: nil)
-                    ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinChanged), for: .valueChanged)
-                    ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChanged), for: .valueChanged)
-                    ageRangeCell.setup(minSeekingAge: user?.minSeekingAge, maxSeekingAge: user?.maxSeekingAge)
-                     ageRangeCell.selectionStyle = .none
-                    return ageRangeCell
+                   cell.titleText.text = "Min Seeking Age"
+                   cell.userText.text = "\(user?.minSeekingAge ?? 18) Years Old"
+                    return cell
                 case 1:
-                    let locationRangeCell = LocationTableViewCell(style: .default, reuseIdentifier: nil)
-                    locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
-                    locationRangeCell.setup(maxDistance: user?.maxDistance)
-                     locationRangeCell.selectionStyle = .none
-                    return locationRangeCell
+                    cell.titleText.text = "Max Seeking Age"
+                    cell.userText.text = "\(user?.maxSeekingAge ?? 50) Years Old"
+                    return cell
+                case 2:
+                    cell.titleText.text = "Max Distance"
+                    cell.userText.text = "\(user?.maxDistance ?? 10) Miles"
+                    return cell
                 default:
                     let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
                     cell.textLabel?.text = "Edit"
@@ -241,18 +223,17 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
             
 
         case .VenueLocation:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
-//                       let venue = VenueOptions(rawValue: indexPath.row)
-//                       cell.sectionType = venue
-//            cell.selectionStyle = .none
+
             
             switch indexPath.row {
             case 0:
-                let locationRangeCell = VenueDistanceCell(style: .default, reuseIdentifier: nil)
-                locationRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxChangedDistance), for: .valueChanged)
-                locationRangeCell.setup(maxDistance: user?.maxVenueDistance)
-                locationRangeCell.selectionStyle = .none
-                return locationRangeCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
+                    let venue = VenueOptions(rawValue: indexPath.row)
+                    cell.sectionType = venue
+                    cell.selectionStyle = .none
+                    cell.titleText.text = "Venue Distance"
+                cell.userText.text = "\(user?.maxVenueDistance ?? 4) Miles"
+                    return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NiceEditProfileCell
                            let venue = VenueOptions(rawValue: indexPath.row)
@@ -321,6 +302,10 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
                           let occupationController = EditOccupationController()
                         occupationController.user = user
                         self.navigationController?.pushViewController(occupationController, animated: true)
+             case 3:
+                let ageController = EditAgeController()
+                ageController.user = user
+                self.navigationController?.pushViewController(ageController, animated: true)
                     case 4:
                         let editbio = EditBioController()
                         editbio.user = user
@@ -343,11 +328,19 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
             
         switch indexPath.row {
             case 0:
-                print("Yo")
+                let nameController = EditNameController()
+                nameController.user = user
+                self.navigationController?.pushViewController(nameController, animated: true)
             case 1:
-                print("Hi")
-            default:
-                print("Yo")
+                let editSchoolController = EditSchoolController()
+                editSchoolController.user = user
+                self.navigationController?.pushViewController(editSchoolController, animated: true)
+        case 2:
+            let editSchoolController = EditSchoolController()
+                       editSchoolController.user = user
+                       self.navigationController?.pushViewController(editSchoolController, animated: true)
+        default:
+            print("yo")
             }
         case .VenueLocation:
             switch indexPath.row {

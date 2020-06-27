@@ -435,7 +435,6 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             var searchRadius : Int = 5000
             self.fetchGoogleData(forLocation: currentLocation, locationName: locationName, searchRadius: searchRadius )
         }
-   
     }
     
     //Places instead of geofirestore
@@ -577,6 +576,18 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
     private func handleJoin(barName: String) {
         let timestamp = Int(Date().timeIntervalSince1970)
         peekBarName = barName
+        
+        if user?.age ?? 18 < 21 {
+            let alert = UIAlertController(title: "Is Your Birthday Correct?", message: "Need to be 21 to join a bar. If you are of age, please edit your birthday in the Edit Profile page; otherwise, wait until you are of leagal drinking age.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "Settings", style: .default) { _ in
+                    self.handleSettings()
+            }
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addAction(action)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
         if user?.currentVenue == barName {
             let userbarController = UsersInBarTableView()
             userbarController.barName = barName

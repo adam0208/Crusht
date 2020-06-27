@@ -33,3 +33,12 @@ class Party: NSObject {
         self.partyUID = dictionary["partyUID"] as? String ?? ""
     }
 }
+
+class Guest: NSObject {
+    var phoneNumber: String?
+    
+    init(dictionary: [String: Any]) {
+        self.phoneNumber = dictionary["PhoneNumber"] as? String ?? ""
+       
+    }
+}

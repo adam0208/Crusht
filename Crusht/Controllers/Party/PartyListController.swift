@@ -38,7 +38,11 @@ class PartyListController: UITableViewController, SettingsControllerDelegate, UI
         label.text = "!"
         return label
     }()
-
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//         super.viewWillAppear(animated)
+//         self.navigationController?.navigationBar.isHidden = false
+//     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -272,10 +276,12 @@ class PartyListController: UITableViewController, SettingsControllerDelegate, UI
             
             let party = Party(dictionary: dictionary)
            
-            let partyController = PartyInfoController()
+            let partyController = GuestsController()
             partyController.party = party
             partyController.user = self.user
-           
+            let myBackButton = UIBarButtonItem()
+            myBackButton.title = " "
+            self.navigationItem.backBarButtonItem = myBackButton
             //userDetailsController.delegate = self
             self.navigationController?.pushViewController(partyController, animated: true)
         })

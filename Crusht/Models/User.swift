@@ -45,7 +45,7 @@ struct User: ProducesCardViewModel {
     var deviceID: String?
     var email: String?
     
-    var verified: String?
+    var verified: String? //Make Boolean
     
     var birthday: String?
     

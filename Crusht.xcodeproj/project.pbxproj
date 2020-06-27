@@ -76,6 +76,7 @@
 		287795E621C339CF003A060A /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287795E521C339CF003A060A /* MatchView.swift */; };
 		28795C4E23E2B02400503FB2 /* PartyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28795C4D23E2B02400503FB2 /* PartyListController.swift */; };
 		2879D5B524A6649A00A5979F /* PartyInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879D5B424A6649A00A5979F /* PartyInfoController.swift */; };
+		2879D5B724A671EF00A5979F /* EditAgeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879D5B624A671EF00A5979F /* EditAgeController.swift */; };
 		287F2065249E8CB400F04BC2 /* icons8-remove-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 287F2064249E8CB400F04BC2 /* icons8-remove-30-2.png */; };
 		287F3A90225B1C43008F5BD0 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F3A8F225B1C43008F5BD0 /* AnimationView.swift */; };
 		28857CCB21B9A91500A654A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28857CCA21B9A91500A654A0 /* LoginViewController.swift */; };
@@ -253,6 +254,7 @@
 		287795E521C339CF003A060A /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		28795C4D23E2B02400503FB2 /* PartyListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyListController.swift; sourceTree = "<group>"; };
 		2879D5B424A6649A00A5979F /* PartyInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyInfoController.swift; sourceTree = "<group>"; };
+		2879D5B624A671EF00A5979F /* EditAgeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAgeController.swift; sourceTree = "<group>"; };
 		287F2064249E8CB400F04BC2 /* icons8-remove-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-remove-30-2.png"; sourceTree = "<group>"; };
 		287F3A8F225B1C43008F5BD0 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		28857CCA21B9A91500A654A0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				2846458F2498640800674D3F /* EditBioController.swift */,
 				2846459124986CE900674D3F /* EditGenderController.swift */,
 				2846459324986CFC00674D3F /* EditSexPrefController.swift */,
+				2879D5B624A671EF00A5979F /* EditAgeController.swift */,
 			);
 			path = "Edit Specific Detail";
 			sourceTree = "<group>";
@@ -729,8 +732,8 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
-				C383DA812F290485BAA99410 /* [CP] Embed Pods Frameworks */,
-				C1532B89B1468422264339BE /* [CP] Copy Pods Resources */,
+				F2EE2B8366510A11AEAD9A45 /* [CP] Embed Pods Frameworks */,
+				5BA4C82DFA0080160E4B3842 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -768,8 +771,8 @@
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
-				933A68A596DBF818576D0180 /* [CP] Embed Pods Frameworks */,
-				CC2D119B41A8822C9FAC31F9 /* [CP] Copy Pods Resources */,
+				36E75A251DFF5B834574D6DC /* [CP] Embed Pods Frameworks */,
+				2C5C7FB2626C798AF09C5F08 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -915,6 +918,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
+		2C5C7FB2626C798AF09C5F08 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		35AD4C2468730FF298E35D66 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -937,7 +957,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		933A68A596DBF818576D0180 /* [CP] Embed Pods Frameworks */ = {
+		36E75A251DFF5B834574D6DC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -954,7 +974,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C1532B89B1468422264339BE /* [CP] Copy Pods Resources */ = {
+		5BA4C82DFA0080160E4B3842 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -969,40 +989,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C383DA812F290485BAA99410 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CC2D119B41A8822C9FAC31F9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */ = {
@@ -1025,6 +1011,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F2EE2B8366510A11AEAD9A45 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1129,6 +1132,7 @@
 				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
 				28F54073224C23C600EC5062 /* BioTextView.swift in Sources */,
+				2879D5B724A671EF00A5979F /* EditAgeController.swift in Sources */,
 				2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */,
 				28FD7D0C2261AFBB00B79496 /* GenderController.swift in Sources */,
 				4CA41B45235DFE0A00CF8529 /* UIImageViewExtension.swift in Sources */,

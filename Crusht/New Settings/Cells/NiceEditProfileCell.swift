@@ -40,7 +40,7 @@ enum ProfileOptions: Int, CaseIterable, SectionType2 {
         case .occupation:
             return true
         case .age:
-            return false
+            return true
         case .bio:
             return true
         case .yourGender:
@@ -85,11 +85,11 @@ enum LocationMatchingOptions: Int, CaseIterable, SectionType2 {
         
         switch self {
          case .minAge:
-             return false
+             return true
          case .maxAge:
-             return false
+             return true
         case .maxDistance:
-            return false
+            return true
          }
         
      }
@@ -117,7 +117,7 @@ enum VenueOptions: Int, CaseIterable, SectionType2 {
     var containArrow: Bool {
         switch self {
         case .maxDistance:
-            return false
+            return true
         case .currentVenue:
             return false
         }
