@@ -6,7 +6,7 @@ target 'Crusht' do
   use_frameworks!
 
   # Pods for Crusht
-  
+
  pod 'Firebase/Firestore'
      pod 'Firebase/Auth'
      pod 'Firebase/Storage'
@@ -21,7 +21,6 @@ target 'Crusht' do
       pod 'Fabric', '~> 1.9.0'
       pod 'Crashlytics', '~> 3.12.0'
       pod 'GooglePlaces'
-
 
   target 'CrushtTests' do
     inherit! :search_paths

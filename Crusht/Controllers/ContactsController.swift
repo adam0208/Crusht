@@ -16,7 +16,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 
-class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate, UITabBarControllerDelegate {
+class ContactsController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate, UITabBarControllerDelegate {
     
     var expandableContacts = ExpandableContacts(isExpanded: true, contacts: [])
     lazy var filteredExpandableContacts = ExpandableContacts(isExpanded: true, contacts: [])
@@ -82,8 +82,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         if UIApplication.shared.applicationIconBadgeNumber == 1 {
-            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
-            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+            self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
         }
         handleContacts()
       
@@ -558,8 +558,8 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
             }
             snapshot.documentChanges.forEach { diff in
                 if (diff.type == .modified) {
-                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
-                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
+                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
                 }
             }
@@ -698,7 +698,7 @@ class FindCrushesTableViewController: UITableViewController, UISearchBarDelegate
 }
 
 // MARK: - UISearchResultsUpdating
-extension FindCrushesTableViewController: UISearchResultsUpdating {
+extension ContactsController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }

@@ -247,7 +247,7 @@ class EnterSchoolController: UIViewController, UIPickerViewDelegate, UIPickerVie
             private let errorLabel: UILabel = {
                 let label = UILabel()
                 label.text = "Enter Your School"
-                label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+                label.textColor = .black
                 label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
                 label.textAlignment = .center
                 label.adjustsFontSizeToFitWidth = true

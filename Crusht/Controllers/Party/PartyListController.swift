@@ -165,8 +165,8 @@ class PartyListController: UITableViewController, SettingsControllerDelegate, UI
                     if (diff.type == .added) {
                     }
                     if (diff.type == .modified) {
-                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
-                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+                        self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
+                        self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
                         UIApplication.shared.applicationIconBadgeNumber = 1
                     }
                     if (diff.type == .removed) {

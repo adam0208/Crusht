@@ -163,8 +163,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
         if UIApplication.shared.applicationIconBadgeNumber == 1 {
-            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
-            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+            self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
         }
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
@@ -217,8 +217,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             }
             snapshot.documentChanges.forEach { diff in
                 if (diff.type == .modified) {
-                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
-                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
+                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
                 }
             }
@@ -285,6 +285,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                        loginController.modalPresentationStyle = .fullScreen
                        self.present(loginController, animated: true)
                    }
+            
                    else if self.user?.name == "" {
                        let namecontroller = EnterNameController()
                        namecontroller.modalPresentationStyle = .fullScreen

@@ -127,14 +127,14 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
         label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
-        label.textColor = .white
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         return label
     }()
     
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.text = "Please select a preference"
-        label.textColor = .white
+        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -144,15 +144,15 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
 
     
     private let doneButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Next", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 1, green: 0.6749386191, blue: 0.7228371501, alpha: 1)
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 22
+       let button = UIButton(type: .system)
+           button.setTitle("Next", for: .normal)
+           button.setTitleColor(.white, for: .normal)
+           button.titleLabel?.font = UIFont.systemFont(ofSize: 27.5, weight: .heavy)
+           button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+           button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+           button.widthAnchor.constraint(equalToConstant: 60).isActive = true
+           button.titleLabel?.adjustsFontForContentSizeCategory = true
+           button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
         
         return button

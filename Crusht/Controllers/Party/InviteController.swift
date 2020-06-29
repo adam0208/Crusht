@@ -13,7 +13,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class InviteController: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate {
-
+    //Flat out redo this shit
     //Plug in COntacts string manipulation
     
    var expandableContacts = ExpandableContacts(isExpanded: true, contacts: [])
@@ -207,7 +207,14 @@ class InviteController: UITableViewController, UISearchBarDelegate, UITabBarCont
 
         func saveInviteToFirestore(contact: FavoritableContact) {
             //let phoneNumber = user?.phoneNumber ?? ""
-            let cardUID = contact.phoneCell
+            
+            let phoneString = contact.phoneCell
+            let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+            let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+            let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+            let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+            let cardUID = phoneNoDash
+            
             let twilioPhoneData: [String: Any] = ["phoneToInvite": cardUID,
                                                   "partyName": partyTitle,
                                                   "hostName": user?.name ?? ""

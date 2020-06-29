@@ -55,7 +55,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         super.viewDidLoad()
         tableView.register(UserBarCell.self, forCellReuseIdentifier: cellId)
         tableView.register(LoadingCell.self, forCellReuseIdentifier: loadingCellId)
-       
         listenForMessages()
         
 //        view.addSubview(searchController.searchBar)
@@ -142,8 +141,8 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             }
             snapshot.documentChanges.forEach { diff in
                 if (diff.type == .modified) {
-                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
-                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
+                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
                 }
             }
@@ -611,8 +610,8 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
-        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
+        self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
+        self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
         UIApplication.shared.applicationIconBadgeNumber = 1
         MessageController.sharedInstance?.didHaveNewMessage = true
        

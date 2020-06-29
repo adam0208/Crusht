@@ -36,9 +36,25 @@ class Party: NSObject {
 
 class Guest: NSObject {
     var phoneNumber: String?
+    var isAdmin: Bool?
+    var going: Bool?
+    var uid: String?
+    
+    var firstName: String?
+    var lastName: String?
+    
+    var imageUrl1: String?
+
+    
     
     init(dictionary: [String: Any]) {
         self.phoneNumber = dictionary["PhoneNumber"] as? String ?? ""
-       
+        self.firstName = dictionary["First Name"] as? String ?? ""
+        self.lastName = dictionary["Last Name"] as? String ?? ""
+        self.imageUrl1 = dictionary["ImageUrl1"] as? String
+        self.uid = dictionary["uid"] as? String ?? ""
+        self.isAdmin = dictionary["isAdmin"] as? Bool
+        self.going = dictionary["going"] as? Bool
+
     }
 }

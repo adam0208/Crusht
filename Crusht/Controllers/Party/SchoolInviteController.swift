@@ -241,11 +241,15 @@ class SchoolInviteController: UITableViewController, UISearchBarDelegate, UITabB
                                                       "partyName": partyTitle,
                                                       "hostName": user?.name ?? ""
                 ]
-         //       let documentData = ["guests": [cardUID] FieldValue.arrayUnion(["greater_virginia"]]
+        let docData: [String: Any] = ["PhoneNumber": crush.phoneNumber ?? "",
+                                      "ImageUrl1": crush.imageUrl1 ?? "",
+                                      "First Name": crush.firstName ?? "",
+                                      "Last Name": crush.lastName ?? "",
+                                      "isAdmin": false,
+                                      "going": false,
+                                      "uid": crush.uid ?? ""]
                 
-                Firestore.firestore().collection("parties").document(partyUID).updateData(([
-                    "guests": FieldValue.arrayUnion([cardUID ?? ""])
-                ]))
+        Firestore.firestore().collection("parties").document(partyUID).collection("guests").document(crush.phoneNumber ?? "").setData(docData)
                 
     //            Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: cardUID).getDocuments { (snapshot, err) in
     //                if let err = err {

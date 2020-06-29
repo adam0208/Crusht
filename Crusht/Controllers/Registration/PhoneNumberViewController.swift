@@ -118,6 +118,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate, CountryP
         tf.keyboardType = UIKeyboardType.phonePad
         tf.placeholder = "1231231234"
         tf.backgroundColor = .white
+        tf.textAlignment = .center
         tf.font = UIFont.systemFont(ofSize: 27)
         tf.adjustsFontSizeToFitWidth = true
         tf.adjustsFontForContentSizeCategory = true

@@ -128,7 +128,7 @@ class YourSexController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.text = "Please select an option"
-        label.textColor = .white
+        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true

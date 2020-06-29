@@ -62,7 +62,7 @@ class MatchView: UIView {
         let label = UILabel()
         label.text = "You and X have liked\neach other"
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0
         return label
@@ -74,7 +74,7 @@ class MatchView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderColor = #colorLiteral(red: 1, green: 0, blue: 0.6705882353, alpha: 1)
         return imageView
     }()
     
@@ -83,7 +83,7 @@ class MatchView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderColor = #colorLiteral(red: 1, green: 0, blue: 0.6705882353, alpha: 1)
         imageView.alpha = 1
         return imageView
     }()
@@ -108,9 +108,9 @@ class MatchView: UIView {
     
     fileprivate let whatToDoNextLabel: UILabel = {
         let label = UILabel()
-        label.text = "Go to your messages 💬 to start the conversatoin! "
+        label.text = "Go to your messages to start the conversatoin! "
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 25)
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -121,7 +121,8 @@ class MatchView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupBlurView()
+       // setupBlurView()
+        backgroundColor = .white
         
         setupLayout()
         
@@ -215,18 +216,18 @@ class MatchView: UIView {
     
     let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     
-    fileprivate func setupBlurView() {
-        visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
-        addSubview(visualEffectView)
-        visualEffectView.fillSuperview()
-        visualEffectView.alpha = 0
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.visualEffectView.alpha = 1
-        }) { (_) in
-            
-        }
-    }
+//    fileprivate func setupBlurView() {
+//        visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
+//        addSubview(visualEffectView)
+//        visualEffectView.fillSuperview()
+//        visualEffectView.alpha = 0
+//
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//            self.visualEffectView.alpha = 1
+//        }) { (_) in
+//
+//        }
+//    }
     
     @objc fileprivate func handleTapDismiss() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {

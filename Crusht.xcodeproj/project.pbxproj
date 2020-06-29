@@ -87,7 +87,7 @@
 		288C87CD21F28C25000B5058 /* SchoolCrushes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288C87CC21F28C25000B5058 /* SchoolCrushes.swift */; };
 		28908D8821C0AB2C00391A39 /* ExpandableContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */; };
 		28908D8A21C0AB6400391A39 /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8921C0AB6400391A39 /* ContactsCell.swift */; };
-		28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */; };
+		28908D8C21C0ADD400391A39 /* ContactsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8B21C0ADD400391A39 /* ContactsController.swift */; };
 		28908D8E21C0B52900391A39 /* SeniorFiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */; };
 		289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 289224BB21B9C1B20047E29B /* GoogleService-Info.plist */; };
 		2895576D227E62B5001EFD73 /* UsersInBarTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */; };
@@ -265,7 +265,7 @@
 		288C87CC21F28C25000B5058 /* SchoolCrushes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushes.swift; sourceTree = "<group>"; };
 		28908D8721C0AB2C00391A39 /* ExpandableContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableContacts.swift; sourceTree = "<group>"; };
 		28908D8921C0AB6400391A39 /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
-		28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindCrushesTableViewController.swift; sourceTree = "<group>"; };
+		28908D8B21C0ADD400391A39 /* ContactsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsController.swift; sourceTree = "<group>"; };
 		28908D8D21C0B52900391A39 /* SeniorFiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewController.swift; sourceTree = "<group>"; };
 		289224BB21B9C1B20047E29B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersInBarTableView.swift; sourceTree = "<group>"; };
@@ -537,7 +537,7 @@
 				283816C821B8925C00B3E4FD /* LocationMatchViewController.swift */,
 				283FD3DA227E669000C7760F /* CustomTabBarController.swift */,
 				28A7F9E521BC3C1D00238B7D /* EditProfileController.swift */,
-				28908D8B21C0ADD400391A39 /* FindCrushesTableViewController.swift */,
+				28908D8B21C0ADD400391A39 /* ContactsController.swift */,
 				28067D2D21C0C18D001F6BC5 /* MessageController.swift */,
 				28CFC6B621C5B46A00387129 /* ChatLogController.swift */,
 				28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */,
@@ -733,7 +733,7 @@
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
 				F2EE2B8366510A11AEAD9A45 /* [CP] Embed Pods Frameworks */,
-				5BA4C82DFA0080160E4B3842 /* [CP] Copy Pods Resources */,
+				26A9B9C000F5573AA4D36C51 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -772,7 +772,7 @@
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
 				36E75A251DFF5B834574D6DC /* [CP] Embed Pods Frameworks */,
-				2C5C7FB2626C798AF09C5F08 /* [CP] Copy Pods Resources */,
+				E08162DF3AE4C44999F16BCF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -901,6 +901,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		26A9B9C000F5573AA4D36C51 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		28FD7D192264488900B79496 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -917,23 +934,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
-		};
-		2C5C7FB2626C798AF09C5F08 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		35AD4C2468730FF298E35D66 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -974,21 +974,21 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5BA4C82DFA0080160E4B3842 /* [CP] Copy Pods Resources */ = {
+		E08162DF3AE4C44999F16BCF /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */ = {
@@ -1129,7 +1129,7 @@
 				2859707E2202C73800EB83CE /* CheckVerificationViewController.swift in Sources */,
 				2846459224986CE900674D3F /* EditGenderController.swift in Sources */,
 				2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */,
-				28908D8C21C0ADD400391A39 /* FindCrushesTableViewController.swift in Sources */,
+				28908D8C21C0ADD400391A39 /* ContactsController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
 				28F54073224C23C600EC5062 /* BioTextView.swift in Sources */,
 				2879D5B724A671EF00A5979F /* EditAgeController.swift in Sources */,

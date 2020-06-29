@@ -11,7 +11,7 @@ import SDWebImage
 import Firebase
 class GuestListCell: UITableViewCell {
 
-        var crush: User?
+        var crush: Guest?
         var link: GuestsController?
         var hasFavoried = Bool()
         private var user: User?
@@ -49,8 +49,8 @@ class GuestListCell: UITableViewCell {
         
         
         
-        func setup(crush: User, hasFavorited: Bool) {
-            textLabel?.text = crush.name
+        func setup(crush: Guest, hasFavorited: Bool) {
+            textLabel?.text = "\(crush.firstName ?? "") \(crush.lastName ?? "")"
             
             // This is needed to avoid showing the wrong image while the actual one is being downloaded.
             // The problem is caused by cell reuse.

@@ -59,7 +59,7 @@ class EnterPhotoController: UIViewController {
     // MARK: - User Interface
     
     private func initializeUI() {
-        view.addGradientSublayer()
+        view.backgroundColor = .white
         setupButton()
         
         let stack = UIStackView(arrangedSubviews: [selectPhotoButton, errorLabel])
@@ -68,16 +68,16 @@ class EnterPhotoController: UIViewController {
         view.addSubview(label)
         
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: nil,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: view.bounds.height/9, left: 30, bottom: 0, right: 30))
+                            leading: view.leadingAnchor,
+                            bottom: nil,
+                            trailing: view.trailingAnchor,
+                            padding: .init(top: 12, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: label.bottomAnchor,
+        stack.anchor(top: view.topAnchor,
                      leading: view.leadingAnchor,
                      bottom: view.safeAreaLayoutGuide.bottomAnchor,
                      trailing: view.trailingAnchor,
-                     padding: .init(top: 4, left: 30, bottom: view.bounds.height/4, right: 30))
+                     padding: .init(top: view.bounds.height/5, left: 30, bottom: view.bounds.height/4, right: 30))
         
         stack.spacing = 15
         errorLabel.isHidden = true
@@ -95,12 +95,13 @@ class EnterPhotoController: UIViewController {
       //  selectPhotoButton.titleLabel?.adjustsFontSizeToFitWidth = true
         selectPhotoButton.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
         selectPhotoButton.layer.cornerRadius = 70
+        selectPhotoButton.layer.borderColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
         selectPhotoButton.clipsToBounds = true
     }
     
     private let label: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         label.text = "Select Your Profile Picture"
         label.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
         label.textAlignment = .center
@@ -112,7 +113,7 @@ class EnterPhotoController: UIViewController {
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.text = "Please select a photo"
-        label.textColor = .white
+        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true

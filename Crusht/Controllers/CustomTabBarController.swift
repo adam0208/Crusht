@@ -10,7 +10,7 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
-    let contactsController = FindCrushesTableViewController()
+    let contactsController = ContactsController()
     let schoolController = SchoolCrushController()
     let venueController = BarsTableView()
     let messageController = MessageController()

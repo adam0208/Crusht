@@ -10,7 +10,7 @@ import UIKit
 import Contacts
 
 class ContactsCell: UITableViewCell {
-    var link: FindCrushesTableViewController?
+    var link: ContactsController?
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
