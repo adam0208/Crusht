@@ -14,7 +14,8 @@ class EditGenderController: UIViewController, UIPickerViewDelegate, UIPickerView
         var genderPicker = UIPickerView()
         var user: User?
         var gender = String()
-           
+        var madeChange = false
+        var delegate: SettingsControllerDelegate?
         let myPickerData = [String](arrayLiteral: "", "Male", "Female", "Other")
         
         //UI
@@ -131,13 +132,18 @@ class EditGenderController: UIViewController, UIPickerViewDelegate, UIPickerView
             guard let uid = Auth.auth().currentUser?.uid else {return}
             let docData: [String: Any] = ["User-Gender": genderTF.text ?? ""]
             Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+            madeChange = true
             self.handleBack()
         }
         
         @objc fileprivate func handleBack() {
             self.navigationController?.navigationBar.isHidden = false
             self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.navigationController?.popViewController(animated: true)
+             self.navigationController?.popViewController(animated: true) {
+                           if self.madeChange == true {
+                       self.delegate?.didSaveSettings()
+                       }
+            }
         }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -155,4 +161,4 @@ class EditGenderController: UIViewController, UIPickerViewDelegate, UIPickerView
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         genderTF.text = myPickerData[row]
     }
-    }
+}

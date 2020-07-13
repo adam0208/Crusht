@@ -11,6 +11,7 @@ import SDWebImage
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+import CoreLocation
 
 private let reuseIdentifier = "SettingsCell"
 
@@ -52,10 +53,9 @@ class ViewController: UIViewController {
         
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 85)
         userInfoHeader = UserInfoHeader(frame: frame)
-        userInfoHeader.usernameLabel.text = user?.name
+        userInfoHeader.usernameLabel.text = "\(user?.firstName ?? "") \(user?.lastName ?? "")"
         userInfoHeader.schoolLabel.text = user?.school
         if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
-                       
                      //  Nuke.loadImage(with: url, into: self.image1Button)
                        SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                           self.userInfoHeader.profileImageView.image = image
@@ -91,6 +91,49 @@ class ViewController: UIViewController {
           dismiss(animated: true)
       }
     
+    @objc fileprivate func handleSwitchNotification(sender: UISwitch) {
+          if sender.isOn {
+              showSettingsAlert(sender: sender)
+          }
+          else {
+              showSettingsAlert(sender: sender)
+          }
+      }
+      
+      @objc fileprivate func handleSwitchLocation(sender: UISwitch) {
+          if sender.isOn {
+              showSettingsAlert2(sender: sender)
+          }
+          else {
+              showSettingsAlert2(sender: sender)
+          }
+      }
+      
+      private func showSettingsAlert(sender: UISwitch) {
+          let alert = UIAlertController(title: "Notifications Permissions", message: "Change your notifications permissions?", preferredStyle: .alert)
+          alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+              UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+          })
+          alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+              sender.isOn = false
+              return
+          })
+          present(alert, animated: true)
+      }
+      
+      private func showSettingsAlert2(sender: UISwitch) {
+          let alert = UIAlertController(title: "Location Permissions", message: "Change your location permissions?", preferredStyle: .alert)
+          alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+              UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+          })
+          alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+              sender.isOn = false
+              return
+          })
+          present(alert, animated: true)
+      }
+      
+    
     
 }
     
@@ -115,7 +158,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return 40
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -142,14 +185,37 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                case .Communications:
                 let communications = CommunicationOptions(rawValue: indexPath.row)
                 cell.sectionType = communications
+                switch communications {
+                case .location:
+                      switch CLLocationManager.authorizationStatus()  {
+                        case .notDetermined, .restricted, .denied:
+                        cell.switchControl.isOn = false
+                        cell.switchControl.addTarget(self, action: #selector(handleSwitchLocation), for: .valueChanged)
+                        default:
+                        cell.switchControl.isOn = true
+                        cell.switchControl.addTarget(self, action: #selector(handleSwitchLocation), for: .valueChanged)
+                        }
+                default:
+                    let isRegisteredForRemoteNotifications = UIApplication.shared.isRegisteredForRemoteNotifications
+                    if isRegisteredForRemoteNotifications {
+                        cell.switchControl.isOn = true
+                        cell.switchControl.addTarget(self, action: #selector(handleSwitchNotification), for: .valueChanged)
+                    } else {
+                        cell.switchControl.isOn = false
+                        cell.switchControl.addTarget(self, action: #selector(handleSwitchNotification), for: .valueChanged)
+                    }
+                }
+              
         case .About:
             let about = AboutOptions(rawValue: indexPath.row)
             cell.sectionType = about
                }
+
         cell.selectionStyle = .none
         return cell
     }
     
+  
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = SettingsSection(rawValue: indexPath.section) else {return}
 
@@ -174,7 +240,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                         } catch { }
                         present(navController, animated: true)
                   }
-        
                 case .Communications:
                  let communications = CommunicationOptions(rawValue: indexPath.row)
         case .About:

@@ -12,8 +12,9 @@ import Firebase
 class EditBioController: UIViewController {
     //NEED TO ADD A DID SAVE SETTINGS DELAGATE TO THESE
     
-       var user: User?
-        
+        var user: User?
+        var madeChange = false
+        var delegate: SettingsControllerDelegate?
         //UI
         
         let bioTV:  UITextView = {
@@ -130,13 +131,18 @@ class EditBioController: UIViewController {
             guard let uid = Auth.auth().currentUser?.uid else {return}
             let docData: [String: Any] = ["Bio": bioTV.text ?? ""]
             Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+            madeChange = true
             self.handleBack()
         }
         
         @objc fileprivate func handleBack() {
             self.navigationController?.navigationBar.isHidden = false
             self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.navigationController?.popViewController(animated: true)
+          self.navigationController?.popViewController(animated: true) {
+                           if self.madeChange == true {
+                       self.delegate?.didSaveSettings()
+                       }
+            }
         }
     
      func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

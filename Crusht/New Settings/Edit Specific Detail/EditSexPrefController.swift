@@ -12,10 +12,11 @@ import Firebase
 class EditSexPrefController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource  {
 
     var genderPicker = UIPickerView()
-         var user: User?
-         var gender = String()
-            
-         let myPickerData = [String](arrayLiteral: "", "Male", "Female", "All Humans")
+        var user: User?
+        var gender = String()
+        var madeChange = false
+        var delegate: SettingsControllerDelegate?
+        let myPickerData = [String](arrayLiteral: "", "Male", "Female", "All Humans")
 
          //UI
          
@@ -131,13 +132,18 @@ class EditSexPrefController: UIViewController, UIPickerViewDelegate, UIPickerVie
              guard let uid = Auth.auth().currentUser?.uid else {return}
              let docData: [String: Any] = ["Gender-Preference": genderTF.text ?? ""]
              Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+            madeChange = true
              self.handleBack()
          }
          
          @objc fileprivate func handleBack() {
              self.navigationController?.navigationBar.isHidden = false
              self.navigationController?.navigationBar.prefersLargeTitles = true
-             self.navigationController?.popViewController(animated: true)
+             self.navigationController?.popViewController(animated: true) {
+                            if self.madeChange == true {
+                        self.delegate?.didSaveSettings()
+                        }
+            }
          }
      
      func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -156,3 +162,4 @@ class EditSexPrefController: UIViewController, UIPickerViewDelegate, UIPickerVie
          genderTF.text = myPickerData[row]
      }
 }
+

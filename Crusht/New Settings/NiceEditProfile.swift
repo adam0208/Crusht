@@ -16,23 +16,30 @@ class CustomImagePickerController: UIImagePickerController  {
     var imageBttn: UIButton?
 }
 
-class NiceEditProfile: UIViewController {
+class NiceEditProfile: UIViewController, SettingsControllerDelegate {
+    func didSaveSettings() {
+        
+        fetchCurrentUser()
+    }
     
 private let reuseIdentifier = "NiceEditProfileCell"
     
        override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
-    
+    var delegate: SettingsControllerDelegate?
     var photoView: PhotoView!
-
+    var madeChanges = false
     var tableView: UITableView!
     
     var user: User?
     
     // MARK: - Init
     
-  
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.delegate?.didSaveSettings()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,44 +53,52 @@ private let reuseIdentifier = "NiceEditProfileCell"
         tableView.delegate = self
         tableView.dataSource = self
         
-        
         tableView.register(NiceEditProfileCell.self, forCellReuseIdentifier: reuseIdentifier)
         view.addSubview(tableView)
         
-        
         tableView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 800)
         
+        loadPhotos()
+    }
+    
+    fileprivate func loadPhotos() {
+           let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 140)
+           
+           photoView = PhotoView(frame: frame)
         
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 140)
-        
-        photoView = PhotoView(frame: frame)
-     
-        if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
-                       
-                     //  Nuke.loadImage(with: url, into: self.image1Button)
-                       SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                          self.photoView.image1.image = image
-                       }
-                   }
-        if let imageUrl2 = user?.imageUrl2, let url = URL(string: imageUrl2) {
-                           
-                         //  Nuke.loadImage(with: url, into: self.image1Button)
-                           SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                              self.photoView.image2.image = image
-                           }
-                       }
-        if let imageUrl3 = user?.imageUrl3, let url = URL(string: imageUrl3) {
-                           
-                         //  Nuke.loadImage(with: url, into: self.image1Button)
-                           SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                              self.photoView.image3.image = image
-                           }
-                       }
-        
+           if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
+                          
+                        //  Nuke.loadImage(with: url, into: self.image1Button)
+                          SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                             self.photoView.image1.image = image
+                          }
+                      }
+           if let imageUrl2 = user?.imageUrl2, let url = URL(string: imageUrl2) {
+                //  Nuke.loadImage(with: url, into: self.image1Button)
+                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                        self.photoView.image2.image = image
+                    }
+                }
+           if let imageUrl3 = user?.imageUrl3, let url = URL(string: imageUrl3) {
+                              
+                //  Nuke.loadImage(with: url, into: self.image1Button)
+                    SDWebImageManager().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                                 self.photoView.image3.image = image
+                    }
+                }
+           
+        let photoTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleEditPhoto))
+           
+        photoView.addGestureRecognizer(photoTapGesture)
+           
         tableView.tableHeaderView = photoView
         tableView.tableFooterView = UIView()
-        
-        
+    }
+    
+    @objc fileprivate func handleEditPhoto() {
+        let editPhotoController = EditPhotoController()
+        editPhotoController.user = user
+        navigationController?.pushViewController(editPhotoController, animated: true)
     }
     
         func configureUI() {
@@ -92,6 +107,22 @@ private let reuseIdentifier = "NiceEditProfileCell"
     //      navigationController?.navigationBar.isTranslucent = false
             navigationItem.title = "Edit Profile"
 
+        }
+    
+        fileprivate func fetchCurrentUser() {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+                if err != nil {
+                    let loginController = LoginViewController()
+                    self.present(loginController, animated: true)
+                    return
+                }
+                guard let dictionary = snapshot?.data() else {return}
+                self.user = User(dictionary: dictionary)
+                self.loadPhotos()
+                self.tableView.reloadData()
+            }
+          
         }
             
 }
@@ -129,13 +160,11 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return 40
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
- 
             return 60
-
         }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -292,31 +321,38 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
              switch indexPath.row {
             case 0:
                    let nameController = EditNameController()
-                         nameController.user = user
+                        nameController.user = user
+                        nameController.delegate = self
                          self.navigationController?.pushViewController(nameController, animated: true)
                     case 1:
                         let editSchoolController = EditSchoolController()
                         editSchoolController.user = user
+                        editSchoolController.delegate = self
                         self.navigationController?.pushViewController(editSchoolController, animated: true)
                     case 2:
-                          let occupationController = EditOccupationController()
+                        let occupationController = EditOccupationController()
                         occupationController.user = user
+                        occupationController.delegate = self
                         self.navigationController?.pushViewController(occupationController, animated: true)
              case 3:
                 let ageController = EditAgeController()
                 ageController.user = user
+                ageController.delegate = self
                 self.navigationController?.pushViewController(ageController, animated: true)
                     case 4:
                         let editbio = EditBioController()
                         editbio.user = user
+                        editbio.delegate = self
                         self.navigationController?.pushViewController(editbio, animated: true)
                     case 5:
                         let editGender = EditGenderController()
                         editGender.user = user
+                        editGender.delegate = self
                         self.navigationController?.pushViewController(editGender, animated: true)
                     case 6:
                     let editSexPref = EditSexPrefController()
                     editSexPref.user = user
+                    editSexPref.delegate = self
                     self.navigationController?.pushViewController(editSexPref, animated: true)
                                         
              default:
@@ -328,24 +364,30 @@ extension NiceEditProfile: UITableViewDelegate, UITableViewDataSource {
             
         switch indexPath.row {
             case 0:
-                let nameController = EditNameController()
-                nameController.user = user
-                self.navigationController?.pushViewController(nameController, animated: true)
+                let ageSliderController = EditMinAgeSliderController()
+                ageSliderController.user = user
+                ageSliderController.delegate = self
+                self.navigationController?.pushViewController(ageSliderController, animated: true)
             case 1:
-                let editSchoolController = EditSchoolController()
-                editSchoolController.user = user
-                self.navigationController?.pushViewController(editSchoolController, animated: true)
+                let ageSliderController = EditMinAgeSliderController()
+                ageSliderController.user = user
+                ageSliderController.delegate = self
+                self.navigationController?.pushViewController(ageSliderController, animated: true)
         case 2:
-            let editSchoolController = EditSchoolController()
-                       editSchoolController.user = user
-                       self.navigationController?.pushViewController(editSchoolController, animated: true)
+            let distanceSlideController = EditMaxDistanceController()
+            distanceSlideController.user = user
+            distanceSlideController.delegate = self
+            self.navigationController?.pushViewController(distanceSlideController, animated: true)
         default:
             print("yo")
             }
         case .VenueLocation:
             switch indexPath.row {
             case 0:
-               print("yo")
+               let distanceSlideController = EditVenueDistanceController()
+                distanceSlideController.user = user
+               distanceSlideController.delegate = self
+                self.navigationController?.pushViewController(distanceSlideController, animated: true)
             case 1:
                  if user?.currentVenue != "" {
                                let userbarController = UsersInBarTableView()

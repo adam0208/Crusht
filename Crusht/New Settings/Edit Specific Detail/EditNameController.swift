@@ -12,7 +12,8 @@ import Firebase
 class EditNameController: UIViewController {
     
     var user: User?
-    
+    var madeChange = false
+    var delegate: SettingsControllerDelegate?
     //UI
     
     let firstNameTF: UITextField = {
@@ -150,12 +151,17 @@ class EditNameController: UIViewController {
         let docData: [String: Any] = ["First Name": firstNameTF.text ?? "",
                                       "Last Name": lastNameTF.text ?? ""]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
-        self.dismiss(animated: true)
+        madeChange = true
+        self.handleBack()
     }
     
     @objc fileprivate func handleBack() {
         self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.popViewController(animated: true)
+         self.navigationController?.popViewController(animated: true) {
+                       if self.madeChange == true {
+                   self.delegate?.didSaveSettings()
+            }
+        }
     }
 }

@@ -15,7 +15,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     let swipingPhotosController = SwipingPhotosController(isCardViewMode: false)
     let extraSwipingHeight: CGFloat = 100
     
-    var crushScore: CrushScore?
     
     var cardViewModel: CardViewModel! {
         didSet {
@@ -28,7 +27,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLabelText()
         initializeUI()
     }
     
@@ -50,23 +48,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     let schoolController = SchoolCrushController()
     
     // MARK: - Logic
-    
-    private func setLabelText() {
-        let uid = cardViewModel.uid
-        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            guard err == nil else { return }
-            
-            if let exists = snapshot?.exists, exists {
-                guard let dictionary = snapshot?.data() else { return }
-                let crushScore = CrushScore(dictionary: dictionary)
-                self.crushScore = CrushScore(dictionary: dictionary)
-                self.crushScoreLabel.text = crushScore.toString
-            }
-            else {
-                self.crushScoreLabel.text = " Crusht Score: 😊"
-            }
-        }
-    }
     
     @objc private func handleDismiss() {
         navigationController?.isNavigationBarHidden = false
@@ -143,17 +124,12 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
                          padding: .init(top: 16, left: 16, bottom: 0, right: 16))
 
         view.addSubview(scrollView)
-        scrollView.addSubview(crushScoreLabel)
         bioLabel.text = cardViewModel.bio
-        crushScoreLabel.anchor(top: infoLabel.bottomAnchor,
-                               leading: infoLabel.leadingAnchor,
-                               bottom: nil,
-                               trailing: view.trailingAnchor,
-                               padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+      
         
         scrollView.addSubview(bioLabel)
-        bioLabel.anchor(top: crushScoreLabel.bottomAnchor,
-                        leading: crushScoreLabel.leadingAnchor,
+        bioLabel.anchor(top: infoLabel.bottomAnchor,
+                        leading: infoLabel.leadingAnchor,
                         bottom: nil,
                         trailing: view.trailingAnchor,
                         padding: .init(top: 8, left: 0, bottom: 16, right: 16))
@@ -179,13 +155,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     }()
     
     private let infoLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private let crushScoreLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.numberOfLines = 0

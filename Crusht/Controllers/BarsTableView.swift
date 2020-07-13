@@ -14,9 +14,10 @@ import GooglePlaces
 import FirebaseFirestore
 import FirebaseAuth
 import FirebaseMessaging
+import AudioToolbox
 //This Controller shows venues around a users location
 
-class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
+class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, LoginControllerDelegate, UITabBarControllerDelegate,SettingsControllerDelegate {
     
     var user: User?
     var barArray = [Place]()
@@ -136,9 +137,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         // For use in foreground
         self.locationManager.requestWhenInUseAuthorization()
         let swipeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-near-me-30").withRenderingMode(.alwaysOriginal),  style: .plain, target: self, action: #selector(handleMatchByLocationBttnTapped))
-        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-32"), style: .plain, target: self, action: #selector(handleInfo))
         
-        navigationItem.rightBarButtonItems = [swipeButton, infoButton]
+        navigationItem.rightBarButtonItem = swipeButton
 
         view.addSubview(searchController.searchBar)
         // Setup the Search Controller
@@ -163,8 +163,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         super.viewWillAppear(animated)
          navigationController?.navigationBar.prefersLargeTitles = true
         if UIApplication.shared.applicationIconBadgeNumber == 1 {
-            self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-            self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
@@ -193,21 +193,6 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         dismiss(animated: true)
     }
     
-    @objc fileprivate func handleInfo() {
-        let infoView = InfoView()
-        infoView.infoText.text = "Crush People at Venues: Join a venue to see who else will be there. Select the heart next to people that you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab! (note: users will appear in the venue for 18 hours in case you miss your window to connect!)"
-        tabBarController?.view.addSubview(infoView)
-        infoView.peekButton.isHidden = true
-        infoView.fillSuperview()
-    }
-    
-    @objc func handleMessages() {
-        let messageController = MessageController()
-        messageBadge.removeFromSuperview()
-        messageController.user = user
-        let navController = UINavigationController(rootViewController: messageController)
-        present(navController, animated: true)
-    }
     
     fileprivate func listenForMessages() {
         guard let toId = Auth.auth().currentUser?.uid else {return}
@@ -217,9 +202,10 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             }
             snapshot.documentChanges.forEach { diff in
                 if (diff.type == .modified) {
-                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
+                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                 }
             }
         }
@@ -433,7 +419,8 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             }
             var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
             var locationName : String = "bar"
-            var searchRadius : Int = 5000
+            var radiusInt = (Double(self.user?.maxVenueDistance ?? 10)/1.609344)*1000
+            var searchRadius : Int = Int(radiusInt)
             self.fetchGoogleData(forLocation: currentLocation, locationName: locationName, searchRadius: searchRadius )
         }
     }
@@ -446,7 +433,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
         print("hi")
       var currentLocation: CLLocation = CLLocation(latitude: self.userLat, longitude: self.userLong)
       var locationName : String = "bar"
-    var searchRadius : Int = 2000
+    var searchRadius : Int = searchRadius
          googleClient.getGooglePlacesData(forKeyword: locationName, location: currentLocation, withinMeters: searchRadius) { (response) in
             print(response.results, "yo")
             
@@ -456,7 +443,6 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             else {
                 print("No bars")
             }
-         
         }
     }
         
@@ -508,7 +494,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             underline2.isHidden = true
             var currentLocation: CLLocation =  CLLocation(latitude: self.userLat, longitude: self.userLong)
                     var locationName : String = "gym"
-                    var searchRadius : Int = 30000
+                    var searchRadius : Int = 50000
             self.fetchGoogleDataGyms(forLocation: currentLocation, locationName: locationName, searchRadius: searchRadius )
         }
         else {

@@ -127,7 +127,7 @@ class SettingsCell: UITableViewCell {
         switchControl.isOn = true
         switchControl.onTintColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
         switchControl.translatesAutoresizingMaskIntoConstraints = false
-        switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
+        //switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
         return switchControl
     }()
     
@@ -159,13 +159,6 @@ class SettingsCell: UITableViewCell {
     
     //Selectors
     
-    @objc fileprivate func handleSwitchAction(sender: UISwitch) {
-        if sender.isOn {
-            
-        }
-        else {
-            
-        }
-    }
+
     
 }

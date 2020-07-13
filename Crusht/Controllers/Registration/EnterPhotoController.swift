@@ -16,8 +16,6 @@ import FirebaseFirestore
 
 class EnterPhotoController: UIViewController {
     var imageFull = false
-    var selectPhotoButton: UIButton!
-
     // MARK: - Life Cycle Methods
     
     override func viewDidLoad() {
@@ -49,9 +47,9 @@ class EnterPhotoController: UIViewController {
         let docData: [String: Any] = ["ImageUrl1": imageUrl]
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: true) { (err) in
             guard err == nil else { return }
-            let customtabController = CustomTabBarController()
-            customtabController.modalPresentationStyle = .fullScreen
-            self.present(customtabController, animated: true)
+            let tutorialController = TutorialController()
+            tutorialController.modalPresentationStyle = .fullScreen
+            self.present(tutorialController, animated: true)
             
         }
     }
@@ -60,11 +58,7 @@ class EnterPhotoController: UIViewController {
     
     private func initializeUI() {
         view.backgroundColor = .white
-        setupButton()
-        
-        let stack = UIStackView(arrangedSubviews: [selectPhotoButton, errorLabel])
-        view.addSubview(stack)
-        stack.axis = .vertical
+    
         view.addSubview(label)
         
         label.anchor(top: view.safeAreaLayoutGuide.topAnchor,
@@ -73,31 +67,36 @@ class EnterPhotoController: UIViewController {
                             trailing: view.trailingAnchor,
                             padding: .init(top: 12, left: 30, bottom: 0, right: 30))
         
-        stack.anchor(top: view.topAnchor,
-                     leading: view.leadingAnchor,
-                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                     trailing: view.trailingAnchor,
-                     padding: .init(top: view.bounds.height/5, left: 30, bottom: view.bounds.height/4, right: 30))
+        view.addSubview(selectPhotoButton)
         
-        stack.spacing = 15
-        errorLabel.isHidden = true
+        selectPhotoButton.anchor(top: view.topAnchor,
+        leading: view.leadingAnchor,
+        bottom: view.safeAreaLayoutGuide.bottomAnchor,
+        trailing: view.trailingAnchor,
+        padding: .init(top: view.bounds.height/4, left: 30, bottom: view.bounds.height/3, right: 30))
+        
+        view.addSubview(errorLabel)
+        errorLabel.anchor(top: selectPhotoButton.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 18, left: 30, bottom: 0, right: 30))
+        
     }
     
-    private func setupButton() {
-        selectPhotoButton = UIButton(type: .system)
-        selectPhotoButton.backgroundColor = .white
-        selectPhotoButton.setImage(#imageLiteral(resourceName: "icons8-photo-gallery-100").withRenderingMode(.alwaysOriginal), for: .normal)
+    let selectPhotoButton: UIButton = {
+        let selectPhotoButton = UIButton(type: .system)
+        selectPhotoButton.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        selectPhotoButton.setImage(#imageLiteral(resourceName: "CrushtLogoLiam-1").withRenderingMode(.alwaysOriginal), for: .normal)
         selectPhotoButton.setTitleColor(.black, for: .normal)
-        selectPhotoButton.heightAnchor.constraint(equalToConstant: 300).isActive = true
-        selectPhotoButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        selectPhotoButton.imageView?.contentMode = .scaleAspectFit
+        selectPhotoButton.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        selectPhotoButton.widthAnchor.constraint(equalToConstant: 500).isActive = true
+        selectPhotoButton.imageView?.contentMode = .scaleAspectFill
        // selectPhotoButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
       //  selectPhotoButton.titleLabel?.adjustsFontSizeToFitWidth = true
         selectPhotoButton.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
         selectPhotoButton.layer.cornerRadius = 70
         selectPhotoButton.layer.borderColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
+        selectPhotoButton.layer.borderWidth = 4
         selectPhotoButton.clipsToBounds = true
-    }
+        return selectPhotoButton
+    }()
     
     private let label: UILabel = {
         let label = UILabel()
@@ -112,11 +111,12 @@ class EnterPhotoController: UIViewController {
     
     private let errorLabel: UILabel = {
         let label = UILabel()
-        label.text = "Please select a photo"
+        label.text = "Boop his nose to select a photo"
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
         
         return label
     }()
@@ -126,21 +126,21 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         weak var selectedImage = info[.originalImage] as? UIImage
-        let selectedImage2 = selectedImage?.resizeImage(targetSize: CGSize(width: 540, height: 500))
+        let selectedImage2 = selectedImage?.resized(maxSize: CGSize(width: 500, height: 500))
         let imageButton = (picker as? CustomImagePickerController)?.imageBttn
         imageButton?.setImage(selectedImage2?.withRenderingMode(.alwaysOriginal), for: .normal)
         self.imageFull = true
 
-        dismiss(animated: true)
+        picker.dismiss(animated: true)
 
         self.errorLabel.text = "Registering, hang tight..."
-        self.errorLabel.isHidden = false
+
         self.selectPhotoButton.isEnabled = false
 
         let filename = UUID().uuidString
         let ref = Storage.storage().reference(withPath: "/images/\(filename)")
         guard let imageData = selectedImage2?.jpegData(compressionQuality: 0.9) else { return }
-
+        
         ref.putData(imageData, metadata: nil) { (nil, err) in
             guard err == nil else { return }
             ref.downloadURL { (url, err) in
@@ -149,7 +149,6 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
                 if imageUrl == "" {
                     print("fuck me man")
                 }
-                
                 self.saveInfoToFirestore(imageUrl: imageUrl)
             }
         }
@@ -157,19 +156,16 @@ extension EnterPhotoController: UIImagePickerControllerDelegate, UINavigationCon
 }
 
 extension UIImage {
-  func resizeImage(targetSize: CGSize) -> UIImage {
-    //print("hi")
-    let size = self.size
-    let widthRatio  = targetSize.width  / size.width
-    let heightRatio = targetSize.height / size.height
-    let newSize = widthRatio > heightRatio ?  CGSize(width: size.width * heightRatio, height: size.height * heightRatio) : CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
-    let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+      public func resized(maxSize: CGSize) -> UIImage? {
+          let imageSize = self.size
+          guard imageSize.height > 0, imageSize.width > 0 else { return nil }
 
-    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-    self.draw(in: rect)
-    let newImage = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
+          let ratio = min(maxSize.width/imageSize.width, maxSize.height/imageSize.height)
+          let newSize = CGSize(width: imageSize.width*ratio, height: imageSize.height*ratio)
 
-    return newImage!
+          let renderer = UIGraphicsImageRenderer(size: newSize)
+          return renderer.image(actions: { (ctx) in
+              self.draw(in: CGRect(origin: .zero, size: newSize))
+          })
+      }
   }
-}

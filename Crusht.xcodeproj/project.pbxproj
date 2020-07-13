@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		010542B5D9B31A23047DD86E /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */; };
 		28067D2E21C0C18D001F6BC5 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2D21C0C18D001F6BC5 /* MessageController.swift */; };
 		28067D3021C0C6FC001F6BC5 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */; };
 		2808A483249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 2808A482249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png */; };
@@ -24,6 +23,10 @@
 		282300F92497589B00215F5A /* icons8-near-me-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300F82497589B00215F5A /* icons8-near-me-30.png */; };
 		282300FB2497590B00215F5A /* icons8-information-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300FA2497590B00215F5A /* icons8-information-30.png */; };
 		282300FD249759C100215F5A /* icons8-chevron-left-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 282300FC249759C100215F5A /* icons8-chevron-left-30.png */; };
+		282791C624AAFA430000267E /* EditMinAgeSliderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282791C524AAFA430000267E /* EditMinAgeSliderController.swift */; };
+		282791C824AB85560000267E /* TutorialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282791C724AB85560000267E /* TutorialController.swift */; };
+		2829B84124BCC7BC00753778 /* EditMaxDistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2829B84024BCC7BC00753778 /* EditMaxDistanceController.swift */; };
+		2829B84324BCCB2E00753778 /* EditVenueDistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2829B84224BCCB2E00753778 /* EditVenueDistanceController.swift */; };
 		28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */; };
 		28315C5A21E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */; };
 		283816C721B8925C00B3E4FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283816C621B8925C00B3E4FD /* AppDelegate.swift */; };
@@ -46,6 +49,9 @@
 		283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FD3DA227E669000C7760F /* CustomTabBarController.swift */; };
 		28425A872493F46800983ED0 /* NiceEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28425A862493F46800983ED0 /* NiceEditProfile.swift */; };
 		28425A8C2493F4F800983ED0 /* NiceEditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28425A8B2493F4F800983ED0 /* NiceEditProfileCell.swift */; };
+		28430F7E24AA59E000FC9AE9 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 28430F7D24AA59DF00FC9AE9 /* user.png */; };
+		28430F8024AA5B7500FC9AE9 /* bitlawsonicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28430F7F24AA5B7400FC9AE9 /* bitlawsonicon.png */; };
+		28430F8224AA633100FC9AE9 /* EditPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28430F8124AA633100FC9AE9 /* EditPhotoController.swift */; };
 		284645902498640800674D3F /* EditBioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846458F2498640800674D3F /* EditBioController.swift */; };
 		2846459224986CE900674D3F /* EditGenderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846459124986CE900674D3F /* EditGenderController.swift */; };
 		2846459424986CFC00674D3F /* EditSexPrefController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846459324986CFC00674D3F /* EditSexPrefController.swift */; };
@@ -108,6 +114,11 @@
 		28C30330226BFE21002FB145 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C3032F226BFE21002FB145 /* Venue.swift */; };
 		28C30332226C02AE002FB145 /* VenueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C30331226C02AE002FB145 /* VenueCell.swift */; };
 		28C71CF7249E8E06009E3E84 /* icons8-customer-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C71CF6249E8E06009E3E84 /* icons8-customer-30.png */; };
+		28CE03FC24BCBD5E00460292 /* ContactsUPDATED.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CE03F724BCBD4000460292 /* ContactsUPDATED.png */; };
+		28CE03FD24BCBD5E00460292 /* SchoolOG.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CE03F824BCBD4700460292 /* SchoolOG.png */; };
+		28CE03FE24BCBD5E00460292 /* venuesWITHOUTCOLOR.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CE03F924BCBD5000460292 /* venuesWITHOUTCOLOR.png */; };
+		28CE03FF24BCBD5E00460292 /* messagesUPDATED.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CE03FA24BCBD5700460292 /* messagesUPDATED.png */; };
+		28CE040224BCBE5200460292 /* locationUPDATED-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CE040124BCBE5200460292 /* locationUPDATED-0.png */; };
 		28CFC6AD21C56A1700387129 /* SchoolTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */; };
 		28CFC6B521C5B3ED00387129 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B421C5B3ED00387129 /* Message.swift */; };
 		28CFC6B721C5B46A00387129 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CFC6B621C5B46A00387129 /* ChatLogController.swift */; };
@@ -122,6 +133,8 @@
 		28EDA72E23FFC73E00450BA7 /* GuestListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72D23FFC73E00450BA7 /* GuestListCell.swift */; };
 		28EDA73023FFCF4200450BA7 /* EditPartyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA72F23FFCF4200450BA7 /* EditPartyController.swift */; };
 		28EDA732240208B500450BA7 /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EDA731240208B400450BA7 /* PostController.swift */; };
+		28EFCE8C24ABBBBE0054DC9F /* contacts-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EFCE8B24ABBBBD0054DC9F /* contacts-0.png */; };
+		28EFCE8E24ABBBCA0054DC9F /* venuespotential2-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EFCE8D24ABBBC90054DC9F /* venuespotential2-0.png */; };
 		28F1121D21F5818900A1CD73 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */; };
 		28F1121F21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */; };
 		28F369E021E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F369DF21E99CD30007FBC6 /* SeniorFivePostsTableViewCell.swift */; };
@@ -139,6 +152,8 @@
 		28FD7D162264282B00B79496 /* BioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D152264282B00B79496 /* BioController.swift */; };
 		28FD7D1822642D4700B79496 /* EnterPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD7D1722642D4700B79496 /* EnterPhotoController.swift */; };
 		28FDE2D82216672000896198 /* FacebookCrushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE2D72216672000896198 /* FacebookCrushCell.swift */; };
+		3188B0E330922F161D7572F4 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8A2653EC3E4A4FECED36B2D /* Pods_CrushtTests.framework */; };
+		343554012DE7F9FA5A7B745C /* Pods_Crusht_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67F605CB8F968AB66E5F1183 /* Pods_Crusht_CrushtUITests.framework */; };
 		4C60BD6E235630A900B59D35 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60BD6D235630A900B59D35 /* LoadingCell.swift */; };
 		4C7CF43E2359FD5D0039B0E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7CF43D2359FD5D0039B0E3 /* Constants.swift */; };
 		4CA41B3B235DE7C500CF8529 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B3A235DE7C500CF8529 /* DateExtension.swift */; };
@@ -157,8 +172,7 @@
 		4CA41B56235E0DCB00CF8529 /* ContactsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */; };
 		4CA41B58235E0DE700CF8529 /* FbConnectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B57235E0DE700CF8529 /* FbConnectCell.swift */; };
 		4CA41B5A235E1FB900CF8529 /* ReportTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA41B59235E1FB900CF8529 /* ReportTextView.swift */; };
-		59812C781B5A2E205AA77833 /* Pods_Crusht_CrushtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B173C624E1A4E565EEF34B /* Pods_Crusht_CrushtUITests.framework */; };
-		6A37B84FFE52859206742E37 /* Pods_CrushtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA4A2A215E63437CC19ED654 /* Pods_CrushtTests.framework */; };
+		DD91C3EF17D3ABAD10486BB9 /* Pods_Crusht.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C553B6AACD7EAFD227601A3 /* Pods_Crusht.framework */; };
 		EBAC1438237913A70081A95A /* UILabelFontClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAC1437237913A70081A95A /* UILabelFontClass.swift */; };
 /* End PBXBuildFile section */
 
@@ -180,6 +194,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C553B6AACD7EAFD227601A3 /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28067D2D21C0C18D001F6BC5 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		28067D2F21C0C6FC001F6BC5 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		2808A482249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-exclamation-mark-30.png"; sourceTree = "<group>"; };
@@ -196,6 +211,10 @@
 		282300F82497589B00215F5A /* icons8-near-me-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-near-me-30.png"; sourceTree = "<group>"; };
 		282300FA2497590B00215F5A /* icons8-information-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-information-30.png"; sourceTree = "<group>"; };
 		282300FC249759C100215F5A /* icons8-chevron-left-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-chevron-left-30.png"; sourceTree = "<group>"; };
+		282791C524AAFA430000267E /* EditMinAgeSliderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMinAgeSliderController.swift; sourceTree = "<group>"; };
+		282791C724AB85560000267E /* TutorialController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialController.swift; sourceTree = "<group>"; };
+		2829B84024BCC7BC00753778 /* EditMaxDistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMaxDistanceController.swift; sourceTree = "<group>"; };
+		2829B84224BCCB2E00753778 /* EditVenueDistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVenueDistanceController.swift; sourceTree = "<group>"; };
 		28315C5721E925400066BEE2 /* SeniorFiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeniorFiveTableViewCell.swift; sourceTree = "<group>"; };
 		28315C5921E92C620066BEE2 /* NewSeniorFivePostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSeniorFivePostTableViewController.swift; sourceTree = "<group>"; };
 		283816C321B8925C00B3E4FD /* Crusht.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crusht.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,6 +243,9 @@
 		283FD3DA227E669000C7760F /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		28425A862493F46800983ED0 /* NiceEditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NiceEditProfile.swift; sourceTree = "<group>"; };
 		28425A8B2493F4F800983ED0 /* NiceEditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NiceEditProfileCell.swift; sourceTree = "<group>"; };
+		28430F7D24AA59DF00FC9AE9 /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
+		28430F7F24AA5B7400FC9AE9 /* bitlawsonicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bitlawsonicon.png; sourceTree = "<group>"; };
+		28430F8124AA633100FC9AE9 /* EditPhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoController.swift; sourceTree = "<group>"; };
 		2846458F2498640800674D3F /* EditBioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBioController.swift; sourceTree = "<group>"; };
 		2846459124986CE900674D3F /* EditGenderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGenderController.swift; sourceTree = "<group>"; };
 		2846459324986CFC00674D3F /* EditSexPrefController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSexPrefController.swift; sourceTree = "<group>"; };
@@ -286,6 +308,11 @@
 		28C3032F226BFE21002FB145 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		28C30331226C02AE002FB145 /* VenueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueCell.swift; sourceTree = "<group>"; };
 		28C71CF6249E8E06009E3E84 /* icons8-customer-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-customer-30.png"; sourceTree = "<group>"; };
+		28CE03F724BCBD4000460292 /* ContactsUPDATED.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ContactsUPDATED.png; sourceTree = "<group>"; };
+		28CE03F824BCBD4700460292 /* SchoolOG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SchoolOG.png; sourceTree = "<group>"; };
+		28CE03F924BCBD5000460292 /* venuesWITHOUTCOLOR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = venuesWITHOUTCOLOR.png; sourceTree = "<group>"; };
+		28CE03FA24BCBD5700460292 /* messagesUPDATED.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messagesUPDATED.png; sourceTree = "<group>"; };
+		28CE040124BCBE5200460292 /* locationUPDATED-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "locationUPDATED-0.png"; sourceTree = "<group>"; };
 		28CFC6AC21C56A1700387129 /* SchoolTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTableViewCell.swift; sourceTree = "<group>"; };
 		28CFC6B421C5B3ED00387129 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		28CFC6B621C5B46A00387129 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
@@ -300,6 +327,8 @@
 		28EDA72D23FFC73E00450BA7 /* GuestListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestListCell.swift; sourceTree = "<group>"; };
 		28EDA72F23FFCF4200450BA7 /* EditPartyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPartyController.swift; sourceTree = "<group>"; };
 		28EDA731240208B400450BA7 /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
+		28EFCE8B24ABBBBD0054DC9F /* contacts-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts-0.png"; sourceTree = "<group>"; };
+		28EFCE8D24ABBBC90054DC9F /* venuespotential2-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "venuespotential2-0.png"; sourceTree = "<group>"; };
 		28F1121921F522A900A1CD73 /* Crusht.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crusht.entitlements; sourceTree = "<group>"; };
 		28F1121C21F5818900A1CD73 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		28F1121E21F58FC600A1CD73 /* EnterMorePhoneInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterMorePhoneInfoViewController.swift; sourceTree = "<group>"; };
@@ -318,7 +347,6 @@
 		28FD7D152264282B00B79496 /* BioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioController.swift; sourceTree = "<group>"; };
 		28FD7D1722642D4700B79496 /* EnterPhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPhotoController.swift; sourceTree = "<group>"; };
 		28FDE2D72216672000896198 /* FacebookCrushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushCell.swift; sourceTree = "<group>"; };
-		44530FC6002BA7EA8E6E16C3 /* Pods-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.release.xcconfig"; path = "Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4C60BD6D235630A900B59D35 /* LoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		4C7CF43D2359FD5D0039B0E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4CA41B3A235DE7C500CF8529 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -337,17 +365,15 @@
 		4CA41B55235E0DCB00CF8529 /* ContactsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTextCell.swift; sourceTree = "<group>"; };
 		4CA41B57235E0DE700CF8529 /* FbConnectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FbConnectCell.swift; sourceTree = "<group>"; };
 		4CA41B59235E1FB900CF8529 /* ReportTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportTextView.swift; sourceTree = "<group>"; };
-		64833AB1BC80200DDEE3B561 /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
-		69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8F894DA439ED2820A9D9F768 /* Pods-Crusht.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.release.xcconfig"; path = "Target Support Files/Pods-Crusht/Pods-Crusht.release.xcconfig"; sourceTree = "<group>"; };
-		9F2CDFB52A04A8C208B9809A /* Pods-CrushtTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.release.xcconfig"; path = "Target Support Files/Pods-CrushtTests/Pods-CrushtTests.release.xcconfig"; sourceTree = "<group>"; };
-		A1B173C624E1A4E565EEF34B /* Pods_Crusht_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B6FF77B309364C20CAC59D56 /* Pods-Crusht-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht-CrushtUITests.release.xcconfig"; path = "Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
-		B8FF10410AF1EB75A05F800B /* Pods-Crusht-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht-CrushtUITests.debug.xcconfig"; path = "Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		D86843720101E2EB6A894FE8 /* Pods-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtUITests.debug.xcconfig"; path = "Target Support Files/Pods-CrushtUITests/Pods-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		EA4A2A215E63437CC19ED654 /* Pods_CrushtTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		67F605CB8F968AB66E5F1183 /* Pods_Crusht_CrushtUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Crusht_CrushtUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C3F647FF4E927E35E2B980B /* Pods-Crusht.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.debug.xcconfig"; path = "Target Support Files/Pods-Crusht/Pods-Crusht.debug.xcconfig"; sourceTree = "<group>"; };
+		7EBD7742B25D2D6F44D51233 /* Pods-Crusht-CrushtUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht-CrushtUITests.release.xcconfig"; path = "Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8D4B46E4FF6DF6C0A3DEC832 /* Pods-CrushtTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.release.xcconfig"; path = "Target Support Files/Pods-CrushtTests/Pods-CrushtTests.release.xcconfig"; sourceTree = "<group>"; };
+		A8A2653EC3E4A4FECED36B2D /* Pods_CrushtTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrushtTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEAB84C2F75395E82C212E1C /* Pods-CrushtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrushtTests.debug.xcconfig"; path = "Target Support Files/Pods-CrushtTests/Pods-CrushtTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E92376102425195C38BA2BF4 /* Pods-Crusht.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.release.xcconfig"; path = "Target Support Files/Pods-Crusht/Pods-Crusht.release.xcconfig"; sourceTree = "<group>"; };
+		EA183D8E2FAB4038CBFBFEF4 /* Pods-Crusht-CrushtUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht-CrushtUITests.debug.xcconfig"; path = "Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EBAC1437237913A70081A95A /* UILabelFontClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelFontClass.swift; sourceTree = "<group>"; };
-		F9F358249431986AA0434164 /* Pods-Crusht.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Crusht.debug.xcconfig"; path = "Target Support Files/Pods-Crusht/Pods-Crusht.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -355,7 +381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010542B5D9B31A23047DD86E /* Pods_Crusht.framework in Frameworks */,
+				DD91C3EF17D3ABAD10486BB9 /* Pods_Crusht.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +389,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A37B84FFE52859206742E37 /* Pods_CrushtTests.framework in Frameworks */,
+				3188B0E330922F161D7572F4 /* Pods_CrushtTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,23 +397,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59812C781B5A2E205AA77833 /* Pods_Crusht_CrushtUITests.framework in Frameworks */,
+				343554012DE7F9FA5A7B745C /* Pods_Crusht_CrushtUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		121717C67710771DB0F4688C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				69A7B12D04FEE1995BC0E2BB /* Pods_Crusht.framework */,
-				EA4A2A215E63437CC19ED654 /* Pods_CrushtTests.framework */,
-				A1B173C624E1A4E565EEF34B /* Pods_Crusht_CrushtUITests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		282300ED2495C44D00215F5A /* Edit Specific Detail */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,6 +414,10 @@
 				2846459124986CE900674D3F /* EditGenderController.swift */,
 				2846459324986CFC00674D3F /* EditSexPrefController.swift */,
 				2879D5B624A671EF00A5979F /* EditAgeController.swift */,
+				28430F8124AA633100FC9AE9 /* EditPhotoController.swift */,
+				282791C524AAFA430000267E /* EditMinAgeSliderController.swift */,
+				2829B84024BCC7BC00753778 /* EditMaxDistanceController.swift */,
+				2829B84224BCCB2E00753778 /* EditVenueDistanceController.swift */,
 			);
 			path = "Edit Specific Detail";
 			sourceTree = "<group>";
@@ -410,7 +430,7 @@
 				283816E521B8925F00B3E4FD /* CrushtUITests */,
 				283816C421B8925C00B3E4FD /* Products */,
 				409A6F96A7F6E8E67850A6B9 /* Pods */,
-				121717C67710771DB0F4688C /* Frameworks */,
+				B9CF4CF3E09D23AFCF198AA4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -442,6 +462,15 @@
 				283816C621B8925C00B3E4FD /* AppDelegate.swift */,
 				283816CA21B8925C00B3E4FD /* Main.storyboard */,
 				283816CF21B8925F00B3E4FD /* LaunchScreen.storyboard */,
+				28CE040124BCBE5200460292 /* locationUPDATED-0.png */,
+				28CE03F724BCBD4000460292 /* ContactsUPDATED.png */,
+				28CE03FA24BCBD5700460292 /* messagesUPDATED.png */,
+				28CE03F824BCBD4700460292 /* SchoolOG.png */,
+				28CE03F924BCBD5000460292 /* venuesWITHOUTCOLOR.png */,
+				28EFCE8D24ABBBC90054DC9F /* venuespotential2-0.png */,
+				28EFCE8B24ABBBBD0054DC9F /* contacts-0.png */,
+				28430F7F24AA5B7400FC9AE9 /* bitlawsonicon.png */,
+				28430F7D24AA59DF00FC9AE9 /* user.png */,
 				28E0FF17249F10EB00070769 /* icons8-box-important-30-2.png */,
 				285F65E6249F0F8300E9C695 /* icons8-high-importance-30-2.png */,
 				28F38717249F0E60006079D1 /* icons8-high-importance-30.png */,
@@ -637,14 +666,12 @@
 		409A6F96A7F6E8E67850A6B9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F9F358249431986AA0434164 /* Pods-Crusht.debug.xcconfig */,
-				8F894DA439ED2820A9D9F768 /* Pods-Crusht.release.xcconfig */,
-				64833AB1BC80200DDEE3B561 /* Pods-CrushtTests.debug.xcconfig */,
-				9F2CDFB52A04A8C208B9809A /* Pods-CrushtTests.release.xcconfig */,
-				D86843720101E2EB6A894FE8 /* Pods-CrushtUITests.debug.xcconfig */,
-				44530FC6002BA7EA8E6E16C3 /* Pods-CrushtUITests.release.xcconfig */,
-				B8FF10410AF1EB75A05F800B /* Pods-Crusht-CrushtUITests.debug.xcconfig */,
-				B6FF77B309364C20CAC59D56 /* Pods-Crusht-CrushtUITests.release.xcconfig */,
+				7C3F647FF4E927E35E2B980B /* Pods-Crusht.debug.xcconfig */,
+				E92376102425195C38BA2BF4 /* Pods-Crusht.release.xcconfig */,
+				EA183D8E2FAB4038CBFBFEF4 /* Pods-Crusht-CrushtUITests.debug.xcconfig */,
+				7EBD7742B25D2D6F44D51233 /* Pods-Crusht-CrushtUITests.release.xcconfig */,
+				DEAB84C2F75395E82C212E1C /* Pods-CrushtTests.debug.xcconfig */,
+				8D4B46E4FF6DF6C0A3DEC832 /* Pods-CrushtTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -683,6 +710,7 @@
 				28FD7D0D2261BA8900B79496 /* YourSexController.swift */,
 				28FD7D0B2261AFBB00B79496 /* GenderController.swift */,
 				28FD7D1722642D4700B79496 /* EnterPhotoController.swift */,
+				282791C724AB85560000267E /* TutorialController.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -720,6 +748,16 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		B9CF4CF3E09D23AFCF198AA4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0C553B6AACD7EAFD227601A3 /* Pods_Crusht.framework */,
+				67F605CB8F968AB66E5F1183 /* Pods_Crusht_CrushtUITests.framework */,
+				A8A2653EC3E4A4FECED36B2D /* Pods_CrushtTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -727,13 +765,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816EB21B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "Crusht" */;
 			buildPhases = (
-				35AD4C2468730FF298E35D66 /* [CP] Check Pods Manifest.lock */,
+				00FF00342BBC87682E4314A0 /* [CP] Check Pods Manifest.lock */,
 				283816BF21B8925C00B3E4FD /* Sources */,
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
-				F2EE2B8366510A11AEAD9A45 /* [CP] Embed Pods Frameworks */,
-				26A9B9C000F5573AA4D36C51 /* [CP] Copy Pods Resources */,
+				DB5D5B4255A529D43733BFCE /* [CP] Embed Pods Frameworks */,
+				D70079B8742AE602273F8942 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -748,7 +786,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816EE21B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "CrushtTests" */;
 			buildPhases = (
-				E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */,
+				E66396695886DF91D841FFBB /* [CP] Check Pods Manifest.lock */,
 				283816D321B8925F00B3E4FD /* Sources */,
 				283816D421B8925F00B3E4FD /* Frameworks */,
 				283816D521B8925F00B3E4FD /* Resources */,
@@ -767,12 +805,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 283816F121B8925F00B3E4FD /* Build configuration list for PBXNativeTarget "CrushtUITests" */;
 			buildPhases = (
-				23A5DFB4B203144BF09D1C5D /* [CP] Check Pods Manifest.lock */,
+				328DCDED23A3AE47C4DE447A /* [CP] Check Pods Manifest.lock */,
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
-				36E75A251DFF5B834574D6DC /* [CP] Embed Pods Frameworks */,
-				E08162DF3AE4C44999F16BCF /* [CP] Copy Pods Resources */,
+				5E6463B3C5B66722C24AFB87 /* [CP] Embed Pods Frameworks */,
+				CF401E260BA9E1A390E3E1DF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -837,26 +875,35 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28430F8024AA5B7500FC9AE9 /* bitlawsonicon.png in Resources */,
 				282300F72497566E00215F5A /* icons8-settings-30-3.png in Resources */,
 				282300FD249759C100215F5A /* icons8-chevron-left-30.png in Resources */,
 				283816D121B8925F00B3E4FD /* LaunchScreen.storyboard in Resources */,
+				28EFCE8E24ABBBCA0054DC9F /* venuespotential2-0.png in Resources */,
+				28EFCE8C24ABBBBE0054DC9F /* contacts-0.png in Resources */,
+				28430F7E24AA59E000FC9AE9 /* user.png in Resources */,
 				289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */,
 				28F38718249F0E60006079D1 /* icons8-high-importance-30.png in Resources */,
 				28EC2B6A23E61D44009EEA2C /* icons8-confetti-30.png in Resources */,
 				280B78B123EF72C30084D745 /* icons8-photo-gallery-100.png in Resources */,
 				282300F52497552400215F5A /* icons8-settings-30-2.png in Resources */,
 				287F2065249E8CB400F04BC2 /* icons8-remove-30-2.png in Resources */,
+				28CE040224BCBE5200460292 /* locationUPDATED-0.png in Resources */,
 				2808A483249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png in Resources */,
 				285F65E7249F0F8300E9C695 /* icons8-high-importance-30-2.png in Resources */,
 				28C71CF7249E8E06009E3E84 /* icons8-customer-30.png in Resources */,
 				282300F92497589B00215F5A /* icons8-near-me-30.png in Resources */,
+				28CE03FE24BCBD5E00460292 /* venuesWITHOUTCOLOR.png in Resources */,
+				28CE03FD24BCBD5E00460292 /* SchoolOG.png in Resources */,
 				285D435723FBACFB0043198A /* icons8-plus-50.png in Resources */,
 				284E69E0248EABBE005E7D12 /* icons8-chevron-right-30.png in Resources */,
 				28A5AB1C249F0D3100315726 /* icons8-exclamation-mark-30-2.png in Resources */,
 				282300FB2497590B00215F5A /* icons8-information-30.png in Resources */,
 				283816CE21B8925F00B3E4FD /* Assets.xcassets in Resources */,
 				28E0FF18249F10EC00070769 /* icons8-box-important-30-2.png in Resources */,
+				28CE03FC24BCBD5E00460292 /* ContactsUPDATED.png in Resources */,
 				285DDC7D249F0C04000688E8 /* icons8-cancel-30.png in Resources */,
+				28CE03FF24BCBD5E00460292 /* messagesUPDATED.png in Resources */,
 				28AFA7792391155400DF2255 /* icons8-hide-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
 			);
@@ -879,63 +926,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		23A5DFB4B203144BF09D1C5D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Crusht-CrushtUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		26A9B9C000F5573AA4D36C51 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		28FD7D192264488900B79496 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
-		};
-		35AD4C2468730FF298E35D66 /* [CP] Check Pods Manifest.lock */ = {
+		00FF00342BBC87682E4314A0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -957,7 +948,46 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		36E75A251DFF5B834574D6DC /* [CP] Embed Pods Frameworks */ = {
+		28FD7D192264488900B79496 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+		};
+		328DCDED23A3AE47C4DE447A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Crusht-CrushtUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5E6463B3C5B66722C24AFB87 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -974,7 +1004,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E08162DF3AE4C44999F16BCF /* [CP] Copy Pods Resources */ = {
+		CF401E260BA9E1A390E3E1DF /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -991,7 +1021,41 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E10757B4C450657677624556 /* [CP] Check Pods Manifest.lock */ = {
+		D70079B8742AE602273F8942 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB5D5B4255A529D43733BFCE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E66396695886DF91D841FFBB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1011,23 +1075,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F2EE2B8366510A11AEAD9A45 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1055,6 +1102,7 @@
 				28315C5821E925400066BEE2 /* SeniorFiveTableViewCell.swift in Sources */,
 				4CA41B49235E053200CF8529 /* GenderCell.swift in Sources */,
 				4CA41B4D235E056500CF8529 /* SchoolCell.swift in Sources */,
+				28430F8224AA633100FC9AE9 /* EditPhotoController.swift in Sources */,
 				283FD3DB227E669000C7760F /* CustomTabBarController.swift in Sources */,
 				28F46D9521C41A2E00B7051F /* KeepSwipingButton.swift in Sources */,
 				28F369E221E9A2F20007FBC6 /* SeniorFiveModel.swift in Sources */,
@@ -1073,6 +1121,7 @@
 				285D434F23FB37BF0043198A /* PartyCell.swift in Sources */,
 				285D434D23FB35D30043198A /* Party.swift in Sources */,
 				282300EF2495C47800215F5A /* EditNameController.swift in Sources */,
+				2829B84324BCCB2E00753778 /* EditVenueDistanceController.swift in Sources */,
 				284E69DE248E96FC005E7D12 /* UserInfoHeader.swift in Sources */,
 				280B1ED521CB407C00A89C5E /* ChatMessageCell.swift in Sources */,
 				4CA41B56235E0DCB00CF8529 /* ContactsTextCell.swift in Sources */,
@@ -1123,6 +1172,7 @@
 				280B1ED321CB3FD700A89C5E /* UserCell.swift in Sources */,
 				28A7F9E621BC3C1D00238B7D /* EditProfileController.swift in Sources */,
 				28857CDE21B9B8CD00A654A0 /* RegistrationViewModel.swift in Sources */,
+				2829B84124BCC7BC00753778 /* EditMaxDistanceController.swift in Sources */,
 				28857CD121B9A9C200A654A0 /* VerifyViewController.swift in Sources */,
 				4CA41B50235E0D6800CF8529 /* TermsCell.swift in Sources */,
 				28A293CF248F3528009203FA /* GoogleClient.swift in Sources */,
@@ -1131,6 +1181,7 @@
 				2850A142224EE4C500A2CEB9 /* Reports.swift in Sources */,
 				28908D8C21C0ADD400391A39 /* ContactsController.swift in Sources */,
 				28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */,
+				282791C824AB85560000267E /* TutorialController.swift in Sources */,
 				28F54073224C23C600EC5062 /* BioTextView.swift in Sources */,
 				2879D5B724A671EF00A5979F /* EditAgeController.swift in Sources */,
 				2864C4F0228E6FC500E3165F /* TermsViewController.swift in Sources */,
@@ -1150,6 +1201,7 @@
 				4CA41B52235E0D8100CF8529 /* VerificationNumberCell.swift in Sources */,
 				28F46D9721C41A7800B7051F /* SendMessageButton.swift in Sources */,
 				28857CE021B9B95900A654A0 /* Bindable.swift in Sources */,
+				282791C624AAFA430000267E /* EditMinAgeSliderController.swift in Sources */,
 				4C7CF43E2359FD5D0039B0E3 /* Constants.swift in Sources */,
 				28BE624321BD8B9100EAFFE2 /* AgeRangeTableViewCell.swift in Sources */,
 				2838170321B8A0A700B3E4FD /* CardView.swift in Sources */,
@@ -1268,7 +1320,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1324,7 +1376,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1337,7 +1389,7 @@
 		};
 		283816EC21B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9F358249431986AA0434164 /* Pods-Crusht.debug.xcconfig */;
+			baseConfigurationReference = 7C3F647FF4E927E35E2B980B /* Pods-Crusht.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1353,7 +1405,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.3;
+				MARKETING_VERSION = 1.9.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1363,7 +1415,7 @@
 		};
 		283816ED21B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F894DA439ED2820A9D9F768 /* Pods-Crusht.release.xcconfig */;
+			baseConfigurationReference = E92376102425195C38BA2BF4 /* Pods-Crusht.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1378,7 +1430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.3;
+				MARKETING_VERSION = 1.9.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1388,7 +1440,7 @@
 		};
 		283816EF21B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64833AB1BC80200DDEE3B561 /* Pods-CrushtTests.debug.xcconfig */;
+			baseConfigurationReference = DEAB84C2F75395E82C212E1C /* Pods-CrushtTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1410,7 +1462,7 @@
 		};
 		283816F021B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F2CDFB52A04A8C208B9809A /* Pods-CrushtTests.release.xcconfig */;
+			baseConfigurationReference = 8D4B46E4FF6DF6C0A3DEC832 /* Pods-CrushtTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1432,7 +1484,7 @@
 		};
 		283816F221B8925F00B3E4FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8FF10410AF1EB75A05F800B /* Pods-Crusht-CrushtUITests.debug.xcconfig */;
+			baseConfigurationReference = EA183D8E2FAB4038CBFBFEF4 /* Pods-Crusht-CrushtUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1453,7 +1505,7 @@
 		};
 		283816F321B8925F00B3E4FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6FF77B309364C20CAC59D56 /* Pods-Crusht-CrushtUITests.release.xcconfig */;
+			baseConfigurationReference = 7EBD7742B25D2D6F44D51233 /* Pods-Crusht-CrushtUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

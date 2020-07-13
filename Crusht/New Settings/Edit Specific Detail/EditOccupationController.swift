@@ -12,8 +12,9 @@ import Firebase
 class EditOccupationController: UIViewController {
     //NEED TO ADD A DID SAVE SETTINGS DELAGATE TO THESE
     
-       var user: User?
-        
+        var user: User?
+        var madeChange = false
+        var delegate: SettingsControllerDelegate?
         //UI
         
         let occupationTF: UITextField = {
@@ -127,12 +128,46 @@ class EditOccupationController: UIViewController {
             guard let uid = Auth.auth().currentUser?.uid else {return}
             let docData: [String: Any] = ["Occupation": occupationTF.text ?? ""]
             Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
-            self.handleBack()
+            madeChange = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.errorLabel.text = "Saving..."
+                self.errorLabel.isHidden = false
+                self.handleBack()
+            }
         }
         
-        @objc fileprivate func handleBack() {
+    @objc fileprivate func handleBack() {
+           
             self.navigationController?.navigationBar.isHidden = false
             self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true) {
+                if self.madeChange == true {
+            self.delegate?.didSaveSettings()
+            }
         }
     }
+}
+
+extension UINavigationController {
+    
+    func pushViewController(_ viewController: UIViewController, animated: Bool = true, completion: @escaping () -> Void) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        pushViewController(viewController, animated: animated)
+        CATransaction.commit()
+    }
+    
+    func popViewController(animated: Bool = true, completion: @escaping () -> Void) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        popViewController(animated: animated)
+        CATransaction.commit()
+    }
+    
+    func popToRootViewController(animated: Bool = true, completion: @escaping () -> Void) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        popToRootViewController(animated: animated)
+        CATransaction.commit()
+    }
+}

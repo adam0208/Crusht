@@ -95,7 +95,7 @@ struct User: ProducesCardViewModel {
     }
 
     func toCardViewModel() -> CardViewModel {
-        let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
+        let attributedText = NSMutableAttributedString(string: firstName ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
         
         let ageSting = age != nil ? "\(age!)" : "N/A"
         attributedText.append(NSAttributedString(string: "  \(ageSting)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))

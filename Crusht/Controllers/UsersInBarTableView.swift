@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import AudioToolbox
 import Firebase
 import CoreLocation
 import GeoFire
@@ -16,7 +16,7 @@ import FirebaseAuth
 
 //This controller shows users in bar which they have joined
 
-class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate {
+class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
     var fetchedAllUsers = false
     var fetchingMoreUsers = false
     var lastFetchedDocument: QueryDocumentSnapshot? = nil
@@ -94,44 +94,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
           }
     }
     
-    private func addCrushScore() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let cardUID = crushScoreID
-        
-        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else { return }
-                self.crushScore = CrushScore(dictionary: dictionary)
-                let docData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            }
-            else {
-                let docData: [String: Any] = ["CrushScore": 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            }
-        }
-        
-        Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
-                return
-            }
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else { return }
-                self.crushScore = CrushScore(dictionary: dictionary)
-                let cardDocData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 2]
-                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
-            }
-            else {
-                let cardDocData: [String: Any] = ["CrushScore": 1]
-                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
-            }
-        }
-    }
-    
+  
     private func listenForMessages() {
         guard let toId = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("messages").whereField("toId", isEqualTo: toId).addSnapshotListener { querySnapshot, error in
@@ -141,9 +104,10 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
             }
             snapshot.documentChanges.forEach { diff in
                 if (diff.type == .modified) {
-                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
+                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                 }
             }
         }
@@ -610,8 +574,8 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
         let matchView = MatchView()
         matchView.cardUID = cardUID
         matchView.currentUser = self.user
-        self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-        self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         UIApplication.shared.applicationIconBadgeNumber = 1
         MessageController.sharedInstance?.didHaveNewMessage = true
        
@@ -623,7 +587,6 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate, SettingsC
     
     private func handleLike(cell: UITableViewCell) {
         saveSwipeToFireStore(didLike: 1)
-        addCrushScore()
         cell.accessoryView?.tintColor = .red
     }
     

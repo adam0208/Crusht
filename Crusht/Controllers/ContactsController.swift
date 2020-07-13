@@ -9,14 +9,14 @@
 import UIKit
 import Firebase
 import Contacts
-
+import AudioToolbox
 import CoreLocation
 import GeoFire
 import FirebaseFirestore
 import FirebaseAuth
 
 
-class ContactsController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, SettingsControllerDelegate, UITabBarControllerDelegate {
+class ContactsController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
     
     var expandableContacts = ExpandableContacts(isExpanded: true, contacts: [])
     lazy var filteredExpandableContacts = ExpandableContacts(isExpanded: true, contacts: [])
@@ -82,8 +82,8 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         if UIApplication.shared.applicationIconBadgeNumber == 1 {
-            self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-            self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
         handleContacts()
       
@@ -501,7 +501,6 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
     func handleLike(contact: FavoritableContact, cell: UITableViewCell) {
         saveSwipeLocally(contact: contact, didLike: 1)
         saveSwipeToFireStore(contact: contact, didLike: 1)
-        addCrushScore()
         cell.accessoryView?.tintColor = .red
     }
     
@@ -509,27 +508,6 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
         saveSwipeLocally(contact: contact, didLike: 0)
         saveSwipeToFireStore(contact: contact, didLike: 0)
         cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
-    }
-    
-    fileprivate func addCrushScore() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-                
-        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else {return}
-                self.crushScore = CrushScore(dictionary: dictionary)
-                let docData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            } else {
-                let docData: [String: Any] = ["CrushScore": 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            }
-        }
     }
     
     @objc fileprivate func handleInfo() {
@@ -558,9 +536,10 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
             }
             snapshot.documentChanges.forEach { diff in
                 if (diff.type == .modified) {
-                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-                    self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+                    self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
+                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))  
                 }
             }
         }
@@ -639,6 +618,24 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
         let hasLiked = swipes[favoritableContact.phoneCell] == 1
         let cell = ContactsCell(style: .subtitle, reuseIdentifier: cellId)
         cell.setup(favoritableContact: favoritableContact, hasLiked: hasLiked)
+//        let phoneString = favoritableContact.phoneCell
+//                        let phoneIDStripped = phoneString.replacingOccurrences(of: " ", with: "")
+//                        let phoneNoParen = phoneIDStripped.replacingOccurrences(of: "(", with: "")
+//                        let phoneNoParen2 = phoneNoParen.replacingOccurrences(of: ")", with: "")
+//                        let phoneNoDash = phoneNoParen2.replacingOccurrences(of: "-", with: "")
+//        Firestore.firestore().collection("users").whereField("PhoneNumber", isEqualTo: phoneNoDash).getDocuments { (snap, err) in
+//            if let err = err {
+//                print(err)
+//                return
+//            }
+//            snap?.documents.forEach({ (docSnap) in
+//                let userDictionary = docSnap.data()
+//                let user = User(dictionary: userDictionary)
+//                if docSnap.exists {
+//                    cell.setup2(crush: user, hasFavorited: hasLiked)
+//                }
+//            })
+//        }
         cell.link = self
         return cell
     }

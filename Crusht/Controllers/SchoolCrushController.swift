@@ -7,7 +7,7 @@
 //
 import UIKit
 import Firebase
-
+import AudioToolbox
 import CoreLocation
 import GeoFire
 import FirebaseAuth
@@ -17,7 +17,7 @@ protocol SchoolDelegate {
     func didSendNewMessage()
 }
 
-class SchoolCrushController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
+class SchoolCrushController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, UITabBarControllerDelegate {
 
     
     var fetchedAllUsers = false
@@ -53,8 +53,8 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
          navigationController?.navigationBar.prefersLargeTitles = true
         
         if UIApplication.shared.applicationIconBadgeNumber == 1 {
-            self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-            self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+            self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
         }
         
         fetchCurrentUser()
@@ -112,46 +112,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
           }
     }
     
-    fileprivate func addCrushScore() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-        let cardUID = crushScoreID
-
-        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else {return}
-                self.crushScore = CrushScore(dictionary: dictionary)
-                let docData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            }
-            else {
-                let docData: [String: Any] = ["CrushScore": 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            }
-        }
-        
-        Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else {return}
-                self.crushScore = CrushScore(dictionary: dictionary)
-                let cardDocData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 2]
-                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
-            }
-            else {
-                let cardDocData: [String: Any] = ["CrushScore": 1]
-                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
-            }
-        }
-        
-    }
-    
     @objc fileprivate func handleInfo() {
         let infoView = InfoView()
         infoView.infoText.text = "Crush Classmates: Select the heart next to people at your school/alma mater. If they select the heart on your name as well, you'll be matched in the chats tab!"
@@ -182,9 +142,10 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
                     if (diff.type == .added) {
                     }
                     if (diff.type == .modified) {
-                        self.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "!"
-                        self.tabBarController?.viewControllers?[4].tabBarItem.badgeColor = .red
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                         UIApplication.shared.applicationIconBadgeNumber = 1
+                        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                     }
                     if (diff.type == .removed) {
                     }
@@ -707,7 +668,6 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
     
     func handleLike(cell: UITableViewCell) {
         saveSwipeToFireStore(didLike: 1)
-        addCrushScore()
         cell.accessoryView?.tintColor = .red
     }
     
@@ -758,7 +718,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, Setting
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SchoolTableViewCell
             cell.link = self
-            if !schoolArray.isEmpty {
+            if !schoolArray.isEmpty && user?.school != "No College" {
                 let crush = isFiltering() ? users[indexPath.row] : schoolArray[indexPath.row]
                 let hasLiked = swipes[crush.phoneNumber ?? ""] == 1
                 let swipeLike = locationSwipes[crush.uid ?? ""] == 1

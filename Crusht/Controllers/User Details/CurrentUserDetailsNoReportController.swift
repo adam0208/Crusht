@@ -14,7 +14,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
     let swipingPhotosController = SwipingPhotosController(isCardViewMode: false)
     let extraSwipingHeight: CGFloat = 100
     
-    var crushScore: CrushScore?
     
     var cardViewModel: CardViewModel! {
         didSet {
@@ -27,7 +26,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLabelText()
         initializeUI()
     }
     
@@ -49,33 +47,10 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
     
     // MARK: - Logic
     
-    private func setLabelText() {
-        let uid = cardViewModel.uid
-        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            guard err == nil else { return }
-            if let exists = snapshot?.exists, exists {
-                guard let dictionary = snapshot?.data() else { return }
-                let crushScore = CrushScore(dictionary: dictionary)
-                self.crushScore = CrushScore(dictionary: dictionary)
-                self.crushScoreLabel.text = crushScore.toString
-            }
-            else {
-                self.crushScoreLabel.text = " Crusht Score: 😊"
-            }
-        }
-    }
-    
     @objc private func handleDismiss() {
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.popToRootViewController(animated: true)
-    }
-    
-    @objc private func handleInfo() {
-        let infoView = InfoView()
-        infoView.infoText.text = "Crush Score: Your Crush Score increases when you like or get liked by someone."
-        navigationController?.view.addSubview(infoView)
-        infoView.fillSuperview()
     }
     
     // MARK: - UIScrollViewDelegate
@@ -96,7 +71,6 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         view.backgroundColor = .white
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-information-30"), style: .plain, target: self, action: #selector(handleInfo))
         
         let swipingView = swipingPhotosController.view!
         scrollView.addSubview(swipingView)
@@ -112,15 +86,11 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         scrollView.addSubview(crushScoreLabel)
         
         bioLabel.text = cardViewModel.bio
-        crushScoreLabel.anchor(top: infoLabel.bottomAnchor,
-                               leading: infoLabel.leadingAnchor,
-                               bottom: nil,
-                               trailing: view.trailingAnchor,
-                               padding: .init(top: 8, left: 0, bottom: 16, right: 16))
+     
         scrollView.addSubview(bioLabel)
         
-        bioLabel.anchor(top: crushScoreLabel.bottomAnchor,
-                        leading: crushScoreLabel.leadingAnchor,
+        bioLabel.anchor(top: infoLabel.bottomAnchor,
+                        leading: infoLabel.leadingAnchor,
                         bottom: nil,
                         trailing: view.trailingAnchor,
                         padding: .init(top: 8, left: 0, bottom: 16, right: 16))

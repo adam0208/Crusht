@@ -19,7 +19,8 @@ class EditAgeController: UIViewController {
     var birthday = String()
     var datepicker = UIDatePicker()
     var age = Int()
-        
+    var madeChange = false
+    var delegate: SettingsControllerDelegate?
         // MARK: - Life Cycle Methods
         
         override func viewDidLoad() {
@@ -88,6 +89,7 @@ class EditAgeController: UIViewController {
             guard let uid = Auth.auth().currentUser?.uid else {return}
             let docData: [String: Any] = ["Birthday": birthday, "Age": age]
             Firestore.firestore().collection("users").document(uid).setData(docData, merge: true)
+            madeChange = true
             self.handleBack()
         }
     
@@ -99,7 +101,11 @@ class EditAgeController: UIViewController {
     @objc fileprivate func handleBack() {
          self.navigationController?.navigationBar.isHidden = false
          self.navigationController?.navigationBar.prefersLargeTitles = true
-         self.navigationController?.popViewController(animated: true)
+         self.navigationController?.popViewController(animated: true) {
+                        if self.madeChange == true {
+                    self.delegate?.didSaveSettings()
+                    }
+        }
      }
         
         // MARK: - User Interface
@@ -151,11 +157,13 @@ class EditAgeController: UIViewController {
         }()
         
         private let ageTextField: UITextField = {
-            let tf = NameTextField()
+            let tf = UITextField()
             tf.placeholder = "Birthday"
             tf.backgroundColor = .white
-            tf.layer.cornerRadius = 15
-            tf.font = UIFont.systemFont(ofSize: 25)
+            tf.textAlignment = .center
+            tf.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+            tf.adjustsFontSizeToFitWidth = true
+            tf.adjustsFontForContentSizeCategory = true
             tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
             
             return tf
@@ -200,4 +208,5 @@ class EditAgeController: UIViewController {
         }()
 
     }
+
 

@@ -13,7 +13,7 @@ import GeoFire
 import FirebaseFirestore
 import FirebaseAuth
 
-class MessageController: UITableViewController, UISearchBarDelegate, SettingsControllerDelegate, LoginControllerDelegate, UITabBarControllerDelegate, SchoolDelegate {
+class MessageController: UITableViewController, UISearchBarDelegate, LoginControllerDelegate, UITabBarControllerDelegate, SchoolDelegate {
     
     var messages = [Message]()
     var messageDictionary = [String: Message]()
@@ -271,23 +271,23 @@ class MessageController: UITableViewController, UISearchBarDelegate, SettingsCon
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         cell.selectionStyle = .none
-        if !messages.isEmpty {
-            if isFiltering() {
-                let message = messages[indexPath.row]
-                cell.message = message
-            } else {
-                let message = messages[indexPath.row]
-                cell.message = message
-            }
-        } else {
-            if messages.isEmpty {
-               
-                    cell.profileImageView.image = nil
-                    cell.textLabel?.text = "No matches yet 😬"
+              if !messages.isEmpty {
+             if isFiltering() {
+                 let message = messages[indexPath.row]
+                 cell.message = message
+             } else {
+                 let message = messages[indexPath.row]
+                 cell.message = message
+             }
+         } else {
+             if messages.isEmpty {
                 
-            }
-        }
-        return cell
+                     cell.profileImageView.image = nil
+                     cell.textLabel?.text = "No matches yet 😬"
+                 
+             }
+         }
+         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

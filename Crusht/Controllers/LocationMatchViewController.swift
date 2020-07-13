@@ -89,45 +89,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     }
     
     // MARK: - Logic
-    
-    fileprivate func addCrushScore() {
-        guard let uid = Auth.auth().currentUser?.uid, let cardUID = topCardView?.cardViewModel.uid else {
-            return
-        }
-        
-        Firestore.firestore().collection("score").document(uid).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else {return}
-                self.crushScore = CrushScore(dictionary: dictionary)
-                let docData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            }
-            else {
-                let docData: [String: Any] = ["CrushScore": 1]
-                Firestore.firestore().collection("score").document(uid).setData(docData)
-            }
-        }
-        
-        Firestore.firestore().collection("score").document(cardUID).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            if snapshot?.exists == true {
-                guard let dictionary = snapshot?.data() else {return}
-                self.crushScore = CrushScore(dictionary: dictionary)
-                let cardDocData: [String: Any] = ["CrushScore": (self.crushScore?.crushScore ?? 0 ) + 2]
-                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
-            }
-            else {
-                let cardDocData: [String: Any] = ["CrushScore": 1]
-                Firestore.firestore().collection("score").document(cardUID).setData(cardDocData)
-            }
-        }
-        
-    }
 
     fileprivate func fetchCurrentUser(user: User) {
         self.refreshLabel.isHidden = true
@@ -344,7 +305,6 @@ class LocationMatchViewController: UIViewController, CardViewDelegate, CLLocatio
     @objc func handleLike() {
         print("like")
         saveSwipeToFireStore(didLike: 1)
-        addCrushScore()
         performSwipeAnimation(translation: 700, angle: 15)
         fetchMoreUsersIfNecessary()
     }
