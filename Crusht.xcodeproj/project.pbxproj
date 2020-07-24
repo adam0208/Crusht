@@ -98,13 +98,13 @@
 		289224BC21B9C1B20047E29B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 289224BB21B9C1B20047E29B /* GoogleService-Info.plist */; };
 		2895576D227E62B5001EFD73 /* UsersInBarTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */; };
 		2895576F227E644F001EFD73 /* UserBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895576E227E644F001EFD73 /* UserBarCell.swift */; };
+		28A0F74924CB3A2E00F7E6D3 /* icons8-hide-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A0F74824CB3A2E00F7E6D3 /* icons8-hide-30-2.png */; };
 		28A293CD248F3441009203FA /* ResponseModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A293CC248F3441009203FA /* ResponseModels.swift */; };
 		28A293CF248F3528009203FA /* GoogleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A293CE248F3528009203FA /* GoogleClient.swift */; };
 		28A5AB1C249F0D3100315726 /* icons8-exclamation-mark-30-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A5AB1B249F0D3100315726 /* icons8-exclamation-mark-30-2.png */; };
 		28A7F9E621BC3C1D00238B7D /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A7F9E521BC3C1D00238B7D /* EditProfileController.swift */; };
 		28A9BD5F220FA4C900712263 /* LogoutBttnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */; };
 		28AE45FC21E6BEB400977F1E /* SchoolCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */; };
-		28AFA7792391155400DF2255 /* icons8-hide-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 28AFA7782391155400DF2255 /* icons8-hide-30.png */; };
 		28B66A0A21FAB5860068ABF3 /* FacebookCrushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */; };
 		28B66A0C21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */; };
 		28BE1275227FD879000B8911 /* CurrentUserDetailsNoReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */; };
@@ -292,13 +292,13 @@
 		289224BB21B9C1B20047E29B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2895576C227E62B5001EFD73 /* UsersInBarTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersInBarTableView.swift; sourceTree = "<group>"; };
 		2895576E227E644F001EFD73 /* UserBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBarCell.swift; sourceTree = "<group>"; };
+		28A0F74824CB3A2E00F7E6D3 /* icons8-hide-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-hide-30-2.png"; sourceTree = "<group>"; };
 		28A293CC248F3441009203FA /* ResponseModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModels.swift; sourceTree = "<group>"; };
 		28A293CE248F3528009203FA /* GoogleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleClient.swift; sourceTree = "<group>"; };
 		28A5AB1B249F0D3100315726 /* icons8-exclamation-mark-30-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-exclamation-mark-30-2.png"; sourceTree = "<group>"; };
 		28A7F9E521BC3C1D00238B7D /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 		28A9BD5E220FA4C900712263 /* LogoutBttnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutBttnCell.swift; sourceTree = "<group>"; };
 		28AE45FB21E6BEB400977F1E /* SchoolCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCrushController.swift; sourceTree = "<group>"; };
-		28AFA7782391155400DF2255 /* icons8-hide-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-hide-30.png"; sourceTree = "<group>"; };
 		28B66A0921FAB5860068ABF3 /* FacebookCrushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookCrushController.swift; sourceTree = "<group>"; };
 		28B66A0B21FE4A410068ABF3 /* SchoolTextFieldDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolTextFieldDropDown.swift; sourceTree = "<group>"; };
 		28BE1274227FD879000B8911 /* CurrentUserDetailsNoReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserDetailsNoReportController.swift; sourceTree = "<group>"; };
@@ -484,8 +484,8 @@
 				282300F82497589B00215F5A /* icons8-near-me-30.png */,
 				282300F62497566E00215F5A /* icons8-settings-30-3.png */,
 				282300F42497552400215F5A /* icons8-settings-30-2.png */,
+				28A0F74824CB3A2E00F7E6D3 /* icons8-hide-30-2.png */,
 				285D435623FBACFA0043198A /* icons8-plus-50.png */,
-				28AFA7782391155400DF2255 /* icons8-hide-30.png */,
 				28EC2B6923E61D44009EEA2C /* icons8-confetti-30.png */,
 				280B78B023EF72C30084D745 /* icons8-photo-gallery-100.png */,
 				284E69DF248EABBE005E7D12 /* icons8-chevron-right-30.png */,
@@ -770,8 +770,8 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
-				DB5D5B4255A529D43733BFCE /* [CP] Embed Pods Frameworks */,
-				D70079B8742AE602273F8942 /* [CP] Copy Pods Resources */,
+				ABC0800D5C30FF4FCBEF70B6 /* [CP] Embed Pods Frameworks */,
+				BEB1926B7ED3A77CA463FAC1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -809,8 +809,8 @@
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
-				5E6463B3C5B66722C24AFB87 /* [CP] Embed Pods Frameworks */,
-				CF401E260BA9E1A390E3E1DF /* [CP] Copy Pods Resources */,
+				0AE8EA38DE9986FA3530435B /* [CP] Embed Pods Frameworks */,
+				293E079365563E1312CB67FD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -891,6 +891,7 @@
 				28CE040224BCBE5200460292 /* locationUPDATED-0.png in Resources */,
 				2808A483249E8B7B00DF3D72 /* icons8-exclamation-mark-30.png in Resources */,
 				285F65E7249F0F8300E9C695 /* icons8-high-importance-30-2.png in Resources */,
+				28A0F74924CB3A2E00F7E6D3 /* icons8-hide-30-2.png in Resources */,
 				28C71CF7249E8E06009E3E84 /* icons8-customer-30.png in Resources */,
 				282300F92497589B00215F5A /* icons8-near-me-30.png in Resources */,
 				28CE03FE24BCBD5E00460292 /* venuesWITHOUTCOLOR.png in Resources */,
@@ -904,7 +905,6 @@
 				28CE03FC24BCBD5E00460292 /* ContactsUPDATED.png in Resources */,
 				285DDC7D249F0C04000688E8 /* icons8-cancel-30.png in Resources */,
 				28CE03FF24BCBD5E00460292 /* messagesUPDATED.png in Resources */,
-				28AFA7792391155400DF2255 /* icons8-hide-30.png in Resources */,
 				283816CC21B8925C00B3E4FD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -948,6 +948,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		0AE8EA38DE9986FA3530435B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		28FD7D192264488900B79496 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -964,6 +981,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+		};
+		293E079365563E1312CB67FD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		328DCDED23A3AE47C4DE447A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -987,58 +1021,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5E6463B3C5B66722C24AFB87 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CF401E260BA9E1A390E3E1DF /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D70079B8742AE602273F8942 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DB5D5B4255A529D43733BFCE /* [CP] Embed Pods Frameworks */ = {
+		ABC0800D5C30FF4FCBEF70B6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1053,6 +1036,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BEB1926B7ED3A77CA463FAC1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E66396695886DF91D841FFBB /* [CP] Check Pods Manifest.lock */ = {
@@ -1405,7 +1405,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.4;
+				MARKETING_VERSION = 1.9.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1430,7 +1430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.4;
+				MARKETING_VERSION = 1.9.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrushtLLC.Crusht;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

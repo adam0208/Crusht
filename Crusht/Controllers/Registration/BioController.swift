@@ -65,7 +65,7 @@ class BioController: UIViewController, UITextViewDelegate {
                      bottom: nil, trailing: view.trailingAnchor)
         
            view.addSubview(bioTF)
-             bioTF.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+        bioTF.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
                   
                   view.addSubview(underline)
              underline.anchor(top: bioTF.bottomAnchor, leading: bioTF.leadingAnchor, bottom: nil, trailing: bioTF.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
@@ -94,6 +94,8 @@ class BioController: UIViewController, UITextViewDelegate {
         tf.text = ""
         tf.backgroundColor = .white
         tf.layer.cornerRadius = 14
+        tf.layer.borderWidth = 1
+        tf.layer.borderColor = #colorLiteral(red: 1, green: 0, blue: 0.6713966727, alpha: 1)
         tf.clipsToBounds = true
         
         return tf
@@ -112,7 +114,7 @@ class BioController: UIViewController, UITextViewDelegate {
         label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
-        label.textColor = .white
+        label.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         
         return label
     }()

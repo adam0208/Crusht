@@ -73,8 +73,6 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     
     private func initializeUI() {
          view.backgroundColor = .white
-                   genderPicker.delegate = self
-                   genderTF.text = user?.gender ?? ""
                   genderTF.inputView = genderPicker
              
                    view.addSubview(label)
@@ -85,7 +83,7 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
                                        padding: .init(top: 12, left: 30, bottom: 0, right: 30))
                           
                         view.addSubview(genderTF)
-                   genderTF.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
+        genderTF.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: view.bounds.height/5, left: 30, bottom: 0, right: 30))
                         
                         view.addSubview(underline)
                    underline.anchor(top: genderTF.bottomAnchor, leading: genderTF.leadingAnchor, bottom: nil, trailing: genderTF.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
@@ -104,12 +102,13 @@ class GenderController: UIViewController, UIPickerViewDelegate, UIPickerViewData
     }
     
     private let genderTF: UITextField = {
-        let tf = GenderTextField()
-        tf.placeholder = "Select"
+        let tf = UITextField()
+        tf.placeholder = "Select Your Sex Preference"
         tf.backgroundColor = .white
         tf.layer.cornerRadius = 15
         tf.font = UIFont.systemFont(ofSize: 25)
         tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        tf.textAlignment = .left
         
         return tf
     }()

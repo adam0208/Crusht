@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
         } else {
         window?.rootViewController = CustomTabBarController()
-         //  window?.rootViewController = TutorialController()
+          // window?.rootViewController = YourSexController()
          //   window?.rootViewController = EnterSchoolController()
         }
         

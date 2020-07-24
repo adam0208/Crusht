@@ -11,6 +11,8 @@ import Firebase
 import FirebaseFirestore
 import FirebaseAuth
 
+//Fix this
+
 class UserDetailsController: UIViewController, UIScrollViewDelegate {
     let swipingPhotosController = SwipingPhotosController(isCardViewMode: false)
     let extraSwipingHeight: CGFloat = 100
@@ -108,7 +110,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.isTranslucent = false
         
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-hide-30").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBlock))]
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-exclamation-mark-32").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleReport)), UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-hide-30-2").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBlock))]
         
         view.backgroundColor = .white
         

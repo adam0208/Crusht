@@ -54,6 +54,7 @@ class GoogleClient : GoogleClientRequest {
         let rankby = "rankby=distance"
         let keywrd = "type=" + keyword
         let key = "key=" + apiKey
+//        let field = "field=" + "business_status"
         
         return URL(string: baseURL + locationString + "&" + rankby + "&" + keywrd + "&" + key)!
     }

@@ -15,7 +15,7 @@ struct GooglePlacesResponse : Codable {
     }
 }
 
-struct Place : Codable {
+struct Place: Codable {
     
     let geometry : Location
     let name : String
@@ -33,8 +33,9 @@ struct Place : Codable {
         case types = "types"
         case address = "vicinity"
         case id = "id"
+       // case tempCloased = "business_status"
     }
-    
+}
     struct Location : Codable {
         
         let location : LatLong
@@ -64,6 +65,16 @@ struct Place : Codable {
         }
     }
     
+//    struct TempClosed : Codable {
+//
+//        let isClosed : Bool
+//
+//        enum CodingKeys : String, CodingKey {
+//            case isClosed = "CLOSED_TEMPORARILY"
+//            }
+//        }
+
+    
     struct PhotoInfo : Codable {
         //photoreference was string
         let height : Int
@@ -76,4 +87,4 @@ struct Place : Codable {
             case photoReference = "photo_reference"
         }
     }
-}
+

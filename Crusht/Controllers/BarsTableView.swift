@@ -272,7 +272,7 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
                        self.present(loginController, animated: true)
                    }
             
-                   else if self.user?.name == "" {
+                   else if self.user?.firstName == "" {
                        let namecontroller = EnterNameController()
                        namecontroller.modalPresentationStyle = .fullScreen
                        self.present(namecontroller, animated: true)
