@@ -35,6 +35,7 @@ class GoogleClient : GoogleClientRequest {
                 print(error.localizedDescription)
                 return
              }
+            print(String(data: responseData!, encoding: .utf8)!)                                      
             //d
             guard let data = responseData, let response = try? JSONDecoder().decode(GooglePlacesResponse.self, from: data) else {
                   //e
