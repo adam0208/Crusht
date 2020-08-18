@@ -107,7 +107,7 @@ class UsersInBarTableView: UITableViewController, UISearchBarDelegate {
                     self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
                     self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
-                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                   // AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                 }
             }
         }

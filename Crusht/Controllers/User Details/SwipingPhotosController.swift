@@ -10,8 +10,6 @@ import UIKit
 //import Nuke
 import SDWebImage
 
-
-
 class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     let isCardViewMode: Bool
     let deselectedBarColor = UIColor(white: 0, alpha: 0.1)
@@ -21,11 +19,13 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
     
     var cardViewModel: CardViewModel! {
         didSet {
-            print(cardViewModel.attributedString)
+            
             controllers = cardViewModel.imageUrls.map { (imageUrl) -> UIViewController in
                 let photoController = PhotoController(imageUrl: imageUrl)
+                print(photoController, "hi")
                 return photoController
             }
+            
             
             setViewControllers([controllers.first!], direction: .forward, animated: false)
             setupBarViews()

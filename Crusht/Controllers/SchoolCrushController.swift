@@ -145,7 +145,7 @@ class SchoolCrushController: UITableViewController, UISearchBarDelegate, LoginCo
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
                         self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                         UIApplication.shared.applicationIconBadgeNumber = 1
-                        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                        //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                     }
                     if (diff.type == .removed) {
                     }

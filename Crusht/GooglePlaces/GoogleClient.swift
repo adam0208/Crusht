@@ -6,6 +6,7 @@
 //  Copyright © 2020 William Kelly. All rights reserved.
 //
 
+
 import Foundation
 
 import CoreLocation
@@ -54,7 +55,6 @@ class GoogleClient : GoogleClientRequest {
         let rankby = "rankby=distance"
         let keywrd = "type=" + keyword
         let key = "key=" + apiKey
-//        let field = "field=" + "business_status"
         
         return URL(string: baseURL + locationString + "&" + rankby + "&" + keywrd + "&" + key)!
     }

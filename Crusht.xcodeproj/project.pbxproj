@@ -770,8 +770,8 @@
 				283816C021B8925C00B3E4FD /* Frameworks */,
 				283816C121B8925C00B3E4FD /* Resources */,
 				28FD7D192264488900B79496 /* ShellScript */,
-				ABC0800D5C30FF4FCBEF70B6 /* [CP] Embed Pods Frameworks */,
-				BEB1926B7ED3A77CA463FAC1 /* [CP] Copy Pods Resources */,
+				CA790B2F4721815B36FADCBF /* [CP] Embed Pods Frameworks */,
+				8E0E57AF6AFC090DE94B9D6D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -809,8 +809,8 @@
 				283816DE21B8925F00B3E4FD /* Sources */,
 				283816DF21B8925F00B3E4FD /* Frameworks */,
 				283816E021B8925F00B3E4FD /* Resources */,
-				0AE8EA38DE9986FA3530435B /* [CP] Embed Pods Frameworks */,
-				293E079365563E1312CB67FD /* [CP] Copy Pods Resources */,
+				5290299EAE62D519A62E13CC /* [CP] Embed Pods Frameworks */,
+				39F7471A9C7B3E1B8FA1211F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -948,23 +948,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0AE8EA38DE9986FA3530435B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		28FD7D192264488900B79496 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -981,23 +964,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
-		};
-		293E079365563E1312CB67FD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		328DCDED23A3AE47C4DE447A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1021,24 +987,41 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ABC0800D5C30FF4FCBEF70B6 /* [CP] Embed Pods Frameworks */ = {
+		39F7471A9C7B3E1B8FA1211F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BEB1926B7ED3A77CA463FAC1 /* [CP] Copy Pods Resources */ = {
+		5290299EAE62D519A62E13CC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht-CrushtUITests/Pods-Crusht-CrushtUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8E0E57AF6AFC090DE94B9D6D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1053,6 +1036,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA790B2F4721815B36FADCBF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Crusht/Pods-Crusht-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E66396695886DF91D841FFBB /* [CP] Check Pods Manifest.lock */ = {
@@ -1395,7 +1395,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Crusht/Crusht.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1421,7 +1421,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Crusht/Crusht.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7L9BJYQ2H8;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Crusht/Info.plist;

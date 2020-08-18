@@ -6,7 +6,7 @@ target 'Crusht' do
   use_frameworks!
 
   # Pods for Crusht
-  
+
   pod 'Firebase/Firestore'
       pod 'Firebase/Auth'
       pod 'Firebase/Storage'

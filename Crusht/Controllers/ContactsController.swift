@@ -510,14 +510,6 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
         cell.accessoryView?.tintColor = #colorLiteral(red: 0.8669986129, green: 0.8669986129, blue: 0.8669986129, alpha: 1)
     }
     
-    @objc fileprivate func handleInfo() {
-        let infoView = InfoView()
-        infoView.infoText.text = "Crush Contacts: Select the heart next to contacts you have a crush on. If they select the heart on your name as well, you'll be matched in the chats tab!"
-        tabBarController?.view.addSubview(infoView)
-        infoView.peekButton.isHidden = true
-        infoView.fillSuperview()
-    }
-    
     @objc func handleMessages() {
         let messageController = MessageController()
         messageBadge.removeFromSuperview()
@@ -539,20 +531,12 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
                     self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = "!"
                     self.tabBarController?.viewControllers?[3].tabBarItem.badgeColor = .red
                     UIApplication.shared.applicationIconBadgeNumber = 1
-                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))  
+                   // AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                 }
             }
         }
     }
     
-//    @objc func handleSettings() {
-//        let settingsController = EditProfileController()
-//        settingsController.delegate = self
-//        let navController = UINavigationController(rootViewController: settingsController)
-//        navController.modalPresentationStyle = .fullScreen
-//        present(navController, animated: true)
-//    }
-//
        @objc func handleSettings() {
            let settingsController = ViewController()
           // settingsController.delegate = self
@@ -560,7 +544,7 @@ class ContactsController: UITableViewController, UISearchBarDelegate, LoginContr
     
            let navController = UINavigationController(rootViewController: settingsController)
            navController.modalPresentationStyle = .fullScreen
-           present(navController, animated: true)
+           present(navController, animated: false)
        }
        
     
