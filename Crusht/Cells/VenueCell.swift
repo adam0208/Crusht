@@ -37,7 +37,7 @@ class VenueCell: UITableViewCell {
 
     func setup(place: Place) {
         textLabel?.text = place.name
-        guard let imageUrl = place.photos.first?.photoReference else {return}
+        guard let imageUrl = place.photos?.first?.photoReference else {return}
         // This is needed to avoid showing the wrong image while the actual one is being downloaded.
         // The problem is caused by cell reuse.
         self.profileImageView.image = nil

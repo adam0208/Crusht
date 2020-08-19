@@ -20,7 +20,7 @@ struct Place : Codable {
     let geometry : Location
     let name : String
     let openingHours : OpenNow?
-    let photos : [PhotoInfo]
+    let photos : [PhotoInfo]?
     let types : [String]
     let address : String
     let id : String
@@ -32,7 +32,7 @@ struct Place : Codable {
         case photos = "photos"
         case types = "types"
         case address = "vicinity"
-        case id = "id"
+        case id = "place_id"
     }
     
     struct Location : Codable {

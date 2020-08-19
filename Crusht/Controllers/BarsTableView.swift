@@ -463,9 +463,10 @@ class BarsTableView: UITableViewController, CLLocationManagerDelegate, UISearchB
             return venueName1 < venueName2
             }
                 
+                self.tableView.reloadData()
+                
                 }
             })
-            self.tableView.reloadData()
         }
         
     
