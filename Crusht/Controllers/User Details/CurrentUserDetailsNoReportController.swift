@@ -39,8 +39,8 @@ class CurrentUserDetailsNoReportController: UIViewController, UIScrollViewDelega
         tabBarController?.tabBar.isHidden = false
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         let swipingView = swipingPhotosController.view!
         swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + extraSwipingHeight)
     }

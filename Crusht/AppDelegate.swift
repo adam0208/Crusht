@@ -84,9 +84,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Auth.auth().currentUser == nil {
             window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
         } else {
-        window?.rootViewController = CustomTabBarController()
-          // window?.rootViewController = YourSexController()
-         //   window?.rootViewController = EnterSchoolController()
+            window?.rootViewController = CustomTabBarController()
+            //window?.rootViewController = YourSexController()
+            //window?.rootViewController = EnterSchoolController()
         }
         
         UITabBarItem.appearance()
